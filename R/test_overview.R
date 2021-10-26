@@ -10,20 +10,21 @@ test_overview <- function() {
   )
 
   # Check - same result as in esci with 95% CI
-  res <- overview.summary(
+  res <- overview(
     means = means,
     sds = sds,
     ns = ns,
     assume_equal_variance = TRUE,
     outcome_variable_name = "% time near target",
-    grouping_variable_levels = grouping_variable_levels
+    grouping_variable_levels = grouping_variable_levels,
+    grouping_variable_name = "Diet"
   )
   res
   # Should return mean_LL of 32.2253, 26.7252, 36.0252, 28.2252, 24.7252, 33.1252
   # Should return mean_UL of 42.6748, 37.0748, 46.3748, 38.5748, 35.0748, 43.4748
 
   # Check - same result as in esci with 99% CI
-  res <- overview.summary(
+  res <- overview(
     means = means,
     sds = sds,
     ns = ns,
@@ -37,7 +38,7 @@ test_overview <- function() {
   # Should return mean_UL of 44.3455...
 
   # Check - ok to submit just 1 group
-  overview.summary(
+  overview(
     means = means[1],
     sds = sds[1],
     ns = ns[1],
@@ -131,7 +132,7 @@ test_overview <- function() {
   )
 
   # Check - returns same result as esci
-  overview.vector(
+  overview(
     outcome_variable = transcription_score,
     grouping_variable = condition,
     assume_equal_variance = FALSE
@@ -140,15 +141,17 @@ test_overview <- function() {
   # Should return Pen: M =     8.81176, 95% CI [7.15464, 10.4689]
 
   # Check - ok to have an na in outcome_variable
-  overview.vector(
+  overview(
     outcome_variable = c(transcription_score, NA),
     grouping_variable = c(condition, "Pen"),
+    outcome_variable_name = "transcription score",
+    grouping_variable_name = "condition",
     assume_equal_variance = FALSE
   )
 
   # Check - ok to have an na in grouping_variable
   # Outcomes missing grups do not factor into CIs even if equal var is assumed
-  overview.vector(
+  overview(
     outcome_variable = c(transcription_score, rnorm(100, 14.5, 7.2)),
     grouping_variable = c(condition, rep(NA, 100)),
     assume_equal_variance = TRUE
@@ -156,20 +159,20 @@ test_overview <- function() {
 
   # Check - ok to have an a group of n = 1
   # Note that the group doesn't factor into CIs because variance undefined
-  overview.vector(
+  overview(
     outcome_variable = c(transcription_score, 11.2),
     grouping_variable = c(condition, "Group_of_1"),
     assume_equal_variance = TRUE
   )
 
   # Check - vector doesn't have to have grouping variable
-  overview.vector(
+  overview(
     outcome_variable = c(transcription_score, NA),
     assume_equal_variance = FALSE
   )
 
   # Check - works ok with data frame
-  overview.data.frame(
+  overview(
     data = pen_laptop,
     outcome_variable = "transcription_score",
     grouping_variable = "condition",
@@ -177,26 +180,30 @@ test_overview <- function() {
   )
 
   # Check - data frame can skip grouping variable
-  overview.data.frame(
+  overview(
     data = pen_laptop,
     outcome_variable = "transcription_score",
     assume_equal_variance = FALSE
   )
 
-  # Check - .jamovi for list of outcome variables
-  overview.jamovi(
+  # Check - list of outcome variables
+  overview(
     data = pen_laptop,
-    outcome_variables = c("transcription_score", "other_outcome"),
+    outcome_variable = c("transcription_score", "other_outcome"),
     grouping_variable = "condition",
     assume_equal_variance = TRUE
   )
 
   # Check - grouping variable not needed with list of outcome variables
-  overview.jamovi(
+  overview(
     data = pen_laptop,
-    outcome_variables = c("transcription_score", "other_outcome"),
+    outcome_variable = c("transcription_score", "other_outcome"),
     assume_equal_variance = TRUE
   )
+
+  # Check - tidy approach to passing column names
+  overview(pen_laptop, transcription_score)
+  overview(pen_laptop, transcription_score, condition, conf_level = 0.99)
 
 
   # Caught errors
@@ -209,7 +216,7 @@ test_overview <- function() {
   )
 
   # Caught - conf_level out of bounds
-  overview.summary(
+  overview(
     means = means,
     sds = sds,
     ns = ns,
@@ -217,7 +224,7 @@ test_overview <- function() {
   )
 
   # Caught -  assume_equal_variance not a logical
-  overview.summary(
+  overview(
     means = means,
     sds = sds,
     ns = ns,
@@ -225,59 +232,75 @@ test_overview <- function() {
   )
 
   # Caught - sd wrong length
-  overview.summary(
+  overview(
     means = means,
     sds = c(sds, 1),
     ns = ns,
   )
 
-  # Caught - sd wrong length
-  overview.summary(
+  # Caught - n wrong length
+  overview(
     means = means,
     sds = sds,
     ns = c(ns, 1),
   )
 
   # Caught - means has na
-  overview.summary(
+  overview(
     means = c(means, NA),
     sds = c(sds, 1),
     ns = c(ns, 1),
   )
 
   # Caught - sds has na
-  overview.summary(
+  overview(
     means = c(means, 15),
     sds = c(sds, NA),
     ns = c(ns, 1),
   )
 
   # Caught - n has na
-  overview.summary(
+  overview(
     means = c(means, 15),
     sds = c(sds, 1),
     ns = c(ns, NA),
   )
 
   # Caught - n is negative
-  overview.summary(
+  overview(
     means = c(means, 15),
     sds = c(sds, 1),
     ns = c(ns, -1),
   )
 
   # Caught - n is not an integer
-  overview.summary(
+  overview(
     means = c(means, 15),
     sds = c(sds, 1),
     ns = c(ns, 10.2),
   )
 
   # Caught - sd is negative
-  overview.summary(
+  overview(
     means = c(means, 15),
     sds = c(sds, -1),
     ns = c(ns, 10),
+  )
+
+  # Caught - typo in outcome variable
+  overview(
+    data = pen_laptop,
+    outcome_variable = c("transcription_score_typo", "other_outcome"),
+    grouping_variable = "condition",
+    assume_equal_variance = TRUE
+  )
+
+  # Caught - typo in grouping variable
+  overview(
+    data = pen_laptop,
+    outcome_variable = c("transcription_score", "other_outcome"),
+    grouping_variable = "condition_typo",
+    assume_equal_variance = TRUE
   )
 
 

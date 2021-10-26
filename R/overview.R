@@ -1,9 +1,180 @@
+#' @export
+overview <- function(
+  data = NULL,
+  outcome_variable = NULL,
+  grouping_variable = NULL,
+  means = NULL,
+  sds = NULL,
+  ns = NULL,
+  grouping_variable_levels = NULL,
+  outcome_variable_name = "My Outcome Variable",
+  grouping_variable_name = NULL,
+  conf_level = 0.95,
+  assume_equal_variance = FALSE
+) {
+  # I wanted this function to be flexible for different inputs
+  # But I also found use_method to be klunky and hard to follow.
+  # So this function is a self-rolled dispatcher--it inspects the
+  #   arguments passed and then dispatches to handler functions.
+  # I guess time will tell if this is a reasonable thing to have done.
+
+  analysis_type <- "Undefined"
+
+
+  # Check to see if summary data has been passed
+  if (!is.null(means)) {
+
+    # Summary data is passed, so check to make sure raw data not included
+    if(!is.null(data))  stop(
+      "You have passed summary statistics,
+      so don't pass the 'data' parameter used for raw data.")
+    if(!is.null(grouping_variable)) stop(
+      "You have passed summary statistics,
+      so don't pass the 'grouping_variable' parameter used for raw data.")
+    if(!is.null(outcome_variable)) stop(
+      "You have passed summary statistics,
+      so don't pass the 'grouping_variable' parameter used for raw data.")
+
+    # Looks good, we can pass on to summary data
+    analysis_type <- "summary"
+
+  } else {
+    # Raw data has been passed, first sure summary data is not passed
+    if(!is.null(means))  stop(
+      "You have passed raw data,
+      so don't pass the 'means' parameter used for summary data.")
+    if(!is.null(sds))  stop(
+      "You have passed raw data,
+      so don't pass the 'sds' parameter used for summary data.")
+    if(!is.null(ns))  stop(
+      "You have passed raw data,
+      so don't pass the 'ns' parameter used for summary data.")
+    if(!is.null(grouping_variable_levels))  stop(
+      "You have passed raw data,
+      so don't pass the 'grouping_variable_levels' parameter used for summary data.")
+
+    # Check grouping_variable -- if it is an unquoted column name
+    #  turn it into a string and store back to grouping_variable
+    is_column_name <- try(grouping_variable, silent = TRUE)
+    if(class(is_column_name) == "try-error") {
+      grouping_variable_enquo <- rlang::enquo(grouping_variable)
+      grouping_variable_enquo_name <- try(
+        eval(rlang::as_name(grouping_variable_enquo)), silent = TRUE
+      )
+      if (class(grouping_variable_enquo_name) != "try-error") {
+        # This only succeeds if the columns were passed unquoted
+        # So now replace grouping_variable with a quoted version
+        grouping_variable <- grouping_variable_enquo_name
+      }
+    }
+
+    # Now we have to figure out what type of raw data:
+    #   could be tidy column names, string column names, or vectors
+    # We check to see if we have a tidy column name by trying to evaluate it
+    is_column_name <- try(outcome_variable, silent = TRUE)
+
+    if(class(is_column_name) == "try-error") {
+      # Column names have been passed, check if need to be quoted up
+
+      outcome_variable_enquo <- rlang::enquo(outcome_variable)
+      outcome_variable_quoname <- try(
+        eval(rlang::as_name(outcome_variable_enquo)), silent = TRUE
+      )
+      if (class(outcome_variable_quoname) != "try-error") {
+        # This only succeeds if outcome_variable was passed unquoted
+        # Reset outcome_variable to be fully quoted
+        outcome_variable <- outcome_variable_quoname
+      }
+
+      # Ready to be analyzed as a list of string column names
+      analysis_type <- "data.frame"
+
+    } else if (class(outcome_variable) == "numeric") {
+      # At this stage, we know that outcome_variable was not a tidy column name,
+      #  so it should be either a vector of raw data (class = numeric)
+      #  or a vector of column names passed as strings
+      analysis_type <- "vector"
+    } else if (class(outcome_variable) == "character") {
+      # Ok, must have been string column names
+      if (length(outcome_variable) == 1) {
+        analysis_type <- "data.frame"
+      } else {
+        analysis_type <- "jamovi"
+      }
+    }
+  }
+
+  # At this point, we've figured out the type of data passed
+  #  so we can dispatch
+
+  # I put all the dispatches here, at the end, to make it easier to
+  #   update in case the underlying function parameters change
+
+  if(analysis_type == "data.frame") {
+    if (!is.null(grouping_variable)) {
+      grouping_variable <- make.names(grouping_variable)
+    }
+    return(
+      overview.data.frame(
+        data = data,
+        grouping_variable = grouping_variable,
+        outcome_variable = make.names(outcome_variable),
+        conf_level = conf_level,
+        assume_equal_variance = assume_equal_variance
+      )
+    )
+  } else if (analysis_type == "jamovi") {
+    return(
+      overview.jamovi(
+        data = data,
+        grouping_variable = grouping_variable,
+        outcome_variables = outcome_variable,
+        conf_level = conf_level,
+        assume_equal_variance = assume_equal_variance
+      )
+    )
+  } else if (analysis_type == "summary") {
+    return(
+      overview.summary(
+        means = means,
+        sds = sds,
+        ns = ns,
+        grouping_variable_levels = grouping_variable_levels,
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        conf_level = conf_level,
+        assume_equal_variance = assume_equal_variance
+      )
+    )
+  } else if (analysis_type == "vector") {
+    if (is.null(grouping_variable_name)) {
+      grouping_variable_name <-  deparse(substitute(grouping_variable))
+    }
+    if (outcome_variable_name == "My Outcome Variable") {
+      outcome_variable_name <- deparse(substitute(outcome_variable))
+    }
+    return(
+      overview.vector(
+        grouping_variable = grouping_variable,
+        outcome_variable = outcome_variable,
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        conf_level = conf_level,
+        assume_equal_variance = assume_equal_variance
+      )
+    )
+  }
+
+  stop("Something went wrong dispatching this function")
+
+}
+
+
+
 # Takes an overview table and fills in mean CI, df, se, and MoE
 # If assume_equal_variance, uses a pooled sd and total df for estimating means
 # Otherwise, just uses group sd and df for estimating each group mean
 # Uses CI_mdiff_contrast_bs as the base function for calculating CIs
-
-
 overview.base <- function(
   overview_table,
   conf_level = 0.95,
@@ -81,8 +252,9 @@ overview.summary <- function(
   means,
   sds,
   ns,
-  outcome_variable_name = "My Outcome Variable",
   grouping_variable_levels = NULL,
+  outcome_variable_name = "My Outcome Variable",
+  grouping_variable_name = NULL,
   conf_level = 0.95,
   assume_equal_variance = FALSE
 ) {
@@ -147,9 +319,17 @@ overview.summary <- function(
                       lower_inclusive = TRUE)
   }
 
-  # Check outcome_variable_names
+  # Check outcome_variable_name
   esci_assert_type(outcome_variable_name, "is.character")
   outcome_variable_names <- rep(outcome_variable_name, length(means))
+
+  # Check grouping_variable_name
+  if (!is.null(grouping_variable_name)) {
+    esci_assert_type(grouping_variable_name, "is.character")
+  } else {
+    grouping_variable_name = "My Grouping Variable"
+  }
+  grouping_variable_names <- rep(grouping_variable_name, length(means))
 
   # Check grouping_variable_levels
   if(!is.null(grouping_variable_levels)) {
@@ -162,12 +342,16 @@ overview.summary <- function(
       upper_inclusive = TRUE,
       na.rm = FALSE
     )
+    levels_passed <- TRUE
   } else {
     grouping_variable_levels <- rep("All", length(means))
+    levels_passed <- FALSE
   }
+
 
   overview_table <- data.frame(
     outcome_variable_name = outcome_variable_names,
+    grouping_variable_name = grouping_variable_names,
     grouping_variable_level = grouping_variable_levels,
     mean = means,
     mean_LL = NA,
@@ -177,6 +361,8 @@ overview.summary <- function(
     df = NA,
     mean_se = NA
   )
+
+  if (!levels_passed) overview_table$grouping_variable_name <- NULL
 
   return(
     overview.base(
@@ -193,6 +379,7 @@ overview.vector <- function(
   outcome_variable,
   grouping_variable = NULL,
   outcome_variable_name = NULL,
+  grouping_variable_name = NULL,
   conf_level = 0.95,
   assume_equal_variance = TRUE
 ) {
@@ -206,10 +393,18 @@ overview.vector <- function(
     esci_assert_type(outcome_variable_name, "is.character")
   }
 
-
   # If no grouping variable, just summarize whole vector
   if (is.null(grouping_variable)) {
     grouping_variable <- rep("All", length(outcome_variable))
+    grouping_variable_name <- "My Grouping Variable"
+    group_passed <- FALSE
+  } else {
+    if(is.null(grouping_variable_name)) {
+      grouping_variable_name <- deparse(substitute(grouping_variable))
+    } else {
+      esci_assert_type(grouping_variable_name, "is.character")
+    }
+    group_passed <- TRUE
   }
 
   # Deal with NA values in grouping variable------------------------------------
@@ -225,11 +420,13 @@ overview.vector <- function(
   # Setup   ---------------------
   groups <- levels(addNA(grouping_variable))
   outcome_variable_names <- rep(outcome_variable_name, length(groups))
+  grouping_variable_names <- rep(grouping_variable_name, length(groups))
 
 
   # Build the overview table ---------------------------------------------------
   overview_table <- data.frame(
     outcome_variable_name = outcome_variable_names,
+    grouping_variable_name = grouping_variable_names,
     grouping_variable_level = groups
   )
 
@@ -241,17 +438,6 @@ overview.vector <- function(
     conf_level = conf_level,
     na.rm = TRUE
   )[, 2]
-
-  # overview_table$mean <- aggregate(
-  #   outcome_variable,
-  #   by = list(addNA(grouping_variable)),
-  #   FUN = mean,
-  #   drop = FALSE,
-  #   na.rm = TRUE)[, 2]
-  #
-  # overview_table$mean_LL <- NA
-  #
-  # overview_table$mean_UL <- NA
 
   overview_table[ , c("median", "median_SE_temp", "median_LL", "median_UL")] <- aggregate(
     outcome_variable,
@@ -313,6 +499,7 @@ overview.vector <- function(
   overview_table$median_SE <- overview_table$median_SE_temp
   overview_table$median_SE_temp <- NULL
 
+  if (!group_passed) overview_table$grouping_variable_name <- NULL
 
   # Cleanup - Deal with invalid rows and missing data rows-----------------
 
@@ -389,7 +576,10 @@ overview.data.frame <- function(
   )
 
   if (!is.null(grouping_variable)) {
+    grouping_variable_name <- grouping_variable
     grouping_variable <- data[[grouping_variable]]
+  } else {
+    grouping_variable_name <- NULL
   }
 
   # Now pass along to the .vector version of this function
@@ -397,6 +587,7 @@ overview.data.frame <- function(
     outcome_variable = data[[outcome_variable]],
     grouping_variable = grouping_variable,
     outcome_variable_name = outcome_variable,
+    grouping_variable_name = grouping_variable_name,
     conf_level = conf_level,
     assume_equal_variance = assume_equal_variance
   )
