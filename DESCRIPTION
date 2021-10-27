@@ -15,6 +15,7 @@ Imports:
   rlang,
   stats,
   statpsych,
+  sadists,
   glue,
   Rdpack,
   mathjaxr

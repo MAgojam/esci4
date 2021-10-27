@@ -12,7 +12,7 @@ estimate_mdiff_ind_contrast(
   sds = NULL,
   ns = NULL,
   contrast = NULL,
-  grouping_variable_labels = NULL,
+  grouping_variable_levels = NULL,
   grouping_variable_name = "My grouping variable",
   outcome_variable_name = "My outcome variable",
   conf_level = 0.95,
@@ -38,6 +38,9 @@ means}
 
 \item{contrast}{A vector of group weights.}
 
+\item{grouping_variable_levels}{For summary data - An optional vector of
+group labels, same length as means}
+
 \item{grouping_variable_name}{Optional friendly name for the grouping
 variable.  Defaults to 'My grouping variable' or the grouping variable
 column name if a data.frame is passed.}
@@ -53,9 +56,6 @@ decimal form.  Defaults to 0.95.}
 
 \item{save_raw_data}{For raw data; defaults to TRUE; set to FALSE to save
 memory by not returning raw data in estimate object}
-
-\item{grouping_variable_levels}{For summary data - An optional vector of
-group labels, same length as means}
 }
 \value{
 Returnsobject of class esci_estimate
@@ -75,9 +75,9 @@ weight; see Kline, equation 7.1
 
 # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 estimate_mdiff_ind_contrast(
- PlantGrowth, 
+ PlantGrowth,
  weight,
- group, 
+ group,
  contrast = c('ctrl' = -1, 'trt1' = 1)
 )
 
