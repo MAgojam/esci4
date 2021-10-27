@@ -1,8 +1,8 @@
-# esci_error_handling 
+# esci_error_handling
 # These functions provide informative error-handling for esci.
 # One key goal for esci is to be user-friendly--to provide rigorous input
 # checks with informative feedback when these fail.
-# The code bundled together here is meant to implement this goal 
+# The code bundled together here is meant to implement this goal
 # while reducing redundancy in input validation
 
 
@@ -45,8 +45,8 @@ esci_assert_parameter_value <- function(var, parameter_list) {
   # Get name of passed variable
   var_enquo <- rlang::enquo(var)
   var_quoname <- rlang::as_name(var_enquo)
-                                
-  if(!var %in% parameter_list) esci_abort_bad_parameter_value(arg = var_enquo, must = parameter_list, not = var)                             
+
+  if(!var %in% parameter_list) esci_abort_bad_parameter_value(arg = var_enquo, must = parameter_list, not = var)
 }
 
 
@@ -160,10 +160,10 @@ esci_assert_column_type <- function(data, var, condition) {
 #   row_data$valid gives valid rows (*regardless of how na.rm is passed... should this change?)
 #   row_data$missing gives number of NA rows
 esci_assert_column_has_valid_rows <- function(
-  data, 
-  var, 
-  lower, 
-  lower_inclusive = FALSE, 
+  data,
+  var,
+  lower,
+  lower_inclusive = FALSE,
   na.rm = TRUE
 ) {
   # Define test symbols for upper and lower
@@ -212,15 +212,15 @@ esci_assert_column_has_valid_rows <- function(
 }
 
 esci_assert_vector_valid_length <- function(
-  vector, 
-  lower = NULL, 
-  upper = NULL, 
-  lower_inclusive = FALSE, 
-  upper_inclusive = FALSE, 
+  vector,
+  lower = NULL,
+  upper = NULL,
+  lower_inclusive = FALSE,
+  upper_inclusive = FALSE,
   na.rm = TRUE,
   na.invalid = FALSE
 ) {
-  
+
   # Define test symbols for upper and lower
   lower_symbol <- ifelse(lower_inclusive, ">=", ">")
   upper_symbol <- ifelse(upper_inclusive, "<=", "<")
@@ -238,7 +238,7 @@ esci_assert_vector_valid_length <- function(
   row_data$total <- length(vector)
   row_data$valid <- length(vector[!is.na(vector)])
   row_data$missing <- row_data$total - row_data$valid
-  
+
   if (na.invalid & row_data$missing > 0) {
     esci_abort_invalid_vector_missing(
       vector_name = vector_quoname,
@@ -261,7 +261,7 @@ esci_assert_vector_valid_length <- function(
       if(lower >= check_rows) not_enough_rows <- TRUE
     }
   }
-  
+
   if (!is.null(upper)) {
     if (upper_inclusive) {
       if(check_rows > upper) too_many_rows <- TRUE
@@ -269,8 +269,8 @@ esci_assert_vector_valid_length <- function(
       if(check_rows >= upper) too_many_rows <- TRUE
     }
   }
-  
-  
+
+
 
   # If not enough rows, raise an error
   if(not_enough_rows) {
@@ -293,83 +293,6 @@ esci_assert_vector_valid_length <- function(
   # Otherwise, return the row data
   return(row_data)
 }
-
-esci_assert_valid_levels <- function(groups, data) {
-  if (length(groups) != length(data)) {
-    # Raise error
-  }
-  
-  for (mylevels in levels(as.factor(groups))) {
-    if(length(na.omit(data[which(groups == mylevel)])) < 2) {
-      # Not enough valid data for a level
-    }
-  }
-  
-  
-  # Define test symbols for upper and lower
-  lower_symbol <- ifelse(lower_inclusive, ">=", ">")
-  upper_symbol <- ifelse(upper_inclusive, "<=", "<")
-  
-  # Get name of passed vector
-  vector_enquo <- rlang::enquo(vector)
-  vector_quoname <- rlang::as_name(vector_enquo)
-  
-  # Set flag for the test
-  not_enough_rows <- FALSE
-  too_many_rows <- FALSE
-  
-  # Make the row_data list
-  row_data <- list()
-  row_data$total <- length(vector)
-  row_data$valid <- length(vector[!is.na(vector)])
-  row_data$missing <- row_data$total - row_data$valid
-  
-  # Set which count will be used as our standard
-  check_rows <- ifelse(na.rm,
-                       row_data$valid,
-                       row_data$total)
-  
-  
-  # Check if there are enough rows
-  if (lower_inclusive) {
-    if(lower > check_rows) not_enough_rows <- TRUE
-  } else {
-    if(lower >= check_rows) not_enough_rows <- TRUE
-  }
-  
-  if (!is.null(upper)) {
-    if (upper_inclusive) {
-      if(check_rows > upper) too_many_rows <- TRUE
-    } else {
-      if(check_rows >= upper) too_many_rows <- TRUE
-    }
-  }
-  
-  
-  
-  # If not enough rows, raise an error
-  if(not_enough_rows) {
-    esci_abort_invalid_vector_data(vector = vector_quoname,
-                                   lower = lower,
-                                   row_data = row_data,
-                                   na.rm = na.rm,
-                                   lower_symbol = lower_symbol
-    )
-  }
-  if(too_many_rows) {
-    esci_abort_invalid_vector_data(vector = vector_quoname,
-                                   lower = upper,
-                                   row_data = row_data,
-                                   na.rm = na.rm,
-                                   lower_symbol = upper_symbol
-    )
-  }
-  
-  # Otherwise, return the row data
-  return(row_data)
-}
-
-
 
 # Informative abort function
 # This function was stolen (and slightly modified) from Hadley Wickham's Advanced R Programming
@@ -434,7 +357,7 @@ esci_abort_bad_parameter_value <- function(arg, must, not) {
   if (!is.null(not)) {
     msg <- glue::glue("{msg}; not {not}.")
   }
-  
+
   # Raise the error
   rlang::abort("error_invalid_parameter_value",
                message = msg,
@@ -491,12 +414,12 @@ esci_abort_invalid_vector_missing <- function(
 The vector '{vector_name} has {row_data$missing} NA elements but cannot have any.
 {vector_name} = c({paste(vector, collapse = ', ')})
 ")
-  
+
   rlang::abort("error_invalid_vector_missingdata",
                message = msg,
                vector = vector,
                row_data = row_data
-  ) 
+  )
 }
 
 

@@ -1,3 +1,58 @@
+#' Calculates descriptive statistics for a numerical variable
+#'
+#'
+#' @description
+#' This function caluclated basic descriptive statistics for a numerical
+#' variable.  It can calculate an overall summary, or broken down by
+#' the levels of a grouping variable.  Inputs can be summary data,
+#' vectors, or a data frame.
+#'
+#'
+#' @param data - for raw data, a data frame or tibble
+#' @param outcome_variable - for raw data, either a vector containing numerical
+#'   data or the name of a data-frame column containing a factor
+#' @param grouping_variable - optional; for raw data either a vector containing
+#'   a factor or the name of a data frame column containing a factor
+#' @param means For summary data - A vector of 1 or more numerical means
+#' @param sds For summary data - A vector of standard deviations, same length as
+#'   means
+#' @param ns For summary data - A vector of sample sizes, same length as means
+#' @param grouping_variable_levels For summary data - An optional vector of
+#'   group labels, same length as means.  If not passed, auto-generated.
+#' @param outcome_variable_name Optional friendly name for the outcome variable.
+#'   Defaults to 'My Outcome Variable'.  Ignored if a data-frame is passed,
+#'   this argument is ignored.
+#' @param grouping_variable_name Optional friendly name for the grouping
+#'   variable.  If a data frame is passed, this argument is ignored.
+#' @param conf_level The confidence level for the confidence interval.  Given in
+#'   decimal form.  Defaults to 0.95.
+#' @param assume_equal_variance Defaults to FALSE
+#'
+#'
+#' @return Returns a table of descriptive statistics
+#'
+#'
+#' @examples
+#' # From Summary data --------------------------------------
+#'
+#' overview(
+#'   means = c(37.5, 31.9, 41.2, 33.4, 29.9, 38.3),
+#'   sds = c(10, 13.5, 14.8, 10, 8.7, 10),
+#'   ns = c(19, 19, 19, 19, 19, 19),
+#'   grouping_variable_levels = c(
+#'      "NFree10", "AFree10", "ADiet10", "NFree17", "AFree17", "ADiety17"
+#'   ),
+#'   outcome_variable_name = "% time near target",
+#'   grouping_variable_name = "Diet",
+#'   assume_equal_variance = TRUE
+#' )
+#'
+#'
+#' @importFrom stats aggregate median na.omit quantile rnorm sd
+#' @importFrom utils head
+#' @importFrom rlang enquo as_name abort
+#' @importFrom glue glue
+#'
 #' @export
 overview <- function(
   data = NULL,
