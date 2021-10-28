@@ -345,7 +345,8 @@ The contrast passed was: {passed_contrast}.
 
 
   # Now dispatch the contrast ----------------------------------------------
-  estimate$mean_difference <- NULL
+  mean_difference <- NULL
+  median_difference <- NULL
 
   for (mycontrast in contrasts) {
     res <- as.data.frame(
@@ -358,15 +359,21 @@ The contrast passed was: {passed_contrast}.
       )
     )
 
-    estimate$mean_difference <- rbind(
-      estimate$mean_difference,
+    mean_difference <- rbind(
+      mean_difference,
       res[if (assume_equal_variance) 1 else 2, ]
     )
 
   }
 
+  estimate$mean_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
+  estimate$mean_difference[ , c("effect_size", "LL", "UL", "SE", "df")] <-
+    mean_difference[ , c("Estimate", "LL", "UL", "SE", "df")]
+
   estimate$mean_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name,
     effect = contrast_labels,
     estimate$mean_difference
   )
@@ -374,7 +381,7 @@ The contrast passed was: {passed_contrast}.
 
 
   # Get smd as well ----------------------------------------------------------
-  smd_result <- CI_smd_contrast_bs(
+  smd_result <- CI_smd_ind_contrast(
     means = means,
     sds = sds,
     ns = ns,
@@ -384,11 +391,11 @@ The contrast passed was: {passed_contrast}.
     correct_bias = (assume_equal_variance | length(means) == 2)
   )
 
-  estimate$standardized_effect_size_properties <- smd_result$properties
+  estimate$standardized_mean_difference_properties <- smd_result$properties
   smd_result$properties <- NULL
   smd_result <- list(list(effect = contrast_labels[[3]]), smd_result)
 
-  estimate$standardized_effect_sizes <- as.data.frame(smd_result)
+  estimate$standardized_mean_difference <- as.data.frame(smd_result)
 
   return(estimate)
 
@@ -666,6 +673,38 @@ Invalid groups are those with n < 2.
     conf_level = conf_level,
     assume_equal_variance = assume_equal_variance
   )
+
+  # Linear contrast of medians... if it makes sense?
+  # estimate$median_difference <- estimate$mean_difference
+  # contrasts <- list(
+  #   comparison = contrast,
+  #   reference = contrast,
+  #   difference = contrast
+  # )
+  # # Filter to create comparison and reference only subsets
+  # contrasts$comparison[which(contrasts$comparison < 0)] <- 0
+  # contrasts$reference[which(contrasts$reference > 0)] <- 0
+  # contrasts$reference <- abs(contrasts$reference)
+  #
+  # res <- NULL
+  # for (c in contrasts) {
+  #   res <- rbind(
+  #     res,
+  #     as.data.frame(
+  #       statpsych::ci.lc.median.bs(
+  #         alpha = 1 - conf_level,
+  #         m = overview$median,
+  #         se = overview$median_SE,
+  #         v = c
+  #       )
+  #     )
+  #   )
+  # }
+  #
+  # estimate$median_difference[ , c("effect", "LL", "UL", "SE")] <-
+  #   res[ , c("Estimate", "LL", "UL", "SE")]
+
+
 
   estimate$overview <- all_overview
   estimate$properties$data_type <- "vectors"

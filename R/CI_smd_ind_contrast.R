@@ -1,12 +1,12 @@
 #' Estimate standardized mean difference (Cohen's d) for an independent groups
 #' contrast
 #'
-#' @description 
+#' @description
 #' \loadmathjax
-#' `CI_smd_contrast_bs` returns the point estimate and confidence interval
+#' `CI_smd_ind_contrast` returns the point estimate and confidence interval
 #' for a standardized mean difference (smd aka Cohen's *d* aka Hedges *g*). A
 #' standardized mean difference is a difference in means standardized to a
-#' standard deviation: 
+#' standard deviation:
 #' \mjdeqn{d = \frac{ \psi }{s}}{d = psi/s}
 #'
 #' @param means A vector of 2 or more means
@@ -21,19 +21,19 @@
 #'   more groups when equal variance is not assumed, though in such cases,
 #'   correction should usually be trivial.
 #'
-#' @return Returns a list with these named elements: 
-#' * effect_size - the point estimate from the sample 
-#' * lower - lower bound of the CI 
-#' * upper - upper bound of the CI 
-#' * numerator - the numerator for Cohen's d_biased;  
-#'    the mean difference in the contrast 
-#' * denominator - the denominator for Cohen's d_biased; 
+#' @return Returns a list with these named elements:
+#' * effect_size - the point estimate from the sample
+#' * lower - lower bound of the CI
+#' * upper - upper bound of the CI
+#' * numerator - the numerator for Cohen's d_biased;
+#'    the mean difference in the contrast
+#' * denominator - the denominator for Cohen's d_biased;
 #'     if equal variance is assumed this is sd_pooled, otherwise sd_avg
 #' * df - the degrees of freedom used for correction and CI calculation
-#' * se - the standard error of the estimate; **warning** not totally 
-#'     sure about this yet 
-#' * moe - margin of error; 1/2 length of the CI 
-#' * d_biased - Cohen's d without correction applied 
+#' * se - the standard error of the estimate; **warning** not totally
+#'     sure about this yet
+#' * moe - margin of error; 1/2 length of the CI
+#' * d_biased - Cohen's d without correction applied
 #' * properties - a list of properties for the result
 #'
 #' Properties
@@ -49,18 +49,18 @@
 #' ## It's a bit complicated ##
 #' A standardized mean difference turns out to be complicated.
 #'
-#' First, it has many names: 
-#' * standardized mean difference (smd) 
+#' First, it has many names:
+#' * standardized mean difference (smd)
 #' * Cohen's *d*
 #' * When bias in a sample d has been corrected, also called Hedge's *g*
 #'
-#' Second, the choice of the standardizer requires thought: 
-#' * sd_pooled - used when assuming all groups have exact same variance 
-#' * sd_avg - does not require assumption of equal variance 
+#' Second, the choice of the standardizer requires thought:
+#' * sd_pooled - used when assuming all groups have exact same variance
+#' * sd_avg - does not require assumption of equal variance
 #' * other possibilities, too, but not dealt with in this function
 #'
-#' The choice of standardizer is important, so it's noted in the subscript: 
-#' * d_s -- assumes equal variance, standardized to sd_pooled 
+#' The choice of standardizer is important, so it's noted in the subscript:
+#' * d_s -- assumes equal variance, standardized to sd_pooled
 #' * d_avg - does not assume equal variance, standardized to sd_avg
 #'
 #' A third complication is the issue of bias: d estimated from a sample has a
@@ -68,10 +68,10 @@
 #' this slight bias becomes fairly neglible (kind of like the small upward bias
 #' in a sample standard deviation).
 #'
-#' This bias can be corrected when equal variance is assumed or when the 
+#' This bias can be corrected when equal variance is assumed or when the
 #' design of the study is simple (2 groups).  For complex designs (>2 groups)
 #' without the assumption of equal variance, bias cannot be corrected, but
-#' in these cases, sample sizes should typically be large enough for this 
+#' in these cases, sample sizes should typically be large enough for this
 #' not to matter much.
 #'
 #' Corrections for bias produce a long-run reduction in average bias.
@@ -80,25 +80,25 @@
 #'
 #' ## How are d and its CI calculated? ##
 #' ### When equal variance is assumed ###
-#' When equal variance is assumed, the standardized mean difference is d_s, 
+#' When equal variance is assumed, the standardized mean difference is d_s,
 #' defined in Kline, p. 196:
 #' \mjdeqn{ d_s = \frac{ \psi }{ sd_{pooled} }}{ d_s = psi / sd_s}
-#' 
+#'
 #' where psi is defined in Kline, equation 7.8
 #' \mjdeqn{ \psi = \sum_{i=1}^{a}c_iM_i }{psi = sum(contrasts*means)}
-#' 
+#'
 #' and where sd_pooled is defined in Kline, equation 3.11
 #' \mjdeqn{
-#' sd_{pooled} = { \frac{ \sum_{i=1}^{a} (n_i -1) s_i^2 } 
+#' sd_{pooled} = { \frac{ \sum_{i=1}^{a} (n_i -1) s_i^2 }
 #' { \sum_{i=1}^{a} (n_i-1) } }
 #' }{sqrt(sum(variances*dfs) / sum(dfs))}
-#' 
-#' 
-#' The CI for d_s is derived from lambda-prime transformation from 
-#' Lecoutre, 2007 with coded adapted from Cousineau & Goulet-Pelletier, 2020. 
+#'
+#'
+#' The CI for d_s is derived from lambda-prime transformation from
+#' Lecoutre, 2007 with coded adapted from Cousineau & Goulet-Pelletier, 2020.
 #' Kelley, 2007 explains the general approach for linear contrasts.
 #'
-#' This approach to generating the CI is 'exact', meaning coverage should be 
+#' This approach to generating the CI is 'exact', meaning coverage should be
 #' as desired *if* all assumptions are met (ha!).
 #'
 #' Correction of upward bias can be applied.
@@ -108,8 +108,8 @@
 #' When equal variance is not assumed, the standardized mean difference is
 #' d_avg, defined in Bonett, equation 6:
 #' \mjdeqn{ d_{avg} = \frac{ \psi }{ sd_{avg} }}{ d_avg = psi / sd_avg}
-#' 
-#' Where sd_avg is the square root of the average of 
+#'
+#' Where sd_avg is the square root of the average of
 #' the group variances, as given in Bonett, explanation of equation 6:
 #' \mjdeqn{
 #' sd_{avg} = \sqrt{ \frac{ \sum_{i=1}^{a} s_i^2 }{ a } }
@@ -121,34 +121,34 @@
 #' * This is also an 'exact' approach, and correction can be applied
 #'
 #' #### If more than 2 groups ####
-#' * CI is approximated using the approach from Bonett, 2008 
-#' * No correction is applied 
+#' * CI is approximated using the approach from Bonett, 2008
+#' * No correction is applied
 #' * If correct_bias is TRUE, a warning is raised
 #'
 #'
-#' @references 
+#' @references
 #' * Bonett, D. G. (2018).  R code posted to personal website.
 #' [https://people.ucsc.edu/~dgbonett/psyc204.html](https://people.ucsc.edu/~dgbonett/psyc204.html)
-#' * Bonett, D. G. (2008). Confidence Intervals for Standardized Linear 
-#' Contrasts of Means. *Psychological Methods*, 13(2), 99–109. 
+#' * Bonett, D. G. (2008). Confidence Intervals for Standardized Linear
+#' Contrasts of Means. *Psychological Methods*, 13(2), 99–109.
 #' [https://doi.org/10.1037/1082-989X.13.2.99](https://doi.org/10.1037/1082-989X.13.2.99)
-#' * Cousineau & Goulet-Pelletier (2020) 
-#' [https://psyarxiv.com/s2597/](https://psyarxiv.com/s2597/) 
-#' * Delacre et al., 2021, 
+#' * Cousineau & Goulet-Pelletier (2020)
+#' [https://psyarxiv.com/s2597/](https://psyarxiv.com/s2597/)
+#' * Delacre et al., 2021,
 #' [https://psyarxiv.com/tu6mp/](https://psyarxiv.com/tu6mp/)
-#' * Huynh, C.-L. (1989). A unified approach to the estimation of effect size 
-#' in meta-analysis. NBER Working Paper Series, 58(58), 99–104. 
-#' * Kelley, K. (2007). Confidence intervals for standardized effect sizes: 
-#' Theory, application, and implementation. 
-#' *Journal of Statistical Software, 20(8)*, 1–24. 
+#' * Huynh, C.-L. (1989). A unified approach to the estimation of effect size
+#' in meta-analysis. NBER Working Paper Series, 58(58), 99–104.
+#' * Kelley, K. (2007). Confidence intervals for standardized effect sizes:
+#' Theory, application, and implementation.
+#' *Journal of Statistical Software, 20(8)*, 1–24.
 #' [https://doi.org/10.18637/jss.v020.i08](https://doi.org/10.18637/jss.v020.i08)
-#' * Lecoutre, B. (2007). Another Look at the Confidence Intervals for the 
-#' Noncentral T Distribution. Journal of Modern Applied Statistical Methods, 
-#' 6(1), 107–116. 
+#' * Lecoutre, B. (2007). Another Look at the Confidence Intervals for the
+#' Noncentral T Distribution. Journal of Modern Applied Statistical Methods,
+#' 6(1), 107–116.
 #' [https://doi.org/10.22237/jmasm/1177992600](https://doi.org/10.22237/jmasm/1177992600)
 #'
 #'
-#' @seealso 
+#' @seealso
 #' * \code{\link{estimate_mdiff_ind_contrast}} for friendly version that
 #'  returns raw score effect sizes for this design
 #'
@@ -161,7 +161,7 @@
 #' # With equal variance assumed and no correction, should give:
 #' #   d_s = -0.8528028 [-2.121155, 0.4482578]
 #'
-#' CI_smd_contrast_bs(
+#' CI_smd_ind_contrast(
 #'   means = c(13, 11, 15),
 #'   sds = c(2.738613, 2.236068, 2.000000),
 #'   ns = c(5, 5, 5),
@@ -171,14 +171,14 @@
 #'   correct_bias = FALSE
 #' )
 #'
-#' # Example from Bonett, 2018, ci.lc.stdmean.bs, 
+#' # Example from Bonett, 2018, ci.lc.stdmean.bs,
 #' #  https://people.ucsc.edu/~dgbonett/psyc204.html
 #' # Without correction, should give:
 #' #                               Estimate        SE        LL         UL
 #' # Equal Variances Not Assumed: -1.301263 0.3692800 -2.025039 -0.5774878
 #' # Equal Variances Assumed:     -1.301263 0.3514511 -1.990095 -0.6124317
-#' 
-#' CI_smd_contrast_bs(
+#'
+#' CI_smd_ind_contrast(
 #'   means = c(33.5, 37.9, 38.0, 44.1),
 #'   sds = c(3.84, 3.84, 3.65, 4.98),
 #'   ns = c(10,10,10,10),
@@ -187,11 +187,11 @@
 #'   assume_equal_variance = FALSE,
 #'   correct_bias = FALSE
 #' )
-#' 
+#'
 #' @importFrom stats qnorm
-#' 
+#'
 #' @export
-CI_smd_contrast_bs <- function(
+CI_smd_ind_contrast <- function(
   means,
   sds,
   ns,
@@ -208,7 +208,7 @@ CI_smd_contrast_bs <- function(
   #  (no correction apparent for unequal variance with 3 or more groups)
   simple_comparison <- (n_groups == 2)
   do_correct <- correct_bias & (assume_equal_variance | simple_comparison)
-  
+
   if (correct_bias & !do_correct) {
     warning(
 "Returning biased d;
@@ -216,7 +216,7 @@ Can't correct bias when length(means) >2 and assume_equal_variance = FALSE
 In practice, this shouldn't matter much if total sample size > 30"
     )
   }
-  
+
   # degrees of freedom for each mean
   dfs <- ns-1
 
@@ -226,12 +226,12 @@ In practice, this shouldn't matter much if total sample size > 30"
   variances <- sds^2
   sd_pooled <- sqrt(sum(variances*dfs) / sum(dfs))
   sd_avg <- sqrt(mean(variances))
-  
+
   # df - Huynh-type if unequal variance and simple comparison
   #      or simple sum of n-1 for all other cases
   df <- if (simple_comparison & !assume_equal_variance)
     df <- prod(ns-1)*sum(variances)^2 / sum((ns-1)*rev(variances^2))
-  else 
+  else
     df <- sum(dfs)
 
   # Correction factor
@@ -240,38 +240,38 @@ In practice, this shouldn't matter much if total sample size > 30"
     exp ( lgamma(df/2) - (log(sqrt(df/2)) + lgamma((df-1)/2) ) )
   else
     1
-  
+
   # Calculate d -----------------------------------------------------------
   numerator <- sum(means*contrast)
-  
+
   denominator <- if(assume_equal_variance)
     sd_pooled
   else
     sd_avg
-  
+
   d_biased <- numerator / denominator
-  
+
   effect_size <- d_biased * J
 
-  # Calculate CI --------------------------------------------------------    
+  # Calculate CI --------------------------------------------------------
   if(assume_equal_variance | simple_comparison) {
     # In these cases, we can use the exact approach
     # Cousineau & Goulet-Pelletier, 2020; method of Lecoutre, 2007
-    
+
     lambda <- if(assume_equal_variance)
       # Kelley, 2007, equation 60
       effect_size / sqrt(sum(contrast^2/ns))
     else
-      # Huynh, 1989 via Delacre et al., 2021, 
+      # Huynh, 1989 via Delacre et al., 2021,
       (sqrt(prod(ns)) * numerator) / sqrt(sum((ns)*rev(variances)))
-    
-    back_from_lambda <- if(assume_equal_variance) 
+
+    back_from_lambda <- if(assume_equal_variance)
       # Kelley, 2007
       sqrt(sum(contrast^2/ns))
     else
       # Huynh, 1989 via Delacre et al., 2021,
       sqrt( (2* sum((ns)*rev(variances))) / (prod(ns)*sum(variances)) )
-    
+
     lambda_low <- sadists::qlambdap(1/2-conf_level/2, df = df, t = lambda )
     lambda_high <- sadists::qlambdap(1/2+conf_level/2, df = df, t = lambda )
 
@@ -290,12 +290,12 @@ In practice, this shouldn't matter much if total sample size > 30"
       if (is.na(se)) {
         print("uh oh")
       }
-    } 
+    }
 
-    lower <- lambda_low * back_from_lambda 
-    upper <- lambda_high * back_from_lambda 
+    lower <- lambda_low * back_from_lambda
+    upper <- lambda_high * back_from_lambda
     moe <- (upper-lower)/2
-    
+
   } else {
     # Bonett, 2008, equation 7
     # Code adapted directly from his posted code
@@ -303,22 +303,22 @@ In practice, this shouldn't matter much if total sample size > 30"
     a2 <- sum((variances^2/(2*(dfs))))
     a3 <- sum((contrast^2*variances/(dfs)))/sd_avg^2
     se <- sqrt(a1*a2 + a3)
-    
+
     # z multiplier
     multiplier <- qnorm(1 - ((1-conf_level)/2))
-    
+
     # MoE and confidence interval
     moe <- se * multiplier
     lower <- effect_size - moe
     upper <- effect_size + moe
   }
-  
+
   if(assume_equal_variance) {
     properties <- list(
       d_name = "d_s",
-      d_name_html = if (do_correct) 
-        "<i>d</i><sub>s</sub>" 
-      else 
+      d_name_html = if (do_correct)
+        "<i>d</i><sub>s</sub>"
+      else
         "<i>d</i><sub>s.biased</sub>",
       denominator_name = "s_p",
       denominator_name_html = "<i>s</i><sub>p</sub>",
@@ -336,61 +336,60 @@ In practice, this shouldn't matter much if total sample size > 30"
       bias_corrected = do_correct
     )
   }
-  
-  see_biased <- if(do_correct) 
+
+  see_biased <- if(do_correct)
     "See the rightmost column for the biased value."
   else
     ""
-  
+
   properties$message <- glue::glue(
     "
-This standardized mean difference is called {properties$d_name} because 
+This standardized mean difference is called {properties$d_name} because
 the standardizer used was {properties$denominator_name}.
-{properties$d_name} {if (properties$bias_corrected) 'has' else 'has *not*'} been 
-corrected for bias.  
+{properties$d_name} {if (properties$bias_corrected) 'has' else 'has *not*'} been
+corrected for bias.
 Correction for bias can be important when df < 50.  {see_biased}
     "
   )
-  
+
   properties$message_html <- glue::glue(
     "
-This standardized mean difference is called {properties$d_name_html} 
+This standardized mean difference is called {properties$d_name_html}
 because the standardizer used was {properties$denominator_name_html}.<br>
-{properties$d_name_html} {if (properties$bias_corrected) 'has' else 'has *not*'} 
-been corrected for bias.  
+{properties$d_name_html} {if (properties$bias_corrected) 'has' else 'has *not*'}
+been corrected for bias.
 Correction for bias can be important when <i>df</i> < 50.  {see_biased}<br>
     "
   )
-  
+
   # Put in table form
   res <- list(
     effect_size = effect_size,
-    lower = lower,
-    upper = upper,
+    LL = lower,
+    UL = upper,
     numerator = numerator,
     denominator = denominator,
+    SE = se,
     df = df,
-    se = se,
-    moe = moe,
     d_biased = d_biased,
     properties = properties
   )
-  
+
   return(res)
 }
 
 
 
-CI_smd_contrast_bs.examples <- function() {
-  
-  
+CI_smd_ind_contrast.examples <- function() {
+
+
   # Example: 3 groups, equal variance assumed, no correction ------------------
   # Example from Kline, Table 3.4, worked out in Chapter 7, p. 202
   # With equal variance and no correction, Kline writes:
   #  d_s = -0.8528029 [-2.1213, 0.4483] using Steiger's NDC calculator, p. 202
   # and MBESS reports:
   #  d_s = -0.8528028 [-2.121155, 0.4482578]
-  CI_smd_contrast_bs(
+  CI_smd_ind_contrast(
     means = c(13, 11, 15),
     sds = c(2.738613, 2.236068, 2.000000),
     ns = c(5, 5, 5),
@@ -408,19 +407,19 @@ CI_smd_contrast_bs.examples <- function() {
   #   n = c(5, 5, 5),
   #   N = 15
   # )
-  
-  
+
+
   # Example: 3 groups, equal variance not assumed, no correction -------------
   # Example from Kline, Table 3.4, worked out in Chapter 7, p. 202
   # When same data is input to Bonett's approach without equal var, obtain:
   #                                Estimate        SE        LL        UL
   # Equal Variances Not Assumed: -0.8528028 0.7451180 -2.313207 0.6076015
   # Equal Variances Assumed:     -0.8528028 0.6559749 -2.138490 0.4328843
-  # 
-  # Note Bonett uses different approach for equal variance assumed, and 
+  #
+  # Note Bonett uses different approach for equal variance assumed, and
   #   no correction, so won't match this routine
   #
-  CI_smd_contrast_bs(
+  CI_smd_ind_contrast(
     means = c(13, 11, 15),
     sds = c(2.738613, 2.236068, 2.000000),
     ns = c(5, 5, 5),
@@ -428,8 +427,8 @@ CI_smd_contrast_bs.examples <- function() {
     assume_equal_variance = FALSE,
     correct_bias = FALSE
   )
-  
-  # Compare to Bonett's function, available online at: 
+
+  # Compare to Bonett's function, available online at:
   #  https://people.ucsc.edu/~dgbonett/psyc204.html
   # ci.lc.stdmean.bs(
   #   alpha = 0.05,
@@ -438,17 +437,17 @@ CI_smd_contrast_bs.examples <- function() {
   #   n = c(5, 5, 5),
   #   c = c(1, 0, -1)
   # )
-  
- 
+
+
   # Example: 2 groups, equal variance assumed, correction -------------------
   # From Goulet-Pelletier & Cousineau, 2018, appendix.
   # x1 <- c(53, 68, 66, 69, 83, 91)
   # x2 <- c(49, 60, 67, 75, 78, 89)
-  # 
+  #
   # Appendix provides example with correction for MBESS, which provides:
   # d_s_corrected =  .1337921 [-1.002561  1.263567]
-  # 
-  CI_smd_contrast_bs(
+  #
+  CI_smd_ind_contrast(
     means = c(71.66667, 69.66667),
     sds = c(13.44123, 14.13742),
     ns = c(6, 6),
@@ -456,25 +455,25 @@ CI_smd_contrast_bs.examples <- function() {
     assume_equal_variance = TRUE,
     correct_bias = TRUE
   )
-  
+
   # Compare to MBESS
   # MBESS::ci.smd(
   #   ncp = MBESS::smd(
-  #     Group.1 = c(53, 68, 66, 69, 83, 91), 
-  #     Group.2 = c(49, 60, 67, 75, 78, 89), 
+  #     Group.1 = c(53, 68, 66, 69, 83, 91),
+  #     Group.2 = c(49, 60, 67, 75, 78, 89),
   #     Unbiased = TRUE
   #     ) * sqrt(6/2),
   #   n.1 = 6,
   #   n.2 = 6,
   #   conf.level = 0.95
   # )
-  
-  
+
+
   # Example: 2 groups, equal variance not assumed, corrected or not
   # From Goulet-Pelletier & Cousineau, 2018, appendix.
   # x1 <- c(53, 68, 66, 69, 83, 91)
   # x2 <- c(49, 60, 67, 75, 78, 89)
-  # 
+  #
   # Delacre's deffectsize, with not-equal variance and no correction gives:
   #   d_av_biased = 0.1449935 [-0.9919049  1.2747360]
   #   d_av_unbiased = 0.1337628 [-0.915075  1.175999]
@@ -483,7 +482,7 @@ CI_smd_contrast_bs.examples <- function() {
   # So if correction factor were not applied to CI ends, delacre would give:
   #  d_av_unbiased = 0.1337628 [-0.9919049  1.2747360] and this matches
 
-  CI_smd_contrast_bs(
+  CI_smd_ind_contrast(
     means = c(71.66667, 69.66667),
     sds = c(13.44123, 14.13742),
     ns = c(6, 6),
@@ -491,8 +490,8 @@ CI_smd_contrast_bs.examples <- function() {
     assume_equal_variance = FALSE,
     correct_bias = FALSE
   )
-  
-  CI_smd_contrast_bs(
+
+  CI_smd_ind_contrast(
     means = c(71.66667, 69.66667),
     sds = c(13.44123, 14.13742),
     ns = c(6, 6),
@@ -512,7 +511,7 @@ CI_smd_contrast_bs.examples <- function() {
   #   var.equal = FALSE,
   #   unbiased = FALSE
   # )
-  # 
+  #
   # deffectsize::cohen_CI(
   #   m1 = 71.66667,
   #   m2 = 69.66667,
@@ -524,11 +523,11 @@ CI_smd_contrast_bs.examples <- function() {
   #   var.equal = TRUE,
   #   unbiased = TRUE
   # )
-  # 
-  
+  #
+
   # Example - Should raise a warning if >2 groups, unequal var, and correction
   #  requested
-  CI_smd_contrast_bs(
+  CI_smd_ind_contrast(
     means = c(13, 11, 15),
     sds = c(2.738613, 2.236068, 2.000000),
     ns = c(5, 5, 5),
@@ -536,6 +535,6 @@ CI_smd_contrast_bs.examples <- function() {
     assume_equal_variance = FALSE,
     correct_bias = TRUE
   )
-  
+
 }
 

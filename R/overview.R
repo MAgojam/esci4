@@ -414,7 +414,7 @@ overview.summary <- function(
     sd = sds,
     n = ns,
     df = NA,
-    mean_se = NA
+    mean_SE = NA
   )
 
   if (!levels_passed) overview_table$grouping_variable_name <- NULL
