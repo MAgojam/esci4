@@ -102,7 +102,8 @@ test_overview <- function() {
 
   rattan <- data.frame(
     motivation = rattan_motivation,
-    condition = rattan_condition
+    condition = rattan_condition,
+    other_outcome = rnorm(n = 18+17+19, mean = 100, sd = 15)
   )
 
   contrast <- c("Comfort" = 1/2, "Chaling" = 1/2, "Control" = -1)
@@ -123,6 +124,28 @@ test_overview <- function() {
     contrast = contrast
   )
 
+  # Check - Data frame - tidycolumns
+  estimate_mdiff_ind_contrast(
+    rattan, motivation, condition,
+    contrast = contrast
+  )
 
+  # Check - data frame multiple dvs
+  estimate_mdiff_ind_contrast(
+    data = rattan,
+    outcome_variable = c("motivation", "other_outcome"),
+    grouping_variable = condition,
+    contrast = contrast
+  )
 
+  # Check - warning if group levels auto-generated
+  # Check - match esci with 95% CI
+  estimate <- estimate_mdiff_ind_contrast(
+    means = means,
+    sds = sds,
+    ns = ns,
+    contrast = contrast,
+    assume_equal_variance = TRUE
+  )
+  estimate
 }

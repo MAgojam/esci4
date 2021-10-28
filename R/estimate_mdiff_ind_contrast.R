@@ -200,10 +200,10 @@ estimate_mdiff_ind_contrast <- function(
       )
     )
   } else if (analysis_type == "vector") {
-    if (is.null(grouping_variable_name)) {
+    if (is.null(grouping_variable_name) | grouping_variable_name == "My grouping variable") {
       grouping_variable_name <-  deparse(substitute(grouping_variable))
     }
-    if (outcome_variable_name == "My Outcome Variable") {
+    if (outcome_variable_name == "My outcome variable") {
       outcome_variable_name <- deparse(substitute(outcome_variable))
     }
 
@@ -332,21 +332,24 @@ The contrast passed was: {passed_contrast}.
   estimate$properties <- list(
     outcome_variable_name = outcome_variable_name,
     grouping_variable_name = grouping_variable_name,
-    effect_size_name = "M_diff",
-    effect_size_name_html = "<i>M</i><sub>diff</sub>",
-    effect_size_category = "Difference",
     contrast = weights,
+    conf_level = conf_level
+  )
+  estimate$es_mean_properties <- list(
+    effect_size_name = "M_Diff",
+    effect_size_name_html = "<i>M</i><sub>diff</sub>",
+    effect_size_category = "difference",
+    effect_size_precision = "magnitude",
     conf_level = conf_level,
     assume_equal_variance = assume_equal_variance,
-    error_distribution = "dist_student_t",
-    warnings = NULL
+    error_distribution = "t_dist"
   )
   class(estimate) <- "esci_estimate"
 
 
   # Now dispatch the contrast ----------------------------------------------
-  mean_difference <- NULL
-  median_difference <- NULL
+  es_mean_difference <- NULL
+  es_median_difference <- NULL
 
   for (mycontrast in contrasts) {
     res <- as.data.frame(
@@ -359,25 +362,25 @@ The contrast passed was: {passed_contrast}.
       )
     )
 
-    mean_difference <- rbind(
-      mean_difference,
+    es_mean_difference <- rbind(
+      es_mean_difference,
       res[if (assume_equal_variance) 1 else 2, ]
     )
 
   }
 
-  estimate$mean_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
-  estimate$mean_difference[ , c("effect_size", "LL", "UL", "SE", "df")] <-
-    mean_difference[ , c("Estimate", "LL", "UL", "SE", "df")]
+  estimate$es_mean_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
+  estimate$es_mean_difference[ , c("effect_size", "LL", "UL", "SE", "df")] <-
+    es_mean_difference[ , c("Estimate", "LL", "UL", "SE", "df")]
 
-  estimate$mean_difference <- cbind(
+  estimate$es_mean_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),
     outcome_variable_name = outcome_variable_name,
     grouping_variable_name = grouping_variable_name,
     effect = contrast_labels,
-    estimate$mean_difference
+    estimate$es_mean_difference
   )
-  row.names(estimate$mean_difference) <- estimate$mean_difference$type
+  #row.names(estimate$es_mean_difference) <- estimate$es_mean_difference$type
 
 
   # Get smd as well ----------------------------------------------------------
@@ -391,11 +394,11 @@ The contrast passed was: {passed_contrast}.
     correct_bias = (assume_equal_variance | length(means) == 2)
   )
 
-  estimate$standardized_mean_difference_properties <- smd_result$properties
+  estimate$es_smd_properties <- smd_result$properties
   smd_result$properties <- NULL
   smd_result <- list(list(effect = contrast_labels[[3]]), smd_result)
 
-  estimate$standardized_mean_difference <- as.data.frame(smd_result)
+  estimate$es_smd <- as.data.frame(smd_result)
 
   return(estimate)
 
@@ -508,10 +511,10 @@ estimate_mdiff_ind_contrast.summary <- function(
     estimate$properties <- list(
       outcome_variable_name = outcome_variable_name,
       grouping_variable_name = grouping_variable_name,
-      effect_size_category = "Simple",
-      effect_size_name = "M",
+      contrast = NULL,
       conf_level = conf_level,
-      assume_equal_variance = assume_equal_variance
+      data_type = "summary",
+      data_source = NULL
     )
 
   } else {
@@ -537,7 +540,7 @@ estimate_mdiff_ind_contrast.summary <- function(
     assume_equal_variance = assume_equal_variance
   )
 
-  estimate$properties$data_type <- "Summary"
+  estimate$properties$data_type <- "summary"
   estimate$properties$data_source <- NULL
   estimate$warnings <- c(estimate$warnings, warnings)
 
@@ -600,6 +603,8 @@ The outcome_variable length is {length(outcome_variable)}.
   all_overview <- overview.vector(
     grouping_variable = grouping_variable,
     outcome_variable = outcome_variable,
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name,
     conf_level = conf_level,
     assume_equal_variance = assume_equal_variance
   )
@@ -675,39 +680,47 @@ Invalid groups are those with n < 2.
   )
 
   # Linear contrast of medians... if it makes sense?
-  # estimate$median_difference <- estimate$mean_difference
-  # contrasts <- list(
-  #   comparison = contrast,
-  #   reference = contrast,
-  #   difference = contrast
-  # )
-  # # Filter to create comparison and reference only subsets
-  # contrasts$comparison[which(contrasts$comparison < 0)] <- 0
-  # contrasts$reference[which(contrasts$reference > 0)] <- 0
-  # contrasts$reference <- abs(contrasts$reference)
-  #
-  # res <- NULL
-  # for (c in contrasts) {
-  #   res <- rbind(
-  #     res,
-  #     as.data.frame(
-  #       statpsych::ci.lc.median.bs(
-  #         alpha = 1 - conf_level,
-  #         m = overview$median,
-  #         se = overview$median_SE,
-  #         v = c
-  #       )
-  #     )
-  #   )
-  # }
-  #
-  # estimate$median_difference[ , c("effect", "LL", "UL", "SE")] <-
-  #   res[ , c("Estimate", "LL", "UL", "SE")]
+  estimate$es_median_difference <- estimate$es_mean_difference
+  contrasts <- list(
+    comparison = estimate$properties$contrast,
+    reference = estimate$properties$contrast,
+    difference = estimate$properties$contrast
+  )
+  # Filter to create comparison and reference only subsets
+  contrasts$comparison[which(contrasts$comparison < 0)] <- 0
+  contrasts$reference[which(contrasts$reference > 0)] <- 0
+  contrasts$reference <- abs(contrasts$reference)
 
+  res <- NULL
+  for (c in contrasts) {
+    res <- rbind(
+      res,
+      as.data.frame(
+        statpsych::ci.lc.median.bs(
+          alpha = 1 - conf_level,
+          m = overview$median,
+          se = overview$median_SE,
+          v = c
+        )
+      )
+    )
+  }
+
+  estimate$es_median_difference[ , c("effect_size", "LL", "UL", "SE")] <-
+    res[ , c("Estimate", "LL", "UL", "SE")]
+
+  estimate$es_median_properties <- list(
+    effect_size_name = "Mdn_Diff",
+    effect_size_name_html = "<i>Mdn</i><sub>diff</sub>",
+    effect_size_category = "difference",
+    effect_size_precision = "magnitude",
+    conf_level = conf_level,
+    error_distribution = "norm"
+  )
 
 
   estimate$overview <- all_overview
-  estimate$properties$data_type <- "vectors"
+  estimate$properties$data_type <- "vector"
   estimate$properties$data_source <- NULL
 
 
@@ -803,7 +816,7 @@ estimate_mdiff_ind_contrast.data.frame <- function(
     save_raw_data = save_raw_data
   )
 
-  estimate$properties$data_type <- "data_frame"
+  estimate$properties$data_type <- "data.frame"
   estimate$properties$data_source <- deparse(substitute(data))
 
   return(estimate)

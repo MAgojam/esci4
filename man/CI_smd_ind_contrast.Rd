@@ -54,8 +54,8 @@ sure about this yet
 
 Properties
 \itemize{
-\item d_name - if equal variance assumed d_s, otherwise d_avg
-\item d_name_html - html representation of d_name
+\item effect_size_name - if equal variance assumed d_s, otherwise d_avg
+\item effect_size_name_html - html representation of d_name
 \item denominator_name - if equal variance assumed sd_pooled otherwise sd_avg
 \item denominator_name_html - html representation of denominator name
 \item bias_corrected - TRUE/FALSE if bias correction was applied

@@ -37,8 +37,8 @@
 #' * properties - a list of properties for the result
 #'
 #' Properties
-#' * d_name - if equal variance assumed d_s, otherwise d_avg
-#' * d_name_html - html representation of d_name
+#' * effect_size_name - if equal variance assumed d_s, otherwise d_avg
+#' * effect_size_name_html - html representation of d_name
 #' * denominator_name - if equal variance assumed sd_pooled otherwise sd_avg
 #' * denominator_name_html - html representation of denominator name
 #' * bias_corrected - TRUE/FALSE if bias correction was applied
@@ -315,8 +315,8 @@ In practice, this shouldn't matter much if total sample size > 30"
 
   if(assume_equal_variance) {
     properties <- list(
-      d_name = "d_s",
-      d_name_html = if (do_correct)
+      effect_size_name = "d_s",
+      effect_size_name_html = if (do_correct)
         "<i>d</i><sub>s</sub>"
       else
         "<i>d</i><sub>s.biased</sub>",
@@ -326,8 +326,8 @@ In practice, this shouldn't matter much if total sample size > 30"
     )
   } else {
     properties <- list(
-      d_name = "d_avg",
-      d_name_html = if (do_correct)
+      effect_size_name = "d_avg",
+      effect_size_name_html = if (do_correct)
         "<i>d</i><sub>avg</sub>"
       else
         "<i>d</i><sub>avg.biased</sub>",
@@ -337,6 +337,13 @@ In practice, this shouldn't matter much if total sample size > 30"
     )
   }
 
+  properties$effect_size_category = "difference"
+  properties$effect_size_precision = "magnitude"
+  properties$conf_level = conf_level
+  properties$assume_equal_variance = assume_equal_variance
+  properties$error_distribution = "t_dist"
+
+
   see_biased <- if(do_correct)
     "See the rightmost column for the biased value."
   else
@@ -344,19 +351,15 @@ In practice, this shouldn't matter much if total sample size > 30"
 
   properties$message <- glue::glue(
     "
-This standardized mean difference is called {properties$d_name} because
-the standardizer used was {properties$denominator_name}.
-{properties$d_name} {if (properties$bias_corrected) 'has' else 'has *not*'} been
-corrected for bias.
-Correction for bias can be important when df < 50.  {see_biased}
+This standardized mean difference is called {properties$effect_size_name} because the standardizer used was {properties$denominator_name}. {properties$effect_size_name} {if (properties$bias_corrected) 'has' else 'has *not*'} been corrected for bias. Correction for bias can be important when df < 50.  {see_biased}
     "
   )
 
   properties$message_html <- glue::glue(
     "
-This standardized mean difference is called {properties$d_name_html}
+This standardized mean difference is called {properties$effect_size_name_html}
 because the standardizer used was {properties$denominator_name_html}.<br>
-{properties$d_name_html} {if (properties$bias_corrected) 'has' else 'has *not*'}
+{properties$effect_size_name_html} {if (properties$bias_corrected) 'has' else 'has *not*'}
 been corrected for bias.
 Correction for bias can be important when <i>df</i> < 50.  {see_biased}<br>
     "
