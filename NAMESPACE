@@ -2,7 +2,9 @@
 
 S3method(print,esci_estimate)
 export(CI_smd_ind_contrast)
+export(estimate_magnitude)
 export(estimate_mdiff_ind_contrast)
+export(estimate_mdiff_two)
 export(overview)
 importFrom(glue,glue)
 importFrom(methods,is)

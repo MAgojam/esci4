@@ -139,12 +139,11 @@ test_overview <- function() {
   )
 
   # Check - warning if group levels auto-generated
-  # Check - match esci with 95% CI
   estimate <- estimate_mdiff_ind_contrast(
     means = means,
     sds = sds,
     ns = ns,
-    contrast = contrast,
+    contrast = c(1/2, 1/2, -1/3, -1/3, -1/3, 0),
     assume_equal_variance = TRUE
   )
   estimate

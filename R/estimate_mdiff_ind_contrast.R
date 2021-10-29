@@ -1,12 +1,12 @@
-#' Estimate the mean difference for an independent groups contrast.
+#' Estimate the magnitude of difference for an independent groups contrast.
 #'
 #' @description
 #' \loadmathjax
 #' `estimate_mdiff_ind_contrast` returns the point estimate and
-#' confidence interval for the mean difference in a linear contrast:
+#' confidence interval for the difference in a linear contrast:
 #' \mjdeqn{ \psi = \sum_{i=1}^{a}c_iM_i }{psi = sum(contrasts*means)}
-#' Where there are *a* groups, and *M* is each group mean and *c* is each group
-#' weight; see Kline, equation 7.1
+#' Where there are *a* groups, and *M* is each group mean or median and *c* is each group
+#' weight.
 #'
 #'
 #' @param data For raw data - a dataframe or tibble
@@ -82,7 +82,7 @@ estimate_mdiff_ind_contrast <- function(
       so don't pass the 'grouping_variable' parameter used for raw data.")
     if(!is.null(outcome_variable)) stop(
       "You have passed summary statistics,
-      so don't pass the 'grouping_variable' parameter used for raw data.")
+      so don't pass the 'outcome_variable' parameter used for raw data.")
 
     # Looks good, we can pass on to summary data
     analysis_type <- "summary"
@@ -228,9 +228,7 @@ estimate_mdiff_ind_contrast <- function(
 
 # Handles construction of the effect_sizes and standardized_effect_sizes tables
 estimate_mdiff_ind_contrast.base <- function(
-  means,
-  sds,
-  ns,
+  overview_table,
   contrast,
   grouping_variable_levels,
   grouping_variable_name,
@@ -258,6 +256,10 @@ estimate_mdiff_ind_contrast.base <- function(
   #  of same length without NAs and with all ns > 1
   # grouping_variable_levels should be already be checked to be a vector
   #  of characters without NAs of same length as means
+
+  means <- overview_table$mean
+  sds <- overview_table$sd
+  ns <- overview_table$n
 
 
   # Check contrast
@@ -335,7 +337,7 @@ The contrast passed was: {passed_contrast}.
     contrast = weights,
     conf_level = conf_level
   )
-  estimate$es_mean_properties <- list(
+  estimate$es_mean_difference_properties <- list(
     effect_size_name = "M_Diff",
     effect_size_name_html = "<i>M</i><sub>diff</sub>",
     effect_size_category = "difference",
@@ -367,7 +369,25 @@ The contrast passed was: {passed_contrast}.
       res[if (assume_equal_variance) 1 else 2, ]
     )
 
-  }
+    if (!is.null(overview_table$median)) {
+      mdn_res <- statpsych::ci.lc.median.bs(
+            alpha = 1 - conf_level,
+            m = overview_table$median,
+            se = overview_table$median_SE,
+            v = mycontrast
+      )
+
+      mdn_df <- as.data.frame(mdn_res)
+
+      es_median_difference <- rbind(
+        es_median_difference,
+        mdn_df
+      )
+
+    } # end of processing median
+
+  } # end of loop through 3 effect sizes
+
 
   estimate$es_mean_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
   estimate$es_mean_difference[ , c("effect_size", "LL", "UL", "SE", "df")] <-
@@ -380,10 +400,34 @@ The contrast passed was: {passed_contrast}.
     effect = contrast_labels,
     estimate$es_mean_difference
   )
-  #row.names(estimate$es_mean_difference) <- estimate$es_mean_difference$type
 
 
-  # Get smd as well ----------------------------------------------------------
+  # Median difference
+  if (!is.null(es_median_difference)) {
+    estimate$es_median_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
+    estimate$es_median_difference[ , c("effect_size", "LL", "UL", "SE")] <-
+      es_median_difference[ , c("Estimate", "LL", "UL", "SE")]
+
+    estimate$es_median_difference <- cbind(
+      type = c("Comparison", "Reference", "Difference"),
+      outcome_variable_name = outcome_variable_name,
+      grouping_variable_name = grouping_variable_name,
+      effect = contrast_labels,
+      estimate$es_median_difference
+    )
+
+    estimate$es_median_difference_properties <- list(
+      effect_size_name = "Mdn_Diff",
+      effect_size_name_html = "<i>Mdn</i><sub>diff</sub>",
+      effect_size_category = "difference",
+      effect_size_precision = "magnitude",
+      conf_level = conf_level,
+      error_distribution = "norm"
+    )
+  }
+
+
+  # SMD ----------------------------------------------------------
   smd_result <- CI_smd_ind_contrast(
     means = means,
     sds = sds,
@@ -504,6 +548,18 @@ estimate_mdiff_ind_contrast.summary <- function(
 
 
   # Overview table-------------------------------------------------------------
+  overview <- overview.summary(
+    means = means,
+    sds = sds,
+    ns = ns,
+    grouping_variable_levels = grouping_variable_levels,
+    grouping_variable_name = grouping_variable_name,
+    outcome_variable_name = outcome_variable_name,
+    conf_level = conf_level,
+    assume_equal_variance = assume_equal_variance
+  )
+
+
   # Create a table of group means and CIs as well
   if (is.null(contrast)) {
     estimate <- list()
@@ -519,9 +575,7 @@ estimate_mdiff_ind_contrast.summary <- function(
 
   } else {
     estimate <- estimate_mdiff_ind_contrast.base(
-      means = means,
-      sds = sds,
-      ns = ns,
+      overview_table = overview,
       grouping_variable_levels = grouping_variable_levels,
       grouping_variable_name = grouping_variable_name,
       outcome_variable_name = outcome_variable_name,
@@ -531,14 +585,7 @@ estimate_mdiff_ind_contrast.summary <- function(
     )
   }
 
-  estimate$overview <- overview.summary(
-    means = means,
-    sds = sds,
-    ns = ns,
-    grouping_variable_levels = grouping_variable_levels,
-    conf_level = conf_level,
-    assume_equal_variance = assume_equal_variance
-  )
+  estimate$overview <- overview
 
   estimate$properties$data_type <- "summary"
   estimate$properties$data_source <- NULL
@@ -668,9 +715,7 @@ Invalid groups are those with n < 2.
 
   # Dispatch only valid groups to base function
   estimate <-estimate_mdiff_ind_contrast.base(
-    means = overview$mean,
-    sds = overview$sd,
-    ns = overview$n,
+    overview_table = overview,
     grouping_variable_levels = overview$grouping_variable_level,
     grouping_variable_name = grouping_variable_name,
     outcome_variable_name = outcome_variable_name,
@@ -679,45 +724,65 @@ Invalid groups are those with n < 2.
     assume_equal_variance = assume_equal_variance
   )
 
-  # Linear contrast of medians... if it makes sense?
-  estimate$es_median_difference <- estimate$es_mean_difference
-  contrasts <- list(
-    comparison = estimate$properties$contrast,
-    reference = estimate$properties$contrast,
-    difference = estimate$properties$contrast
-  )
-  # Filter to create comparison and reference only subsets
-  contrasts$comparison[which(contrasts$comparison < 0)] <- 0
-  contrasts$reference[which(contrasts$reference > 0)] <- 0
-  contrasts$reference <- abs(contrasts$reference)
 
-  res <- NULL
-  for (c in contrasts) {
-    res <- rbind(
-      res,
-      as.data.frame(
-        statpsych::ci.lc.median.bs(
-          alpha = 1 - conf_level,
-          m = overview$median,
-          se = overview$median_SE,
-          v = c
+  if(length(contrast) == 2) {
+    comp_level <- names(contrast[contrast > 0])
+    ref_level <- names(contrast[contrast < 0])
+
+    if(length(comp_level) > 0 & length(ref_level) > 0) {
+      vec_comparison <- outcome_variable[which(grouping_variable == comp_level)]
+      vec_reference <- outcome_variable[which(grouping_variable == ref_level)]
+      vec_comparison <- vec_comparison[!is.na(vec_comparison)]
+      vec_reference <- vec_reference[!is.na(vec_reference)]
+
+      if(length(vec_comparison) > 0 & length(vec_reference) > 0) {
+        estimate$es_mean_ratio <- as.data.frame(
+            statpsych::ci.ratio.mean2(
+              alpha = 1 - conf_level,
+              y1 = vec_comparison,
+              y2 = vec_reference
+            )
         )
-      )
-    )
+
+        estimate$es_median_ratio <- as.data.frame(
+          statpsych::ci.ratio.median2(
+            alpha = 1 - conf_level,
+            y1 = vec_comparison,
+            y2 = vec_reference
+          )
+        )
+
+        estimate$es_mean_ratio <- estimate$es_mean_ratio[ , c(3, 4, 5, 1, 2)]
+        colnames(estimate$es_mean_ratio) <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")
+
+        estimate$es_median_ratio <- estimate$es_median_ratio[ , c(3, 4, 5, 1, 2)]
+        colnames(estimate$es_median_ratio) <- c("effect_size", "LL", "UL", "comparison_median", "reference_median")
+
+        clabel <- paste(
+          comp_level,
+          "/",
+          ref_level
+        )
+
+        estimate$es_mean_ratio <- cbind(
+          type = c("Ratio"),
+          outcome_variable_name = outcome_variable_name,
+          grouping_variable_name = grouping_variable_name,
+          effect = clabel,
+          estimate$es_mean_ratio
+        )
+
+        estimate$es_median_ratio <- cbind(
+          type = c("Ratio"),
+          outcome_variable_name = outcome_variable_name,
+          grouping_variable_name = grouping_variable_name,
+          effect = clabel,
+          estimate$es_median_ratio
+        )
+
+      }
+    }
   }
-
-  estimate$es_median_difference[ , c("effect_size", "LL", "UL", "SE")] <-
-    res[ , c("Estimate", "LL", "UL", "SE")]
-
-  estimate$es_median_properties <- list(
-    effect_size_name = "Mdn_Diff",
-    effect_size_name_html = "<i>Mdn</i><sub>diff</sub>",
-    effect_size_category = "difference",
-    effect_size_precision = "magnitude",
-    conf_level = conf_level,
-    error_distribution = "norm"
-  )
-
 
   estimate$overview <- all_overview
   estimate$properties$data_type <- "vector"
