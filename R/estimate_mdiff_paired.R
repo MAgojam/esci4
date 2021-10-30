@@ -425,23 +425,12 @@ estimate_mdiff_paired.data.frame <- function(
   save_raw_data = save_raw_data
 ) {
 
-  estimate <- estimate_mdiff_paired.summary(
-    comparison_mean = mean(data[[comparison_measure]]),
-    comparison_sd = sd(data[[comparison_measure]]),
-    reference_mean = mean(data[[reference_measure]]),
-    reference_sd = sd(data[[reference_measure]]),
-    n = nrow(data),
-    correlation = cor(data[[comparison_measure]], data[[reference_measure]]),
+  estimate <- estimate_mdiff_paired.vector(
+    comparison_measure = data[[comparison_measure]],
+    reference_measure = data[[reference_measure]],
     grouping_variable_levels = c(comparison_measure, reference_measure),
     outcome_variable_name = outcome_variable_name,
     grouping_variable_name = grouping_variable_name
-  )
-
-  estimate$overview <- overview.jamovi(
-    data = data,
-    outcome_variables = c(comparison_measure, reference_measure),
-    conf_level = conf_level,
-    assume_equal_variance = FALSE
   )
 
   return(overview)
