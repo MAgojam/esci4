@@ -57,8 +57,6 @@ estimate_mdiff_paired <- function(
   n = NULL,
   correlation = NULL,
   grouping_variable_levels = c("Comparison measure", "Reference measure"),
-  outcome_variable_name = "My outcome variable",
-  grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   save_raw_data = TRUE
 ) {
@@ -164,8 +162,6 @@ estimate_mdiff_paired <- function(
         data = data,
         comparison_measure = make.names(comparison_measure),
         reference_measure = make.names(reference_measure),
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
         conf_level = conf_level,
         save_raw_data = save_raw_data
       )
@@ -176,8 +172,6 @@ estimate_mdiff_paired <- function(
         data = data,
         outcome_variables = outcome_variable,
         grouping_variable = grouping_variable,
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
         conf_level = conf_level,
         save_raw_data = save_raw_data
       )
@@ -194,17 +188,15 @@ estimate_mdiff_paired <- function(
         n = n,
         correlation = correlation,
         grouping_variable_levels = grouping_variable_levels,
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
         conf_level = conf_level
       )
     )
   } else if (analysis_type == "vector") {
-    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 1 | grouping_variable_levels[1] == "Comparison measure variable") {
+    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 1 | grouping_variable_levels[1] == "Comparison measure") {
       grouping_variable_levels[1] <- deparse(substitute(comparison_measure))
     }
 
-    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 2 | grouping_variable_levels[2] == "Referemce measure variable") {
+    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 2 | grouping_variable_levels[2] == "Reference measure") {
       grouping_variable_levels[2] <- deparse(substitute(reference_measure))
     }
 
@@ -213,8 +205,6 @@ estimate_mdiff_paired <- function(
         comparison_measure = comparison_measure,
         reference_measure = reference_measure,
         grouping_variable_levels = grouping_variable_levels,
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
         conf_level = conf_level,
         save_raw_data = save_raw_data
       )
@@ -235,8 +225,6 @@ estimate_mdiff_paired.summary <- function(
   n,
   correlation,
   grouping_variable_levels = c("Comparison measure", "Reference measure"),
-  outcome_variable_name = "My outcome variable",
-  grouping_variable_name = "My grouping variable",
   conf_level = conf_level
 ) {
 
@@ -277,21 +265,28 @@ estimate_mdiff_paired.summary <- function(
   )
   # Check labels
 
+
   # Initialize -----------------------------
   warnings <- c(NULL)
   contrast <- c(1, -1)
   names(contrast) <- grouping_variable_levels
 
   # Analysis --------------------------
-  overview <- overview.summary(
-    means = c(comparison_mean, reference_mean),
-    sds = c(comparison_sd, reference_sd),
-    ns = c(n, n),
-    grouping_variable_levels = grouping_variable_levels,
-    grouping_variable_name = grouping_variable_name,
-    outcome_variable_name = outcome_variable_name,
-    conf_level = conf_level,
-    assume_equal_variance = FALSE
+  overview <- rbind(
+    estimate_magnitude.summary(
+      mean = comparison_mean,
+      sd = comparison_sd,
+      n = n,
+      outcome_variable_name = grouping_variable_levels[1],
+      conf_level = conf_level
+    )$overview,
+    estimate_magnitude.summary(
+      mean = reference_mean,
+      sd = reference_sd,
+      n = n,
+      outcome_variable_name = grouping_variable_levels[2],
+      conf_level = conf_level
+    )$overview
   )
 
   es_mean_difference <- wrapper_ci.mean.ps(
@@ -302,19 +297,32 @@ estimate_mdiff_paired.summary <- function(
     n = n,
     correlation = correlation,
     grouping_variable_levels = grouping_variable_levels,
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name,
+    conf_level = conf_level
+  )
+
+  smd <- wrapper_ci.stdmean.ps(
+    comparison_mean = comparison_mean,
+    comparison_sd = comparison_sd,
+    reference_mean = reference_mean,
+    reference_sd = reference_sd,
+    n = n,
+    correlation = correlation,
+    grouping_variable_levels = grouping_variable_levels,
     conf_level = conf_level
   )
 
   # output prep -----------------------------------------
   estimate <- list(
     overview = overview,
-    es_mean_difference = es_mean_difference
+    es_mean_difference = es_mean_difference,
+    es_smd = smd$es_smd,
+    es_smd_properties = smd$es_smd_properties
   )
+
   estimate$properties <- list(
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name,
+    outcome_variable_name = NULL,
+    grouping_variable_name = NULL,
+    grouping_variable_levels = grouping_variable_levels,
     contrast = contrast,
     conf_level = conf_level,
     data_type = "summary",
@@ -343,8 +351,6 @@ estimate_mdiff_paired.vector <- function(
   comparison_measure,
   reference_measure,
   grouping_variable_levels,
-  outcome_variable_name,
-  grouping_variable_name,
   conf_level = conf_level,
   save_raw_data = save_raw_data
 ) {
@@ -379,6 +385,7 @@ The outcome_variable length is {reference_measure_report$valid} valid values.
     stop(msg)
   }
 
+  # Initialize -----------------------
   # Remove NA values from both vectors, pairwise
   reference_measure <- reference_measure[!is.na(comparison_measure)]
   comparison_measure <- comparison_measure[!is.na(comparison_measure)]
@@ -386,30 +393,30 @@ The outcome_variable length is {reference_measure_report$valid} valid values.
   comparison_measure <- comparison_measure[!is.na(reference_measure)]
   reference_measure <- reference_measure[!is.na(reference_measure)]
 
-  mydf <- data.frame(
+  # Analysis --------------------------
+    mydf <- data.frame(
     "comparison_measure" = comparison_measure,
     "reference_measure" = reference_measure
   )
   colnames(mydf) <- grouping_variable_levels
 
-  estimate <- estimate_mdiff_paired(
-    comparison_mean = mean(comparison_measure),
-    comparison_sd = sd(comparison_measure),
-    reference_mean = mean(reference_measure),
-    reference_sd = sd(reference_measure),
-    n = length(comparison_measure),
-    correlation = cor(comparison_measure, reference_measure),
-    grouping_variable_levels = grouping_variable_levels,
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name
+  estimate <- estimate_mdiff_paired.data.frame(
+    data = mydf,
+    comparison_measure = grouping_variable_levels[1],
+    reference_measure = grouping_variable_levels[2],
+    conf_level = conf_level,
+    save_raw_data <- save_raw_data
   )
 
-  estimate$overview <- overview.jamovi(
-    data = mydf,
-    outcome_variables = grouping_variable_levels,
-    conf_level = conf_level,
-    assume_equal_variance = FALSE
+  # Output prep -------------------------
+  # Update estimate properties
+  estimate$properties$data_type <- "vector"
+  estimate$properties$data_source <- NULL
+  estimate$properties$warnings <- c(
+    estimate$properties$warnings,
+    warnings
   )
+
 
   return(estimate)
 }
@@ -419,20 +426,86 @@ estimate_mdiff_paired.data.frame <- function(
   data,
   comparison_measure,
   reference_measure,
-  outcome_variable_name,
-  grouping_variable_name,
   conf_level = conf_level,
   save_raw_data = save_raw_data
 ) {
 
-  estimate <- estimate_mdiff_paired.vector(
-    comparison_measure = data[[comparison_measure]],
-    reference_measure = data[[reference_measure]],
-    grouping_variable_levels = c(comparison_measure, reference_measure),
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name
+  # Input checks------------------
+
+
+  # Initialization -----------------
+  warnings <- c(NULL)
+  contrast <- c(1, -1)
+  grouping_variable_levels <- c(comparison_measure, reference_measure)
+  names(contrast) <- grouping_variable_levels
+
+
+  # Analysis ----------------------------
+  # Overview
+  overview <- estimate_magnitude.jamovi(
+    data = data,
+    outcome_variables = grouping_variable_levels,
+    conf_level = conf_level
+  )$overview
+
+  # dispatch to .summary to obtain es_mean_difference and es_smd
+  estimate <- estimate_mdiff_paired.summary(
+    comparison_mean = overview$mean[1],
+    comparison_sd = overview$sd[1],
+    reference_mean = overview$mean[2],
+    reference_sd = overview$sd[2],
+    n = overview$n[1],
+    correlation = cor(data[[comparison_measure]], data[[reference_measure]]),
+    grouping_variable_levels = grouping_variable_levels,
+    conf_level = conf_level
   )
 
-  return(overview)
+
+  es_mdn <- wrapper_ci.median.ps(
+    comparison_measure = data[[comparison_measure]],
+    reference_measure = data[[reference_measure]],
+    grouping_variable_levels = grouping_variable_levels,
+    conf_level = conf_level
+  )
+  estimate$es_median_difference <- es_mdn$es_median_difference
+  estimate$es_median_difference_properties <- es_mdn$es_median_difference_properties
+
+  estimate$es_mean_ratio <- wrapper_ci_ratio.ps(
+    mean_or_median = "mean",
+    comparison_measure = data[[comparison_measure]],
+    reference_measure = data[[reference_measure]],
+    grouping_variable_levels = grouping_variable_levels,
+    conf_level = conf_level
+  )
+
+  estimate$es_median_ratio <- wrapper_ci_ratio.ps(
+    mean_or_median = "median",
+    comparison_measure = data[[comparison_measure]],
+    reference_measure = data[[reference_measure]],
+    grouping_variable_levels = grouping_variable_levels,
+    conf_level = conf_level
+  )
+
+  estimate$overview <- overview
+
+  # Prep output --------------------------------------
+
+  # raw data
+  if (save_raw_data) {
+    estimate$raw_data <- data.frame(
+      "comparison_measure" = data[[comparison_measure]],
+      "reference_measure" = data[[reference_measure]]
+    )
+  }
+
+  # update estimate properties
+  estimate$properties$data_type <- "data.frame"
+  estimate$properties$data_source <- deparse(substitute(data))
+  estimate$properties$warnings <- c(
+    estimate$properties$warnings,
+    warnings
+  )
+
+  return(estimate)
 
 }

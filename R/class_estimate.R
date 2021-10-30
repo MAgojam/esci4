@@ -76,7 +76,7 @@ print.esci_estimate <- function(x, ..., verbose = FALSE) {
 
   # Note about CI width
   ci_message <- paste(
-    "\n\nNote: lower and upper are boundaries of confidence intervals with ",
+    "\n\nNote: LL and UL are lower and upper boundaries of confidence intervals with ",
     estimate$properties$conf_level*100,
     "% expected coverage.",
     sep = ""

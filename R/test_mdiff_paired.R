@@ -1,12 +1,18 @@
 test_mdiff_paired <- function() {
 
+  sd1 <- 4.28
+  sd2 <- 3.4
+  sdiff <- 2.13
+
+  cor <- (sd1^2 + sd2^2 - sdiff^2) / (2*sd1*sd2)
+
   estimate_mdiff_paired(
-    comparison_mean = 12,
-    comparison_sd = 2,
-    reference_mean = 10,
-    reference_sd = 3,
-    n = 20,
-    correlation = 0.70
+    comparison_mean = 14.25,
+    comparison_sd = 4.28,
+    reference_mean = 12.88,
+    reference_sd = 3.4,
+    n = 16,
+    correlation = 0.87072223749
   )
 
 
@@ -78,19 +84,24 @@ test_mdiff_paired <- function() {
   )
 
   wrapper <- data.frame(
-    "wc_wrapper" = wc_wrapper,
-    "bk_wrapper" = bk_wrapper
+    "wc" = wc_wrapper,
+    "bk" = bk_wrapper
   )
 
+  # Check - vector
   estimate_mdiff_paired(
     comparison_measure = wc_wrapper,
     reference_measure = bk_wrapper
   )
 
+  # Check data frame, column as strings
   estimate_mdiff_paired(
     data = wrapper,
-    comparison_measure = "wc_wrapper",
-    reference_measure = "bk_wrapper"
+    comparison_measure = "wc",
+    reference_measure = "bk"
   )
+
+  # Check data frame, columns as tidy
+  estimate <- estimate_mdiff_paired(wrapper, wc, bk)
 
 }

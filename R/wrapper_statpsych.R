@@ -79,6 +79,100 @@ Correction for bias can be important when <i>df</i> < 50.<br>
 }
 
 
+wrapper_ci.stdmean.ps <- function(
+  comparison_mean,
+  comparison_sd,
+  reference_mean,
+  reference_sd,
+  n,
+  correlation,
+  grouping_variable_levels,
+  conf_level
+) {
+
+  effect_label <- paste(
+    grouping_variable_levels[1],
+    "-",
+    grouping_variable_levels[2],
+    sep = " "
+  )
+
+  es_smd <- as.data.frame(
+    statpsych::ci.stdmean.ps(
+      alpha = 1 - conf_level,
+      m1 = comparison_mean,
+      m2 = reference_mean,
+      sd1 = comparison_sd,
+      sd2 = reference_sd,
+      cor = correlation,
+      n = n
+    )
+  )[1, ]
+
+  rownames(es_smd) <- NULL
+  es_smd <- es_smd[ , c("Estimate", "LL", "UL", "SE")]
+  colnames(es_smd) <- c("effect_size", "LL", "UL", "SE_temp")
+
+  # Add additional properties
+  bias <- sqrt((n - 2)/(n-1))
+
+  es_smd$numerator <- comparison_mean - reference_mean
+  es_smd$denominator <- sqrt((comparison_sd^2 + reference_sd^2)/2)
+  es_smd$SE <- es_smd$SE_temp
+  es_smd$SE_temp <- NULL
+  es_smd$d_biased <- es_smd$effect_size / bias
+  es_smd$df <- n-1
+
+  # Add effect label
+  es_smd<- cbind(
+    "effect" = effect_label,
+    es_smd
+  )
+
+
+  # Properties ------------------------------
+  properties <- list(
+    effect_size_name = "d_average",
+    effect_size_name_html = "<i>d</i><sub>average</sub>",
+    denominator_name = "s_average",
+    denominator_name_html = "<i>s</i><sub>average</sub>",
+    bias_corrected = TRUE
+  )
+
+  properties$effect_size_category = "difference"
+  properties$effect_size_precision = "magnitude"
+  properties$conf_level = conf_level
+  properties$error_distribution = "norm"
+
+
+  properties$message <- glue::glue(
+    "
+This standardized mean difference is called {properties$effect_size_name} because the standardizer used was {properties$denominator_name}. {properties$effect_size_name} {if (properties$bias_corrected) 'has' else 'has *not*'} been corrected for bias. Correction for bias can be important when df < 50.
+    "
+  )
+
+  properties$message_html <- glue::glue(
+    "
+This standardized mean difference is called {properties$effect_size_name_html}
+because the standardizer used was {properties$denominator_name_html}.<br>
+{properties$effect_size_name_html} {if (properties$bias_corrected) 'has' else 'has *not*'}
+been corrected for bias.
+Correction for bias can be important when <i>df</i> < 50.<br>
+    "
+  )
+
+
+  smd <- list(
+    es_smd = es_smd,
+    es_smd_properties = properties
+  )
+
+
+  return(smd)
+
+}
+
+
 wrapper_ci.mean.ps <- function(
   comparison_mean,
   comparison_sd,
@@ -87,8 +181,6 @@ wrapper_ci.mean.ps <- function(
   n,
   correlation,
   grouping_variable_levels,
-  outcome_variable_name,
-  grouping_variable_name,
   conf_level
 ) {
 
@@ -116,8 +208,6 @@ wrapper_ci.mean.ps <- function(
 
   es_mean_difference <- cbind(
     "type" = "Difference",
-    "outcome_variable_name" = outcome_variable_name,
-    "grouping_variable_name" = grouping_variable_name,
     "effect" = effect_label,
     es_mean_difference
   )
@@ -129,10 +219,11 @@ wrapper_ci.mean.ps <- function(
     contrast = c(1, -1),
     conf_level = conf_level,
     assume_equal_variance = FALSE,
-    grouping_variable_levels = grouping_variable_levels,
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name
+    grouping_variable_levels = grouping_variable_levels
   )
+
+  comp_mean$es_mean_difference$outcome_variable_name <- NULL
+  comp_mean$es_mean_difference$grouping_variable_name <- NULL
 
   es_mean_difference <- rbind(
     comp_mean$es_mean_difference[1, ],
@@ -142,5 +233,197 @@ wrapper_ci.mean.ps <- function(
 
 
   return(es_mean_difference)
+
+}
+
+
+wrapper_ci_ratio.2 <- function(
+  mean_or_median,
+  comparison_measure,
+  reference_measure,
+  grouping_variable_levels,
+  outcome_variable_name,
+  grouping_variable_name,
+  conf_level
+) {
+
+  statpsych_mean <- c("Mean1/Mean2", "LL", "UL", "Mean1", "Mean2")
+  statpsych_median <- c("Median/Median2", "LL", "UL", "Median1", "Median2")
+  esci_mean <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")
+  esci_median <- c("effect_size", "LL", "UL", "comparison_median", "reference_median")
+
+  if(mean_or_median == "mean") {
+    es_ratio <- as.data.frame(
+      statpsych::ci.ratio.mean.2(
+        alpha = 1 - conf_level,
+        y1 = comparison_measure,
+        y2 = reference_measure
+      )
+    )
+    statpsych_cols <- c("Mean1/Mean2", "LL", "UL", "Mean1", "Mean2")
+    esci_cols <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")
+  } else if (mean_or_median == "median") {
+    es_ratio <- as.data.frame(
+      statpsych::ci.ratio.median.2(
+        alpha = 1 - conf_level,
+        y1 = comparison_measure,
+        y2 = reference_measure
+      )
+    )
+    statpsych_cols <- c("Median1/Median2", "LL", "UL", "Median1", "Median2")
+    esci_cols <- c("effect_size", "LL", "UL", "comparison_median", "reference_median")
+  } else {
+    stop("mean_or_median parameter not correctly defined")
+  }
+
+
+  es_ratio <- es_ratio[ , statpsych_cols]
+  colnames(es_ratio) <- esci_cols
+
+  clabel <- paste(
+    grouping_variable_levels[1],
+    "/",
+    grouping_variable_levels[2],
+    sep = " "
+  )
+
+  es_ratio <- cbind(
+    type = c("Ratio"),
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name,
+    effect = clabel,
+    es_ratio
+  )
+
+  return(es_ratio)
+
+}
+
+
+wrapper_ci_ratio.ps <- function(
+  mean_or_median,
+  comparison_measure,
+  reference_measure,
+  grouping_variable_levels,
+  conf_level
+) {
+
+
+  if(mean_or_median == "mean") {
+    es_ratio <- as.data.frame(
+      statpsych::ci.ratio.mean.ps(
+        alpha = 1 - conf_level,
+        y1 = comparison_measure,
+        y2 = reference_measure
+      )
+    )
+    statpsych_cols <- c("Mean1/Mean2", "LL", "UL", "Mean1", "Mean2")
+    esci_cols <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")
+  } else if (mean_or_median == "median") {
+    es_ratio <- as.data.frame(
+      statpsych::ci.ratio.median.ps(
+        alpha = 1 - conf_level,
+        y1 = comparison_measure,
+        y2 = reference_measure
+      )
+    )
+    statpsych_cols <- c("Median1/Median2", "LL", "UL", "Median1", "Median2")
+    esci_cols <- c("effect_size", "LL", "UL", "comparison_median", "reference_median")
+  } else {
+    stop("mean_or_median parameter not correctly defined")
+  }
+
+  es_ratio <- es_ratio[ , statpsych_cols]
+  colnames(es_ratio) <- esci_cols
+
+  clabel <- paste(
+    grouping_variable_levels[1],
+    "/",
+    grouping_variable_levels[2],
+    sep = " "
+  )
+
+  es_ratio <- cbind(
+    type = c("Ratio"),
+    effect = clabel,
+    es_ratio
+  )
+
+  return(es_ratio)
+
+}
+
+wrapper_ci.median.ps <- function(
+  comparison_measure,
+  reference_measure,
+  grouping_variable_levels,
+  conf_level
+) {
+
+  res <- as.data.frame(
+    statpsych::ci.median1(
+      alpha = 1 - conf_level,
+      y = comparison_measure
+    )
+  )
+
+  res <- rbind(
+    res,
+    as.data.frame(
+      statpsych::ci.median1(
+        alpha = 1 - conf_level,
+        y = reference_measure
+      )
+    )
+  )
+
+  colnames(res)[1] <- "effect_size"
+
+  mdn_diff <- as.data.frame(
+    statpsych::ci.median.ps(
+      alpha = 1 - conf_level,
+      y1 = comparison_measure,
+      y2 = reference_measure
+    )
+  )[, c("Median1-Median2", "SE", "LL", "UL")]
+
+  colnames(mdn_diff)[1] <- "effect_size"
+
+  es_median_difference <- rbind(
+    res,
+    mdn_diff
+  )
+
+  es_median_difference <- es_median_difference[ , c("effect_size", "LL", "UL", "SE")]
+
+  es_median_difference <- cbind(
+    type = c("Comparison", "Reference", "Difference"),
+    effect = c(
+      grouping_variable_levels,
+      paste(
+        grouping_variable_levels[1],
+        "-",
+        grouping_variable_levels[2],
+        sep = " "
+      )
+    ),
+    es_median_difference
+  )
+
+  es_median_difference_properties <- list(
+    effect_size_name = "Mdn_Diff",
+    effect_size_name_html = "<i>Mdn</i><sub>diff</sub>",
+    effect_size_category = "difference",
+    effect_size_precision = "magnitude",
+    conf_level = conf_level,
+    error_distribution = "norm"
+  )
+
+  estimate <- list(
+    es_median_difference = es_median_difference,
+    es_median_difference_properties = es_median_difference_properties
+  )
+
+  return(estimate)
 
 }
