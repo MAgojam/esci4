@@ -1,0 +1,449 @@
+#' Estimate magnitude of difference between two related measures.
+#'
+#' @description
+#' \loadmathjax
+#' `estimate_mdiff_paired` returns effect sizes estimating the magnitude of
+#' difference between two related quantiative measures.
+#'
+#'
+#' @param data For raw data - a dataframe or tibble
+#' @param comparison_measure For raw data - The column name of comparison
+#'  measure of the outcome variable, or a vector of numeric data
+#' @param reference_measure For raw data - The column name of the reference
+#'  measure of the outcome variable, or a vector of numeric data
+#' @param comparison_mean For summary data, a numeric
+#' @param comparison_sd For summary data, numeric > 0
+#' @param reference_mean For summary data, a numeric
+#' @param reference_sd For summary data, numeric > 0
+#' @param n For summary data, a numeric integer > 0
+#' @param correlation For summary data, correlation between measures, numeric > -1 and < 1
+#' @param grouping_variable_levels For summary data - An optional vector of
+#'   2 group labels.  Defaults to the names of the comparison and reference
+#'   measures, if passed.
+#' @param outcome_variable_name Optional friendly name for the outcome variable.
+#'   Defaults to 'My outcome variable'.
+#' @param grouping_variable_name Optional friendly name for the grouping
+#'   variable.  Defaults to 'My grouping variable'
+#' @param conf_level The confidence level for the confidence interval.  Given in
+#'   decimal form.  Defaults to 0.95.
+#' @param save_raw_data For raw data; defaults to TRUE; set to FALSE to save
+#'   memory by not returning raw data in estimate object
+#'
+#'
+#' @return Returns object of class esci_estimate
+#'
+#'
+#' @examples
+#' # From Raw Data ------------------------------------
+#' # Just pass in the data source, grouping column, and outcome column.
+#' # You can pass these in by position, skipping the labels:
+#'
+#' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
+#' estimate_mdiff_paired(
+#'  iris,
+#'  Sepal.Length,
+#'  Petal.Length
+#' )
+#'
+#' @export
+estimate_mdiff_paired <- function(
+  data = NULL,
+  comparison_measure = NULL,
+  reference_measure = NULL,
+  comparison_mean = NULL,
+  comparison_sd = NULL,
+  reference_mean = NULL,
+  reference_sd = NULL,
+  n = NULL,
+  correlation = NULL,
+  grouping_variable_levels = c("Comparison measure", "Reference measure"),
+  outcome_variable_name = "My outcome variable",
+  grouping_variable_name = "My grouping variable",
+  conf_level = 0.95,
+  save_raw_data = TRUE
+) {
+
+  analysis_type <- "Undefined"
+
+  # Check to see if summary data has been passed
+  if (
+    !is.null(comparison_mean) |
+    !is.null(comparison_sd) |
+    !is.null(reference_mean) |
+    !is.null(reference_sd) |
+    !is.null(n) |
+    !is.null(correlation)
+    ) {
+
+    # Summary data is passed, so check to make sure raw data not included
+    if(!is.null(data))  stop(
+      "You have passed summary statistics,
+      so don't pass the 'data' parameter used for raw data.")
+    if(!is.null(comparison_measure)) stop(
+      "You have passed summary statistics,
+      so don't pass the 'comparison_measure' parameter used for raw data.")
+    if(!is.null(reference_measure)) stop(
+      "You have passed summary statistics,
+      so don't pass the 'reference_measure' parameter used for raw data.")
+
+    # Looks good, we can pass on to summary data
+    analysis_type <- "summary"
+
+  } else {
+    # Raw data has been passed, first be sure summary data is not passed
+    if(!is.null(comparison_mean))  stop(
+      "You have passed raw data,
+      so don't pass the 'comparison_mean' parameter used for summary data.")
+    if(!is.null(comparison_sd))  stop(
+      "You have passed raw data,
+      so don't pass the 'comparison_sd' parameter used for summary data.")
+    if(!is.null(reference_mean))  stop(
+      "You have passed raw data,
+      so don't pass the 'reference_mean' parameter used for summary data.")
+    if(!is.null(reference_sd))  stop(
+      "You have passed raw data,
+      so don't pass the 'reference_sd' parameter used for summary data.")
+    if(!is.null(n))  stop(
+      "You have passed raw data,
+      so don't pass the 'n' parameter used for summary data.")
+    if(!is.null(correlation))  stop(
+      "You have passed raw data,
+      so don't pass the 'correlation' parameter used for summary data.")
+
+    # Check reference_measure -- if it is an unquoted column name
+    #  turn it into a string and store back to grouping_variable
+    is_column_name <- try(reference_measure, silent = TRUE)
+    if(class(is_column_name) == "try-error") {
+      reference_measure_enquo <- rlang::enquo(reference_measure)
+      reference_measure_enquo_name <- try(
+        eval(rlang::as_name(reference_measure_enquo)), silent = TRUE
+      )
+      if (class(reference_measure_enquo_name) != "try-error") {
+        # This only succeeds if the columns were passed unquoted
+        # So now replace grouping_variable with a quoted version
+        reference_measure <- reference_measure_enquo_name
+      }
+    }
+
+    # Now we have to figure out what type of raw data:
+    #   could be tidy column names, string column names, or vectors
+    # We check to see if we have a tidy column name by trying to evaluate it
+    is_column_name <- try(comparison_measure, silent = TRUE)
+    if(class(is_column_name) == "try-error") {
+      # Column names have been passed, check if need to be quoted up
+
+      comparison_measure_enquo <- rlang::enquo(comparison_measure)
+      comparison_measure_quoname <- try(
+        eval(rlang::as_name(comparison_measure_enquo)), silent = TRUE
+      )
+      if (class(comparison_measure_quoname) != "try-error") {
+        # This only succeeds if outcome_variable was passed unquoted
+        # Reset outcome_variable to be fully quoted
+        comparison_measure <- comparison_measure_quoname
+      }
+      analysis_type <- "data.frame"
+
+    } else if (class(comparison_measure) == "numeric") {
+      # At this stage, we know that y was not a tidy column name,
+      #  so it should be either a vector of raw data (class = numeric)
+      #  or a vector of column names passed as strings
+      analysis_type <- "vector"
+    } else if (class(comparison_measure) == "character") {
+      # Ok, must have been string column names
+      if (length(comparison_measure) == 1) {
+        analysis_type <- "data.frame"
+      } else {
+        analysis_type <- "jamovi"
+      }
+    }
+  }
+
+  if(analysis_type == "data.frame") {
+    return(
+      estimate_mdiff_paired.data.frame(
+        data = data,
+        comparison_measure = make.names(comparison_measure),
+        reference_measure = make.names(reference_measure),
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        conf_level = conf_level,
+        save_raw_data = save_raw_data
+      )
+    )
+  } else if (analysis_type == "jamovi") {
+    return(
+      estimate_mdiff_paired.jamovi(
+        data = data,
+        outcome_variables = outcome_variable,
+        grouping_variable = grouping_variable,
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        conf_level = conf_level,
+        save_raw_data = save_raw_data
+      )
+    )
+
+
+  } else if (analysis_type == "summary") {
+    return(
+      estimate_mdiff_paired.summary(
+        comparison_mean = comparison_mean,
+        comparison_sd = comparison_sd,
+        reference_mean = reference_mean,
+        reference_sd = reference_sd,
+        n = n,
+        correlation = correlation,
+        grouping_variable_levels = grouping_variable_levels,
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        conf_level = conf_level
+      )
+    )
+  } else if (analysis_type == "vector") {
+    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 1 | grouping_variable_levels[1] == "Comparison measure variable") {
+      grouping_variable_levels[1] <- deparse(substitute(comparison_measure))
+    }
+
+    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 2 | grouping_variable_levels[2] == "Referemce measure variable") {
+      grouping_variable_levels[2] <- deparse(substitute(reference_measure))
+    }
+
+    return(
+      estimate_mdiff_paired.vector(
+        comparison_measure = comparison_measure,
+        reference_measure = reference_measure,
+        grouping_variable_levels = grouping_variable_levels,
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        conf_level = conf_level,
+        save_raw_data = save_raw_data
+      )
+    )
+  }
+
+
+  stop("Something went wrong dispatching this function")
+
+}
+
+
+estimate_mdiff_paired.summary <- function(
+  comparison_mean,
+  comparison_sd,
+  reference_mean,
+  reference_sd,
+  n,
+  correlation,
+  grouping_variable_levels = c("Comparison measure", "Reference measure"),
+  outcome_variable_name = "My outcome variable",
+  grouping_variable_name = "My grouping variable",
+  conf_level = conf_level
+) {
+
+  # Input checks ----------------------------
+
+  # Check means
+  esci_assert_type(comparison_mean, "is.numeric")
+  esci_assert_type(reference_mean, "is.numeric")
+  # Check sds
+  esci_assert_type(comparison_sd, "is.numeric")
+  esci_assert_type(reference_sd, "is.numeric")
+  esci_assert_range(
+    comparison_sd,
+    lower = 0,
+    lower_inclusive = FALSE
+  )
+  esci_assert_range(
+    reference_sd,
+    lower = 0,
+    lower_inclusive = FALSE
+  )
+  # Check ns
+  esci_assert_type(n, "is.numeric")
+  esci_assert_type(n, "is.whole.number")
+  esci_assert_range(
+    n,
+    lower = 2,
+    lower_inclusive = TRUE
+  )
+  # Check correlation
+  esci_assert_type(correlation, "is.numeric")
+  esci_assert_range(
+    correlation,
+    lower = -1,
+    lower_inclusive = TRUE,
+    upper = 1,
+    upper_inclusive = TRUE
+  )
+  # Check labels
+
+  # Initialize -----------------------------
+  warnings <- c(NULL)
+  contrast <- c(1, -1)
+  names(contrast) <- grouping_variable_levels
+
+  # Analysis --------------------------
+  overview <- overview.summary(
+    means = c(comparison_mean, reference_mean),
+    sds = c(comparison_sd, reference_sd),
+    ns = c(n, n),
+    grouping_variable_levels = grouping_variable_levels,
+    grouping_variable_name = grouping_variable_name,
+    outcome_variable_name = outcome_variable_name,
+    conf_level = conf_level,
+    assume_equal_variance = FALSE
+  )
+
+  es_mean_difference <- wrapper_ci.mean.ps(
+    comparison_mean = comparison_mean,
+    comparison_sd = comparison_sd,
+    reference_mean = reference_mean,
+    reference_sd = reference_sd,
+    n = n,
+    correlation = correlation,
+    grouping_variable_levels = grouping_variable_levels,
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name,
+    conf_level = conf_level
+  )
+
+  # output prep -----------------------------------------
+  estimate <- list(
+    overview = overview,
+    es_mean_difference = es_mean_difference
+  )
+  estimate$properties <- list(
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name,
+    contrast = contrast,
+    conf_level = conf_level,
+    data_type = "summary",
+    data_source <- NULL,
+    warnings <- warnings
+  )
+
+  estimate$es_mean_difference_properties <- list(
+    effect_size_name = "M_Diff",
+    effect_size_name_html = "<i>M</i><sub>diff</sub>",
+    effect_size_category = "difference",
+    effect_size_precision = "magnitude",
+    conf_level = conf_level,
+    error_distribution = "t_dist"
+  )
+
+  class(estimate) <- "esci_estimate"
+
+
+  return(estimate)
+
+}
+
+
+estimate_mdiff_paired.vector <- function(
+  comparison_measure,
+  reference_measure,
+  grouping_variable_levels,
+  outcome_variable_name,
+  grouping_variable_name,
+  conf_level = conf_level,
+  save_raw_data = save_raw_data
+) {
+
+  # Input checks -------------------------------------
+  # Check comparison_measure
+  esci_assert_type(comparison_measure, "is.numeric")
+  esci_assert_type(reference_measure, "is.numeric")
+  comparison_measure_report <- esci_assert_vector_valid_length(
+    comparison_measure,
+    lower = 2,
+    lower_inclusive = FALSE,
+    na.rm = TRUE
+  )
+  # Check reference measure
+
+  reference_measure_report <- esci_assert_vector_valid_length(
+    reference_measure,
+    lower = 2,
+    lower_inclusive = FALSE,
+    na.rm = TRUE
+  )
+
+
+  if (comparison_measure_report$valid != reference_measure_report$valid) {
+    # vectors not of same length!
+    msg <- glue::glue("
+The comparison_measure and reference_measure are not the same length.
+The comparison_measure has {comparison_measure_report$valid} valid values;
+The outcome_variable length is {reference_measure_report$valid} valid values.
+    ")
+    stop(msg)
+  }
+
+  # Remove NA values from both vectors, pairwise
+  reference_measure <- reference_measure[!is.na(comparison_measure)]
+  comparison_measure <- comparison_measure[!is.na(comparison_measure)]
+
+  comparison_measure <- comparison_measure[!is.na(reference_measure)]
+  reference_measure <- reference_measure[!is.na(reference_measure)]
+
+  mydf <- data.frame(
+    "comparison_measure" = comparison_measure,
+    "reference_measure" = reference_measure
+  )
+  colnames(mydf) <- grouping_variable_levels
+
+  estimate <- estimate_mdiff_paired(
+    comparison_mean = mean(comparison_measure),
+    comparison_sd = sd(comparison_measure),
+    reference_mean = mean(reference_measure),
+    reference_sd = sd(reference_measure),
+    n = length(comparison_measure),
+    correlation = cor(comparison_measure, reference_measure),
+    grouping_variable_levels = grouping_variable_levels,
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name
+  )
+
+  estimate$overview <- overview.jamovi(
+    data = mydf,
+    outcome_variables = grouping_variable_levels,
+    conf_level = conf_level,
+    assume_equal_variance = FALSE
+  )
+
+  return(estimate)
+}
+
+
+estimate_mdiff_paired.data.frame <- function(
+  data,
+  comparison_measure,
+  reference_measure,
+  outcome_variable_name,
+  grouping_variable_name,
+  conf_level = conf_level,
+  save_raw_data = save_raw_data
+) {
+
+  estimate <- estimate_mdiff_paired.summary(
+    comparison_mean = mean(data[[comparison_measure]]),
+    comparison_sd = sd(data[[comparison_measure]]),
+    reference_mean = mean(data[[reference_measure]]),
+    reference_sd = sd(data[[reference_measure]]),
+    n = nrow(data),
+    correlation = cor(data[[comparison_measure]], data[[reference_measure]]),
+    grouping_variable_levels = c(comparison_measure, reference_measure),
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name
+  )
+
+  estimate$overview <- overview.jamovi(
+    data = data,
+    outcome_variables = c(comparison_measure, reference_measure),
+    conf_level = conf_level,
+    assume_equal_variance = FALSE
+  )
+
+  return(overview)
+
+}
