@@ -20,10 +20,6 @@
 #' @param grouping_variable_levels For summary data - An optional vector of
 #'   2 group labels.  Defaults to the names of the comparison and reference
 #'   measures, if passed.
-#' @param outcome_variable_name Optional friendly name for the outcome variable.
-#'   Defaults to 'My outcome variable'.
-#' @param grouping_variable_name Optional friendly name for the grouping
-#'   variable.  Defaults to 'My grouping variable'
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
 #' @param save_raw_data For raw data; defaults to TRUE; set to FALSE to save
@@ -32,7 +28,9 @@
 #'
 #' @return Returns object of class esci_estimate
 #'
-#'
+#' @importFrom statpsych ci.ratio.mean2
+#' @importFrom statpsych ci.ratio.median2
+#' @importFrom stats cor
 #' @examples
 #' # From Raw Data ------------------------------------
 #' # Just pass in the data source, grouping column, and outcome column.
@@ -170,8 +168,8 @@ estimate_mdiff_paired <- function(
     return(
       estimate_mdiff_paired.jamovi(
         data = data,
-        outcome_variables = outcome_variable,
-        grouping_variable = grouping_variable,
+        comparison_measure = comparison_measure,
+        reference_measure = reference_measure,
         conf_level = conf_level,
         save_raw_data = save_raw_data
       )
@@ -507,5 +505,16 @@ estimate_mdiff_paired.data.frame <- function(
   )
 
   return(estimate)
+
+}
+
+
+estimate_mdiff_paired.jamovi <- function(
+  data,
+  comparison_measure,
+  reference_measure,
+  conf_level = conf_level,
+  save_raw_data = save_raw_data
+) {
 
 }

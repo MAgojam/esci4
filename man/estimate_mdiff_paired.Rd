@@ -15,8 +15,6 @@ estimate_mdiff_paired(
   n = NULL,
   correlation = NULL,
   grouping_variable_levels = c("Comparison measure", "Reference measure"),
-  outcome_variable_name = "My outcome variable",
-  grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   save_raw_data = TRUE
 )
@@ -45,12 +43,6 @@ measure of the outcome variable, or a vector of numeric data}
 \item{grouping_variable_levels}{For summary data - An optional vector of
 2 group labels.  Defaults to the names of the comparison and reference
 measures, if passed.}
-
-\item{outcome_variable_name}{Optional friendly name for the outcome variable.
-Defaults to 'My outcome variable'.}
-
-\item{grouping_variable_name}{Optional friendly name for the grouping
-variable.  Defaults to 'My grouping variable'}
 
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}

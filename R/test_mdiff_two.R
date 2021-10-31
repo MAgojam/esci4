@@ -2,10 +2,10 @@ test_mdiff_two <- function() {
 
   # Check - from summary data, esci in excel summary two example
   estimate_mdiff_two(
-    comparison_m = 12.09,
+    comparison_mean = 12.09,
     comparison_sd = 5.52,
     comparison_n = 103,
-    reference_m = 6.88,
+    reference_mean = 6.88,
     reference_sd = 4.22,
     reference_n = 48,
     grouping_variable_levels = c("Laptop", "Pen"),
@@ -16,10 +16,10 @@ test_mdiff_two <- function() {
   # Should give - Mdiff = 5.21  95% CI [3.433079  6.986921]
 
   estimate_mdiff_two(
-    comparison_m = 12.09,
+    comparison_mean = 12.09,
     comparison_sd = 5.52,
     comparison_n = 103,
-    reference_m = 6.88,
+    reference_mean = 6.88,
     reference_sd = 4.22,
     reference_n = 48,
     grouping_variable_levels = c("Laptop", "Pen"),
