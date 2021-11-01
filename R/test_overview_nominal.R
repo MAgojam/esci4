@@ -14,17 +14,28 @@ test_overview_nominal <- function() {
     conf_level = 0.99
   )
 
+
   dep_status <- as.factor(
     c(
       rep("Depressed", 8),
-      rep("NotDepressed", 22-8)
+      rep("NotDepressed", 22-8),
+      NA,
+      NA,
+      NA
     )
   )
 
-  overview_nominal(
-    outcome_variable = dep_status
+  overview_nominal(outcome_variable = dep_status, count_NA = FALSE)
+  overview_nominal(outcome_variable = dep_status, count_NA = TRUE)
+
+
+  dep_data <- data.frame(
+    depression_status = dep_status,
+    other = as.factor(c(rep("G1", 12), rep("G2", 13)))
   )
 
+  overview_nominal(dep_data, depression_status, count_NA = TRUE)
 
+  overview_nominal(dep_data, c("depression_status", "other"))
 
 }

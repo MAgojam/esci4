@@ -18,6 +18,7 @@
 #'   this argument is ignored.
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
+#' @param countNA Logical to count NAs (TRUE) in total N or not (FALSE)
 #'
 #'
 #' @return Returns a table of descriptive statistics
@@ -49,7 +50,7 @@ overview_nominal <- function(
   outcome_variable_levels = NULL,
   outcome_variable_name = "My Outcome Variable",
   conf_level = 0.95,
-  assume_equal_variance = FALSE
+  count_NA = FALSE
 ) {
 
   analysis_type <- "Undefined"
@@ -78,13 +79,6 @@ overview_nominal <- function(
       "You have passed raw data,
       so don't pass the 'outcome_variable_levels' parameter used for summary data.")
 
-    if (class(outcome_variable) == "factor") {
-      if(!is.null(data)) stop(
-        "Outcome variable is a factor,
-        so don't pass the 'data' parameter used for data.frames."
-      )
-      analysis_type <- "vector"
-    } else {
       # Now we have to figure out what type of raw data:
       #   could be tidy column names, string column names, or vectors
       # We check to see if we have a tidy column name by trying to evaluate it
@@ -107,17 +101,21 @@ overview_nominal <- function(
         analysis_type <- "data.frame"
 
       } else {
-        # Ok, must have been string column names
-        if (length(outcome_variable) == 1) {
-          analysis_type <- "data.frame"
+        if(class(outcome_variable) == "factor") {
+          analysis_type <- "vector"
         } else {
-          analysis_type <- "jamovi"
+
+          # Ok, must have been string column names
+          if (length(outcome_variable) == 1) {
+            analysis_type <- "data.frame"
+          } else {
+            analysis_type <- "jamovi"
+          }
         }
       }
 
-    }
-
   }
+
 
   # At this point, we've figured out the type of data passed
   #  so we can dispatch
@@ -130,7 +128,8 @@ overview_nominal <- function(
       overview_nominal.data.frame(
         data = data,
         outcome_variable = make.names(outcome_variable),
-        conf_level = conf_level
+        conf_level = conf_level,
+        count_NA = count_NA
       )
     )
   } else if (analysis_type == "jamovi") {
@@ -138,7 +137,8 @@ overview_nominal <- function(
       overview_nominal.jamovi(
         data = data,
         outcome_variables = outcome_variable,
-        conf_level = conf_level
+        conf_level = conf_level,
+        count_NA = count_NA
       )
     )
   } else if (analysis_type == "summary") {
@@ -158,7 +158,8 @@ overview_nominal <- function(
       overview_nominal.vector(
         outcome_variable = outcome_variable,
         outcome_variable_name = outcome_variable_name,
-        conf_level = conf_level
+        conf_level = conf_level,
+        count_NA = count_NA
       )
     )
   }
@@ -205,13 +206,22 @@ overview_nominal.base <- function(
 
   # Analysis ----------------------------------------
   for (x in 1:n_cells) {
-    res <- as.data.frame(
-      statpsych::ci.prop1(
-        alpha = 1 - conf_level,
-        f = overview_table$count[x],
-        n = overview_table$n[x]
+    if (overview_table$n[x] == 0 | is.na(overview_table$n[x])) {
+      res <- data.frame(
+        "Estimate" = NA,
+        "LL" = NA,
+        "UL" = NA,
+        "SE" = NA
       )
-    )
+    } else {
+      res <- as.data.frame(
+        statpsych::ci.prop1(
+          alpha = 1 - conf_level,
+          f = overview_table$count[x],
+          n = overview_table$n[x]
+        )
+      )
+    }
 
     res$Estimate[1] <- res$Estimate[2]
 
@@ -308,11 +318,27 @@ overview_nominal.summary <- function(
 overview_nominal.vector <- function(
   outcome_variable,
   outcome_variable_name = NULL,
-  conf_level = 0.95
+  conf_level = 0.95,
+  count_NA = FALSE
 ) {
 
+  # Expectations:
+  # * outcome_variable is a factor with at least 1 level and at least 1 row
+  # * outcome_variable_name is a character, or will filled from outcome_variable
 
   # Input checks ----------------------------
+  esci_assert_type(
+    outcome_variable,
+    "is.factor"
+  )
+  esci_assert_vector_valid_length(
+    outcome_variable,
+    lower = 1,
+    lower_inclusive = TRUE,
+    na.rm = TRUE,
+    na.invalid = FALSE
+  )
+  # Check outcome_variable_name
   if(is.null(outcome_variable_name)) {
     outcome_variable_name <- deparse(substitute(outcome_variable))
   } else {
@@ -329,22 +355,35 @@ overview_nominal.vector <- function(
   # Build the overview table ---------------------------------------------------
   overview_table <- data.frame(
     outcome_variable_name = outcome_variable_names,
-    outcome_variable_levels = c(groups, "Missing")
+    outcome_variable_level = c(as.character(groups), "Missing")
   )
 
-  overview_table$counts <- aggregate(
+  overview_table$count <- aggregate(
     outcome_variable,
     by = list(addNA(outcome_variable)),
     drop = FALSE,
     FUN = length)[, 2]
 
-  overview_table$n <- sum(overview_table$counts, na.omit(TRUE))
+  counts <- overview_table$count
+  counts[is.na(counts)] <- 0
+  overview_table$count <- counts
+
+  na_count <- if (count_NA)
+    0
+  else
+    overview_table$count[nrow(overview_table)]
+
+  overview_table$n <- sum(overview_table$count,na.rm = TRUE) - na_count
+
+  if (overview_table$count[nrow(overview_table)] == 0) {
+    overview_table <- head(overview_table, -1)
+  } else {
+    if (!count_NA) overview_table$n[nrow(overview_table)] <- NA
+  }
 
   overview_table$P <- NA
   overview_table$P_LL <- NA
   overview_table$P_UL <- NA
-  overview_table$P_z <- NA
-
 
   # Cleanup - Deal with invalid rows and missing data rows-----------------
   overview_table <- overview_nominal.base(
@@ -357,12 +396,11 @@ overview_nominal.vector <- function(
 }
 
 # Overview from a data frame
-overview.data.frame <- function(
+overview_nominal.data.frame <- function(
   data,
   outcome_variable,
-  grouping_variable = NULL,
   conf_level = 0.95,
-  assume_equal_variance = TRUE
+  count_NA = FALSE
 ) {
 
   # Input Checks -------------------------------------------------------------
@@ -372,42 +410,25 @@ overview.data.frame <- function(
   #   outcome_variable to be a numeric column in data, with more than 2 rows
   esci_assert_type(data, "is.data.frame")
 
-  if (!is.null(grouping_variable)) {
-    esci_assert_valid_column_name(data, grouping_variable)
-    esci_assert_column_type(data, grouping_variable, "is.factor")
-    esci_assert_column_has_valid_rows(
-      data,
-      grouping_variable,
-      lower = 2,
-      na.rm = TRUE
-    )
-  }
 
   # Validate this outcome variable
   esci_assert_valid_column_name(data, outcome_variable)
-  esci_assert_column_type(data, outcome_variable, "is.numeric")
+  esci_assert_column_type(data, outcome_variable, "is.factor")
   esci_assert_column_has_valid_rows(
     data,
     outcome_variable,
-    lower = 2,
+    lower = 1,
+    lower_inclusive = TRUE,
     na.rm = TRUE
   )
 
-  if (!is.null(grouping_variable)) {
-    grouping_variable_name <- grouping_variable
-    grouping_variable <- data[[grouping_variable]]
-  } else {
-    grouping_variable_name <- NULL
-  }
 
   # Now pass along to the .vector version of this function
-  overview_table <- overview.vector(
+  overview_table <- overview_nominal.vector(
     outcome_variable = data[[outcome_variable]],
-    grouping_variable = grouping_variable,
     outcome_variable_name = outcome_variable,
-    grouping_variable_name = grouping_variable_name,
     conf_level = conf_level,
-    assume_equal_variance = assume_equal_variance
+    count_NA = count_NA
   )
 
   return(overview_table)
@@ -415,12 +436,11 @@ overview.data.frame <- function(
 
 
 # Overview from a data frame with a list of outcome variables
-overview.jamovi <- function(
+overview_nominal.jamovi <- function(
   data,
   outcome_variables,
-  grouping_variable = NULL,
   conf_level = 0.95,
-  assume_equal_variance = TRUE
+  count_NA = FALSE
 ) {
 
   res <- NULL
@@ -432,12 +452,11 @@ overview.jamovi <- function(
     # Now pass along to the data_frame version
     res <- rbind(
       res,
-      overview.data.frame(
+      overview_nominal.data.frame(
         data = data,
         outcome_variable = outcome_variable,
-        grouping_variable = grouping_variable,
         conf_level = conf_level,
-        assume_equal_variance = assume_equal_variance
+        count_NA = count_NA
       )
     )
 
@@ -446,40 +465,3 @@ overview.jamovi <- function(
   return(res)
 }
 
-
-wrap_ci_median1 <- function(
-  x,
-  conf_level,
-  na.rm = TRUE,
-  drop = FALSE
-) {
-
-  if(length(x) < 2) return(c(median(x), NA, NA, NA))
-
-  res <- statpsych::ci.median1(
-    alpha = 1 - conf_level,
-    y = if(na.rm) x[!is.na(x)] else x
-  )
-
-  return(res)
-}
-
-
-wrap_ci_mean1 <- function(
-  x,
-  conf_level,
-  na.rm = TRUE,
-  drop = FALSE
-) {
-
-  if(length(x) < 2) return(c(mean(x), NA, NA, NA))
-
-  res <- statpsych::ci.mean1(
-    alpha = 1 - conf_level,
-    m = mean(x, na.rm = na.rm),
-    sd = sd(x, na.rm = na.rm),
-    n = if(na.rm) length(x[!is.na(x)]) else length(x)
-  )
-
-  return(res)
-}
