@@ -7,12 +7,11 @@
 overview_nominal(
   data = NULL,
   outcome_variable = NULL,
-  countss = NULL,
-  ns = NULL,
+  counts = NULL,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My Outcome Variable",
   conf_level = 0.95,
-  assume_equal_variance = FALSE
+  count_NA = FALSE
 )
 }
 \arguments{
@@ -25,7 +24,7 @@ overview_nominal(
 data or the name of a data-frame column containing a factor
 }}
 
-\item{ns}{For summary data - A vector of sample sizes, same length as counts}
+\item{counts}{For summary data - A vector of 1 or more counts, integers,0}
 
 \item{outcome_variable_levels}{For summary data - An optional vector of
 group labels, same length as counts.  If not passed, auto-generated.}
@@ -37,7 +36,7 @@ this argument is ignored.}
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}
 
-\item{counts}{For summary data - A vector of 1 or more counts, integers,0}
+\item{countNA}{Logical to count NAs (TRUE) in total N or not (FALSE)}
 }
 \value{
 Returns a table of descriptive statistics
@@ -51,12 +50,10 @@ nominal variable. Inputs can be summary data, vectors, or a data frame.
 
 overview_nominal(
   counts = c(10, 15, 100),
-  ns = c(100, 100, 100),
   outcome_variable_levels = c(
      "First_Years", "Second_Years", "Third_Years"
   ),
-  outcome_variable_name = "\% time near target",
-  assume_equal_variance = TRUE
+  outcome_variable_name = "\% time near target"
 )
 
 

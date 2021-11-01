@@ -18,7 +18,7 @@
 #'   this argument is ignored.
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
-#' @param countNA Logical to count NAs (TRUE) in total N or not (FALSE)
+#' @param count_NA Logical to count NAs (TRUE) in total N or not (FALSE)
 #'
 #'
 #' @return Returns a table of descriptive statistics
@@ -32,8 +32,7 @@
 #'   outcome_variable_levels = c(
 #'      "First_Years", "Second_Years", "Third_Years"
 #'   ),
-#'   outcome_variable_name = "% time near target",
-#'   assume_equal_variance = TRUE
+#'   outcome_variable_name = "% time near target"
 #' )
 #'
 #'
