@@ -2,7 +2,7 @@
 #'
 #'
 #' @description
-#' This function caluclated basic descriptive statistics for a categorical/
+#' This function calculated basic descriptive statistics for a categorical/
 #' nominal variable. Inputs can be summary data, vectors, or a data frame.
 #'
 #'
