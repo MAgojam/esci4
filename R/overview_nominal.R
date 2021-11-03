@@ -128,23 +128,6 @@ overview_nominal <- function(
         }
       }
 
-
-      # If not a character, must have been quoted
-      if (class(is_char) == "try-error") {
-        outcome_variable_enquo <- rlang::enquo(outcome_variable)
-        outcome_variable_quoname <- try(
-          eval(rlang::as_name(outcome_variable_enquo)), silent = TRUE
-        )
-        if (class(outcome_variable_quoname) != "try-error") {
-          # This only succeeds if outcome_variable was passed unquoted
-          # Reset outcome_variable to be fully quoted
-          outcome_variable <- outcome_variable_quoname
-        } else {
-          stop("Could not parse outcome_variable")
-        }
-      }
-
-
       # Ok, must have been string column names
       if (length(outcome_variable) == 1) {
         analysis_type <- "data.frame"

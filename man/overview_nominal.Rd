@@ -7,9 +7,11 @@
 overview_nominal(
   data = NULL,
   outcome_variable = NULL,
+  grouping_variable = NULL,
   counts = NULL,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My Outcome Variable",
+  grouping_variable_name = "My Grouping Variable",
   conf_level = 0.95,
   count_NA = FALSE
 )
@@ -24,6 +26,11 @@ overview_nominal(
 data or the name of a data-frame column containing a factor
 }}
 
+\item{grouping_variable}{\itemize{
+\item for raw data, either NULL (default), or
+the vector of a factor or a data-frame column containing a factor
+}}
+
 \item{counts}{For summary data - A vector of 1 or more counts, integers,0}
 
 \item{outcome_variable_levels}{For summary data - An optional vector of
@@ -33,16 +40,20 @@ group labels, same length as counts.  If not passed, auto-generated.}
 Defaults to 'My Outcome Variable'.  Ignored if a data-frame is passed,
 this argument is ignored.}
 
+\item{grouping_variable_name}{Optional friendly name for the grouping variable.
+Defaults to 'My Grouping Variable'.  Ignored for summary data and for
+data frames -- only used if vectors of data are passed.}
+
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}
 
-\item{countNA}{Logical to count NAs (TRUE) in total N or not (FALSE)}
+\item{count_NA}{Logical to count NAs (TRUE) in total N or not (FALSE)}
 }
 \value{
 Returns a table of descriptive statistics
 }
 \description{
-This function caluclated basic descriptive statistics for a categorical/
+This function calculated basic descriptive statistics for a categorical/
 nominal variable. Inputs can be summary data, vectors, or a data frame.
 }
 \examples{
