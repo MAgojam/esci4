@@ -83,6 +83,7 @@ estimate_proportion <- function(
           estimate[[ocv]] <- estimate_proportion(
             data = data,
             outcome_variable = ocv,
+            outcome_variable_name = ocv,
             case_level = case_level,
             conf_level = conf_level,
             count_NA = count_NA
