@@ -40,7 +40,6 @@ estimate_proportion <- function(
   data = NULL,
   outcome_variable = NULL,
   counts = NULL,
-  n = NULL,
   case_level = 1,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My outcome variable",
@@ -103,6 +102,7 @@ estimate_proportion <- function(
 
   } else {
     analysis_type = "summary"
+
   }
 
 
@@ -123,29 +123,52 @@ estimate_proportion <- function(
     case_level = 1
   }
 
-    if (is.character(case_level)) {
-      if (case_level %in% estimate$overview$outcome_variable_level) {
-        estimate$es_proportion <- estimate$overview[
-          estimate$overview$outcome_variable_level == case_level,
-        ]
-        if (nrow(estimate$es_proportion) != 1) {
-          stop("case_level did not match 1 level from outcome_variable -- improve this message")
-        }
-      } else {
-        stop ("case_level not found in outcome_variable levels -- improve this message")
-      }
-    } else {
-      if (case_level > nrow(estimate$overview)) {
-        stop("case_level exceeds number of levels in outcome_variable -- improve this message")
-      }
-      estimate$es_proportion <- estimate$overview[case_level, ]
+  if (is.character(case_level)) {
+    if (case_level %in% estimate$overview$outcome_variable_level) {
+      estimate$es_proportion <- estimate$overview[
+        estimate$overview$outcome_variable_level == case_level,
+      ]
       if (nrow(estimate$es_proportion) != 1) {
         stop("case_level did not match 1 level from outcome_variable -- improve this message")
       }
+    } else {
+      stop ("case_level not found in outcome_variable levels -- improve this message")
     }
+  } else {
+    if (case_level > nrow(estimate$overview)) {
+      stop("case_level exceeds number of levels in outcome_variable -- improve this message")
+    }
+    estimate$es_proportion <- estimate$overview[case_level, ]
+    if (nrow(estimate$es_proportion) != 1) {
+      stop("case_level did not match 1 level from outcome_variable -- improve this message")
+    }
+  }
+
+  # Update es_proportion table for effect_size format  ----------------
+  colnames(estimate$es_proportion) <- c(
+    "outcome_variable_name",
+    "effect",
+    "count_temp",
+    "n_temp",
+    "effect_size",
+    "LL",
+    "UL",
+    "SE"
+  )
+
+  estimate$es_proportion <- cbind(
+    type = "Proportion",
+    estimate$es_proportion
+  )
+
+  estimate$es_proportion$count <- estimate$es_proportion$count_temp
+  estimate$es_proportion$n <- estimate$es_proportion$n_temp
+  estimate$es_proportion$count_temp <- NULL
+  estimate$es_proportion$n_temp <- NULL
 
 
-  # Still need to set the properties!
+
+  # Set properties --- this will need to be updated -------------
   estimate$properties <- list(
     outcome_variable_name = outcome_variable_name,
     grouping_variable_name = NULL,

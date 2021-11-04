@@ -31,7 +31,7 @@ data or the name of a data-frame column containing a factor
 the vector of a factor or a data-frame column containing a factor
 }}
 
-\item{counts}{For summary data - A vector of 1 or more counts, integers,0}
+\item{counts}{For summary data - A vector of 1 or more counts, integers>0}
 
 \item{outcome_variable_levels}{For summary data - An optional vector of
 group labels, same length as counts.  If not passed, auto-generated.}

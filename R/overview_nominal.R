@@ -11,8 +11,7 @@
 #'   data or the name of a data-frame column containing a factor
 #' @param grouping_variable - for raw data, either NULL (default), or
 #'   the vector of a factor or a data-frame column containing a factor
-#' @param counts For summary data - A vector of 1 or more counts, integers,
-#'  > 0
+#' @param counts For summary data - A vector of 1 or more counts, integers>0
 #' @param outcome_variable_levels For summary data - An optional vector of
 #'   group labels, same length as counts.  If not passed, auto-generated.
 #' @param outcome_variable_name Optional friendly name for the outcome variable.
