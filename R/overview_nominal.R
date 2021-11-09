@@ -404,6 +404,19 @@ overview_nominal.vector <- function(
 
   if (!is.null(grouping_variable)) {
     overview_table <- NULL
+
+    gv_has_na <- FALSE
+
+    if (anyNA(grouping_variable)) {
+      gv_has_na <- TRUE
+      missing_level <- "Missing"
+      while (missing_level %in% levels(grouping_variable)) {
+        missing_level <- paste(missing_level, "*", sep = "")
+      }
+      levels(grouping_variable) <- c(levels(grouping_variable), missing_level)
+      grouping_variable[which(is.na(grouping_variable))] <- missing_level
+    }
+
     for (mylevel in levels(grouping_variable)) {
       this_level <- overview_nominal.vector(
         outcome_variable = outcome_variable[which(grouping_variable == mylevel)],
@@ -426,6 +439,13 @@ overview_nominal.vector <- function(
       )
 
     }
+
+    if (gv_has_na) {
+      missing_rows <- which(overview_table$grouping_variable_level == missing_level)
+      row.names(overview_table)[missing_rows] <- paste("missing", missing_rows, sep = " ")
+    }
+
+
     return(overview_table)
   }
 

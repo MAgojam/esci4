@@ -7,7 +7,7 @@
 estimate_pdiff_one(
   data = NULL,
   outcome_variable = NULL,
-  comparison_count = NULL,
+  comparison_events = NULL,
   comparison_n = NULL,
   reference_p = 0,
   case_level = 1,
@@ -22,7 +22,7 @@ estimate_pdiff_one(
 \item{outcome_variable}{For raw data - The column name of the outcome
 variable, which must be a factor, or a vector that is a factor}
 
-\item{comparison_count}{For summary data, a numeric integer > 0}
+\item{comparison_events}{For summary data, a numeric integer > 0}
 
 \item{comparison_n}{For summary data, a numeric integer >= count}
 

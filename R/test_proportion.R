@@ -1,4 +1,4 @@
-test_overview_nominal <- function() {
+test_proportion <- function() {
 
   # Esci one proportion - 8/22
   estimate_proportion(

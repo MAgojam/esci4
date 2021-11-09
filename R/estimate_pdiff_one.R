@@ -7,7 +7,7 @@
 #' @param data For raw data - a dataframe or tibble
 #' @param outcome_variable For raw data - The column name of the outcome
 #'   variable, which must be a factor, or a vector that is a factor
-#' @param comparison_count For summary data, a numeric integer > 0
+#' @param comparison_events For summary data, a numeric integer > 0
 #' @param comparison_n For summary data, a numeric integer >= count
 #' @param reference_p Reference proportion, numeric >=0 and <=1
 #' @param case_level An optional numeric or character label for the
@@ -39,7 +39,7 @@
 estimate_pdiff_one <- function(
   data = NULL,
   outcome_variable = NULL,
-  comparison_count = NULL,
+  comparison_events = NULL,
   comparison_n = NULL,
   reference_p = 0,
   case_level = 1,
@@ -51,7 +51,7 @@ estimate_pdiff_one <- function(
 
   # Check inputs -----------------------------------------------
   # * reference_p should be a numeric >= 0 and <= 1
-  # * comparison_count should be a numeric integer > 0
+  # * comparison_events should be a numeric integer > 0
   # * comparison_n should be a numeric integer >= count
   # * all other inputs checked when dispatched to estimate_proportion
 
@@ -72,7 +72,7 @@ estimate_pdiff_one <- function(
   analysis_type <- "Undefined"
 
   # Check to see if summary data has been passed
-  if (!is.null(comparison_count)) {
+  if (!is.null(comparison_events)) {
     # Summary data is passed, so check to make sure raw data not included
     if(!is.null(data))  stop(
       "You have passed summary statistics,
@@ -83,12 +83,12 @@ estimate_pdiff_one <- function(
 
     # Looks good, we can pass on to summary data
 
-    # Check comparison_count
-    esci_assert_type(comparison_count, "is.numeric")
-    esci_assert_type(comparison_count, "is.whole.number")
+    # Check comparison_events
+    esci_assert_type(comparison_events, "is.numeric")
+    esci_assert_type(comparison_events, "is.whole.number")
     esci_assert_range(
-      comparison_count,
-      lower = 1,
+      comparison_events,
+      lower = 0,
       lower_inclusive = TRUE,
     )
 
@@ -97,7 +97,7 @@ estimate_pdiff_one <- function(
     esci_assert_type(comparison_n, "is.whole.number")
     esci_assert_range(
       comparison_n,
-      lower = comparison_count,
+      lower = comparison_events,
       lower_inclusive = TRUE,
     )
 
@@ -105,9 +105,9 @@ estimate_pdiff_one <- function(
 
   } else {
     # Raw data has been passed, first sure summary data is not passed
-    if(!is.null(comparison_count))  stop(
+    if(!is.null(comparison_events))  stop(
       "You have passed raw data,
-      so don't pass the 'comparison_count' parameter used for summary data.")
+      so don't pass the 'comparison_events' parameter used for summary data.")
     if(!is.null(comparison_n))  stop(
       "You have passed raw data,
       so don't pass the 'comparison_n' parameter used for summary data.")
@@ -153,7 +153,7 @@ estimate_pdiff_one <- function(
     if (is.numeric(case_level) | case_level == 1) case_level <- "Affected"
 
     estimate <- estimate_proportion(
-      counts = c(comparison_count, comparison_n - comparison_count),
+      counts = c(comparison_events, comparison_n - comparison_events),
       outcome_variable_name = outcome_variable_name,
       outcome_variable_levels = c(
         case_level,

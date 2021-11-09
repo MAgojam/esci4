@@ -39,6 +39,8 @@ test_overview_nominal <- function() {
 
   overview_nominal(dep_data, c("depression_status", "other"))
 
+  dep_data$other[2:3] <- NA
+
   overview_nominal(dep_data, depression_status, other, count_NA = TRUE)
 
 }

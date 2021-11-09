@@ -1,15 +1,15 @@
-test_overview_nominal <- function() {
+test_pdiff_one <- function() {
 
   # Esci one proportion - 8/22
   estimate_pdiff_one(
-    comparison_count = 8,
+    comparison_events = 8,
     comparison_n = 22,
     reference_p = 0.10
   )
 
 
   estimate_pdiff_one(
-    comparison_count = 8,
+    comparison_events = 8,
     comparison_n = 22,
     case_level = "Depressed",
     outcome_variable_name = "My Variable",
