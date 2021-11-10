@@ -218,8 +218,6 @@ estimate_pdiff_ind_contrast <- function(
 
 
 # Handles construction of the effect_sizes and standardized_effect_sizes tables
-#'
-#' @export
 estimate_pdiff_ind_contrast.base <- function(
   cases,
   ns,
@@ -500,7 +498,7 @@ estimate_pdiff_ind_contrast.summary <- function(
     overview_table <- rbind(
       overview_table,
       overview_nominal.summary(
-        counts = c(cases[x], ns[x] - cases[x]),
+        cases = c(cases[x], ns[x] - cases[x]),
         outcome_variable_levels = c(
           case_label,
           paste("Not ", case_label, sep = "")
@@ -700,7 +698,7 @@ Invalid groups are those with n < 2.
 
   # Dispatch only valid groups to base function
   estimate <-estimate_pdiff_ind_contrast.base(
-    cases = just_case$count,
+    cases = just_case$cases,
     ns = just_case$n,
     contrast = contrast,
     case_label = case_label,

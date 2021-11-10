@@ -2,16 +2,16 @@ test_pdiff_one <- function() {
 
   # Esci one proportion - 8/22
   estimate_pdiff_one(
-    comparison_events = 8,
+    comparison_cases = 8,
     comparison_n = 22,
     reference_p = 0.10
   )
 
 
   estimate_pdiff_one(
-    comparison_events = 8,
+    comparison_cases = 8,
     comparison_n = 22,
-    case_level = "Depressed",
+    case_label = "Depressed",
     outcome_variable_name = "My Variable",
     conf_level = 0.99
   )
@@ -37,7 +37,7 @@ test_pdiff_one <- function() {
     outcome_variable = dep_status,
     outcome_variable_name = "Something",
     reference_p = 0.10,
-    case_level = "Depressed",
+    case_label = "Depressed",
     count_NA = TRUE
   )
 
@@ -45,7 +45,7 @@ test_pdiff_one <- function() {
     outcome_variable = dep_status,
     outcome_variable_name = "Something",
     reference_p = 0.10,
-    case_level = 2,
+    case_label = 2,
     count_NA = TRUE
   )
 
@@ -71,7 +71,7 @@ test_pdiff_one <- function() {
     dep_data,
     c("depression_status", "other"),
     reference_p = 0.10,
-    case_level = 2
+    case_label = 2
   )
 
 

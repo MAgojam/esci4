@@ -8,7 +8,7 @@ overview_nominal(
   data = NULL,
   outcome_variable = NULL,
   grouping_variable = NULL,
-  counts = NULL,
+  cases = NULL,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My Outcome Variable",
   grouping_variable_name = "My Grouping Variable",
@@ -31,10 +31,10 @@ data or the name of a data-frame column containing a factor
 the vector of a factor or a data-frame column containing a factor
 }}
 
-\item{counts}{For summary data - A vector of 1 or more counts, integers>0}
+\item{cases}{For summary data - A vector of 1 or more counts, integers>0}
 
 \item{outcome_variable_levels}{For summary data - An optional vector of
-group labels, same length as counts.  If not passed, auto-generated.}
+group labels, same length as cases.  If not passed, auto-generated.}
 
 \item{outcome_variable_name}{Optional friendly name for the outcome variable.
 Defaults to 'My Outcome Variable'.  Ignored if a data-frame is passed,
@@ -60,7 +60,7 @@ nominal variable. Inputs can be summary data, vectors, or a data frame.
 # From Summary data --------------------------------------
 
 overview_nominal(
-  counts = c(10, 15, 100),
+  cases = c(10, 15, 100),
   outcome_variable_levels = c(
      "First_Years", "Second_Years", "Third_Years"
   ),

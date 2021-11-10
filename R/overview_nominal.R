@@ -11,9 +11,9 @@
 #'   data or the name of a data-frame column containing a factor
 #' @param grouping_variable - for raw data, either NULL (default), or
 #'   the vector of a factor or a data-frame column containing a factor
-#' @param counts For summary data - A vector of 1 or more counts, integers>0
+#' @param cases For summary data - A vector of 1 or more counts, integers>0
 #' @param outcome_variable_levels For summary data - An optional vector of
-#'   group labels, same length as counts.  If not passed, auto-generated.
+#'   group labels, same length as cases.  If not passed, auto-generated.
 #' @param outcome_variable_name Optional friendly name for the outcome variable.
 #'   Defaults to 'My Outcome Variable'.  Ignored if a data-frame is passed,
 #'   this argument is ignored.
@@ -32,7 +32,7 @@
 #' # From Summary data --------------------------------------
 #'
 #' overview_nominal(
-#'   counts = c(10, 15, 100),
+#'   cases = c(10, 15, 100),
 #'   outcome_variable_levels = c(
 #'      "First_Years", "Second_Years", "Third_Years"
 #'   ),
@@ -50,7 +50,7 @@ overview_nominal <- function(
   data = NULL,
   outcome_variable = NULL,
   grouping_variable = NULL,
-  counts = NULL,
+  cases = NULL,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My Outcome Variable",
   grouping_variable_name = "My Grouping Variable",
@@ -62,7 +62,7 @@ overview_nominal <- function(
 
 
   # Check to see if summary data has been passed
-  if (!is.null(counts)) {
+  if (!is.null(cases)) {
     # Summary data is passed, so check to make sure raw data not included
     if(!is.null(data))  stop(
       "You have passed summary statistics,
@@ -76,9 +76,9 @@ overview_nominal <- function(
 
   } else {
     # Raw data has been passed, first sure summary data is not passed
-    if(!is.null(counts))  stop(
+    if(!is.null(cases))  stop(
       "You have passed raw data,
-      so don't pass the 'counts' parameter used for summary data.")
+      so don't pass the 'cases' parameter used for summary data.")
     if(!is.null(outcome_variable_levels))  stop(
       "You have passed raw data,
       so don't pass the 'outcome_variable_levels' parameter used for summary data.")
@@ -168,7 +168,7 @@ overview_nominal <- function(
   } else if (analysis_type == "summary") {
     return(
       overview_nominal.summary(
-        counts = counts,
+        cases = cases,
         outcome_variable_levels = outcome_variable_levels,
         outcome_variable_name = outcome_variable_name,
         conf_level = conf_level
@@ -246,7 +246,7 @@ overview_nominal.base <- function(
       res <- as.data.frame(
         statpsych::ci.prop1(
           alpha = 1 - conf_level,
-          f = overview_table$count[x],
+          f = overview_table$cases[x],
           n = overview_table$n[x]
         )
       )
@@ -264,7 +264,7 @@ overview_nominal.base <- function(
 
 # Produces an overview table from summary data
 overview_nominal.summary <- function(
-  counts,
+  cases,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My Outcome Variable",
   conf_level = 0.95
@@ -272,24 +272,24 @@ overview_nominal.summary <- function(
 
   # Input checks      ---------------------------------------------------------
   # This function expects:
-  # counts - vector of 2 or more positive integers, no NAs
+  # cases - vector of 2 or more positive integers, no NAs
   # outcome_variable_name -
   # outcome_variable_levels -
-  #   if passed: vector of characters same length of counts
+  #   if passed: vector of characters same length of cases
   #   if not passed: auto-generated (Group1, Group2, etc.) and warning issued
 
   # The base function will check:
   #  conf_level is >0 and <1
 
-  # Check counts
-  esci_assert_type(counts, "is.numeric")
+  # Check cases
+  esci_assert_type(cases, "is.numeric")
   row_report <- esci_assert_vector_valid_length(
-    counts,
+    cases,
     lower = 2,
     lower_inclusive = TRUE,
     na.invalid = TRUE
   )
-  for (count in counts) {
+  for (count in cases) {
     esci_assert_type(count, "is.whole.number")
     esci_assert_range(
       count,
@@ -325,8 +325,8 @@ overview_nominal.summary <- function(
   overview_table <- data.frame(
     outcome_variable_name = outcome_variable_names,
     outcome_variable_level = outcome_variable_levels,
-    count = counts,
-    n = sum(counts),
+    cases = cases,
+    n = sum(cases),
     P = NA,
     P_LL = NA,
     P_UL = NA,
@@ -461,24 +461,24 @@ overview_nominal.vector <- function(
     outcome_variable_level = c(as.character(groups), "Missing")
   )
 
-  overview_table$count <- aggregate(
+  overview_table$cases <- aggregate(
     outcome_variable,
     by = list(addNA(outcome_variable)),
     drop = FALSE,
     FUN = length)[, 2]
 
-  counts <- overview_table$count
-  counts[is.na(counts)] <- 0
-  overview_table$count <- counts
+  cases <- overview_table$cases
+  cases[is.na(cases)] <- 0
+  overview_table$cases <- cases
 
   na_count <- if (count_NA)
     0
   else
-    overview_table$count[nrow(overview_table)]
+    overview_table$cases[nrow(overview_table)]
 
-  overview_table$n <- sum(overview_table$count,na.rm = TRUE) - na_count
+  overview_table$n <- sum(overview_table$cases,na.rm = TRUE) - na_count
 
-  if (overview_table$count[nrow(overview_table)] == 0) {
+  if (overview_table$cases[nrow(overview_table)] == 0) {
     overview_table <- head(overview_table, -1)
   } else {
     if (!count_NA) overview_table$n[nrow(overview_table)] <- NA

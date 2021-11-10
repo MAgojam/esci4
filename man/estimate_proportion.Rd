@@ -7,8 +7,8 @@
 estimate_proportion(
   data = NULL,
   outcome_variable = NULL,
-  counts = NULL,
-  case_level = 1,
+  cases = NULL,
+  case_label = 1,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My outcome variable",
   conf_level = 0.95,
@@ -21,9 +21,9 @@ estimate_proportion(
 \item{outcome_variable}{For raw data - The column name of the outcome
 variable, which must be a factor, or a vector that is a factor}
 
-\item{counts}{For summary data - A vector of counts}
+\item{cases}{For summary data - A vector of cases}
 
-\item{case_level}{A numeric or string indicating which level
+\item{case_label}{A numeric or string indicating which level
 of the factor to estimate.  Defaults to 1, meaning first level is analyzed}
 
 \item{outcome_variable_levels}{For summary data - optional vector of 2

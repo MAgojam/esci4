@@ -7,8 +7,8 @@
 #' @param data For raw data - a dataframe or tibble
 #' @param outcome_variable For raw data - The column name of the outcome
 #'   variable, which must be a factor, or a vector that is a factor
-#' @param counts For summary data - A vector of counts
-#' @param case_level A numeric or string indicating which level
+#' @param cases For summary data - A vector of cases
+#' @param case_label A numeric or string indicating which level
 #'   of the factor to estimate.  Defaults to 1, meaning first level is analyzed
 #' @param outcome_variable_levels For summary data - optional vector of 2
 #'   characters indicating name of the count level and name of the not count
@@ -39,8 +39,8 @@
 estimate_proportion <- function(
   data = NULL,
   outcome_variable = NULL,
-  counts = NULL,
-  case_level = 1,
+  cases = NULL,
+  case_label = 1,
   outcome_variable_levels = NULL,
   outcome_variable_name = "My outcome variable",
   conf_level = 0.95,
@@ -48,7 +48,7 @@ estimate_proportion <- function(
 ) {
 
   analysis_type <- "Undefined"
-  if (is.null(counts)) {
+  if (is.null(cases)) {
     if (is.null(data)) {
       analysis_type <- "vector"
     } else {
@@ -83,7 +83,7 @@ estimate_proportion <- function(
             data = data,
             outcome_variable = ocv,
             outcome_variable_name = ocv,
-            case_level = case_level,
+            case_label = case_label,
             conf_level = conf_level,
             count_NA = count_NA
           )
@@ -112,35 +112,35 @@ estimate_proportion <- function(
   estimate$overview <- overview_nominal(
     data = data,
     outcome_variable = outcome_variable,
-    counts = counts,
+    cases = cases,
     outcome_variable_levels = outcome_variable_levels,
     outcome_variable_name = outcome_variable_name,
     conf_level = conf_level,
     count_NA = count_NA
   )
 
-  if (is.null(case_level)) {
-    case_level = 1
+  if (is.null(case_label)) {
+    case_label = 1
   }
 
-  if (is.character(case_level)) {
-    if (case_level %in% estimate$overview$outcome_variable_level) {
+  if (is.character(case_label)) {
+    if (case_label %in% estimate$overview$outcome_variable_level) {
       estimate$es_proportion <- estimate$overview[
-        estimate$overview$outcome_variable_level == case_level,
+        estimate$overview$outcome_variable_level == case_label,
       ]
       if (nrow(estimate$es_proportion) != 1) {
-        stop("case_level did not match 1 level from outcome_variable -- improve this message")
+        stop("case_label did not match 1 level from outcome_variable -- improve this message")
       }
     } else {
-      stop ("case_level not found in outcome_variable levels -- improve this message")
+      stop ("case_label not found in outcome_variable levels -- improve this message")
     }
   } else {
-    if (case_level > nrow(estimate$overview)) {
-      stop("case_level exceeds number of levels in outcome_variable -- improve this message")
+    if (case_label > nrow(estimate$overview)) {
+      stop("case_label exceeds number of levels in outcome_variable -- improve this message")
     }
-    estimate$es_proportion <- estimate$overview[case_level, ]
+    estimate$es_proportion <- estimate$overview[case_label, ]
     if (nrow(estimate$es_proportion) != 1) {
-      stop("case_level did not match 1 level from outcome_variable -- improve this message")
+      stop("case_label did not match 1 level from outcome_variable -- improve this message")
     }
   }
 

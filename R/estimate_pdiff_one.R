@@ -7,10 +7,10 @@
 #' @param data For raw data - a dataframe or tibble
 #' @param outcome_variable For raw data - The column name of the outcome
 #'   variable, which must be a factor, or a vector that is a factor
-#' @param comparison_events For summary data, a numeric integer > 0
+#' @param comparison_cases For summary data, a numeric integer > 0
 #' @param comparison_n For summary data, a numeric integer >= count
 #' @param reference_p Reference proportion, numeric >=0 and <=1
-#' @param case_level An optional numeric or character label for the
+#' @param case_label An optional numeric or character label for the
 #'   count level.
 #' @param outcome_variable_name Optional friendly name for the outcome variable.
 #'   Defaults to 'My outcome variable' or the outcome variable column name if a
@@ -39,10 +39,10 @@
 estimate_pdiff_one <- function(
   data = NULL,
   outcome_variable = NULL,
-  comparison_events = NULL,
+  comparison_cases = NULL,
   comparison_n = NULL,
   reference_p = 0,
-  case_level = 1,
+  case_label = 1,
   outcome_variable_name = "My outcome variable",
   conf_level = 0.95,
   count_NA = FALSE
@@ -51,7 +51,7 @@ estimate_pdiff_one <- function(
 
   # Check inputs -----------------------------------------------
   # * reference_p should be a numeric >= 0 and <= 1
-  # * comparison_events should be a numeric integer > 0
+  # * comparison_cases should be a numeric integer > 0
   # * comparison_n should be a numeric integer >= count
   # * all other inputs checked when dispatched to estimate_proportion
 
@@ -72,7 +72,7 @@ estimate_pdiff_one <- function(
   analysis_type <- "Undefined"
 
   # Check to see if summary data has been passed
-  if (!is.null(comparison_events)) {
+  if (!is.null(comparison_cases)) {
     # Summary data is passed, so check to make sure raw data not included
     if(!is.null(data))  stop(
       "You have passed summary statistics,
@@ -83,11 +83,11 @@ estimate_pdiff_one <- function(
 
     # Looks good, we can pass on to summary data
 
-    # Check comparison_events
-    esci_assert_type(comparison_events, "is.numeric")
-    esci_assert_type(comparison_events, "is.whole.number")
+    # Check comparison_cases
+    esci_assert_type(comparison_cases, "is.numeric")
+    esci_assert_type(comparison_cases, "is.whole.number")
     esci_assert_range(
-      comparison_events,
+      comparison_cases,
       lower = 0,
       lower_inclusive = TRUE,
     )
@@ -97,7 +97,7 @@ estimate_pdiff_one <- function(
     esci_assert_type(comparison_n, "is.whole.number")
     esci_assert_range(
       comparison_n,
-      lower = comparison_events,
+      lower = comparison_cases,
       lower_inclusive = TRUE,
     )
 
@@ -105,9 +105,9 @@ estimate_pdiff_one <- function(
 
   } else {
     # Raw data has been passed, first sure summary data is not passed
-    if(!is.null(comparison_events))  stop(
+    if(!is.null(comparison_cases))  stop(
       "You have passed raw data,
-      so don't pass the 'comparison_events' parameter used for summary data.")
+      so don't pass the 'comparison_cases' parameter used for summary data.")
     if(!is.null(comparison_n))  stop(
       "You have passed raw data,
       so don't pass the 'comparison_n' parameter used for summary data.")
@@ -149,15 +149,15 @@ estimate_pdiff_one <- function(
   # Dispatch to estimate_proportion
 
   if (analysis_type == "summary") {
-    if (is.null(case_level)) case_level <- "Affected"
-    if (is.numeric(case_level) | case_level == 1) case_level <- "Affected"
+    if (is.null(case_label)) case_label <- "Affected"
+    if (is.numeric(case_label) | case_label == 1) case_label <- "Affected"
 
     estimate <- estimate_proportion(
-      counts = c(comparison_events, comparison_n - comparison_events),
+      cases = c(comparison_cases, comparison_n - comparison_cases),
       outcome_variable_name = outcome_variable_name,
       outcome_variable_levels = c(
-        case_level,
-        paste("Not", case_level, sep = " ")
+        case_label,
+        paste("Not", case_label, sep = " ")
       ),
       conf_level = conf_level,
       count_NA = count_NA
@@ -170,7 +170,7 @@ estimate_pdiff_one <- function(
     estimate <- estimate_proportion(
       outcome_variable = outcome_variable,
       outcome_variable_name = outcome_variable_name,
-      case_level = case_level,
+      case_label = case_label,
       conf_level = conf_level,
       count_NA = count_NA
     )
@@ -179,7 +179,7 @@ estimate_pdiff_one <- function(
       data = data,
       outcome_variable = outcome_variable,
       outcome_variable_name = outcome_variable_name,
-      case_level = case_level,
+      case_label = case_label,
       conf_level = conf_level,
       count_NA = count_NA
     )
@@ -188,7 +188,7 @@ estimate_pdiff_one <- function(
       data = data,
       outcome_variables = outcome_variable,
       reference_p = reference_p,
-      case_level = case_level,
+      case_label = case_label,
       conf_level = conf_level,
       count_NA = count_NA
     )
@@ -200,9 +200,9 @@ estimate_pdiff_one <- function(
 
     # Store some info from the results ------------------
     comparison_p = estimate$es_proportion$effect_size
-    case_level <- estimate$es_proportion$effect
-    comparison_label <- paste(outcome_variable_name, " P_", case_level, sep = "")
-    reference_label <- paste("Reference P_", case_level, sep = "")
+    case_label <- estimate$es_proportion$effect
+    comparison_label <- paste(outcome_variable_name, " P_", case_label, sep = "")
+    reference_label <- paste("Reference P_", case_label, sep = "")
     effect_label = paste(
       comparison_label,
       "-",
@@ -265,7 +265,7 @@ estimate_pdiff_one.jamovi <- function(
   data,
   outcome_variables,
   reference_p = 0,
-  case_level = 1,
+  case_label = 1,
   conf_level = 0.95,
   count_NA = FALSE
 ) {
@@ -281,7 +281,7 @@ estimate_pdiff_one.jamovi <- function(
       data = data,
       outcome_variable = outcome_variable,
       reference_p = reference_p,
-      case_level = case_level,
+      case_label = case_label,
       conf_level = conf_level,
       count_NA = count_NA
     )

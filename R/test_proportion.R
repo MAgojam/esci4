@@ -2,7 +2,7 @@ test_proportion <- function() {
 
   # Esci one proportion - 8/22
   estimate_proportion(
-    counts = c(8, 22-8)
+    cases = c(8, 22-8)
   )
   # Should yield:
   #outcome_variable_name outcome_variable_level count  n         P      P_LL      P_UL       P_SE
@@ -10,8 +10,8 @@ test_proportion <- function() {
 
 
   estimate_proportion(
-    counts = c(8, 22-8),
-    case_level = 2,
+    cases = c(8, 22-8),
+    case_label = 2,
     outcome_variable_name = "My Variable",
     outcome_variable_levels = c("Affected", "Not Affected"),
     conf_level = 0.99
@@ -32,7 +32,7 @@ test_proportion <- function() {
   estimate_proportion(
     outcome_variable = dep_status,
     outcome_variable_name = "Something",
-    case_level = "Depressed",
+    case_label = "Depressed",
     count_NA = TRUE
   )
 
@@ -44,7 +44,7 @@ test_proportion <- function() {
 
   estimate_proportion(dep_data, depression_status, count_NA = TRUE)
   estimate_proportion(dep_data, "depression_status", count_NA = TRUE)
-  estimate <- estimate_proportion(dep_data, c("depression_status", "other"), case_level = 2)
+  estimate <- estimate_proportion(dep_data, c("depression_status", "other"), case_label = 2)
 
 
 }
