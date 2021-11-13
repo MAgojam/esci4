@@ -12,12 +12,13 @@ estimate_pdiff_two(
   comparison_n = NULL,
   reference_cases = NULL,
   reference_n = NULL,
-  outcome_variable_levels = NULL,
+  case_label = 1,
+  not_case_label = NULL,
   grouping_variable_levels = NULL,
   outcome_variable_name = "My outcome variable",
   grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
-  count_NA = count_NA
+  count_NA = FALSE
 )
 }
 \arguments{
@@ -37,9 +38,6 @@ variable which is a factor, or a vector that is a factor}
 
 \item{reference_n}{For summary data, a numeric integer >= reference_events}
 
-\item{outcome_variable_levels}{For summary data - An optional vector of
-2 outcome labels}
-
 \item{grouping_variable_levels}{For summary data - An optional vector of
 2 group labels}
 
@@ -55,6 +53,9 @@ column name if a data.frame is passed.}
 decimal form.  Defaults to 0.95.}
 
 \item{count_NA}{}
+
+\item{outcome_variable_levels}{For summary data - An optional vector of
+2 outcome labels}
 }
 \value{
 Returnsobject of class esci_estimate

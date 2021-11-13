@@ -15,8 +15,10 @@
 #' @param comparison_n For summary data, a numeric integer >= comparison_events
 #' @param reference_cases For summary data, a numeric integer >= 0
 #' @param reference_n For summary data, a numeric integer >= reference_events
-#' @param outcome_variable_levels For summary data - An optional vector of
-#'   2 outcome labels
+#' @param case_label An optional numeric or character label for the
+#'   case level.
+#' @param not_case_label An optional numeric or character label for the
+#'   not case level.
 #' @param grouping_variable_levels For summary data - An optional vector of
 #'   2 group labels
 #' @param outcome_variable_name Optional friendly name for the outcome variable.
