@@ -12,7 +12,9 @@ test_mdiff_paired <- function() {
     reference_mean = 12.88,
     reference_sd = 3.4,
     n = 16,
-    correlation = 0.87072223749
+    correlation = 0.87072223749,
+    comparison_measure_name = "Before",
+    reference_measure_name = "After"
   )
 
 

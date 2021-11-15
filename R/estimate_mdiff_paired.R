@@ -17,9 +17,10 @@
 #' @param reference_sd For summary data, numeric > 0
 #' @param n For summary data, a numeric integer > 0
 #' @param correlation For summary data, correlation between measures, numeric > -1 and < 1
-#' @param grouping_variable_levels For summary data - An optional vector of
-#'   2 group labels.  Defaults to the names of the comparison and reference
-#'   measures, if passed.
+#' @param comparison_measure_name For summary data - An optional character
+#'  label for the comparison measure.  Defaults to 'Comparison measure'
+#' @param reference_measure_name For summary data - An optional character
+#'  label for the reference measure.  Defaults to 'Reference measure'
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
 #' @param save_raw_data For raw data; defaults to TRUE; set to FALSE to save
@@ -54,7 +55,8 @@ estimate_mdiff_paired <- function(
   reference_sd = NULL,
   n = NULL,
   correlation = NULL,
-  grouping_variable_levels = c("Comparison measure", "Reference measure"),
+  comparison_measure_name = "Comparison measure",
+  reference_measure_name = "Reference measure",
   conf_level = 0.95,
   save_raw_data = TRUE
 ) {
@@ -165,16 +167,7 @@ estimate_mdiff_paired <- function(
       )
     )
   } else if (analysis_type == "jamovi") {
-    return(
-      estimate_mdiff_paired.jamovi(
-        data = data,
-        comparison_measure = comparison_measure,
-        reference_measure = reference_measure,
-        conf_level = conf_level,
-        save_raw_data = save_raw_data
-      )
-    )
-
+    stop("Not implemented yet - or ever?")
 
   } else if (analysis_type == "summary") {
     return(
@@ -185,16 +178,20 @@ estimate_mdiff_paired <- function(
         reference_sd = reference_sd,
         n = n,
         correlation = correlation,
-        grouping_variable_levels = grouping_variable_levels,
+        grouping_variable_levels = c(
+          comparison_measure_name,
+          reference_measure_name
+        ),
         conf_level = conf_level
       )
     )
   } else if (analysis_type == "vector") {
-    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 1 | grouping_variable_levels[1] == "Comparison measure") {
+    grouping_variable_levels <- c(NULL, NULL)
+    if (is.null(comparison_measure_name) | comparison_measure_name == "Comparison measure") {
       grouping_variable_levels[1] <- deparse(substitute(comparison_measure))
     }
 
-    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 2 | grouping_variable_levels[2] == "Reference measure") {
+    if (is.null(reference_measure_name) | reference_measure_name == "Reference measure") {
       grouping_variable_levels[2] <- deparse(substitute(reference_measure))
     }
 
@@ -509,12 +506,3 @@ estimate_mdiff_paired.data.frame <- function(
 }
 
 
-estimate_mdiff_paired.jamovi <- function(
-  data,
-  comparison_measure,
-  reference_measure,
-  conf_level = conf_level,
-  save_raw_data = save_raw_data
-) {
-
-}

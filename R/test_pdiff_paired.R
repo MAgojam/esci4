@@ -15,9 +15,8 @@ test_pdiff_paired <- function() {
     not_cases_inconsistent = 22,
     case_label = "Answered True",
     not_case_label = "Answered False",
-    grouping_variable_levels = c("9th grade", "12th grade"),
-    outcome_variable_name = "Test Response",
-    grouping_variable_name = "Grade level",
+    comparison_measure_name = "9th grade",
+    reference_measure_name = "12th grade",
     conf_level = 0.95
   )
 
@@ -114,10 +113,18 @@ test_pdiff_paired <- function() {
     "after" = post_test
   )
 
-  estimate_pdiff_paired(
+  estimate <- estimate_pdiff_paired(
     data = d_treat,
     reference_measure = "before",
     comparison_measure = "after",
+    case_label = "No Answer",
+    count_NA = TRUE
+  )
+
+  # As a vector
+  estimate <- estimate_pdiff_paired(
+    reference_measure = pre_test,
+    comparison_measure = post_test,
     case_label = "No Answer"
   )
 

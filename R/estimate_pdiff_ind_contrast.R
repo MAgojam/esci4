@@ -346,6 +346,8 @@ The contrast passed was: {passed_contrast}.
       )
     )
 
+    res$Estimate <- sum(mycontrast*(cases/ns))
+
     es_proportion_difference <- rbind(
       es_proportion_difference,
       res

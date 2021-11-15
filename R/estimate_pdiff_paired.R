@@ -25,12 +25,10 @@
 #'   not case level.
 #' @param grouping_variable_levels For summary data - An optional vector of
 #'   2 group labels.  Defaults to the 'Reference measure' and 'Comparison measure'
-#' @param outcome_variable_name Optional friendly name for the outcome variable.
-#'   Defaults to 'My outcome variable' or the outcome variable column name if a
-#'   data frame is passed.
-#' @param grouping_variable_name Optional friendly name for the grouping
-#'   variable.  Defaults to 'My grouping variable' or the grouping variable
-#'   column name if a data.frame is passed.
+#' @param comparison_measure_name For summary data - An optional character
+#'  label for the comparison measure.  Defaults to 'Comparison measure'
+#' @param reference_measure_name For summary data - An optional character
+#'  label for the reference measure.  Defaults to 'Reference measure'
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
 #' @param count_NA Logical to count NAs (TRUE) in total N or not (FALSE)
@@ -62,9 +60,8 @@ estimate_pdiff_paired <- function(
   not_cases_inconsistent = NULL,
   case_label = 1,
   not_case_label = NULL,
-  grouping_variable_levels = c("Comparison measure", "Reference measure"),
-  outcome_variable_name = "My outcome variable",
-  grouping_variable_name = "My grouping variable",
+  comparison_measure_name = "Comparison measure",
+  reference_measure_name = "Reference measure",
   conf_level = 0.95,
   count_NA = FALSE
 ) {
@@ -176,18 +173,7 @@ estimate_pdiff_paired <- function(
       )
     )
   } else if (analysis_type == "jamovi") {
-    return(
-      estimate_pdiff_paired.jamovi(
-        data = data,
-        comparison_measure = comparison_measure,
-        reference_measure = reference_measure,
-        case_label = case_label,
-        conf_level = conf_level,
-        count_NA = count_NA
-      )
-    )
-
-
+    stop("Not implemented yet")
   } else if (analysis_type == "summary") {
     return(
       estimate_pdiff_paired.summary(
@@ -197,28 +183,28 @@ estimate_pdiff_paired <- function(
         not_cases_inconsistent = not_cases_inconsistent,
         case_label = case_label,
         not_case_label = not_case_label,
-        grouping_variable_levels = grouping_variable_levels,
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
+        comparison_measure_name = comparison_measure_name,
+        reference_measure_name = reference_measure_name,
         conf_level = conf_level
       )
     )
   } else if (analysis_type == "vector") {
-    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 1 | grouping_variable_levels[1] == "Comparison measure") {
-      grouping_variable_levels[1] <- deparse(substitute(comparison_measure))
+
+    if (is.null(comparison_measure_name) | comparison_measure_name == "Comparison measure") {
+      comparison_measure_name <- deparse(substitute(comparison_measure))
     }
 
-    if (is.null(grouping_variable_levels) | length(grouping_variable_levels) < 2 | grouping_variable_levels[2] == "Reference measure") {
-      grouping_variable_levels[2] <- deparse(substitute(reference_measure))
+    if (is.null(reference_measure_name) | reference_measure_name == "Reference measure") {
+      reference_measure_name <- deparse(substitute(reference_measure))
     }
 
     return(
-      estimate_mdiff_paired.vector(
+      estimate_pdiff_paired.vector(
         comparison_measure = comparison_measure,
         reference_measure = reference_measure,
         case_label = case_label,
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
+        comparison_measure_name = comparison_measure_name,
+        reference_measure_name = reference_measure_name,
         conf_level = conf_level,
         count_NA = count_NA
       )
@@ -238,9 +224,8 @@ estimate_pdiff_paired.summary <- function(
   not_cases_inconsistent = NULL,
   case_label = "Affected",
   not_case_label = "Not affected",
-  grouping_variable_levels = c("Comparison measure", "Reference measure"),
-  outcome_variable_name = "My outcome variable",
-  grouping_variable_name = "My grouping variable",
+  comparison_measure_name = "Comparison measure",
+  reference_measure_name = "Reference measure",
   conf_level = 0.95
 ) {
 
@@ -261,7 +246,12 @@ estimate_pdiff_paired.summary <- function(
   esci_assert_range(not_cases_inconsistent, lower = 0, lower_inclusive = TRUE)
 
   # Check labels
-
+  if (is.null(case_label) | is.numeric(case_label)) {
+    case_label <- "Affected"
+  }
+  if (is.null(not_case_label)) {
+    not_case_label <- paste("Not ", case_label, sep = "")
+  }
 
   # Initialize -----------------------------
   n <- sum(
@@ -280,6 +270,7 @@ estimate_pdiff_paired.summary <- function(
   )
 
   # Analysis --------------------------
+  # analyze as a two-group design
   estimate <- estimate_pdiff_two(
     comparison_cases = comparison_cases,
     comparison_n = n,
@@ -287,12 +278,14 @@ estimate_pdiff_paired.summary <- function(
     reference_n = n,
     case_label = case_label,
     not_case_label = not_case_label,
-    grouping_variable_levels = grouping_variable_levels,
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name,
+    grouping_variable_levels = c(
+      comparison_measure_name,
+      reference_measure_name
+    ),
     conf_level = conf_level
   )
 
+  # Replace estimated difference based on paired design
   pdiff_row <- as.data.frame(
     statpsych::ci.prop.ps(
       alpha = 1 - conf_level,
@@ -303,9 +296,32 @@ estimate_pdiff_paired.summary <- function(
     )
   )
 
-  estimate$es_proportion_difference[3, c("effect_size", "LL", "UL", "SE")] <-
-    pdiff_row[ , c("Estimate", "LL", "UL", "SE")]
+  estimate$es_proportion_difference[3, c("LL", "UL", "SE")] <-
+    pdiff_row[ , c("LL", "UL", "SE")]
 
+  cancel_columns <- c(
+    "outcome_variable_name", "grouping_variable_name"
+  )
+  estimate$es_proportion_difference[ , cancel_columns] <- NULL
+
+
+  estimate$overview <- rbind(
+    overview_nominal.summary(
+      cases = c(comparison_cases, n-comparison_cases),
+      outcome_variable_levels = c(case_label, not_case_label),
+      outcome_variable_name = comparison_measure_name,
+      conf_level = conf_level
+    ),
+    overview_nominal.summary(
+      cases = c(reference_cases, n-reference_cases),
+      outcome_variable_levels = c(case_label, not_case_label),
+      outcome_variable_name = reference_measure_name,
+      conf_level = conf_level
+    )
+  )
+
+
+  # Phi
   estimate$es_phi <- as.data.frame(
     statpsych::ci.phi(
       alpha = 1 - conf_level,
@@ -321,12 +337,12 @@ estimate_pdiff_paired.summary <- function(
   estimate$es_phi$SE_temp <- NULL
 
   estimate$es_phi <- cbind(
-    outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name,
+    "outcome_variable_1" = comparison_measure_name,
+    "outcome_variable_2" = reference_measure_name,
     effect = paste(
-      outcome_variable_name,
-      " with ",
-      grouping_variable_name,
+      comparison_measure_name,
+      " related to ",
+      reference_measure_name,
       sep = ""
     ),
     estimate$es_phi
@@ -346,26 +362,15 @@ estimate_pdiff_paired.vector <- function(
   comparison_measure,
   reference_measure,
   case_label = 1,
-  grouping_variable_levels = NULL,
-  outcome_variable_name = "My outcome variable",
-  grouping_variable_name = "My grouping variable",
+  comparison_measure_name = "Comparison measure",
+  reference_measure_name = "Reference measure",
   conf_level = 0.95,
   count_NA = FALSE
 ) {
 
 
   # Input checks -------------------------------------
-  # Check comparison_measure
 
-  if (comparison_measure_report$valid != reference_measure_report$valid) {
-    # vectors not of same length!
-    msg <- glue::glue("
-The comparison_measure and reference_measure are not the same length.
-The comparison_measure has {comparison_measure_report$valid} valid values;
-The outcome_variable length is {reference_measure_report$valid} valid values.
-    ")
-    stop(msg)
-  }
 
   # Initialize -----------------------
 
@@ -375,14 +380,13 @@ The outcome_variable length is {reference_measure_report$valid} valid values.
     "comparison_measure" = comparison_measure,
     "reference_measure" = reference_measure
   )
-  colnames(mydf) <- grouping_variable_levels
+  colnames(mydf) <- c(comparison_measure_name, reference_measure_name)
 
   estimate <- estimate_pdiff_paired.data.frame(
     data = mydf,
-    comparison_measure = grouping_variable_levels[1],
-    reference_measure = grouping_variable_levels[2],
+    comparison_measure = comparison_measure_name,
+    reference_measure = reference_measure_name,
     case_label = case_label,
-    grouping_variable_levels = grouping_variable_levels,
     conf_level = conf_level,
     count_NA = count_NA
   )
@@ -509,7 +513,8 @@ case_label must be either a numeric or a valid level from data[[reference_measur
     not_cases_inconsistent = not_cases_inconsistent,
     case_label = case_label,
     not_case_label = paste("Not", case_label, sep = " "),
-    grouping_variable_levels = c(comparison_measure, reference_measure),
+    comparison_measure_name = comparison_measure,
+    reference_measure_name = reference_measure,
     conf_level = conf_level
   )
 
@@ -532,19 +537,9 @@ case_label must be either a numeric or a valid level from data[[reference_measur
 
   # Update estimate properties
   estimate$properties$data_type <- "data.frame"
-  estimate$properties$data_source <- deparse(substitute(data))
+  #estimate$properties$data_source <- deparse(substitute(data))
 
   return(estimate)
 
 }
 
-
-estimate_mdiff_paired.jamovi <- function(
-  data,
-  comparison_measure,
-  reference_measure,
-  case_label,
-  conf_level = conf_level
-) {
-
-}
