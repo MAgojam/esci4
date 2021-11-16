@@ -44,7 +44,7 @@
 #'
 #' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 #' estimate_mdiff_ind_contrast(
-#'  PlantGrowth,
+#'  datasets::PlantGrowth,
 #'  weight,
 #'  group,
 #'  contrast = c('ctrl' = -1, 'trt1' = 1)

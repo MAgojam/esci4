@@ -53,7 +53,7 @@ nominal variable.
 
 # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 estimate_proportion(
- PlantGrowth,
+ datasets::PlantGrowth,
  group
 )
 

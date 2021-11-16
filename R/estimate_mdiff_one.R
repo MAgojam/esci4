@@ -30,7 +30,7 @@
 #'
 #' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 #' estimate_mdiff_one(
-#'  PlantGrowth,
+#'  datasets::PlantGrowth,
 #'  weight,
 #'  reference_mean = 2
 #' )

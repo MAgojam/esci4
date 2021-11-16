@@ -29,7 +29,7 @@
 #'   column name if a data.frame is passed.
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
-#' @param count_NA
+#' @param count_NA Logical to count NAs (TRUE) in total N or not (FALSE)
 #'
 #'
 #' @return Returnsobject of class esci_estimate
@@ -42,7 +42,7 @@
 #'
 #' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 #' estimate_mdiff_two(
-#'  PlantGrowth[PlantGrowth$group != 'trt2', ],
+#'  datasets::PlantGrowth[PlantGrowth$group != 'trt2', ],
 #'  weight,
 #'  group
 #' )

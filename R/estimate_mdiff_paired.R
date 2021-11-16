@@ -29,9 +29,6 @@
 #'
 #' @return Returns object of class esci_estimate
 #'
-#' @importFrom statpsych ci.ratio.mean2
-#' @importFrom statpsych ci.ratio.median2
-#' @importFrom stats cor
 #' @examples
 #' # From Raw Data ------------------------------------
 #' # Just pass in the data source, grouping column, and outcome column.
@@ -39,7 +36,7 @@
 #'
 #' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 #' estimate_mdiff_paired(
-#'  iris,
+#'  datasets::iris,
 #'  Sepal.Length,
 #'  Petal.Length
 #' )

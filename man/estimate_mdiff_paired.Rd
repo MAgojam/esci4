@@ -14,7 +14,8 @@ estimate_mdiff_paired(
   reference_sd = NULL,
   n = NULL,
   correlation = NULL,
-  grouping_variable_levels = c("Comparison measure", "Reference measure"),
+  comparison_measure_name = "Comparison measure",
+  reference_measure_name = "Reference measure",
   conf_level = 0.95,
   save_raw_data = TRUE
 )
@@ -40,9 +41,11 @@ measure of the outcome variable, or a vector of numeric data}
 
 \item{correlation}{For summary data, correlation between measures, numeric > -1 and < 1}
 
-\item{grouping_variable_levels}{For summary data - An optional vector of
-2 group labels.  Defaults to the names of the comparison and reference
-measures, if passed.}
+\item{comparison_measure_name}{For summary data - An optional character
+label for the comparison measure.  Defaults to 'Comparison measure'}
+
+\item{reference_measure_name}{For summary data - An optional character
+label for the reference measure.  Defaults to 'Reference measure'}
 
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}
@@ -65,7 +68,7 @@ difference between two related quantiative measures.
 
 # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 estimate_mdiff_paired(
- iris,
+ datasets::iris,
  Sepal.Length,
  Petal.Length
 )

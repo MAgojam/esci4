@@ -254,7 +254,7 @@ wrapper_ci_ratio.2 <- function(
 
   if(mean_or_median == "mean") {
     es_ratio <- as.data.frame(
-      statpsych::ci.ratio.mean.2(
+      statpsych::ci.ratio.mean2(
         alpha = 1 - conf_level,
         y1 = comparison_measure,
         y2 = reference_measure
@@ -264,7 +264,7 @@ wrapper_ci_ratio.2 <- function(
     esci_cols <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")
   } else if (mean_or_median == "median") {
     es_ratio <- as.data.frame(
-      statpsych::ci.ratio.median.2(
+      statpsych::ci.ratio.median2(
         alpha = 1 - conf_level,
         y1 = comparison_measure,
         y2 = reference_measure

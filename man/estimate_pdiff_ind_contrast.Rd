@@ -57,7 +57,7 @@ decimal form.  Defaults to 0.95.}
 \item{count_NA}{Logical to count NAs (TRUE) in total N or not (FALSE)}
 }
 \value{
-Returnsobject of class esci_estimate
+Returns object of class esci_estimate
 }
 \description{
 \loadmathjax
@@ -65,11 +65,13 @@ Returnsobject of class esci_estimate
 confidence interval for the proportion difference in a linear contrast.
 }
 \examples{
-# From Raw Data ------------------------------------
-# Just pass in the data source, grouping column, and outcome column.
-# You can pass these in by position, skipping the labels:
+# From Summary Data ------------------------------------
 
 estimate_pdiff_ind_contrast(
+  cases = c(26, 24, 38),
+  ns = c(60, 60, 60),
+  contrast = c(1/2, 1/2, -1),
+  grouping_variable_levels = c("Therapy", "Drug", "Control")
 )
 
 }

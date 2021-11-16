@@ -38,6 +38,12 @@ variable which is a factor, or a vector that is a factor}
 
 \item{reference_n}{For summary data, a numeric integer >= reference_events}
 
+\item{case_label}{An optional numeric or character label for the
+case level.}
+
+\item{not_case_label}{An optional numeric or character label for the
+not case level.}
+
 \item{grouping_variable_levels}{For summary data - An optional vector of
 2 group labels}
 
@@ -52,10 +58,7 @@ column name if a data.frame is passed.}
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}
 
-\item{count_NA}{}
-
-\item{outcome_variable_levels}{For summary data - An optional vector of
-2 outcome labels}
+\item{count_NA}{Logical to count NAs (TRUE) in total N or not (FALSE)}
 }
 \value{
 Returnsobject of class esci_estimate
@@ -72,7 +75,7 @@ two independent measures of a proportion
 
 # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 estimate_mdiff_two(
- PlantGrowth[PlantGrowth$group != 'trt2', ],
+ datasets::PlantGrowth[PlantGrowth$group != 'trt2', ],
  weight,
  group
 )

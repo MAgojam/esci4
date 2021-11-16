@@ -1,6 +1,6 @@
 # Check for class estimate
 # This function checks if x is an esci_estimate
-#' @importFrom methods is
+
 is.estimate <- function(x)  {
   is(x, "esci_estimate")
 }

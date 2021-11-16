@@ -29,7 +29,7 @@
 #'
 #' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 #' estimate_magnitude(
-#'  PlantGrowth,
+#'  datasets::PlantGrowth,
 #'  weight
 #' )
 #'

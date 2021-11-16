@@ -205,6 +205,7 @@ CI_smd_ind_contrast(
   correct_bias = FALSE
 )
 
+
 }
 \references{
 \itemize{

@@ -188,7 +188,6 @@
 #'   correct_bias = FALSE
 #' )
 #'
-#' @importFrom stats qnorm
 #'
 #' @export
 CI_smd_ind_contrast <- function(

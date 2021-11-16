@@ -12,9 +12,12 @@ estimate_pdiff_paired(
   cases_inconsistent = NULL,
   not_cases_consistent = NULL,
   not_cases_inconsistent = NULL,
-  case_level = NULL,
-  grouping_variable_levels = c("Comparison measure", "Reference measure"),
-  conf_level = 0.95
+  case_label = 1,
+  not_case_label = NULL,
+  comparison_measure_name = "Comparison measure",
+  reference_measure_name = "Reference measure",
+  conf_level = 0.95,
+  count_NA = FALSE
 )
 }
 \arguments{
@@ -26,18 +29,34 @@ be the column name of a data frame of a vector.}
 \item{reference_measure}{For raw data - The reference measure, a factor.  Can
 be the column name of a data frame of a vector.}
 
-\item{cases_consistent}{Cases}
+\item{cases_consistent}{Count of \emph{cases} in measure 1 that \emph{are} also cases at
+measure 2; measure 1 = 0, measure 2 = 0; cell 0_0}
 
-\item{cases_inconsistent}{Cases}
+\item{cases_inconsistent}{Count of \emph{cases} in measure 1 that are \emph{not} cases at
+measure 2; measure 1 = 0, measure 2 = 1; cell 0_1}
 
-\item{grouping_variable_levels}{For summary data - An optional vector of
-2 group labels.  Defaults to the names of the comparison and reference
-measures, if passed.}
+\item{not_cases_consistent}{Count of \emph{not cases} in measure 1 that \emph{are} also
+not cases at measure 2; measure 1 = 1, measure 2 = 1, cell 1_1}
+
+\item{not_cases_inconsistent}{Count of \emph{not cases} in measure 1 that are \emph{not}
+cases at measure 2; measure 1 = 1, measure 2 = 0, cell 1_0}
+
+\item{case_label}{An optional numeric or character label for the
+case level.}
+
+\item{not_case_label}{An optional numeric or character label for the
+not case level.}
+
+\item{comparison_measure_name}{For summary data - An optional character
+label for the comparison measure.  Defaults to 'Comparison measure'}
+
+\item{reference_measure_name}{For summary data - An optional character
+label for the reference measure.  Defaults to 'Reference measure'}
 
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}
 
-\item{case_label}{Cases}
+\item{count_NA}{Logical to count NAs (TRUE) in total N or not (FALSE)}
 }
 \value{
 Returns object of class esci_estimate

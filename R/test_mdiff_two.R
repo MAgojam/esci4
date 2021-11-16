@@ -131,7 +131,7 @@ test_mdiff_two <- function() {
   )
 
   estimate_mdiff_two(
-    data = PlantGrowth,
+    data = datasets::PlantGrowth,
     outcome_variable = "weight",
     grouping_variable = "group"
   )

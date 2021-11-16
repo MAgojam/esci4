@@ -77,7 +77,7 @@ difference between two groups along a quantitative variable.
 
 # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 estimate_mdiff_two(
- PlantGrowth[PlantGrowth$group != 'trt2', ],
+ datasets::PlantGrowth[PlantGrowth$group != 'trt2', ],
  weight,
  group
 )

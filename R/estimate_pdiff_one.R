@@ -30,7 +30,7 @@
 #'
 #' # Note... not sure if PlantGrowth dataset meets assumptions for this analysis
 #' estimate_pdiff_one(
-#'  PlantGrowth,
+#'  datasets::PlantGrowth,
 #'  group,
 #'  reference_p = 0.33
 #' )
