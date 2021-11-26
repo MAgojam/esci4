@@ -297,11 +297,17 @@ estimate_pdiff_paired.summary <- function(
   estimate$es_proportion_difference[3, c("LL", "UL", "SE")] <-
     pdiff_row[ , c("LL", "UL", "SE")]
 
+  type_store <- estimate$es_proportion_difference$type
   cancel_columns <- c(
-    "outcome_variable_name", "grouping_variable_name"
+    "type", "outcome_variable_name", "grouping_variable_name"
   )
   estimate$es_proportion_difference[ , cancel_columns] <- NULL
-
+  estimate$es_proportion_difference <- cbind(
+    type = type_store,
+    comparison_measure_name = comparison_measure_name,
+    reference_measure_name = reference_measure_name,
+    estimate$es_proportion_difference
+  )
 
   estimate$overview <- rbind(
     overview_nominal.summary(

@@ -216,7 +216,6 @@ estimate_magnitude.base <- function(
   estimate$overview <- overview_table
 
   estimate$es_mean <- data.frame(
-    "type" = "Magnitude",
     "outcome_variable_name" = overview_table$outcome_variable_name,
     "effect" = overview_table$outcome_variable_name,
     "effect_size" = overview_table$mean,
@@ -228,7 +227,6 @@ estimate_magnitude.base <- function(
 
   if (!is.null(overview_table$median)) {
     estimate$es_median <- data.frame(
-      "type" = "Magnitude",
       "outcome_variable_name" = overview_table$outcome_variable_name,
       "effect" = overview_table$outcome_variable_name,
       "effect_size" = overview_table$median,

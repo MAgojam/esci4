@@ -125,6 +125,8 @@ wrapper_ci.stdmean.ps <- function(
 
   # Add effect label
   es_smd<- cbind(
+    "comparison_measure_name" = grouping_variable_levels[1],
+    "reference_measure_name" = grouping_variable_levels[2],
     "effect" = effect_label,
     es_smd
   )
@@ -208,6 +210,8 @@ wrapper_ci.mean.ps <- function(
 
   es_mean_difference <- cbind(
     "type" = "Difference",
+    "comparison_measure_name" = grouping_variable_levels[1],
+    "reference_measure_name" = grouping_variable_levels[2],
     "effect" = effect_label,
     es_mean_difference
   )
@@ -222,8 +226,17 @@ wrapper_ci.mean.ps <- function(
     grouping_variable_levels = grouping_variable_levels
   )
 
+  type_store <- comp_mean$es_mean_difference$type
+  comp_mean$es_mean_difference$type <- NULL
   comp_mean$es_mean_difference$outcome_variable_name <- NULL
   comp_mean$es_mean_difference$grouping_variable_name <- NULL
+  comp_mean$es_mean_difference <- cbind(
+    type = type_store,
+    "comparison_measure_name" = grouping_variable_levels[1],
+    "reference_measure_name" = grouping_variable_levels[2],
+    comp_mean$es_mean_difference
+  )
+
 
   es_mean_difference <- rbind(
     comp_mean$es_mean_difference[1, ],
@@ -344,7 +357,8 @@ wrapper_ci_ratio.ps <- function(
   )
 
   es_ratio <- cbind(
-    type = c("Ratio"),
+    "comparison_measure_name" = grouping_variable_levels[1],
+    "reference_measure_name" = grouping_variable_levels[2],
     effect = clabel,
     es_ratio
   )
@@ -398,6 +412,8 @@ wrapper_ci.median.ps <- function(
 
   es_median_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),
+    "comparison_measure_name" = grouping_variable_levels[1],
+    "reference_measure_name" = grouping_variable_levels[2],
     effect = c(
       grouping_variable_levels,
       paste(

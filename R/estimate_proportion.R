@@ -148,7 +148,7 @@ estimate_proportion <- function(
   colnames(estimate$es_proportion) <- c(
     "outcome_variable_name",
     "effect",
-    "count_temp",
+    "cases_temp",
     "n_temp",
     "effect_size",
     "LL",
@@ -156,14 +156,10 @@ estimate_proportion <- function(
     "SE"
   )
 
-  estimate$es_proportion <- cbind(
-    type = "Proportion",
-    estimate$es_proportion
-  )
 
-  estimate$es_proportion$count <- estimate$es_proportion$count_temp
+  estimate$es_proportion$cases <- estimate$es_proportion$cases_temp
   estimate$es_proportion$n <- estimate$es_proportion$n_temp
-  estimate$es_proportion$count_temp <- NULL
+  estimate$es_proportion$cases_temp <- NULL
   estimate$es_proportion$n_temp <- NULL
 
 

@@ -292,6 +292,7 @@ estimate_mdiff_paired.summary <- function(
     conf_level = conf_level
   )
 
+
   smd <- wrapper_ci.stdmean.ps(
     comparison_mean = comparison_mean,
     comparison_sd = comparison_sd,

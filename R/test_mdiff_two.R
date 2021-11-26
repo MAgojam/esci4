@@ -107,8 +107,8 @@ test_mdiff_two <- function() {
   )
 
   pen_laptop <- data.frame(
-    "note_taking" = note_taking,
-    "transcription_scores" = transcription_scores,
+    "note_taking_c" = note_taking,
+    "transcription_scores_c" = transcription_scores,
     "other" = rnorm(n = 65, mean = 100, sd = 15)
   )
 
@@ -118,12 +118,12 @@ test_mdiff_two <- function() {
     assume_equal_variance = TRUE
   )
 
-  estimate_mdiff_two(pen_laptop, transcription_scores, note_taking)
+  estimate_mdiff_two(pen_laptop, transcription_scores_c, note_taking_c)
 
   estimate_mdiff_two(
     data = pen_laptop,
-    outcome_variable = c("transcription_scores", "other"),
-    grouping_variable = "note_taking"
+    outcome_variable = c("transcription_scores_c", "other"),
+    grouping_variable = "note_taking_c"
   )
 
   estimate_mdiff_two(

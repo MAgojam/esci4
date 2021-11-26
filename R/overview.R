@@ -414,6 +414,7 @@ overview.summary <- function(
   )
 
   if (!levels_passed) overview_table$grouping_variable_name <- NULL
+  if (!levels_passed) overview_table$grouping_variable_level <- NULL
 
   return(
     overview.base(
@@ -551,6 +552,7 @@ overview.vector <- function(
   overview_table$median_SE_temp <- NULL
 
   if (!group_passed) overview_table$grouping_variable_name <- NULL
+  if (!group_passed) overview_table$grouping_variable_level <- NULL
 
   # Cleanup - Deal with invalid rows and missing data rows-----------------
 

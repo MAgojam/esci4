@@ -55,8 +55,8 @@ estimate_pdiff_ind_contrast <- function(
   contrast = NULL,
   case_label = 1,
   grouping_variable_levels = NULL,
-  grouping_variable_name = "My grouping variable",
   outcome_variable_name = "My outcome variable",
+  grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   count_NA = FALSE
 ) {
@@ -515,7 +515,7 @@ estimate_pdiff_ind_contrast.summary <- function(
 
   overview_table <- cbind(
     grouping_variable_name = grouping_variable_name,
-    grouping_variable_levels = rep(grouping_variable_levels, each = 2),
+    grouping_variable_level = rep(grouping_variable_levels, each = 2),
     overview_table
   )
 

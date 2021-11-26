@@ -95,6 +95,7 @@ estimate_mdiff_one <- function(
         # This only succeeds if outcome_variable was passed unquoted
         # Reset outcome_variable to be fully quoted
         outcome_variable <- outcome_variable_quoname
+        outcome_variable_name <- outcome_variable
       }
 
       # Ready to be analyzed as a list of string column names
@@ -211,6 +212,10 @@ estimate_mdiff_one <- function(
     )
 
     estimate$es_smd <- smd_one$es_smd
+    estimate$es_smd <- cbind(
+      outcome_variable_name = outcome_variable_name,
+      estimate$es_smd
+    )
     estimate$es_smd_properties <- smd_one$es_smd_properties
 
     # Other properties ---------------------------

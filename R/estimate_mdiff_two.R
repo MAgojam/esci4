@@ -59,8 +59,8 @@ estimate_mdiff_two <- function(
   reference_sd = NULL,
   reference_n = NULL,
   grouping_variable_levels = NULL,
-  grouping_variable_name = "My grouping variable",
   outcome_variable_name = "My outcome variable",
+  grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   assume_equal_variance = FALSE,
   save_raw_data = TRUE
@@ -129,54 +129,66 @@ estimate_mdiff_two <- function(
       "You have passed raw data,
       so don't pass the 'grouping_variable_levels' parameter used for summary data.")
 
-    # Check grouping_variable -- if it is an unquoted column name
-    #  turn it into a string and store back to grouping_variable
-    is_column_name <- try(grouping_variable, silent = TRUE)
-    if(class(is_column_name) == "try-error") {
-      grouping_variable_enquo <- rlang::enquo(grouping_variable)
-      grouping_variable_enquo_name <- try(
-        eval(rlang::as_name(grouping_variable_enquo)), silent = TRUE
-      )
-      if (class(grouping_variable_enquo_name) != "try-error") {
-        # This only succeeds if the columns were passed unquoted
-        # So now replace grouping_variable with a quoted version
-        grouping_variable <- grouping_variable_enquo_name
-      }
-    }
 
-    # Now we have to figure out what type of raw data:
-    #   could be tidy column names, string column names, or vectors
-    # We check to see if we have a tidy column name by trying to evaluate it
-    is_column_name <- try(outcome_variable, silent = TRUE)
-    if(class(is_column_name) == "try-error") {
-      # Column names have been passed, check if need to be quoted up
-
-      outcome_variable_enquo <- rlang::enquo(outcome_variable)
-      outcome_variable_quoname <- try(
-        eval(rlang::as_name(outcome_variable_enquo)), silent = TRUE
-      )
-      if (class(outcome_variable_quoname) != "try-error") {
-        # This only succeeds if outcome_variable was passed unquoted
-        # Reset outcome_variable to be fully quoted
-        outcome_variable <- outcome_variable_quoname
-      }
-      analysis_type <- "data.frame"
-
-    } else if (class(outcome_variable) == "numeric") {
-      # At this stage, we know that y was not a tidy column name,
-      #  so it should be either a vector of raw data (class = numeric)
-      #  or a vector of column names passed as strings
+    if (is.null(data)) {
       analysis_type <- "vector"
-    } else if (class(outcome_variable) == "character") {
-      # Ok, must have been string column names
+    } else {
+
+      is_char <- try(
+        is.character(grouping_variable), silent = TRUE
+      )
+      if (class(is_char) == "try-error") {
+        # If not a character, must have been quoted
+        grouping_variable_enquo <- rlang::enquo(grouping_variable)
+        grouping_variable_quoname <- try(
+          eval(rlang::as_name(grouping_variable_enquo)), silent = TRUE
+        )
+        if (class(grouping_variable_quoname) != "try-error") {
+          # This only succeeds if outcome_variable was passed unquoted
+          # Reset outcome_variable to be fully quoted
+          grouping_variable <- grouping_variable_quoname
+          grouping_variable_name <- grouping_variable
+        } else {
+          stop("Could not parse grouping_variable")
+        }
+      }
+
+
+      is_char <- try(
+        is.character(outcome_variable), silent = TRUE
+      )
+      if (class(is_char) == "try-error") {
+        # If not a character, must have been quoted
+        outcome_variable_enquo <- rlang::enquo(outcome_variable)
+        outcome_variable_quoname <- try(
+          eval(rlang::as_name(outcome_variable_enquo)), silent = TRUE
+        )
+        if (class(outcome_variable_quoname) != "try-error") {
+          # This only succeeds if outcome_variable was passed unquoted
+          # Reset outcome_variable to be fully quoted
+          outcome_variable <- outcome_variable_quoname
+          outcome_variable_name <- outcome_variable
+        } else {
+          stop("Could not parse outcome_variable")
+        }
+      }
+
       if (length(outcome_variable) == 1) {
         analysis_type <- "data.frame"
       } else {
         analysis_type <- "jamovi"
       }
+
     }
 
+
     if (analysis_type == "vector") {
+      if (is.null(grouping_variable_name) | grouping_variable_name == "My grouping variable") {
+        grouping_variable_name <-  deparse(substitute(grouping_variable))
+      }
+      if (outcome_variable_name == "My outcome variable") {
+        outcome_variable_name <- deparse(substitute(outcome_variable))
+      }
       grouping_variable_levels <- levels(as.factor(grouping_variable))
     } else {
       grouping_variable_levels <- levels(as.factor(data[[grouping_variable]]))

@@ -60,8 +60,8 @@ estimate_mdiff_ind_contrast <- function(
   ns = NULL,
   contrast = NULL,
   grouping_variable_levels = NULL,
-  grouping_variable_name = "My grouping variable",
   outcome_variable_name = "My outcome variable",
+  grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   assume_equal_variance = FALSE,
   save_raw_data = TRUE
@@ -444,6 +444,13 @@ The contrast passed was: {passed_contrast}.
 
   estimate$es_smd <- as.data.frame(smd_result)
 
+  estimate$es_smd <- cbind(
+    outcome_variable_name = outcome_variable_name,
+    grouping_variable_name = grouping_variable_name,
+    estimate$es_smd
+  )
+
+
   return(estimate)
 
 }
@@ -765,7 +772,6 @@ Invalid groups are those with n < 2.
         )
 
         estimate$es_mean_ratio <- cbind(
-          type = c("Ratio"),
           outcome_variable_name = outcome_variable_name,
           grouping_variable_name = grouping_variable_name,
           effect = clabel,
@@ -773,7 +779,6 @@ Invalid groups are those with n < 2.
         )
 
         estimate$es_median_ratio <- cbind(
-          type = c("Ratio"),
           outcome_variable_name = outcome_variable_name,
           grouping_variable_name = grouping_variable_name,
           effect = clabel,
