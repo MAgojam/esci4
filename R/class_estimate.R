@@ -54,11 +54,13 @@ print.esci_estimate <- function(x, ..., verbose = FALSE) {
 
   cat(summary_text)
 
-  cat("\n---Overview---\n")
-  print(estimate$overview)
+  if(!is.null(estimate$overview)) {
+    cat("\n---Overview---\n")
+    print(estimate$overview)
+  }
 
   for (tbl in names(estimate)) {
-    if (class(estimate[[tbl]]) == "data.frame" & tbl != "overview" & tbl != "raw_data") {
+    if ("data.frame" %in% class(estimate[[tbl]]) & tbl != "overview" & tbl != "raw_data") {
       cat(paste("\n--", tbl, "--\n"))
       print(estimate[[tbl]])
 

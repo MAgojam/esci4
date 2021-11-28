@@ -15,8 +15,8 @@ estimate_mdiff_two(
   reference_sd = NULL,
   reference_n = NULL,
   grouping_variable_levels = NULL,
-  grouping_variable_name = "My grouping variable",
   outcome_variable_name = "My outcome variable",
+  grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   assume_equal_variance = FALSE,
   save_raw_data = TRUE
@@ -46,13 +46,13 @@ variable, or a vector of group names}
 \item{grouping_variable_levels}{For summary data - An optional vector of
 2 group labels}
 
-\item{grouping_variable_name}{Optional friendly name for the grouping
-variable.  Defaults to 'My grouping variable' or the grouping variable
-column name if a data.frame is passed.}
-
 \item{outcome_variable_name}{Optional friendly name for the outcome variable.
 Defaults to 'My outcome variable' or the outcome variable column name if a
 data frame is passed.}
+
+\item{grouping_variable_name}{Optional friendly name for the grouping
+variable.  Defaults to 'My grouping variable' or the grouping variable
+column name if a data.frame is passed.}
 
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}

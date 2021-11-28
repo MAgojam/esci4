@@ -335,7 +335,7 @@ estimate_magnitude.vector <- function(
     outcome_variable,
     lower = 2,
     lower_inclusive = FALSE,
-    na.invalid = TRUE
+    na.invalid = FALSE
   )
 
   # Check save_raw_data

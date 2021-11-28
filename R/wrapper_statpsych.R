@@ -443,3 +443,44 @@ wrapper_ci.median.ps <- function(
   return(estimate)
 
 }
+
+
+wrapper_ci.cor <- function(
+  r,
+  n,
+  conf_level,
+  x_variable_name,
+  y_variable_name
+) {
+
+  res <- statpsych::ci.cor(
+    alpha = 1 - conf_level,
+    cor = r,
+    s = 0,
+    n = n
+  )
+
+  res <- as.data.frame(res)
+
+  colnames(res)[1] <- "effect_size"
+  colnames(res)[2] <- "SE_temp"
+  res$SE <- res$SE_temp
+  res$SE_temp <- NULL
+  res$n = n
+  res$df <- n - 2
+
+  res <- cbind(
+    x_variable_name = x_variable_name,
+    y_variable_name = y_variable_name,
+    effect = paste(
+      x_variable_name,
+      " vs. ",
+      y_variable_name,
+      sep = ""
+    ),
+    res
+  )
+
+  return(res)
+
+}
