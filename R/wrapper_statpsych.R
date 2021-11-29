@@ -484,3 +484,80 @@ wrapper_ci.cor <- function(
   return(res)
 
 }
+
+
+wrapper_ci.cor2 <- function(
+  comparison_r,
+  comparison_n,
+  reference_r,
+  reference_n,
+  conf_level,
+  grouping_variable_levels,
+  x_variable_name,
+  y_variable_name,
+  grouping_variable_name
+) {
+
+  res_comparison <- wrapper_ci.cor(
+    r = comparison_r,
+    n = comparison_n,
+    conf_level = conf_level,
+    x_variable_name = x_variable_name,
+    y_variable_name = y_variable_name
+  )
+
+  res_reference <- wrapper_ci.cor(
+    r = reference_r,
+    n = reference_n,
+    conf_level = conf_level,
+    x_variable_name = x_variable_name,
+    y_variable_name = y_variable_name
+  )
+
+  res_difference <- as.data.frame(
+    statpsych::ci.cor2(
+      alpha = 1 - conf_level,
+      cor1 = comparison_r,
+      cor2 = reference_r,
+      n1 = comparison_n,
+      n2 = reference_n
+    )
+  )
+
+  colnames(res_difference)[1] <- "effect_size"
+  res_difference$SE <- NA
+  res_difference$n <- NA
+  res_difference$df <- NA
+  res_difference <- cbind(
+    x_variable_name = x_variable_name,
+    y_variable_name = y_variable_name,
+    effect = "Difference",
+    res_difference
+  )
+
+  res <- rbind(
+    res_comparison,
+    res_reference,
+    res_difference
+  )
+
+  res$effect <- c(
+    grouping_variable_levels[[1]],
+    grouping_variable_levels[[2]],
+    paste(
+      grouping_variable_levels[[1]],
+      " - ",
+      grouping_variable_levels[[2]],
+      sep = " "
+    )
+  )
+
+  res <- cbind(
+    type = c("Reference", "Comparison", "Difference"),
+    grouping_variable = grouping_variable_name,
+    res
+  )
+
+  return(res)
+
+}
