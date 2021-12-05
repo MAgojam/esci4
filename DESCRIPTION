@@ -16,6 +16,8 @@ Imports:
   methods,
   stats,
   statpsych,
+  ggplot2,
+  ggdist,
   sadists,
   glue,
   Rdpack,

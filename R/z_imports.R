@@ -27,6 +27,8 @@
 #' @importFrom stats rnorm
 #' @importFrom stats sd
 #' @importFrom utils head
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
 #'
 esci_imports_function <- function() {
   return(TRUE)
