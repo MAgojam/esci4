@@ -6,7 +6,11 @@
 \usage{
 meta_any(
   data,
-  moderator = FALSE,
+  yi,
+  vi,
+  moderator = NULL,
+  contrast = NULL,
+  labels = NULL,
   effect_size_name = "MDiff",
   random_effects = TRUE,
   conf_level = 0.95

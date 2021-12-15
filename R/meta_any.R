@@ -16,14 +16,81 @@
 #'
 #'
 #' @export
+#'
+#'
 meta_any <- function(
   data,
-  moderator = FALSE,
+  yi,
+  vi,
+  moderator = NULL,
   contrast = NULL,
-  effect_size_name = "MDiff",
+  labels = NULL,
+  effect_label = "My effect",
+  effect_size_name = "Effect size",
+  moderator_variable_name = "My moderator",
   random_effects = TRUE,
   conf_level = 0.95
 ) {
+
+
+  # Initialization ---------------------------
+  # Create quosures and quonames.
+  # Stolen directly from dabestr
+  yi_enquo        <-  rlang::enquo(yi)
+  yi_quoname      <-  rlang::quo_name(yi_enquo)
+
+  vi_enquo        <-  rlang::enquo(vi)
+  vi_quoname      <-  rlang::quo_name(vi_enquo)
+
+  yi_enquo        <-  rlang::enquo(yi)
+  yi_quoname      <-  rlang::quo_name(yi_enquo)
+
+  moderator_enquo        <-  rlang::enquo(moderator)
+  moderator_quoname      <-  rlang::quo_name(moderator_enquo)
+
+  labels_enquo        <-  rlang::enquo(labels)
+  labels_quoname      <-  rlang::quo_name(labels_enquo)
+
+
+  # Data prep------------------------------------------
+  # If no labels column, create one
+  if(is.null(data[[labels_quoname]])) {
+    data$esci_label <- paste("Study", seq(1:nrow(data)))
+  }
+
+  # vector of passed column names
+  just_cols <- c(
+    if (is.null(data[[labels_quoname]])) "esci_label" else labels_quoname,
+    yi_quoname,
+    vi_quoname
+  )
+
+  # vector of canonical column names
+  numeric_cols <- c(
+    "yi",
+    "vi"
+  )
+  col_names <- c(
+    "label",
+    numeric_cols
+  )
+
+  # If moderator define, add it to passed and cannonical column names
+  moderator <- FALSE
+  if(!is.null(data[[moderator_quoname]])) {
+    just_cols <- c(just_cols, moderator_quoname)
+    col_names <- c(col_names, "moderator")
+    if (is.null(moderator_variable_name) | moderator_variable_name == "My moderator") {
+      moderator_variable_name <- moderator_quoname
+    }
+    moderator <- TRUE
+  }
+
+  # reduce data down to just needed columns with canonical names
+  data <- data[ , just_cols]
+  colnames(data) <- col_names
+
+
   # We've passed in a prepared data table with columns:
   # label, UL, LL, yi, vi, moderator and any other columns
   # relevant to that meta-analysis
@@ -41,8 +108,22 @@ meta_any <- function(
 
 
   # Extract results table from each
-  FEtbl <- meta_to_table(FE, fixed_effects = TRUE, dr_res, label = "Overall")
-  REtbl <- meta_to_table(RE, fixed_effects = FALSE, dr_res, label = "Overall")
+  FEtbl <- meta_to_table(
+    FE,
+    fixed_effects = TRUE,
+    dr_res = dr_res,
+    effect_label = effect_label,
+    moderator_variable_name = moderator_variable_name,
+    moderator_level = "Overall"
+  )
+  REtbl <- meta_to_table(
+    RE,
+    fixed_effects = FALSE,
+    dr_res = dr_res,
+    effect_label = effect_label,
+    moderator_variable_name = moderator_variable_name,
+    moderator_level = "Overall"
+  )
 
   # Ok - this gets a bit complicated
   if(moderator) {
@@ -63,8 +144,20 @@ meta_any <- function(
     )
 
     # Save tables for each group-based analysis
-    FEgtable <- meta_to_table(FEgroups, fixed_effects = TRUE)
-    REgtable <- meta_to_table(REgroups, fixed_effects = FALSE)
+    FEgtable <- meta_to_table(
+      FEgroups,
+      fixed_effects = TRUE,
+      effect_label = effect_label,
+      moderator_variable_name = moderator_variable_name,
+      moderator_level = NULL
+    )
+    REgtable <- meta_to_table(
+      REgroups,
+      fixed_effects = FALSE,
+      effect_label = effect_label,
+      moderator_variable_name = moderator_variable_name,
+      moderator_level = NULL
+    )
 
     # Getting really crazy now--the group-based analyses don't give us I2
     # or the diamond ratio for each level, so we run an additional analyses for each level
@@ -76,7 +169,14 @@ meta_any <- function(
       REjustl <- metafor::rma(data = data[data$moderator == lev, ], yi = yi, vi = vi, method = "DL")
       FEjustl <- metafor::rma(data = data[data$moderator == lev, ], yi = yi, vi = vi, method = "FE")
       dr_res <- CI_diamond_ratio(REjustl, FEjustl, data[data$moderator == lev, ]$vi, conf_level = conf_level)
-      REjustltbl <- meta_to_table(REjustl, fixed_effects = FALSE, dr_res)
+      REjustltbl <- meta_to_table(
+        REjustl,
+        fixed_effects = FALSE,
+        dr_res = dr_res,
+        effect_label = effect_label,
+        moderator_variable_name = moderator_variable_name,
+        moderator_level = lev
+      )
       replabels <- c(replabels, lev)
       REgtable[x, "I2"] <- REjustltbl$I2[1]
       REgtable[x, "I2_LL"] <- REjustltbl$I2_LL[1]
@@ -88,8 +188,8 @@ meta_any <- function(
       FEgtable[x, "diamond_ratio_LL"] <- dr_res$LL
       FEgtable[x, "diamond_ratio_UL"] <- dr_res$UL
     }
-    REgtable$effect <- replabels
-    FEgtable$effect <- replabels
+    REgtable$moderator_variable_level <- replabels
+    FEgtable$moderator_variable_level <- replabels
 
     FEtbl <- rbind(
       FEtbl,
@@ -137,8 +237,10 @@ meta_any <- function(
         anova_to_table(
           cres = FE_anova,
           type = names(contrasts[x]),
-          effect = contrast_labels[[x]],
-          conf_level
+          effect_label = effect_label,
+          moderator_variable_name = moderator_variable_name,
+          moderator_level = contrast_labels[[x]],
+          conf_level = conf_level
         )
       )
       RE_anova <- anova(REgroups, X = contrasts[[x]])
@@ -147,12 +249,19 @@ meta_any <- function(
         anova_to_table(
           cres = RE_anova,
           type = names(contrasts[x]),
-          effect = contrast_labels[[x]],
-          conf_level
+          effect_label = effect_label,
+          moderator_variable_name = moderator_variable_name,
+          moderator_level = contrast_labels[[x]],
+          conf_level = conf_level
         )
       )
     }
+    row.names(FE_contrast) <- names(contrasts)
+    row.names(RE_contrast) <- names(contrasts)
 
+  } else {
+    FEtbl[ , c("moderator_variable_name", "moderator_variable_level")] <- NULL
+    REtbl[ , c("moderator_variable_name", "moderator_variable_level")] <- NULL
   }
 
 
@@ -177,12 +286,14 @@ meta_any <- function(
   # Set properties
   properties <- list(
     conf_level = conf_level,
-    data_type = "meta"
+    data_type = "meta",
+    effect_size_name = effect_size_name
   )
 
 
   # Fix up data just a bit
   data$sample_variance <- data$vi
+  data$SE <- sqrt(data$vi)
   data$vi <- NULL
   data$weight <- metafor::weights.rma.uni(if (random_effects)  RE else FE)
   names(data)[names(data) == "yi"] <- "effect_size"
@@ -205,7 +316,9 @@ meta_to_table <- function(
   meta,
   fixed_effects = TRUE,
   dr_res = NULL,
-  label = NULL
+  effect_label = NULL,
+  moderator_variable_name,
+  moderator_level = NULL
 ) {
   rowcount <- length(meta$b[, 1])
 
@@ -220,12 +333,9 @@ meta_to_table <- function(
     I2_UL <- rep(hetCIs$random["I^2(%)", "ci.ub"], rowcount)
   }
 
-  if(is.null(label)) {
-    label <- names(meta$b[ ,1])
-  } else {
-    label <- rep(label, rowcount)
+  if(is.null(moderator_level)) {
+    moderator_level <- names(meta$b[ ,1])
   }
-
 
   if(is.null(dr_res)) {
     dr_res <- list(
@@ -236,7 +346,9 @@ meta_to_table <- function(
   }
 
   result_table <- data.frame(
-    effect = label,
+    effect_label = effect_label,
+    moderator_variable_name = moderator_variable_name,
+    moderator_variable_level = moderator_level,
     effect_size = unname(meta$b[, 1]),
     LL = unname(meta$ci.lb),
     UL = unname(meta$ci.ub),
@@ -266,7 +378,9 @@ meta_FE_and_RE <- function(FEtable, REtable) {
 anova_to_table <- function(
   cres,
   type,
-  effect,
+  effect_label,
+  moderator_variable_name,
+  moderator_level,
   conf_level
 ) {
   c_es <- cres$Xb[[1, 1]]
@@ -278,7 +392,9 @@ anova_to_table <- function(
   return(
     data.frame(
       type = type,
-      effect = effect,
+      effect_label = effect_label,
+      moderator_variable_name = moderator_variable_name,
+      moderator_level = moderator_level,
       effect_size = c_es,
       LL = c_LL,
       UL = c_UL,

@@ -1,20 +1,38 @@
 test_estimate_meta_any <- function() {
 
   my_meta <- data.frame(
-    labels = paste("Study", seq(from = 1, to = 10, by = 1), sep = ""),
-    yi = rnorm(n = 10, mean = 100, sd = 15),
-    vi = (rnorm(n = 10, mean = 0, sd = 2))^2,
-    moderator = as.factor(
-      sample(x = c("Level1", "Level2", "Level3"), size = 10, replace = TRUE)
+    labels = paste("Study", seq(from = 1, to = 30, by = 1), sep = ""),
+    effect_size = c(
+      rnorm(n = 10, mean = 100, sd = 15),
+      rnorm(n = 10, mean = 115, sd = 15),
+      rnorm(n = 10, mean = 130, sd = 15)
+    ),
+    variance = (rnorm(n = 30, mean = 9, sd = 15*sqrt(2/24)))^2,
+    mymod = as.factor(
+      c(
+        rep(x = "Normal", times = 10),
+        rep(x = "Online", times = 10),
+        rep(x = "Biased", times = 10)
+      )
     )
   )
 
 
-  estimate <- meta_any(
-    data = my_meta,
-    moderator = TRUE
-  )
+  estimate <- meta_any(my_meta, effect_size, variance)
 
+  meta_any(my_meta, "effect_size", "variance")
+
+  meta_any(my_meta, effect_size, variance, mymod)
+
+  meta_any(
+    data = my_meta,
+    yi = effect_size,
+    vi = variance,
+    moderator = mymod,
+    contrast = c(1/2, -1, 1/2),
+    effect_label = "Mean IQ",
+    moderator_variable_name = "Participant Pool",
+  )
 
 
   testd <- data.frame(

@@ -31,6 +31,7 @@ meta_mdiff <- function(
   reference_ns,
   labels,
   moderator = NULL,
+  report_smd = FALSE,
   random_effects = TRUE,
   assume_equal_variance = FALSE,
   conf_level = .95
@@ -111,55 +112,53 @@ meta_mdiff <- function(
 
   # Calculations -------------------------------------------------
   # Get yi and vi for raw scores
-  mdiff <- as.data.frame(
-    t(
-      apply(
-        X = data[ , numeric_cols],
-        MARGIN = 1,
-        FUN = apply_ci_mdiff,
-        conf_level = conf_level,
-        assume_equal_variance = assume_equal_variance,
-        effect_size = "raw"
+  if (report_smd) {
+    data <- rbind(
+        data,
+        as.data.frame(
+          t(
+            apply(
+              X = data[ , numeric_cols],
+              MARGIN = 1,
+              FUN = apply_ci_mdiff,
+              conf_level = conf_level,
+              assume_equal_variance = assume_equal_variance,
+              effect_size = "smd"
+            )
+          )
+        )
+    )
+  } else {
+    data <- rbind(
+      data,
+      as.data.frame(
+        t(
+          apply(
+            X = data[ , numeric_cols],
+            MARGIN = 1,
+            FUN = apply_ci_mdiff,
+            conf_level = conf_level,
+            assume_equal_variance = assume_equal_variance,
+            effect_size = "raw"
+          )
+        )
       )
     )
-  )
-
-  smd <- as.data.frame(
-    t(
-      apply(
-        X = data[ , numeric_cols],
-        MARGIN = 1,
-        FUN = apply_ci_mdiff,
-        conf_level = conf_level,
-        assume_equal_variance = assume_equal_variance,
-        effect_size = "smd"
-      )
-    )
-  )
+  }
 
 
   res <- meta_any(
-    data = cbind(data, mdiff),
-    moderator = moderator,
-    effect_size_name = "Mean Difference",
+    data = data,
+    yi = "yi",
+    vi = "vi",
+    moderator = if (moderator) "moderator" else NULL,
+    effect_size_name = if (report_smd) "Mean difference" else "SMD",
+    moderator_variable_name = if (moderator) moderator_quoname else NULL,
     random_effects = random_effects,
     conf_level = conf_level
   )
 
-  smd_res <- meta_any(
-    data = cbind(data, smd),
-    moderator = moderator,
-    effect_size_name = "Standardized Mean Difference",
-    random_effects = random_effects,
-    conf_level = conf_level
-  )
-
-  res$es_meta_smd <- smd_res$es_meta
-  res$es_meta_smd_difference <- smd_res$es_meta_difference
-
-  colnames(smd) <- paste("smd_", colnames(smd))
-  colnames(mdiff) <- paste("raw_", colnames(mdiff))
-  res$raw_data <- cbind(data, mdiff, smd)
+  res$raw_data <- cbind(data, res$raw_data)
 
   return(res)
 }
