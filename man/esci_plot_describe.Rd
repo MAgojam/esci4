@@ -19,6 +19,7 @@ esci_plot_describe(
   fill_regular = "gray45",
   fill_highlighted = "red",
   color = "blue",
+  marker_size = 5,
   ggtheme = NULL
 )
 }
@@ -39,7 +40,7 @@ esci_plot_describe(
 
 \item{mark_percentile}{a percentile (0 to 1) to be marked}
 
-\item{histogram_bins}{number of bins if a histrogram}
+\item{histogram_bins}{number of bins if a histogram}
 
 \item{ylim}{2-length numeric vector}
 

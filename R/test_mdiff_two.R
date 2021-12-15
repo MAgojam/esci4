@@ -1,7 +1,7 @@
 test_mdiff_two <- function() {
 
   # Check - from summary data, esci in excel summary two example
-  estimate_mdiff_two(
+  mdiffestimate <- estimate_mdiff_two(
     comparison_mean = 12.09,
     comparison_sd = 5.52,
     comparison_n = 103,

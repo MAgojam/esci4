@@ -16,6 +16,7 @@ Imports:
   methods,
   stats,
   statpsych,
+  metafor,
   ggplot2,
   ggdist,
   sadists,
