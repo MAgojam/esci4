@@ -5,7 +5,8 @@
 #'
 #'
 #' @param data A dataframe or tibble with columns
-#'   * label, LL, UL, yi, vi, moderator and any other columns relevant to that meta-analysis
+#'   * label, LL, UL, yi, vi, moderator and any other columns relevant to
+#'     that meta-analysis
 #' @param moderator logical if moderator has been passed
 #' @param effect_size_name defaults to MDiff
 #' @param random_effects logical
@@ -96,8 +97,20 @@ meta_any <- function(
   # relevant to that meta-analysis
 
   # Now do both fixed and random effects overall meta-analaysis
-  FE <- metafor::rma(data = data, yi = yi, vi = vi, method="FE")
-  RE <- metafor::rma(data = data, yi = yi, vi = vi, method="DL")
+  FE <- metafor::rma(
+    data = data,
+    yi = yi,
+    vi = vi,
+    method="FE",
+    level = conf_level * 100
+  )
+  RE <- metafor::rma(
+    data = data,
+    yi = yi,
+    vi = vi,
+    method="DL",
+    level = conf_level * 100
+  )
 
   # Calculate diamond.ratio
   dr_res <- CI_diamond_ratio(RE, FE, data$vi, conf_level = conf_level)
@@ -114,7 +127,8 @@ meta_any <- function(
     dr_res = dr_res,
     effect_label = effect_label,
     moderator_variable_name = moderator_variable_name,
-    moderator_level = "Overall"
+    moderator_level = "Overall",
+    conf_level = conf_level
   )
   REtbl <- meta_to_table(
     RE,
@@ -122,25 +136,29 @@ meta_any <- function(
     dr_res = dr_res,
     effect_label = effect_label,
     moderator_variable_name = moderator_variable_name,
-    moderator_level = "Overall"
+    moderator_level = "Overall",
+    conf_level = conf_level
   )
 
   # Ok - this gets a bit complicated
   if(moderator) {
-    # With -1, we estimate with no intercept, so the parameters reflect each moderator level effect on its own
+    # With -1, we estimate with no intercept, so the parameters
+    # reflect each moderator level effect on its own
     FEgroups <- metafor::rma(
       data = data,
       yi = yi,
       vi = vi,
       mods = ~ moderator -1,
-      method="FE"
+      method="FE",
+      level = conf_level * 100
     )
     REgroups <- metafor::rma(
       data = data,
       yi = yi,
       vi = vi,
       mods = ~ moderator -1,
-      method="DL"
+      method="DL",
+      level = conf_level * 100
     )
 
     # Save tables for each group-based analysis
@@ -149,33 +167,58 @@ meta_any <- function(
       fixed_effects = TRUE,
       effect_label = effect_label,
       moderator_variable_name = moderator_variable_name,
-      moderator_level = NULL
+      moderator_level = NULL,
+      conf_level = conf_level
     )
     REgtable <- meta_to_table(
       REgroups,
       fixed_effects = FALSE,
       effect_label = effect_label,
       moderator_variable_name = moderator_variable_name,
-      moderator_level = NULL
+      moderator_level = NULL,
+      conf_level = conf_level
     )
 
     # Getting really crazy now--the group-based analyses don't give us I2
-    # or the diamond ratio for each level, so we run an additional analyses for each level
-    #   and save I2 and its CI for each of these.
+    # or the diamond ratio for each level, so we run an additional analyses
+    # for each level and save I2 and its CI for each of these.
     x <- 0
     replabels <- NULL
+    data$weight <- 0
     for(lev in levels(data$moderator)) {
       x <- x + 1
-      REjustl <- metafor::rma(data = data[data$moderator == lev, ], yi = yi, vi = vi, method = "DL")
-      FEjustl <- metafor::rma(data = data[data$moderator == lev, ], yi = yi, vi = vi, method = "FE")
-      dr_res <- CI_diamond_ratio(REjustl, FEjustl, data[data$moderator == lev, ]$vi, conf_level = conf_level)
+      REjustl <- metafor::rma(
+        data = data[data$moderator == lev, ],
+        yi = yi,
+        vi = vi,
+        method = "DL",
+        level = conf_level * 100
+      )
+      FEjustl <- metafor::rma(
+        data = data[data$moderator == lev, ],
+        yi = yi,
+        vi = vi,
+        method = "FE",
+        level = conf_level * 100
+      )
+
+      data[data$moderator == lev, ]$weight <-
+        metafor::weights.rma.uni(if (random_effects) REjustl else FEjustl)
+
+      dr_res <- CI_diamond_ratio(
+        REjustl,
+        FEjustl,
+        data[data$moderator == lev, ]$vi,
+        conf_level = conf_level
+      )
       REjustltbl <- meta_to_table(
         REjustl,
         fixed_effects = FALSE,
         dr_res = dr_res,
         effect_label = effect_label,
         moderator_variable_name = moderator_variable_name,
-        moderator_level = lev
+        moderator_level = lev,
+        conf_level = conf_level
       )
       replabels <- c(replabels, lev)
       REgtable[x, "I2"] <- REjustltbl$I2[1]
@@ -205,8 +248,8 @@ meta_any <- function(
     # Check contrast
     if (is.null(contrast)) {
       contrast = rep(x = 0, times = length(FEgroups$b))
-      contrast[1] = -1
-      contrast[2] = 1
+      contrast[1] = 1
+      contrast[2] = -1
     }
 
     if (is.null(names(contrast)) & (length(contrast) == length(replabels))) {
@@ -262,6 +305,7 @@ meta_any <- function(
   } else {
     FEtbl[ , c("moderator_variable_name", "moderator_variable_level")] <- NULL
     REtbl[ , c("moderator_variable_name", "moderator_variable_level")] <- NULL
+    data$weight <- metafor::weights.rma.uni(if (random_effects)  RE else FE)
   }
 
 
@@ -292,18 +336,19 @@ meta_any <- function(
 
 
   # Fix up data just a bit
+  names(data)[names(data) == "yi"] <- "effect_size"
   data$sample_variance <- data$vi
   data$SE <- sqrt(data$vi)
   data$vi <- NULL
-  data$weight <- metafor::weights.rma.uni(if (random_effects)  RE else FE)
-  names(data)[names(data) == "yi"] <- "effect_size"
+
 
   res <- list(
     properties = properties,
     es_meta = es_meta,
-    es_meta_difference = es_meta_difference,
     raw_data = data
   )
+
+  if (moderator) res$es_meta_difference <- es_meta_difference
 
   class(res) <- "esci_estimate"
 
@@ -318,7 +363,8 @@ meta_to_table <- function(
   dr_res = NULL,
   effect_label = NULL,
   moderator_variable_name,
-  moderator_level = NULL
+  moderator_level = NULL,
+  conf_level = 0.95
 ) {
   rowcount <- length(meta$b[, 1])
 
@@ -327,7 +373,7 @@ meta_to_table <- function(
     I2_LL <- rep(NA, rowcount)
     I2_UL <- rep(NA, rowcount)
   } else {
-    hetCIs <- metafor::confint.rma.uni(meta)
+    hetCIs <- metafor::confint.rma.uni(meta, level = conf_level * 100)
     I2 <- rep(hetCIs$random["I^2(%)", "estimate"], rowcount)
     I2_LL <- rep(hetCIs$random["I^2(%)", "ci.lb"], rowcount)
     I2_UL <- rep(hetCIs$random["I^2(%)", "ci.ub"], rowcount)

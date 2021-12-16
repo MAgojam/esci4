@@ -29,8 +29,10 @@ meta_mdiff <- function(
   reference_means,
   reference_sds,
   reference_ns,
-  labels,
   moderator = NULL,
+  contrast = NULL,
+  labels = NULL,
+  effect_label = "My effect",
   report_smd = FALSE,
   random_effects = TRUE,
   assume_equal_variance = FALSE,
@@ -113,52 +115,51 @@ meta_mdiff <- function(
   # Calculations -------------------------------------------------
   # Get yi and vi for raw scores
   if (report_smd) {
-    data <- rbind(
-        data,
-        as.data.frame(
-          t(
-            apply(
-              X = data[ , numeric_cols],
-              MARGIN = 1,
-              FUN = apply_ci_mdiff,
-              conf_level = conf_level,
-              assume_equal_variance = assume_equal_variance,
-              effect_size = "smd"
-            )
-          )
-        )
-    )
-  } else {
-    data <- rbind(
-      data,
-      as.data.frame(
-        t(
-          apply(
-            X = data[ , numeric_cols],
-            MARGIN = 1,
-            FUN = apply_ci_mdiff,
-            conf_level = conf_level,
-            assume_equal_variance = assume_equal_variance,
-            effect_size = "raw"
-          )
+    es_data <- as.data.frame(
+      t(
+        apply(
+          X = data[ , numeric_cols],
+          MARGIN = 1,
+          FUN = apply_ci_mdiff,
+          conf_level = conf_level,
+          assume_equal_variance = assume_equal_variance,
+          effect_size = "smd"
         )
       )
     )
+  } else {
+    es_data <- as.data.frame(
+      t(
+        apply(
+          X = data[ , numeric_cols],
+          MARGIN = 1,
+          FUN = apply_ci_mdiff,
+          conf_level = conf_level,
+          assume_equal_variance = assume_equal_variance,
+          effect_size = "raw"
+        )
+      )
+    )
+
   }
 
 
   res <- meta_any(
-    data = data,
+    data = cbind(data, es_data),
     yi = "yi",
     vi = "vi",
-    moderator = if (moderator) "moderator" else NULL,
-    effect_size_name = if (report_smd) "Mean difference" else "SMD",
-    moderator_variable_name = if (moderator) moderator_quoname else NULL,
+    moderator = !!if (moderator) "moderator" else NULL,
+    labels = "label",
+    effect_label = effect_label,
+    effect_size_name = if (report_smd) "SMD" else "Mean difference",
+    moderator_variable_name = if (moderator) moderator_quoname else "My moderator",
     random_effects = random_effects,
     conf_level = conf_level
   )
 
-  res$raw_data <- cbind(data, res$raw_data)
+  data$label <- NULL
+  data$moderator <- NULL
+  res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
 
   return(res)
 }
