@@ -36,28 +36,98 @@ test_estimate_meta_any <- function() {
   )
 
 
-  testd <- data.frame(
-    cm= c(rnorm(n = 15, mean = 10, sd = 1), rnorm(n = 15, mean = 10, sd = 1)),
-    rm = c(rnorm(n = 15, mean = 11, sd = 1), rnorm(n = 15, mean = 10, sd = 1)),
-    csd = abs(rnorm(n = 30, mean = 1, sd = 0.25)),
-    rsd = abs(rnorm(n = 30, mean = 1, sd = 0.25)),
-    cn = abs(round(rnorm(n=30, mean = 25, sd = 5))),
-    rn = abs(round(rnorm(n=30, mean = 25, sd = 5))),
-    study_name = paste("Group", seq(1:30), sep = "_"),
-    mod = as.factor(sample(x = c("Group A", "Group B", "Group C"), size = 30, replace = TRUE))
+
+  # Bad versions -------------------------------------------
+  # Moderator is not a factor
+  meta_any(
+    data = cbind(
+      my_meta, data.frame(
+        bad_mod = c(
+         rep(x = "Normal", times = 10),
+         rep(x = "Online", times = 10),
+         rep(x = "Biased", times = 10)
+        )
+      )
+    ),
+    yi = effect_size,
+    vi = variance,
+    labels = labels,
+    moderator = bad_mod,
+    contrast = c(1/2, -1, 1/2),
+    effect_label = "Mean IQ",
+    moderator_variable_name = "Participant Pool",
+    random_effects = TRUE,
+    conf_level = 0.95
   )
 
+  # A moderator has only 1 instance
+  meta_any(
+    data = cbind(
+      my_meta, data.frame(
+        bad_mod = as.factor(
+          c(
+            rep(x = "Normal", times = 15),
+            rep(x = "Online", times = 14),
+            rep(x = "Biased", times = 1)
+          )
+        )
+      )
+    ),
+    yi = effect_size,
+    vi = variance,
+    labels = labels,
+    moderator = bad_mod,
+    contrast = c(1/2, -1, 1/2),
+    effect_label = "Mean IQ",
+    moderator_variable_name = "Participant Pool",
+    random_effects = TRUE,
+    conf_level = 0.95
+  )
 
-  meta_mdiff_two(
-    testd,
-    cm,
-    csd,
-    cn,
-    rm,
-    rsd,
-    rn,
-    study_name,
-    mod
+  # Contrast doesn't match number of valid moderator levels
+  bdata <- cbind(
+    my_meta,
+    data.frame(
+      bad_mod = as.factor(
+        c(
+          rep(x = "Normal", times = 10),
+          rep(x = "Online", times = 10),
+          rep(x = "Biased", times = 10)
+        )
+      )
+    )
+  )
+
+  # Level that is not used
+  levels(bdata$bad_mod) <- c(levels(bdata$bad_mod), "Unused")
+  meta_any(
+    bdata,
+    yi = effect_size,
+    vi = variance,
+    labels = labels,
+    moderator = bad_mod,
+    contrast = c(1/2, -1, 1/2, 0),
+    effect_label = "Mean IQ",
+    moderator_variable_name = "Participant Pool",
+    random_effects = TRUE,
+    conf_level = 0.95
+  )
+
+  # NAs
+  bad_meta <- my_meta
+  bad_meta[c(2, 3, 10), "effect_size"] <- NA
+  bad_meta[c(12, 13, 10), "variance"] <- NA
+  bad_meta[c(12, 13, 21), "labels"] <- NA
+  bad_meta[c(22, 23, 21), "mymod"] <- NA
+  meta_any(
+    data = bad_meta,
+    yi = effect_size,
+    vi = variance,
+    labels = labels,
+    moderator = mymod,
+    contrast = c(1/2, -1, 1/2),
+    effect_label = "Mean IQ",
+    moderator_variable_name = "Participant Pool",
   )
 
 

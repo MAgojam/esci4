@@ -164,5 +164,24 @@ test_estimate_meta_mdiff_two <- function() {
     report_smd = TRUE
   )
 
+
+
+  # Bad calls with good errors -------------------------------------
+  estimate <- meta_mdiff_two(
+    data = esci_test,
+    comparison_means = bM,
+    comparison_sds = bS,
+    comparison_ns = bN,
+    reference_means = nbM,
+    reference_sds = nbS,
+    reference_ns = nbN,
+    moderator = mod,
+    labels = study_name,
+    effect_label = "Brain Photo Rating - No Brain Photo Rating",
+    assume_equal_variance = TRUE,
+    random_effects = TRUE,
+    report_smd = TRUE
+  )
+
 }
 

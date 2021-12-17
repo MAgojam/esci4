@@ -180,8 +180,19 @@ esci_assert_column_has_valid_rows <- function(
   # Note the need to use drop = FALSE, or one-column dataframes will become vectors on filtering, making nrow go quitely bonkers
   row_data <- list()
   row_data$total <- nrow(data)
-  row_data$valid <- nrow(data[!is.na(data[var]), , drop = FALSE])
-  row_data$missing <- row_data$total - row_data$valid
+  row_data$NA_rows <- which(is.na(data[[var]]))
+  row_data$missing <- length(row_data$NA_rows)
+  row_data$valid <- row_data$total - row_data$missing
+  if (row_data$missing > 0) {
+    p_text <- paste(row_data$NA_rows, collapse = ',')
+    row_data$warning <- glue::glue("
+  Dropping rows due to missing values!
+  NA values in variable {var} were found in rows {p_text}
+  These rows have been dropped
+    ")
+  } else {
+    row_data$warning <- NULL
+  }
 
   # Set which count will be used as our standard
   check_rows <- ifelse(na.rm,

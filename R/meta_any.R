@@ -36,7 +36,6 @@ meta_any <- function(
   conf_level = 0.95
 ) {
 
-
   # Initialization ---------------------------
   # Create quosures and quonames.
   # Stolen directly from dabestr
@@ -51,22 +50,182 @@ meta_any <- function(
 
   moderator_enquo        <-  rlang::enquo(moderator)
   moderator_quoname      <-  rlang::quo_name(moderator_enquo)
+  if (moderator_quoname == "NULL") moderator_quoname <- NULL
 
   labels_enquo        <-  rlang::enquo(labels)
   labels_quoname      <-  rlang::quo_name(labels_enquo)
+  if (labels_quoname == "NULL") labels_quoname <- NULL
+
+  warnings <- NULL
+
+
+  # Input checks --------------------------------
+  # * data must be a data frame
+  #    all rows with an NA in yi or vi will be dropped, warning issued
+  #    if labels passed, rows with NA labels will be dropped, warning issued
+  #    if moderator defined, rows with NA modrator will be dropped, warning issued
+  # * the column yi must exist and be numeric, > 1 row after NAs removed
+  # * the column vi must exist and be numeric, > 1 row after NAs removed
+  # * the column labels is optional, but if passed must exist and
+  #    have > 1 row after NAs removed
+  # * the column moderator is optional, but if passed must exist and be a factor
+  #     must be > 2 levels in the factor
+  #     must have > 2 cases per level after NAs removed
+  # * contrast should only be passed in moderator is defined
+  #    if passed, must be numeric vector of same length as levels(moderator)
+  #    and must have no NA values
+  # * effect_label should be a character
+  # * effect_size_name should be a character
+  # * moderator_variable_name should be a character, even if moderator not passed
+  # * random_effect must be a logical, TRUE or FALSE
+  # * conf_level must be a numeric >0 and < 1
+
+  # Check that data is a data.frame
+  esci_assert_type(data, "is.data.frame")
+  # yi
+  esci_assert_valid_column_name(data, yi_quoname)
+  esci_assert_column_type(data, yi_quoname, "is.numeric")
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    yi_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # vi
+  esci_assert_valid_column_name(data, vi_quoname)
+  esci_assert_column_type(data, vi_quoname, "is.numeric")
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    vi_quoname,
+    lower = 2,
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # labels
+  if (is.null(labels_quoname)) {
+    data$esci_label <- paste("Study", seq(1:nrow(data)))
+    labels_quoname <- "esci_label"
+  } else {
+    esci_assert_valid_column_name(data, labels_quoname)
+  }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    labels_quoname,
+    lower = 2,
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # moderator
+  moderator <- !is.null(moderator_quoname)
+  if (moderator) {
+    esci_assert_valid_column_name(data, moderator_quoname)
+    esci_assert_column_type(data, moderator_quoname, "is.factor")
+    row_report <- esci_assert_column_has_valid_rows(
+      data,
+      moderator_quoname,
+      lower = 2,
+    )
+    if (row_report$missing > 0) {
+      warnings <- c(warnings, row_report$warning)
+      warning(row_report$warning)
+      data <- data[-row_report$NA_rows, ]
+    }
+    mlevels <- levels(data[[moderator_quoname]])
+    if (length(mlevels) < 2) stop(
+      glue::glue("
+Moderator must have 2 or more levels, but has {length(mlevels)}, which are {mlevels}.
+      ")
+    )
+
+    level_counts <- aggregate(
+      data[[moderator_quoname]],
+      by = list(data[[moderator_quoname]]),
+      drop = FALSE,
+      FUN = length
+    )
+
+    bad_levels <- c(
+      which(level_counts[, 2] < 2),
+      which(is.na(level_counts[, 2]))
+    )
+
+    if (length(bad_levels) > 0) {
+      bmess <- paste(level_counts[ , 1], level_counts[ , 2], collapse = ", ")
+      stop(
+        glue::glue("
+Invalid moderator data.  Each moderator level must have 2 or more cases.
+After dropping any NA rows, current data has:
+{bmess}.
+        ")
+      )
+    }
+
+  }
+
+  if (nrow(data) < 2) stop(
+"Not enough valid data: < 2 rows remain after dropping rows with NA values."
+  )
+
+  if (!is.null(contrast)) {
+    if (!moderator) stop (
+      "You have passed a contrast, but not a moderator.  The contrast parameter
+      only applies if a moderator is defined."
+    )
+    esci_assert_type(contrast, "is.numeric")
+    esci_assert_vector_valid_length(
+      contrast,
+      lower = length(level_counts[ , 1]),
+      upper = length(level_counts[ , 1]),
+      lower_inclusive = TRUE,
+      upper_inclusive = TRUE,
+      na.rm = TRUE,
+      na.invalid = TRUE
+    )
+  }
+
+  # Check labels
+  esci_assert_type(effect_label, "is.character")
+  esci_assert_type(effect_size_name, "is.character")
+  if (moderator) {
+    if (is.null(moderator_variable_name) | moderator_variable_name == "My moderator") {
+      moderator_variable_name <- moderator_quoname
+    } else {
+      esci_assert_type(moderator_variable_name, "is.character")
+    }
+  }
+
+  # Check options
+  esci_assert_type(random_effects, "is.logical")
+
+  # Check conf.level
+  esci_assert_type(conf_level, "is.numeric")
+  esci_assert_range(
+    conf_level,
+    lower = 0,
+    upper = 1,
+    lower_inclusive = FALSE,
+    upper_inclusive = FALSE
+  )
 
 
   # Data prep------------------------------------------
-  # If no labels column, create one
-  if(is.null(data[[labels_quoname]])) {
-    data$esci_label <- paste("Study", seq(1:nrow(data)))
-  }
-
   # vector of passed column names
   just_cols <- c(
-    if (is.null(data[[labels_quoname]])) "esci_label" else labels_quoname,
+    labels_quoname,
     yi_quoname,
-    vi_quoname
+    vi_quoname,
+    if (moderator) moderator_quoname
   )
 
   # vector of canonical column names
@@ -76,30 +235,20 @@ meta_any <- function(
   )
   col_names <- c(
     "label",
-    numeric_cols
+    numeric_cols,
+    if (moderator) "moderator"
   )
-
-  # If moderator define, add it to passed and cannonical column names
-  moderator <- FALSE
-  if(!is.null(data[[moderator_quoname]])) {
-    just_cols <- c(just_cols, moderator_quoname)
-    col_names <- c(col_names, "moderator")
-    if (is.null(moderator_variable_name) | moderator_variable_name == "My moderator") {
-      moderator_variable_name <- moderator_quoname
-    }
-    moderator <- TRUE
-  }
 
   # reduce data down to just needed columns with canonical names
   data <- data[ , just_cols]
   colnames(data) <- col_names
 
 
-  # We've passed in a prepared data table with columns:
-  # label, UL, LL, yi, vi, moderator and any other columns
-  # relevant to that meta-analysis
+  # Calculations --------------------------------------------------
+  # We now have a prepped data frame with columns
+  # label, yi, vi, (moderator).  Ready for analysis
 
-  # Now do both fixed and random effects overall meta-analaysis
+  # Do both fixed and random effects overall meta-analaysis
   FE <- metafor::rma(
     data = data,
     yi = yi,
@@ -115,13 +264,11 @@ meta_any <- function(
     level = conf_level * 100
   )
 
-  # Calculate diamond.ratio
+  # Calculate diamond ratio and handles for results
   dr_res <- CI_diamond_ratio(RE, FE, data$vi, conf_level = conf_level)
-
   diamond_ratio <- dr_res$diamond_ratio
   diamond_ratio_LL <- dr_res$LL
   diamond_ratio_UL <- dr_res$UL
-
 
   # Extract results table from each
   FEtbl <- meta_to_table(
@@ -143,7 +290,7 @@ meta_any <- function(
     conf_level = conf_level
   )
 
-  # Ok - this gets a bit complicated
+  # Deal with moderator
   if(moderator) {
     # With -1, we estimate with no intercept, so the parameters
     # reflect each moderator level effect on its own
@@ -182,7 +329,7 @@ meta_any <- function(
       conf_level = conf_level
     )
 
-    # Getting really crazy now--the group-based analyses don't give us I2
+    # Unfortunately, the group-based analyses don't give us I2
     # or the diamond ratio for each level, so we run an additional analyses
     # for each level and save I2 and its CI for each of these.
     x <- 0
@@ -224,6 +371,7 @@ meta_any <- function(
         conf_level = conf_level
       )
       replabels <- c(replabels, lev)
+      REgtable[x, "k"] <- REjustltbl$k
       REgtable[x, "I2"] <- REjustltbl$I2[1]
       REgtable[x, "I2_LL"] <- REjustltbl$I2_LL[1]
       REgtable[x, "I2_UL"] <- REjustltbl$I2_UL[1]
@@ -237,6 +385,7 @@ meta_any <- function(
     REgtable$moderator_variable_level <- replabels
     FEgtable$moderator_variable_level <- replabels
 
+    # Now we've prepped each subgroup, bind to overall results
     FEtbl <- rbind(
       FEtbl,
       FEgtable
@@ -247,7 +396,7 @@ meta_any <- function(
     )
 
 
-    # Now contrasts
+    # Now we do the actual contrast
     # Check contrast
     if (is.null(contrast)) {
       contrast = rep(x = 0, times = length(FEgroups$b))
@@ -348,7 +497,8 @@ meta_any <- function(
   res <- list(
     properties = properties,
     es_meta = es_meta,
-    raw_data = data
+    raw_data = data,
+    warnings = warnings
   )
 
   if (moderator) res$es_meta_difference <- es_meta_difference
@@ -402,6 +552,7 @@ meta_to_table <- function(
     LL = unname(meta$ci.lb),
     UL = unname(meta$ci.ub),
     SE = unname(meta$se),
+    k = unname(meta$k),
     diamond_ratio = dr_res$diamond_ratio,
     diamond_ratio_LL = dr_res$LL,
     diamond_ratio_UL = dr_res$UL,

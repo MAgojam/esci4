@@ -66,27 +66,201 @@ meta_mdiff_two <- function(
 
   moderator_enquo        <-  rlang::enquo(moderator)
   moderator_quoname      <-  rlang::quo_name(moderator_enquo)
+  if (moderator_quoname == "NULL") moderator_quoname <- NULL
 
   labels_enquo        <-  rlang::enquo(labels)
   labels_quoname      <-  rlang::quo_name(labels_enquo)
+  if (labels_quoname == "NULL") labels_quoname <- NULL
+
+  warnings <- NULL
+
+  # Input checks --------------------------------
+  # * data must be a data frame
+  #    all rows with an NA a parameter column will be dropped, warning issued
+  # * the column comparison_means must exist and be numeric,
+  #    with > 1 row after NAs removed
+  # * the column reference_means must exist and be numeric,
+  #    with > 1 row after NAs removed
+  # * the column comparison_sds must exist and be numeric > 0
+  #    with > 1 row after NAs removed
+  # * the column reference_sds must exist and be numeric > 0
+  #    with > 1 row after NAs removed
+  # * the column comparison_ns must exist and be numeric integers > 0
+  #    with > 1 row after NAs removed
+  # * the column reference_ns must exist and be numeric integers > 0
+  #    with > 1 row after NAs removed
+  # * the column labels is optional, but if passed must exist and
+  #    have > 1 row after NAs removed
+  # * the column moderator is optional; checks happen in meta_any
+  # * contrast should only be passed in moderator is defined; checks in meta_any
+  # * effect_label should be a character, checked in meta_any
+  # * effect_size_name should be a character, checked in meta_any
+  # * moderator_variable_name checked in meta_any
+  # * random_effect must be a logical, TRUE or FALSE, checked in meta_any
+  # * conf_level must be a numeric >0 and < 1, checked in meta_any
+
+  # Check that data is a data.frame
+  esci_assert_type(data, "is.data.frame")
+  # reference_means
+  esci_assert_valid_column_name(data, reference_means_quoname)
+  esci_assert_column_type(data, reference_means_quoname, "is.numeric")
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    reference_means_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # comparison_means
+  esci_assert_valid_column_name(data, comparison_means_quoname)
+  esci_assert_column_type(data, comparison_means_quoname, "is.numeric")
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    comparison_means_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # reference_sds
+  esci_assert_valid_column_name(data, reference_sds_quoname)
+  esci_assert_column_type(data, reference_sds_quoname, "is.numeric")
+  if (!all(data[[reference_sds_quoname]] > 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some sd values in {reference_sds_quoname} are 0 or less.
+These are rows {which(data[[reference_sds_quoname]] > 0)}.
+      ")
+    )
+  }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    reference_sds_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # comparison_sds
+  esci_assert_valid_column_name(data, comparison_sds_quoname)
+  esci_assert_column_type(data, comparison_sds_quoname, "is.numeric")
+  if (!all(data[[comparison_sds_quoname]] > 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some sd values in {comparison_sds_quoname} are 0 or less.
+These are rows {which(data[[comparison_sds_quoname]] > 0)}.
+      ")
+    )
+  }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    comparison_sds_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # reference_ns
+  esci_assert_valid_column_name(data, reference_ns_quoname)
+  esci_assert_column_type(data, reference_ns_quoname, "is.numeric")
+  if (!all(data[[reference_ns_quoname]] > 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some n values in {reference_ns_quoname} are 0 or less.
+These are rows {which(data[[reference_ns_quoname]] > 0)}.
+      ")
+    )
+  }
+  if (!all(is.whole.number(data[[reference_ns_quoname]]), na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some n values in {reference_ns_quoname} are not integers.
+These are rows {which(!is.whole.number(data[[reference_ns_quoname]]))}.
+      ")
+    )
+  }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    reference_ns_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  # comparison_ns
+  esci_assert_valid_column_name(data, comparison_ns_quoname)
+  esci_assert_column_type(data, comparison_ns_quoname, "is.numeric")
+  if (!all(data[[comparison_ns_quoname]] > 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some sample-size values in {comparison_ns_quoname} are 0 or less.
+These are rows {which(data[[comparison_ns_quoname]] > 0)}.
+      ")
+    )
+  }
+  if (!all(is.whole.number(data[[comparison_ns_quoname]]), na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some n values in {comparison_ns_quoname} are not integers.
+These are rows {which(!is.whole.number(data[[comparison_ns_quoname]]))}.
+      ")
+    )
+  }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    comparison_ns_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+
+  # labels
+  if (is.null(labels_quoname)) {
+    data$esci_label <- paste("Study", seq(1:nrow(data)))
+    labels_quoname <- "esci_label"
+  } else {
+    esci_assert_valid_column_name(data, labels_quoname)
+  }
+  # moderator
+  moderator <- !is.null(moderator_quoname)
+  if (moderator) esci_assert_valid_column_name(data, moderator_quoname)
+  # Check options
+  esci_assert_type(assume_equal_variance, "is.logical")
+  esci_assert_type(report_smd, "is.logical")
+  # All other checks happen in meta_any
 
 
   # Data prep------------------------------------------
-
-  # If no labels column, create one
-  if(is.null(data[[labels_quoname]])) {
-    data$esci_label <- paste("Study", seq(1:nrow(data)))
-  }
-
   # vector of passed column names
   just_cols <- c(
+    labels_quoname,
     reference_means_quoname,
     reference_sds_quoname,
     reference_ns_quoname,
     comparison_means_quoname,
     comparison_sds_quoname,
     comparison_ns_quoname,
-    if (is.null(data[[labels_quoname]])) "esci_label" else labels_quoname
+    if (moderator) moderator_quoname
   )
 
   # vector of cannonical column names
@@ -99,17 +273,10 @@ meta_mdiff_two <- function(
     "comparison_n"
   )
   col_names <- c(
+    "label",
     numeric_cols,
-    "label"
+    if (moderator) "moderator"
   )
-
-  # If moderator define, add it to passed and cannonical column names
-  moderator <- FALSE
-  if(!is.null(data[[moderator_quoname]])) {
-    just_cols <- c(just_cols, moderator_quoname)
-    col_names <- c(col_names, "moderator")
-    moderator <- TRUE
-  }
 
   # reduce data down to just needed columns with cannonical names
   data <- data[ , just_cols]
