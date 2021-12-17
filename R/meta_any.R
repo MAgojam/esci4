@@ -3,12 +3,15 @@
 #' @description
 #' `meta_any` returns
 #'
-#'
 #' @param data A dataframe or tibble with columns
-#'   * label, LL, UL, yi, vi, moderator and any other columns relevant to
-#'     that meta-analysis
+#' @param yi yi
+#' @param vi vi
+#' @param labels labels
 #' @param moderator logical if moderator has been passed
+#' @param contrast contrast
+#' @param effect_label effect_label
 #' @param effect_size_name defaults to MDiff
+#' @param moderator_variable_name mvn
 #' @param random_effects logical
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
@@ -23,9 +26,9 @@ meta_any <- function(
   data,
   yi,
   vi,
+  labels = NULL,
   moderator = NULL,
   contrast = NULL,
-  labels = NULL,
   effect_label = "My effect",
   effect_size_name = "Effect size",
   moderator_variable_name = "My moderator",

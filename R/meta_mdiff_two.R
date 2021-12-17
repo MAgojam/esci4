@@ -1,7 +1,7 @@
 #' Estimate meta-analytic difference in magnitude between two ind. groups
 #'
 #' @description
-#' `meta_mdiff` returns
+#' `meta_mdiff_two` returns
 #'
 #'
 #' @param data A dataframe or tibble
@@ -13,7 +13,11 @@
 #' @param reference_ns reference
 #' @param labels labels
 #' @param moderator mod
+#' @param contrast contrast
+#' @param effect_label el
+#' @param report_smd smd
 #' @param random_effects re
+#' @param assume_equal_variance aev
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
 #'
@@ -21,7 +25,7 @@
 #'
 #'
 #' @export
-meta_mdiff <- function(
+meta_mdiff_two <- function(
   data,
   comparison_means,
   comparison_sds,
@@ -29,9 +33,9 @@ meta_mdiff <- function(
   reference_means,
   reference_sds,
   reference_ns,
+  labels = NULL,
   moderator = NULL,
   contrast = NULL,
-  labels = NULL,
   effect_label = "My effect",
   report_smd = FALSE,
   random_effects = TRUE,
@@ -114,16 +118,15 @@ meta_mdiff <- function(
 
   # Calculations -------------------------------------------------
   # Get yi and vi for raw scores
-  if (report_smd) {
+  if (!report_smd) {
     es_data <- as.data.frame(
       t(
         apply(
           X = data[ , numeric_cols],
           MARGIN = 1,
           FUN = apply_ci_mdiff,
-          conf_level = conf_level,
           assume_equal_variance = assume_equal_variance,
-          effect_size = "smd"
+          conf_level = conf_level
         )
       )
     )
@@ -133,10 +136,10 @@ meta_mdiff <- function(
         apply(
           X = data[ , numeric_cols],
           MARGIN = 1,
-          FUN = apply_ci_mdiff,
-          conf_level = conf_level,
+          FUN = apply_ci_stdmean_two,
           assume_equal_variance = assume_equal_variance,
-          effect_size = "raw"
+          correct_bias = TRUE,
+          conf_level = conf_level
         )
       )
     )

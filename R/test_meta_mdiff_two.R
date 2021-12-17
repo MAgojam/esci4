@@ -1,4 +1,4 @@
-test_estimate_meta_mdiff <- function() {
+test_estimate_meta_mdiff_two <- function() {
 
   testd <- data.frame(
     cm= c(
@@ -11,7 +11,7 @@ test_estimate_meta_mdiff <- function() {
     rsd = abs(rnorm(n = 30, mean = 1, sd = 0.25)),
     cn = abs(round(rnorm(n=30, mean = 25, sd = 5))),
     rn = abs(round(rnorm(n=30, mean = 25, sd = 5))),
-    study_name = paste("Group", seq(1:30), sep = "_"),
+    study_name = paste("Study", seq(1:30), sep = "_"),
     mod = as.factor(
       c(
         rep(x = "Group A", times = 10),
@@ -22,7 +22,7 @@ test_estimate_meta_mdiff <- function() {
   )
 
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = testd,
     comparison_means = cm,
     comparison_sds = csd,
@@ -34,7 +34,7 @@ test_estimate_meta_mdiff <- function() {
     labels = study_name
   )
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = testd,
     comparison_means = cm,
     comparison_sds = csd,
@@ -62,7 +62,7 @@ test_estimate_meta_mdiff <- function() {
     )
   )
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = esci_test,
     comparison_means = bM,
     comparison_sds = bS,
@@ -76,7 +76,7 @@ test_estimate_meta_mdiff <- function() {
     random_effects = TRUE
   )
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = esci_test,
     comparison_means = bM,
     comparison_sds = bS,
@@ -91,7 +91,7 @@ test_estimate_meta_mdiff <- function() {
     random_effects = TRUE
   )
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = esci_test,
     comparison_means = bM,
     comparison_sds = bS,
@@ -107,6 +107,22 @@ test_estimate_meta_mdiff <- function() {
     conf_level = 0.99
   )
 
+  estimate <- meta_mdiff_two(
+    data = esci_test,
+    comparison_means = bM,
+    comparison_sds = bS,
+    comparison_ns = bN,
+    reference_means = nbM,
+    reference_sds = nbS,
+    reference_ns = nbN,
+    moderator = mod,
+    labels = study_name,
+    effect_label = "Brain Photo Rating - No Brain Photo Rating",
+    report_smd = TRUE,
+    assume_equal_variance = TRUE,
+    random_effects = TRUE,
+  )
+
   # Currently matches esci example perfectly *except* diamond ratios for
   #  moderator groups
   # In esci, DR calculated from subgroup CIs from overall analysis
@@ -115,7 +131,7 @@ test_estimate_meta_mdiff <- function() {
   # And with moderators, FE weights match, but esc-excel not providing
   #  different RE weights
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = esci_test,
     comparison_means = bM,
     comparison_sds = bS,
@@ -132,7 +148,7 @@ test_estimate_meta_mdiff <- function() {
     conf_level = 0.99
   )
 
-  estimate <- meta_mdiff(
+  estimate <- meta_mdiff_two(
     data = esci_test,
     comparison_means = bM,
     comparison_sds = bS,

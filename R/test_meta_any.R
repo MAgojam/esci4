@@ -22,12 +22,13 @@ test_estimate_meta_any <- function() {
 
   meta_any(my_meta, "effect_size", "variance")
 
-  meta_any(my_meta, effect_size, variance, mymod)
+  meta_any(my_meta, effect_size, variance, labels, mymod)
 
   meta_any(
     data = my_meta,
     yi = effect_size,
     vi = variance,
+    labels = labels,
     moderator = mymod,
     contrast = c(1/2, -1, 1/2),
     effect_label = "Mean IQ",
@@ -47,7 +48,7 @@ test_estimate_meta_any <- function() {
   )
 
 
-  meta_mdiff(
+  meta_mdiff_two(
     testd,
     cm,
     csd,

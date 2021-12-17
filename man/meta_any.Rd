@@ -8,23 +8,34 @@ meta_any(
   data,
   yi,
   vi,
+  labels = NULL,
   moderator = NULL,
   contrast = NULL,
-  labels = NULL,
-  effect_size_name = "MDiff",
+  effect_label = "My effect",
+  effect_size_name = "Effect size",
+  moderator_variable_name = "My moderator",
   random_effects = TRUE,
   conf_level = 0.95
 )
 }
 \arguments{
-\item{data}{A dataframe or tibble with columns
-\itemize{
-\item label, LL, UL, yi, vi, moderator and any other columns relevant to that meta-analysis
-}}
+\item{data}{A dataframe or tibble with columns}
+
+\item{yi}{yi}
+
+\item{vi}{vi}
+
+\item{labels}{labels}
 
 \item{moderator}{logical if moderator has been passed}
 
+\item{contrast}{contrast}
+
+\item{effect_label}{effect_label}
+
 \item{effect_size_name}{defaults to MDiff}
+
+\item{moderator_variable_name}{mvn}
 
 \item{random_effects}{logical}
 
