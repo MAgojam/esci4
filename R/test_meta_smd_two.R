@@ -103,5 +103,24 @@ test_estimate_meta_smd_two <- function() {
   estimate$raw_data
   estimate
 
+
+
+
+  # Bad calls with good errors
+  bad_test <- testd
+  bad_test[c(1, 3), "n1"] <- 1.1
+  meta_smd_two(
+    bad_test,
+    my_smd,
+    n1,
+    n2,
+    study,
+    subset,
+    contrast = c(-1, 1),
+    assume_equal_variance = TRUE,
+    correct_bias = FALSE,
+    esci_vi = TRUE
+  )
+
 }
 

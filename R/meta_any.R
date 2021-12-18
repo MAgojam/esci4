@@ -372,6 +372,7 @@ After dropping any NA rows, current data has:
       )
       replabels <- c(replabels, lev)
       REgtable[x, "k"] <- REjustltbl$k
+      FEgtable[x, "k"] <- REjustltbl$k
       REgtable[x, "I2"] <- REjustltbl$I2[1]
       REgtable[x, "I2_LL"] <- REjustltbl$I2_LL[1]
       REgtable[x, "I2_UL"] <- REjustltbl$I2_UL[1]

@@ -37,9 +37,10 @@ meta_mdiff_two <- function(
   moderator = NULL,
   contrast = NULL,
   effect_label = "My effect",
+  reported_effect_size = c("mean_difference", "smd_unbiased", "smd"),
   report_smd = FALSE,
-  random_effects = TRUE,
   assume_equal_variance = FALSE,
+  random_effects = TRUE,
   conf_level = .95
 )  {
 
@@ -94,13 +95,14 @@ meta_mdiff_two <- function(
   # * the column moderator is optional; checks happen in meta_any
   # * contrast should only be passed in moderator is defined; checks in meta_any
   # * effect_label should be a character, checked in meta_any
-  # * effect_size_name should be a character, checked in meta_any
-  # * moderator_variable_name checked in meta_any
+  # * reported_effect_size must be mean_difference, smd_unbiased, or smd
   # * random_effect must be a logical, TRUE or FALSE, checked in meta_any
+  # * assume_equal_variance must be logical
   # * conf_level must be a numeric >0 and < 1, checked in meta_any
 
   # Check that data is a data.frame
   esci_assert_type(data, "is.data.frame")
+
   # reference_means
   esci_assert_valid_column_name(data, reference_means_quoname)
   esci_assert_column_type(data, reference_means_quoname, "is.numeric")
@@ -115,6 +117,7 @@ meta_mdiff_two <- function(
     warning(row_report$warning)
     data <- data[-row_report$NA_rows, ]
   }
+
   # comparison_means
   esci_assert_valid_column_name(data, comparison_means_quoname)
   esci_assert_column_type(data, comparison_means_quoname, "is.numeric")
@@ -129,6 +132,7 @@ meta_mdiff_two <- function(
     warning(row_report$warning)
     data <- data[-row_report$NA_rows, ]
   }
+
   # reference_sds
   esci_assert_valid_column_name(data, reference_sds_quoname)
   esci_assert_column_type(data, reference_sds_quoname, "is.numeric")
@@ -136,7 +140,7 @@ meta_mdiff_two <- function(
     stop(
       glue::glue("
 Some sd values in {reference_sds_quoname} are 0 or less.
-These are rows {which(data[[reference_sds_quoname]] > 0)}.
+These are rows {paste(which(data[[reference_sds_quoname]] <= 0), collapse = ', ')}.
       ")
     )
   }
@@ -151,6 +155,7 @@ These are rows {which(data[[reference_sds_quoname]] > 0)}.
     warning(row_report$warning)
     data <- data[-row_report$NA_rows, ]
   }
+
   # comparison_sds
   esci_assert_valid_column_name(data, comparison_sds_quoname)
   esci_assert_column_type(data, comparison_sds_quoname, "is.numeric")
@@ -158,7 +163,7 @@ These are rows {which(data[[reference_sds_quoname]] > 0)}.
     stop(
       glue::glue("
 Some sd values in {comparison_sds_quoname} are 0 or less.
-These are rows {which(data[[comparison_sds_quoname]] > 0)}.
+These are rows {paste(which(data[[comparison_sds_quoname]] <= 0), collapse = ', ')}.
       ")
     )
   }
@@ -173,6 +178,7 @@ These are rows {which(data[[comparison_sds_quoname]] > 0)}.
     warning(row_report$warning)
     data <- data[-row_report$NA_rows, ]
   }
+
   # reference_ns
   esci_assert_valid_column_name(data, reference_ns_quoname)
   esci_assert_column_type(data, reference_ns_quoname, "is.numeric")
@@ -180,7 +186,7 @@ These are rows {which(data[[comparison_sds_quoname]] > 0)}.
     stop(
       glue::glue("
 Some n values in {reference_ns_quoname} are 0 or less.
-These are rows {which(data[[reference_ns_quoname]] > 0)}.
+These are rows {paste(which(data[[reference_ns_quoname]] <= 0), collapse = ', ')}.
       ")
     )
   }
@@ -188,7 +194,7 @@ These are rows {which(data[[reference_ns_quoname]] > 0)}.
     stop(
       glue::glue("
 Some n values in {reference_ns_quoname} are not integers.
-These are rows {which(!is.whole.number(data[[reference_ns_quoname]]))}.
+These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), collapse = ', ')}.
       ")
     )
   }
@@ -203,6 +209,7 @@ These are rows {which(!is.whole.number(data[[reference_ns_quoname]]))}.
     warning(row_report$warning)
     data <- data[-row_report$NA_rows, ]
   }
+
   # comparison_ns
   esci_assert_valid_column_name(data, comparison_ns_quoname)
   esci_assert_column_type(data, comparison_ns_quoname, "is.numeric")
@@ -210,7 +217,7 @@ These are rows {which(!is.whole.number(data[[reference_ns_quoname]]))}.
     stop(
       glue::glue("
 Some sample-size values in {comparison_ns_quoname} are 0 or less.
-These are rows {which(data[[comparison_ns_quoname]] > 0)}.
+These are rows {paste(which(data[[comparison_ns_quoname]] <= 0), collapse = ', ')}.
       ")
     )
   }
@@ -218,7 +225,7 @@ These are rows {which(data[[comparison_ns_quoname]] > 0)}.
     stop(
       glue::glue("
 Some n values in {comparison_ns_quoname} are not integers.
-These are rows {which(!is.whole.number(data[[comparison_ns_quoname]]))}.
+These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), collapse = ', ')}.
       ")
     )
   }
@@ -241,13 +248,46 @@ These are rows {which(!is.whole.number(data[[comparison_ns_quoname]]))}.
   } else {
     esci_assert_valid_column_name(data, labels_quoname)
   }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    labels_quoname,
+    lower = 2,
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+
   # moderator
   moderator <- !is.null(moderator_quoname)
-  if (moderator) esci_assert_valid_column_name(data, moderator_quoname)
+  if (moderator) {
+    esci_assert_valid_column_name(data, moderator_quoname)
+    row_report <- esci_assert_column_has_valid_rows(
+      data,
+      moderator_quoname,
+      lower = 2,
+    )
+    if (row_report$missing > 0) {
+      warnings <- c(warnings, row_report$warning)
+      warning(row_report$warning)
+      data <- data[-row_report$NA_rows, ]
+    }
+  }
+
   # Check options
+  reported_effect_size <- match.arg(reported_effect_size)
   esci_assert_type(assume_equal_variance, "is.logical")
-  esci_assert_type(report_smd, "is.logical")
+
+  report_smd <- reported_effect_size != "mean_difference"
+  correct_bias <- reported_effect_size == "smd_unbiased"
+
   # All other checks happen in meta_any
+  # * additional constraints on moderator
+  # * contrast
+  # * effect_label
+  # * random_effects
+  # * conf_level
 
 
   # Data prep------------------------------------------
@@ -305,7 +345,7 @@ These are rows {which(!is.whole.number(data[[comparison_ns_quoname]]))}.
           MARGIN = 1,
           FUN = apply_ci_stdmean_two,
           assume_equal_variance = assume_equal_variance,
-          correct_bias = TRUE,
+          correct_bias = correct_bias,
           conf_level = conf_level
         )
       )
@@ -321,7 +361,7 @@ These are rows {which(!is.whole.number(data[[comparison_ns_quoname]]))}.
     moderator = !!if (moderator) "moderator" else NULL,
     labels = "label",
     effect_label = effect_label,
-    effect_size_name = if (report_smd) "SMD" else "Mean difference",
+    effect_size_name = reported_effect_size,
     moderator_variable_name = if (moderator) moderator_quoname else "My moderator",
     random_effects = random_effects,
     conf_level = conf_level
@@ -330,6 +370,7 @@ These are rows {which(!is.whole.number(data[[comparison_ns_quoname]]))}.
   data$label <- NULL
   data$moderator <- NULL
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
+  res$warnings <- c(res$warnings, warnings)
 
   return(res)
 }

@@ -16,9 +16,10 @@ meta_mdiff_two(
   moderator = NULL,
   contrast = NULL,
   effect_label = "My effect",
+  reported_effect_size = c("mean_difference", "smd_unbiased", "smd"),
   report_smd = FALSE,
-  random_effects = TRUE,
   assume_equal_variance = FALSE,
+  random_effects = TRUE,
   conf_level = 0.95
 )
 }
@@ -45,9 +46,9 @@ meta_mdiff_two(
 
 \item{report_smd}{smd}
 
-\item{random_effects}{re}
-
 \item{assume_equal_variance}{aev}
+
+\item{random_effects}{re}
 
 \item{conf_level}{The confidence level for the confidence interval.  Given in
 decimal form.  Defaults to 0.95.}

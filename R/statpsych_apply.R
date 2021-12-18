@@ -71,3 +71,83 @@ apply_ci_stdmean_two <- function(
   return(res)
 }
 
+
+apply_ci_cor <- function(
+  myrow,
+  conf_level
+) {
+
+  res <- as.data.frame(
+    statpsych::ci.cor(
+      alpha = 1 - conf_level,
+      cor = myrow[["r"]],
+      s = 0,
+      n = myrow[["N"]]
+    )
+  )
+
+  res <- c(
+    res[1, "Estimate"],
+    res[1, "SE"]^2,
+    res[1, "LL"],
+    res[1, "UL"]
+  )
+  names(res) <- c("yi", "vi", "LL", "UL")
+
+  return(res)
+}
+
+
+apply_ci_prop1 <- function(
+  myrow,
+  conf_level
+) {
+
+  res <- as.data.frame(
+    statpsych::ci.prop1(
+      alpha = 1 - conf_level,
+      f = myrow[["cases"]],
+      n = myrow[["N"]]
+    )
+  )
+
+  res <- c(
+    res[2, "Estimate"],
+    res[1, "SE"]^2,
+    res[1, "LL"],
+    res[1, "UL"]
+  )
+  names(res) <- c("yi", "vi", "LL", "UL")
+
+  return(res)
+}
+
+apply_ci_prop2 <- function(
+  myrow,
+  conf_level
+) {
+  f1 <- myrow[["comparison_cases"]]
+  f2 <- myrow[["reference_cases"]]
+  n1 <- myrow[["comparison_N"]]
+  n2 <- myrow[["reference_N"]]
+
+  res <- as.data.frame(
+    statpsych::ci.prop2(
+      alpha = 1 - conf_level,
+      f1 = f1,
+      f2 = f2,
+      n1 = n1,
+      n2 = n2
+    )
+  )
+
+  res <- c(
+    f1/n1 - f2/n2,
+    res[1, "SE"]^2,
+    res[1, "LL"],
+    res[1, "UL"]
+  )
+  names(res) <- c("yi", "vi", "LL", "UL")
+
+  return(res)
+}

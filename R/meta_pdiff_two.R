@@ -1,20 +1,19 @@
 #' Estimate meta-analytic difference in magnitude between two ind. groups
 #'
 #' @description
-#' `meta_smd_two` returns
+#' `meta_pdiff_two` returns
 #'
 #'
 #' @param data A dataframe or tibble
-#' @param smds smd
-#' @param comparison_n comparison
-#' @param reference_ns reference
+#' @param comparison_cases cases
+#' @param comparison_ns comparison
+#' @param reference_cases cases
+#' @param reference_ns comparison
 #' @param labels labels
 #' @param moderator mod
 #' @param contrast contrast
 #' @param effect_label effect_label
-#' @param assume_equal_variance aev
-#' @param correct_bias correct_bias
-#' @param esci_vi esci_vi
+#' @param reported_effect_size res
 #' @param random_effects re
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
@@ -23,18 +22,17 @@
 #'
 #'
 #' @export
-meta_smd_two <- function(
+meta_pdiff_two <- function(
   data,
-  smds,
+  comparison_cases,
   comparison_ns,
+  reference_cases,
   reference_ns,
   labels = NULL,
   moderator = NULL,
   contrast = NULL,
   effect_label = "My effect",
-  assume_equal_variance = FALSE,
-  correct_bias = TRUE,
-  esci_vi = FALSE,
+  reported_effect_size = c("RD", "RR", "OR", "AS", "PETO"),
   random_effects = TRUE,
   conf_level = .95
 )  {
@@ -42,8 +40,11 @@ meta_smd_two <- function(
   # Initialization ---------------------------
   # Create quosures and quonames.
   # Stolen directly from dabestr
-  smds_enquo        <-  rlang::enquo(smds)
-  smds_quoname      <-  rlang::quo_name(smds_enquo)
+  comparison_cases_enquo        <-  rlang::enquo(comparison_cases)
+  comparison_cases_quoname      <-  rlang::quo_name(comparison_cases_enquo)
+
+  reference_cases_enquo        <-  rlang::enquo(reference_cases)
+  reference_cases_quoname      <-  rlang::quo_name(reference_cases_enquo)
 
   comparison_ns_enquo        <-  rlang::enquo(comparison_ns)
   comparison_ns_quoname      <-  rlang::quo_name(comparison_ns_enquo)
@@ -64,33 +65,28 @@ meta_smd_two <- function(
   # Input checks --------------------------------
   # * data must be a data frame
   #    all rows with an NA a parameter column will be dropped, warning issued
-  # * the column smds must exist and be numeric,
+  # * the column cases must exist and be numeric, integer >= 0
   #    with > 1 row after NAs removed
-  # * the column comparison_ns must exist and be numeric integers > 0
-  #    with > 1 row after NAs removed
-  # * the column reference_ns must exist and be numeric integers > 0
+  # * the column ns must exist and be numeric integers > 0
   #    with > 1 row after NAs removed
   # * the column labels is optional, but if passed must exist and
   #    have > 1 row after NAs removed
   # * the column moderator is optional; checks happen in meta_any
   # * contrast should only be passed in moderator is defined; checks in meta_any
   # * effect_label should be a character, checked in meta_any
-  # * random_effects must be a logical, TRUE or FALSE, checked in meta_any
-  # * assume_equal_variance must be logical
-  # * correct_bias must be logical
-  # * esci_vi must be logical
+  # * reported_effect size shold be "RD", "RR", "OR", "AS", "PETO"
   # * conf_level must be a numeric >0 and < 1, checked in meta_any
 
 
   # Check that data is a data.frame
   esci_assert_type(data, "is.data.frame")
 
-  # smds
-  esci_assert_valid_column_name(data, smds_quoname)
-  esci_assert_column_type(data, smds_quoname, "is.numeric")
+  # comparison_cases
+  esci_assert_valid_column_name(data, comparison_cases_quoname)
+  esci_assert_column_type(data, comparison_cases_quoname, "is.numeric")
   row_report <- esci_assert_column_has_valid_rows(
     data,
-    smds_quoname,
+    comparison_cases_quoname,
     lower = 2,
     na.rm = TRUE
   )
@@ -98,6 +94,84 @@ meta_smd_two <- function(
     warnings <- c(warnings, row_report$warning)
     warning(row_report$warning)
     data <- data[-row_report$NA_rows, ]
+  }
+  if (!all(data[[comparison_cases_quoname]] >= 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some case values in {comparison_cases_quoname} are < 0.
+These are rows {paste(which(data[[comparison_cases_quoname]] < 0), collapse = ', ')}.
+      ")
+    )
+  }
+  if (!all(is.whole.number(data[[comparison_cases_quoname]]), na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some case values in {comparison_cases_quoname} are not integers.
+These are rows {paste(which(!is.whole.number(data[[comparison_cases_quoname]])), collapse = ', ')}.
+      ")
+    )
+  }
+
+  # comparison_ns
+  esci_assert_valid_column_name(data, comparison_ns_quoname)
+  esci_assert_column_type(data, comparison_ns_quoname, "is.numeric")
+  if (!all(data[[comparison_ns_quoname]] > 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some n values in {comparison_ns_quoname} are 0 or less.
+These are rows {paste(which(data[[comparison_ns_quoname]] <= 0), collapse = ', ')}.
+      ")
+    )
+  }
+  if (!all(is.whole.number(data[[comparison_ns_quoname]]), na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some n values in {comparison_ns_quoname} are not integers.
+These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), collapse = ', ')}.
+      ")
+    )
+  }
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    comparison_ns_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+
+  # reference_cases
+  esci_assert_valid_column_name(data, reference_cases_quoname)
+  esci_assert_column_type(data, reference_cases_quoname, "is.numeric")
+  row_report <- esci_assert_column_has_valid_rows(
+    data,
+    reference_cases_quoname,
+    lower = 2,
+    na.rm = TRUE
+  )
+  if (row_report$missing > 0) {
+    warnings <- c(warnings, row_report$warning)
+    warning(row_report$warning)
+    data <- data[-row_report$NA_rows, ]
+  }
+  if (!all(data[[reference_cases_quoname]] >= 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some case values in {reference_cases_quoname} are < 0.
+These are rows {paste(which(data[[reference_cases_quoname]] < 0), collapse = ', ')}.
+      ")
+    )
+  }
+  if (!all(is.whole.number(data[[reference_cases_quoname]]), na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some case values in {reference_cases_quoname} are not integers.
+These are rows {paste(which(!is.whole.number(data[[reference_cases_quoname]])), collapse = ', ')}.
+      ")
+    )
   }
 
   # reference_ns
@@ -122,37 +196,6 @@ These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), col
   row_report <- esci_assert_column_has_valid_rows(
     data,
     reference_ns_quoname,
-    lower = 2,
-    na.rm = TRUE
-  )
-  if (row_report$missing > 0) {
-    warnings <- c(warnings, row_report$warning)
-    warning(row_report$warning)
-    data <- data[-row_report$NA_rows, ]
-  }
-
-  # comparison_ns
-  esci_assert_valid_column_name(data, comparison_ns_quoname)
-  esci_assert_column_type(data, comparison_ns_quoname, "is.numeric")
-  if (!all(data[[comparison_ns_quoname]] > 0, na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some sample-size values in {comparison_ns_quoname} are 0 or less.
-These are rows {paste(which(data[[comparison_ns_quoname]] <= 0), collapse = ', ')}.
-      ")
-    )
-  }
-  if (!all(is.whole.number(data[[comparison_ns_quoname]]), na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some n values in {comparison_ns_quoname} are not integers.
-These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), collapse = ', ')}.
-      ")
-    )
-  }
-  row_report <- esci_assert_column_has_valid_rows(
-    data,
-    comparison_ns_quoname,
     lower = 2,
     na.rm = TRUE
   )
@@ -197,9 +240,15 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   }
 
   # Check options
-  esci_assert_type(assume_equal_variance, "is.logical")
-  esci_assert_type(correct_bias, "is.logical")
-  esci_assert_type(esci_vi, "is.logical")
+  reported_effect_size <- match.arg(reported_effect_size)
+  effect_size_name <- switch(
+    reported_effect_size,
+    "RD" = "risk difference",
+    "RR" = "log risk ratio",
+    "OR" = "log odds ratio",
+    "AS" = "arcsine square-root transformed risk difference",
+    "PETO" = "log odds ratio estimated with Peto's method"
+  )
 
   # All other checks happen in meta_any:
   # * additional constraints on moderator
@@ -213,17 +262,19 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   # vector of passed column names
   just_cols <- c(
     labels_quoname,
-    smds_quoname,
-    reference_ns_quoname,
+    comparison_cases_quoname,
     comparison_ns_quoname,
+    reference_cases_quoname,
+    reference_ns_quoname,
     if (moderator) moderator_quoname
   )
 
-  # vector of cannonical column names
+  # vector of canonical column names
   numeric_cols <- c(
-    "smd",
-    "reference_n",
-    "comparison_n"
+    "comparison_cases",
+    "comparison_N",
+    "reference_cases",
+    "reference_N"
   )
   col_names <- c(
     "label",
@@ -237,41 +288,37 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
 
 
   # Calculations -------------------------------------------------
-  data$comparison_sd <- rep(1, times = nrow(data))
-  data$reference_sd <- rep(1, times = nrow(data))
-  data$reference_mean <- rep(0, times = nrow(data))
-  data$comparison_mean <- data$smd
-  smd_numeric_cols <- c(
-    "reference_mean",
-    "reference_sd",
-    "reference_n",
-    "comparison_mean",
-    "comparison_sd",
-    "comparison_n"
-  )
-
   # Get yi and vi for raw scores
   es_data <- as.data.frame(
     t(
       apply(
-        X = data[ , smd_numeric_cols],
+        X = data[ , numeric_cols],
         MARGIN = 1,
-        FUN = apply_ci_stdmean_two,
-        assume_equal_variance = assume_equal_variance,
-        correct_bias = correct_bias,
+        FUN = apply_ci_prop2,
         conf_level = conf_level
       )
     )
   )
+  better_es <- metafor::escalc(
+    measure = reported_effect_size,
+    data =  data,
+    ai = comparison_cases,
+    ci = reference_cases,
+    n1i = comparison_N,
+    n2i = reference_N
+  )
+  es_data$yi <- better_es$yi
+  es_data$vi <- better_es$vi
+
 
   res <- meta_any(
     data = cbind(data, es_data),
     yi = "yi",
-    vi = !!if (esci_vi) "vi_alt" else "vi",
+    vi = "vi",
     moderator = !!if (moderator) "moderator" else NULL,
     labels = "label",
     effect_label = effect_label,
-    effect_size_name = if (correct_bias) "SMD_corrected" else "SMD",
+    effect_size_name = effect_size_name,
     moderator_variable_name = if (moderator) moderator_quoname else "My moderator",
     contrast = contrast,
     random_effects = random_effects,
@@ -281,11 +328,7 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   # Clean up -----------------------------
   clear_cols <- c(
     "label",
-    "moderator",
-    "comparison_sd",
-    "reference_sd",
-    "reference_mean",
-    "comparison_mean"
+    "moderator"
   )
   data[ , clear_cols] <- NULL
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)

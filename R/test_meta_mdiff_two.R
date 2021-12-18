@@ -118,7 +118,7 @@ test_estimate_meta_mdiff_two <- function() {
     moderator = mod,
     labels = study_name,
     effect_label = "Brain Photo Rating - No Brain Photo Rating",
-    report_smd = TRUE,
+    reported_effect_size = "smd_unbiased",
     assume_equal_variance = TRUE,
     random_effects = TRUE,
   )
@@ -161,7 +161,7 @@ test_estimate_meta_mdiff_two <- function() {
     effect_label = "Brain Photo Rating - No Brain Photo Rating",
     assume_equal_variance = TRUE,
     random_effects = TRUE,
-    report_smd = TRUE
+    reported_effect_size = "smd_unbiased"
   )
 
 
@@ -180,7 +180,46 @@ test_estimate_meta_mdiff_two <- function() {
     effect_label = "Brain Photo Rating - No Brain Photo Rating",
     assume_equal_variance = TRUE,
     random_effects = TRUE,
-    report_smd = TRUE
+    reported_effect_size = "smd_unbiased"
+  )
+
+  # NA values
+  bad_esci <- esci_test
+  bad_esci[c(1, 3), "study_name"] <- NA
+  estimate <- meta_mdiff_two(
+    data = bad_esci,
+    comparison_means = bM,
+    comparison_sds = bS,
+    comparison_ns = bN,
+    reference_means = nbM,
+    reference_sds = nbS,
+    reference_ns = nbN,
+    moderator = mod,
+    labels = study_name,
+    effect_label = "Brain Photo Rating - No Brain Photo Rating",
+    assume_equal_variance = TRUE,
+    random_effects = TRUE,
+    reported_effect_size = "smd_unbiased"
+  )
+
+  # Invalid values
+  bad_esci <- esci_test
+  bad_esci[c(1, 3), "bN"] <- 1.1
+  bad_esci[c(5), "bN"] <- NA
+  estimate <- meta_mdiff_two(
+    data = bad_esci,
+    comparison_means = bM,
+    comparison_sds = bS,
+    comparison_ns = bN,
+    reference_means = nbM,
+    reference_sds = nbS,
+    reference_ns = nbN,
+    moderator = mod,
+    labels = study_name,
+    effect_label = "Brain Photo Rating - No Brain Photo Rating",
+    assume_equal_variance = TRUE,
+    random_effects = TRUE,
+    reported_effect_size = "smd_unbiased"
   )
 
 }
