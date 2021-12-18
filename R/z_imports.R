@@ -18,6 +18,7 @@
 #' @importFrom statpsych ci.stdmean1
 #' @importFrom statpsych ci.stdmean.ps
 #' @importFrom stats aggregate
+#' @importFrom stats anova
 #' @importFrom stats complete.cases
 #' @importFrom stats cor
 #' @importFrom stats median

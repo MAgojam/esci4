@@ -151,3 +151,64 @@ apply_ci_prop2 <- function(
 
   return(res)
 }
+
+
+apply_ci_mean1 <- function(
+  myrow,
+  reference_mean,
+  conf_level
+) {
+
+  res <- as.data.frame(
+    statpsych::ci.mean1(
+      alpha = 1 - conf_level,
+      m = myrow[["mean"]] - reference_mean,
+      sd = myrow[["sd"]],
+      n = myrow[["n"]]
+    )
+  )
+
+  res_row <- 1
+
+  res <- c(
+    res[res_row, "Estimate"],
+    res[res_row, "SE"]^2,
+    res[res_row, "LL"],
+    res[res_row, "UL"]
+  )
+  names(res) <- c("yi", "vi", "LL", "UL")
+
+  return(res)
+}
+
+apply_ci_stdmean1 <- function(
+  myrow,
+  reference_mean,
+  correct_bias,
+  conf_level
+) {
+
+
+  res <- as.data.frame(
+    CI_smd_one(
+      mean = myrow[["mean"]],
+      sd = myrow[["sd"]],
+      n = myrow[["n"]],
+      reference_mean = reference_mean,
+      correct_bias = correct_bias,
+      conf_level = conf_level
+    )
+  )
+
+
+  res <- c(
+    res[1, "effect_size"],
+    res[1, "SE"]^2,
+    res[1, "LL"],
+    res[1, "UL"]
+  )
+  names(res) <- c("yi", "vi", "LL", "UL")
+
+
+  return(res)
+}

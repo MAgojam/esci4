@@ -202,21 +202,37 @@ estimate_mdiff_one <- function(
 
 
     # SMD --------------------
-    smd_one <- wrapper_ci.stdmean1(
-      comparison_mean = comparison_mean,
-      comparison_sd = comparison_sd,
-      comparison_n = comparison_n,
+    smd_one <- CI_smd_one(
+      mean = comparison_mean,
+      sd = comparison_sd,
+      n = comparison_n,
       reference_mean = reference_mean,
-      effect_label = effect_label,
+      correct_bias = TRUE,
       conf_level = conf_level
     )
 
-    estimate$es_smd <- smd_one$es_smd
+
+    estimate$es_smd_properties <- smd_one$properties
+    smd_one$properties <- NULL
+    smd_one <- list(list(effect = effect_label), smd_one)
+
+    estimate$es_smd <- as.data.frame(smd_one)
+
     estimate$es_smd <- cbind(
       outcome_variable_name = outcome_variable_name,
       estimate$es_smd
     )
-    estimate$es_smd_properties <- smd_one$es_smd_properties
+
+
+    # smd_one <- wrapper_ci.stdmean1(
+    #   comparison_mean = comparison_mean,
+    #   comparison_sd = comparison_sd,
+    #   comparison_n = comparison_n,
+    #   reference_mean = reference_mean,
+    #   effect_label = effect_label,
+    #   conf_level = conf_level
+    # )
+
 
     # Other properties ---------------------------
     estimate$properties$contrast <- c(1, -1)

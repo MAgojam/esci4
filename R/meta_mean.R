@@ -1,23 +1,20 @@
 #' Estimate meta-analytic difference in magnitude between two ind. groups
 #'
 #' @description
-#' `meta_mdiff_two` returns
+#' `meta_mean` returns
 #'
 #'
 #' @param data A dataframe or tibble
-#' @param comparison_means comparison
-#' @param comparison_sds comparison
-#' @param comparison_n comparison
-#' @param reference_means reference
-#' @param reference_sds reference
-#' @param reference_ns reference
+#' @param means comparison
+#' @param sds comparison
+#' @param n comparison
 #' @param labels labels
 #' @param moderator mod
 #' @param contrast contrast
 #' @param effect_label el
+#' @param reference_mean Reference mean, defaults to 0
 #' @param reported_effect_size smd
 #' @param random_effects re
-#' @param assume_equal_variance aev
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
 #'
@@ -25,20 +22,17 @@
 #'
 #'
 #' @export
-meta_mdiff_two <- function(
+meta_mean <- function(
   data,
-  comparison_means,
-  comparison_sds,
-  comparison_ns,
-  reference_means,
-  reference_sds,
-  reference_ns,
+  means,
+  sds,
+  ns,
   labels = NULL,
   moderator = NULL,
   contrast = NULL,
   effect_label = "My effect",
+  reference_mean = 0,
   reported_effect_size = c("mean_difference", "smd_unbiased", "smd"),
-  assume_equal_variance = FALSE,
   random_effects = TRUE,
   conf_level = .95
 )  {
@@ -46,23 +40,14 @@ meta_mdiff_two <- function(
   # Initialization ---------------------------
   # Create quosures and quonames.
   # Stolen directly from dabestr
-  comparison_means_enquo        <-  rlang::enquo(comparison_means)
-  comparison_means_quoname      <-  rlang::quo_name(comparison_means_enquo)
+  means_enquo        <-  rlang::enquo(means)
+  means_quoname      <-  rlang::quo_name(means_enquo)
 
-  reference_means_enquo        <-  rlang::enquo(reference_means)
-  reference_means_quoname      <-  rlang::quo_name(reference_means_enquo)
+  sds_enquo        <-  rlang::enquo(sds)
+  sds_quoname      <-  rlang::quo_name(sds_enquo)
 
-  comparison_sds_enquo        <-  rlang::enquo(comparison_sds)
-  comparison_sds_quoname      <-  rlang::quo_name(comparison_sds_enquo)
-
-  reference_sds_enquo        <-  rlang::enquo(reference_sds)
-  reference_sds_quoname      <-  rlang::quo_name(reference_sds_enquo)
-
-  comparison_ns_enquo        <-  rlang::enquo(comparison_ns)
-  comparison_ns_quoname      <-  rlang::quo_name(comparison_ns_enquo)
-
-  reference_ns_enquo        <-  rlang::enquo(reference_ns)
-  reference_ns_quoname      <-  rlang::quo_name(reference_ns_enquo)
+  ns_enquo        <-  rlang::enquo(ns)
+  ns_quoname      <-  rlang::quo_name(ns_enquo)
 
   moderator_enquo        <-  rlang::enquo(moderator)
   moderator_quoname      <-  rlang::quo_name(moderator_enquo)
@@ -77,17 +62,11 @@ meta_mdiff_two <- function(
   # Input checks --------------------------------
   # * data must be a data frame
   #    all rows with an NA a parameter column will be dropped, warning issued
-  # * the column comparison_means must exist and be numeric,
+  # * the column means must exist and be numeric,
   #    with > 1 row after NAs removed
-  # * the column reference_means must exist and be numeric,
+  # * the column sds must exist and be numeric > 0
   #    with > 1 row after NAs removed
-  # * the column comparison_sds must exist and be numeric > 0
-  #    with > 1 row after NAs removed
-  # * the column reference_sds must exist and be numeric > 0
-  #    with > 1 row after NAs removed
-  # * the column comparison_ns must exist and be numeric integers > 0
-  #    with > 1 row after NAs removed
-  # * the column reference_ns must exist and be numeric integers > 0
+  # * the column ns must exist and be numeric integers > 0
   #    with > 1 row after NAs removed
   # * the column labels is optional, but if passed must exist and
   #    have > 1 row after NAs removed
@@ -96,18 +75,17 @@ meta_mdiff_two <- function(
   # * effect_label should be a character, checked in meta_any
   # * reported_effect_size must be mean_difference, smd_unbiased, or smd
   # * random_effect must be a logical, TRUE or FALSE, checked in meta_any
-  # * assume_equal_variance must be logical
   # * conf_level must be a numeric >0 and < 1, checked in meta_any
 
   # Check that data is a data.frame
   esci_assert_type(data, "is.data.frame")
 
-  # reference_means
-  esci_assert_valid_column_name(data, reference_means_quoname)
-  esci_assert_column_type(data, reference_means_quoname, "is.numeric")
+  # means
+  esci_assert_valid_column_name(data, means_quoname)
+  esci_assert_column_type(data, means_quoname, "is.numeric")
   row_report <- esci_assert_column_has_valid_rows(
     data,
-    reference_means_quoname,
+    means_quoname,
     lower = 2,
     na.rm = TRUE
   )
@@ -117,12 +95,20 @@ meta_mdiff_two <- function(
     data <- data[-row_report$NA_rows, ]
   }
 
-  # comparison_means
-  esci_assert_valid_column_name(data, comparison_means_quoname)
-  esci_assert_column_type(data, comparison_means_quoname, "is.numeric")
+  # sds
+  esci_assert_valid_column_name(data, sds_quoname)
+  esci_assert_column_type(data, sds_quoname, "is.numeric")
+  if (!all(data[[sds_quoname]] > 0, na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some sd values in {sds_quoname} are 0 or less.
+These are rows {paste(which(data[[sds_quoname]] <= 0), collapse = ', ')}.
+      ")
+    )
+  }
   row_report <- esci_assert_column_has_valid_rows(
     data,
-    comparison_means_quoname,
+    sds_quoname,
     lower = 2,
     na.rm = TRUE
   )
@@ -132,105 +118,28 @@ meta_mdiff_two <- function(
     data <- data[-row_report$NA_rows, ]
   }
 
-  # reference_sds
-  esci_assert_valid_column_name(data, reference_sds_quoname)
-  esci_assert_column_type(data, reference_sds_quoname, "is.numeric")
-  if (!all(data[[reference_sds_quoname]] > 0, na.rm = TRUE)) {
+  # ns
+  esci_assert_valid_column_name(data, ns_quoname)
+  esci_assert_column_type(data, ns_quoname, "is.numeric")
+  if (!all(data[[ns_quoname]] > 0, na.rm = TRUE)) {
     stop(
       glue::glue("
-Some sd values in {reference_sds_quoname} are 0 or less.
-These are rows {paste(which(data[[reference_sds_quoname]] <= 0), collapse = ', ')}.
+Some sample-size values in {ns_quoname} are 0 or less.
+These are rows {paste(which(data[[ns_quoname]] <= 0), collapse = ', ')}.
+      ")
+    )
+  }
+  if (!all(is.whole.number(data[[ns_quoname]]), na.rm = TRUE)) {
+    stop(
+      glue::glue("
+Some n values in {ns_quoname} are not integers.
+These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ', ')}.
       ")
     )
   }
   row_report <- esci_assert_column_has_valid_rows(
     data,
-    reference_sds_quoname,
-    lower = 2,
-    na.rm = TRUE
-  )
-  if (row_report$missing > 0) {
-    warnings <- c(warnings, row_report$warning)
-    warning(row_report$warning)
-    data <- data[-row_report$NA_rows, ]
-  }
-
-  # comparison_sds
-  esci_assert_valid_column_name(data, comparison_sds_quoname)
-  esci_assert_column_type(data, comparison_sds_quoname, "is.numeric")
-  if (!all(data[[comparison_sds_quoname]] > 0, na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some sd values in {comparison_sds_quoname} are 0 or less.
-These are rows {paste(which(data[[comparison_sds_quoname]] <= 0), collapse = ', ')}.
-      ")
-    )
-  }
-  row_report <- esci_assert_column_has_valid_rows(
-    data,
-    comparison_sds_quoname,
-    lower = 2,
-    na.rm = TRUE
-  )
-  if (row_report$missing > 0) {
-    warnings <- c(warnings, row_report$warning)
-    warning(row_report$warning)
-    data <- data[-row_report$NA_rows, ]
-  }
-
-  # reference_ns
-  esci_assert_valid_column_name(data, reference_ns_quoname)
-  esci_assert_column_type(data, reference_ns_quoname, "is.numeric")
-  if (!all(data[[reference_ns_quoname]] > 0, na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some n values in {reference_ns_quoname} are 0 or less.
-These are rows {paste(which(data[[reference_ns_quoname]] <= 0), collapse = ', ')}.
-      ")
-    )
-  }
-  if (!all(is.whole.number(data[[reference_ns_quoname]]), na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some n values in {reference_ns_quoname} are not integers.
-These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), collapse = ', ')}.
-      ")
-    )
-  }
-  row_report <- esci_assert_column_has_valid_rows(
-    data,
-    reference_ns_quoname,
-    lower = 2,
-    na.rm = TRUE
-  )
-  if (row_report$missing > 0) {
-    warnings <- c(warnings, row_report$warning)
-    warning(row_report$warning)
-    data <- data[-row_report$NA_rows, ]
-  }
-
-  # comparison_ns
-  esci_assert_valid_column_name(data, comparison_ns_quoname)
-  esci_assert_column_type(data, comparison_ns_quoname, "is.numeric")
-  if (!all(data[[comparison_ns_quoname]] > 0, na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some sample-size values in {comparison_ns_quoname} are 0 or less.
-These are rows {paste(which(data[[comparison_ns_quoname]] <= 0), collapse = ', ')}.
-      ")
-    )
-  }
-  if (!all(is.whole.number(data[[comparison_ns_quoname]]), na.rm = TRUE)) {
-    stop(
-      glue::glue("
-Some n values in {comparison_ns_quoname} are not integers.
-These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), collapse = ', ')}.
-      ")
-    )
-  }
-  row_report <- esci_assert_column_has_valid_rows(
-    data,
-    comparison_ns_quoname,
+    ns_quoname,
     lower = 2,
     na.rm = TRUE
   )
@@ -275,11 +184,11 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   }
 
   # Check options
+  esci_assert_type(reference_mean, "is.numeric")
   reported_effect_size <- match.arg(reported_effect_size)
-  esci_assert_type(assume_equal_variance, "is.logical")
-
   report_smd <- reported_effect_size != "mean_difference"
   correct_bias <- reported_effect_size == "smd_unbiased"
+
 
   # All other checks happen in meta_any
   # * additional constraints on moderator
@@ -293,23 +202,17 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   # vector of passed column names
   just_cols <- c(
     labels_quoname,
-    reference_means_quoname,
-    reference_sds_quoname,
-    reference_ns_quoname,
-    comparison_means_quoname,
-    comparison_sds_quoname,
-    comparison_ns_quoname,
+    means_quoname,
+    sds_quoname,
+    ns_quoname,
     if (moderator) moderator_quoname
   )
 
   # vector of cannonical column names
   numeric_cols <- c(
-    "reference_mean",
-    "reference_sd",
-    "reference_n",
-    "comparison_mean",
-    "comparison_sd",
-    "comparison_n"
+    "mean",
+    "sd",
+    "n"
   )
   col_names <- c(
     "label",
@@ -330,8 +233,8 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
         apply(
           X = data[ , numeric_cols],
           MARGIN = 1,
-          FUN = apply_ci_mdiff,
-          assume_equal_variance = assume_equal_variance,
+          FUN = apply_ci_mean1,
+          reference_mean = reference_mean,
           conf_level = conf_level
         )
       )
@@ -342,8 +245,8 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
         apply(
           X = data[ , numeric_cols],
           MARGIN = 1,
-          FUN = apply_ci_stdmean_two,
-          assume_equal_variance = assume_equal_variance,
+          FUN = apply_ci_stdmean1,
+          reference_mean = reference_mean,
           correct_bias = correct_bias,
           conf_level = conf_level
         )
