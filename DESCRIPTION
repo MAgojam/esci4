@@ -12,17 +12,23 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
+  jmvcore (>= 0.8.5), 
+  R6,
   rlang,
   methods,
   stats,
+  sadists,
   statpsych,
   metafor,
   ggplot2,
   ggdist,
-  sadists,
+  distributional, 
+  ggbeeswarm, 
   glue,
   Rdpack,
   mathjaxr
+Remotes:  
+  dgbonett/statpsych@9c5114d
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 RdMacros: Rdpack, mathjaxr

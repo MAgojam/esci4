@@ -1,0 +1,11 @@
+---
+name:  jamovidescribe
+title: Describe
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Describe
+      type:  Preformatted
+
+...
