@@ -1,0 +1,75 @@
+---
+name:  jamovimdiffpaired
+title: Mdiff - Paired
+menuGroup: esci4
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
+    - name: data
+      type: Data
+
+    - name: comparison_measure
+      title: Comparison variable
+      type: Variable
+      permitted: [numeric]
+
+    - name: reference_variable
+      title: Reference variable
+      type: Variable
+      permitted: [numeric]
+
+    - name: comparison_mean
+      title: Comparison mean (<i>M<sub>comparison</sub></i>)
+      type: Number
+
+    - name: comparison_sd
+      title: Comparison standard deviation (<i>s<sub>comparison</sub></i>)
+      type: Number
+
+    - name: reference_mean
+      title: Reference mean (<i>M<sub>reference</sub></i>)
+      type: Number
+
+    - name: reference_sd
+      title: Comparison standard deviation (<i>s<sub>reference</sub></i>)
+      type: Number
+
+    - name: n
+      title: Sample size (<i>N</i>)
+      type: Integer
+      min: 1
+
+    - name: r
+      title: Sample size (<i>N</i>)
+      type: Number
+      min: -1
+      max: 1
+
+    - name: comparison_measure_name
+      title: Comparison measure name
+      type: String
+      default: Comparison measure
+
+    - name: reference_measure_name
+      title: Reference measure name
+      type: String
+      default: Reference measure
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+...

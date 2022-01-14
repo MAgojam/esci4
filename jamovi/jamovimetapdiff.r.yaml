@@ -1,0 +1,11 @@
+---
+name:  jamovimetapdiff
+title: Pdiff - Meta-analysis
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Pdiff - Meta-analysis
+      type:  Preformatted
+
+...

@@ -1,0 +1,11 @@
+---
+name:  jamovimdiffone
+title: Mdiff - Single Group
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Mdiff - Single Group
+      type:  Preformatted
+
+...

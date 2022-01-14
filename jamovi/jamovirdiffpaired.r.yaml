@@ -1,0 +1,11 @@
+---
+name:  jamovirdiffpaired
+title: rdiff - Paired
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: rdiff - Paired
+      type:  Preformatted
+
+...

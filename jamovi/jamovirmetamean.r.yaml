@@ -1,0 +1,11 @@
+---
+name:  jamovirmetamean
+title: Magnitude/Quantity - Meta-analysis
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Magnitude/Quantity - Meta-analysis
+      type:  Preformatted
+
+...

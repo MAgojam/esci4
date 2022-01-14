@@ -1,0 +1,83 @@
+---
+name:  jamovimdifftwo
+title: Mdiff - Two Groups
+menuGroup: esci4
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
+    - name: data
+      type: Data
+
+    - name: outcome_variable
+      title: Outcome variable
+      type: Variable
+      permitted: [numeric]
+
+    - name: grouping_variable
+      title: Grouping variable
+      type: Variable
+      permitted: [factor]
+
+    - name: comparison_mean
+      title: Comparison mean (<i>M<sub>comparison</sub></i>)
+      type: Number
+
+    - name: comparison_sd
+      title: Comparison standard deviation (<i>s<sub>comparison</sub></i>)
+      type: Number
+
+    - name: comparison_n
+      title: Comparison group sample size (<i>N<sub>comparison</sub></i>)
+      type: Integer
+      min: 1
+
+    - name: reference_mean
+      title: Reference mean (<i>M<sub>reference</sub></i>)
+      type: Number
+
+    - name: reference_sd
+      title: Comparison standard deviation (<i>s<sub>reference</sub></i>)
+      type: Number
+
+    - name: reference_n
+      title: Comparison group sample size (<i>N<sub>reference</sub></i>)
+      type: Integer
+      min: 1
+
+    - name: comparison_level_name
+      title: Comparison level name
+      type: String
+      default: Comparison level
+
+    - name: reference_level_name
+      title: Reference level name
+      type: String
+      default: Reference level
+
+    - name: outcome_variable_name
+      title: Outcome variable name
+      type: String
+      default: Outcome variable
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: assume_equal_variance
+      title: Assume equal variances
+      type: Bool
+      default: true
+...

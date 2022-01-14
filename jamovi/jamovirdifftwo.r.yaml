@@ -1,0 +1,11 @@
+---
+name:  jamovirdifftwo
+title: rdiff - Two Groups
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: rdiff - Two Groups
+      type:  Preformatted
+
+...

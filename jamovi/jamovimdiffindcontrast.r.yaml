@@ -1,0 +1,11 @@
+---
+name:  jamovimdiffindcontrast
+title: Mdiff - Independent Groups Contrast
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Mdiff - Independent Groups Contrast
+      type:  Preformatted
+
+...

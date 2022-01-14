@@ -1,0 +1,11 @@
+---
+name:  jamovipdifftwo
+title: Pdiff - Two Groups
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Pdiff - Two Groups
+      type:  Preformatted
+
+...

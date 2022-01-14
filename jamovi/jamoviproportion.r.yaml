@@ -1,0 +1,11 @@
+---
+name:  jamoviproportion
+title: Count/Proportion
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Count/Proportion
+      type:  Preformatted
+
+...

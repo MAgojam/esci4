@@ -1,0 +1,81 @@
+---
+name:  jamovimdiffindcontrast
+title: Mdiff - Independent Groups Contrast
+menuGroup: esci4
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
+    - name: data
+      type: Data
+
+    - name: outcome_variable
+      title: Outcome variable
+      type: Variable
+      permitted: [numeric]
+
+    - name: grouping_variable
+      title: Grouping variable
+      type: Variable
+      permitted: [factor]
+
+    - name: means
+      title: Group means
+      type: Variable
+      permitted: [numeric]
+
+    - name: sds
+      title: Group standard deviations
+      type: Variable
+      permitted: [numeric]
+
+    - name: ns
+      title: Group sample sizes
+      type: Variable
+      permitted: [numeric]
+
+    - name: grouping_variable_levels
+      title: Grouping variable levels
+      type: Variable
+      permitted: [numeric]
+
+    - name: outcome_variable_name
+      title: Outcome variable name
+      type: String
+      default: Outcome variable
+
+    - name: grouping_variable_name
+      title: Grouping variable name
+      type: String
+      default: Grouping variable
+
+    - name: comparison_levels
+      title: Comparison levels
+      type: String
+
+    - name: reference_levels
+      title: Reference levels
+      type: String
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: assume_equal_variance
+      title: Assume equal variances
+      type: Bool
+      default: true
+
+...

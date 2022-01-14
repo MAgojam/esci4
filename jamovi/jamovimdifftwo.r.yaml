@@ -1,0 +1,11 @@
+---
+name:  jamovimdifftwo
+title: Mdiff - Two Groups
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Mdiff - Two Groups
+      type:  Preformatted
+
+...

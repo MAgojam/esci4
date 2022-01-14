@@ -1,0 +1,11 @@
+---
+name:  jamovimagnitude
+title: Magnitude/Quantity
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Magnitude/Quantity
+      type:  Preformatted
+
+...

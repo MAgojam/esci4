@@ -35,7 +35,116 @@ analyses:
     name: jamovidescribe
     ns: esci4
     menuGroup: esci4
+    menuSubgroup: Descriptive Stats
     menuTitle: Describe
+  - title: Magnitude/Quantity
+    name: jamovimagnitude
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Simple Estimates
+    menuTitle: Magnitude/Quantity
+  - title: Magnitude/Quantity - Meta-analysis
+    name: jamovirmetamean
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Simple Estimates
+    menuTitle: Magnitude/Quantity - Meta-analysis
+  - title: Count/Proportion
+    name: jamoviproportion
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Simple Estimates
+    menuTitle: Count/Proportion
+  - title: Count/Proportion - Meta-analysis
+    name: jamovirmetaproportion
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Simple Estimates
+    menuTitle: Count/Proportion - Meta-analysis
+  - title: Linear Correlation
+    name: jamovicorrelation
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Simple Estimates
+    menuTitle: Linear Correlation
+  - title: Linear Correlation - Meta-analysis
+    name: jamovirmetar
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Simple Estimates
+    menuTitle: Linear Correlation - Meta-analysis
+  - title: Mdiff - Single Group
+    name: jamovimdiffone
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Magnitude
+    menuTitle: Mdiff - Single Group
+  - title: Mdiff - Two Groups
+    name: jamovimdifftwo
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Magnitude
+    menuTitle: Mdiff - Two Groups
+  - title: Mdiff - Paired
+    name: jamovimdiffpaired
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Magnitude
+    menuTitle: Mdiff - Paired
+  - title: Mdiff - Independent Groups Contrast
+    name: jamovimdiffindcontrast
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Magnitude
+    menuTitle: Mdiff - Independent Groups Contrast
+  - title: Mdiff - Meta-analysis
+    name: jamovimetamdiff
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Magnitude
+    menuTitle: Mdiff - Meta-analysis
+  - title: Pdiff - Single Group
+    name: jamovipdiffone
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Proportion
+    menuTitle: Pdiff - Single Group
+  - title: Pdiff - Two Groups
+    name: jamovipdifftwo
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Proportion
+    menuTitle: Pdiff - Two Groups
+  - title: Pdiff - Paired
+    name: jamovipdiffpaired
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Proportion
+    menuTitle: Pdiff - Paired
+  - title: Pdiff - Independent Groups Contrast
+    name: jamovipdiffindcontrast
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Proportion
+    menuTitle: Pdiff - Independent Groups Contrast
+  - title: Pdiff - Meta-analysis
+    name: jamovimetapdiff
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Proportion
+    menuTitle: Pdiff - Meta-analysis
+  - title: rdiff - Two Groups
+    name: jamovirdifftwo
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Association
+    menuTitle: rdiff - Two Groups
+  - title: rdiff - Paired
+    name: jamovirdiffpaired
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Differences in Association
+    menuTitle: rdiff - Paired
 usesNative: true
 minApp: 1.0.8
 

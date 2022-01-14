@@ -1,0 +1,11 @@
+---
+name:  jamovipdiffone
+title: Pdiff - Single Group
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Pdiff - Single Group
+      type:  Preformatted
+
+...

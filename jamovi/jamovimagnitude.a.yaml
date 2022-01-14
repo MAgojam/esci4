@@ -1,0 +1,42 @@
+---
+name:  jamovimagnitude
+title: Magnitude/Quantity
+menuGroup: esci4
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+    - name: outcome_variable
+      title: Outcome variable
+      type: Variable
+      permitted: [numeric]
+
+    - name: mean
+      title: Mean (<i>M</i>)
+      type: Number
+
+    - name: sd
+      title: Standard deviation (<i>s</i>)
+      type: Number
+
+    - name: n
+      title: Sample size (<i>N</i>)
+      type: Integer
+      min: 1
+
+    - name: outcome_variable_name
+      title: Outcome variable name
+      type: String
+      default: Outcome variable
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+...

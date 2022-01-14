@@ -1,0 +1,11 @@
+---
+name:  jamovirmetaproportion
+title: Count/Proportion - Meta-analysis
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Count/Proportion - Meta-analysis
+      type:  Preformatted
+
+...

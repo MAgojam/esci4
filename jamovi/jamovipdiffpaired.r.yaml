@@ -1,0 +1,11 @@
+---
+name:  jamovipdiffpaired
+title: Pdiff - Paired
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: Pdiff - Paired
+      type:  Preformatted
+
+...
