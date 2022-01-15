@@ -4,8 +4,13 @@ title: Linear Correlation
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Linear Correlation
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: true
+
+    - name: help
+      type: Html
+      visible: false
+
 
 ...

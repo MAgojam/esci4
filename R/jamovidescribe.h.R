@@ -6,7 +6,8 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            outcome_variable = NULL, ...) {
+            outcome_variable = NULL,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -14,25 +15,34 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresData=TRUE,
                 ...)
 
-            private$..outcome_variable <- jmvcore::OptionVariable$new(
+            private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
                 outcome_variable,
                 permitted=list(
                     "numeric"))
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
             self$.addOption(private$..outcome_variable)
+            self$.addOption(private$..show_details)
         }),
     active = list(
-        outcome_variable = function() private$..outcome_variable$value),
+        outcome_variable = function() private$..outcome_variable$value,
+        show_details = function() private$..show_details$value),
     private = list(
-        ..outcome_variable = NA)
+        ..outcome_variable = NA,
+        ..show_details = NA)
 )
 
 jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovidescribeResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -42,8 +52,92 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 title="Describe")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Describe"))}))
+                name="debug",
+                visible=FALSE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows="(outcome_variable)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome Variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="mean", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="mean_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="median", 
+                        `title`="Median", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="median_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="median_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="sd", 
+                        `type`="number", 
+                        `title`="<i>s</i>"),
+                    list(
+                        `name`="min", 
+                        `title`="Minimum", 
+                        `type`="number"),
+                    list(
+                        `name`="max", 
+                        `title`="Maximum", 
+                        `type`="number"),
+                    list(
+                        `name`="q1", 
+                        `title`="25th", 
+                        `type`="number", 
+                        `superTitle`="Percentile"),
+                    list(
+                        `name`="q3", 
+                        `title`="75th", 
+                        `type`="number", 
+                        `superTitle`="Percentile"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>n</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="missing", 
+                        `type`="integer", 
+                        `title`="Missing"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SEM</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))}))
 
 jamovidescribeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovidescribeBase",
@@ -70,15 +164,25 @@ jamovidescribeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' 
 #' @param data .
 #' @param outcome_variable .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamovidescribe <- function(
     data,
-    outcome_variable) {
+    outcome_variable,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovidescribe requires jmvcore to be installed (restart may be required)")
@@ -91,7 +195,8 @@ jamovidescribe <- function(
 
 
     options <- jamovidescribeOptions$new(
-        outcome_variable = outcome_variable)
+        outcome_variable = outcome_variable,
+        show_details = show_details)
 
     analysis <- jamovidescribeClass$new(
         options = options,

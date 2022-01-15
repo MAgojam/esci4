@@ -10,8 +10,13 @@ options:
       type: Data
 
     - name: outcome_variable
-      title: Outcome variable
-      type: Variable
+      title: Outcome variables
+      type: Variables
       permitted: [numeric]
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 
 ...

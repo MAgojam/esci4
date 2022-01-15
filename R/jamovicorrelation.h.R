@@ -57,7 +57,8 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
     "jamovicorrelationResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -67,8 +68,12 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 title="Linear Correlation")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Linear Correlation"))}))
+                name="debug",
+                visible=TRUE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))}))
 
 jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovicorrelationBase",
@@ -100,7 +105,8 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param varEq .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #' }
 #'
 #' @export

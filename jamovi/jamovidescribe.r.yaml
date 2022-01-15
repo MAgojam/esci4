@@ -4,8 +4,76 @@ title: Describe
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Describe
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: false
+
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  (outcome_variable)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome Variable'
+          type: text
+          combineBelow: true
+        - name: mean
+          type: number
+          title: <i>M</i>
+        - name: mean_LL
+          title: LL
+          type: number
+          visible: (show_details)
+        - name: mean_UL
+          title: UL
+          type: number
+          visible: (show_details)
+        - name: median
+          title: Median
+          type: number
+          visible: (show_details)
+        - name: median_LL
+          title: LL
+          type: number
+          visible: (show_details)
+        - name: median_UL
+          title: UL
+          type: number
+          visible: (show_details)
+        - name: sd
+          type: number
+          title: <i>s</i>
+        - name: min
+          title: Minimum
+          type: number
+        - name: max
+          title: Maximum
+          type: number
+        - name: q1
+          title: 25th
+          type: number
+          superTitle: Percentile
+        - name: q3
+          title: 75th
+          type: number
+          superTitle: Percentile
+        - name: n
+          title: <i>n</i>
+          type: integer
+        - name: missing
+          type: integer
+          title: Missing
+        - name: df
+          title: <i>df</i>
+          type: integer
+          visible: (show_details)
+        - name: mean_SE
+          title: <i>SEM</i>
+          type: number
+          visible: (show_details)
 
 ...
