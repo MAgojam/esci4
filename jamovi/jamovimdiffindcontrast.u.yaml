@@ -14,11 +14,10 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Outcome variable
+        label: Outcome variable(s)
         children:
           - type: VariablesListBox
             name: outcome_variable
-            maxItemCount: 1
             isTarget: true
       - type: TargetLayoutBox
         label: Grouping variable
@@ -71,13 +70,13 @@ children:
     margin: large
     children:
       - type: TextBox
-        name: comparison_levels
+        name: comparison_labels
         format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
-        name: reference_levels
+        name: reference_labels
         format: string
   - type: LayoutBox
     margin: large
@@ -90,3 +89,5 @@ children:
     children:
       - type: CheckBox
         name: assume_equal_variance
+      - type: CheckBox
+        name: show_details

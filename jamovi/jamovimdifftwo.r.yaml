@@ -4,8 +4,366 @@ title: Mdiff - Two Groups
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Mdiff - Two Groups
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: false
 
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  1
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable name'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_level
+          title: 'Group'
+          type: text
+        - name: mean
+          type: number
+          title: <i>M</i>
+        - name: mean_LL
+          title: LL
+          type: number
+        - name: mean_UL
+          title: UL
+          type: number
+        - name: median
+          title: Median
+          type: number
+          visible: (show_details & switch == 'from_raw')
+        - name: median_LL
+          title: LL
+          type: number
+          visible: (show_details & switch == 'from_raw')
+        - name: median_UL
+          title: UL
+          type: number
+          visible: (show_details & switch == 'from_raw')
+        - name: sd
+          type: number
+          title: <i>s</i>
+        - name: min
+          title: Minimum
+          type: number
+          visible: (show_details & switch == 'from_raw')
+        - name: max
+          title: Maximum
+          type: number
+          visible: (show_details & switch == 'from_raw')
+        - name: q1
+          title: 25th
+          type: number
+          superTitle: Percentile
+          visible: (show_details & switch == 'from_raw')
+        - name: q3
+          title: 75th
+          type: number
+          superTitle: Percentile
+          visible: (show_details & switch == 'from_raw')
+        - name: n
+          title: <i>n</i>
+          type: integer
+        - name: missing
+          type: integer
+          title: Missing
+          visible: (switch == 'from_raw')
+        - name: df_i
+          title: <i>df</i>
+          type: integer
+          visible: (show_details)
+        - name: mean_SE
+          title: <i>SE<sub>Mean</sub></i>
+          type: number
+          visible: (show_details)
+        - name: median_SE
+          type: number
+          title: <i>SE<sub>Median</sub></i>
+          visible: (show_details & switch == 'from_raw')
+
+    - name:  es_mean_difference
+      title: Mean difference
+      type: Table
+      rows:  3
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>M</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: number
+          visible: (show_details & !assume_equal_variance)
+        - name: df_i
+          title: <i>df</i>
+          type: integer
+          visible: (show_details & assume_equal_variance)
+
+    - name:  es_smd
+      title: Standardized mean difference
+      type: Table
+      rows:  1
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: numerator
+          title: <i>M</i>
+          type: number
+        - name: denominator
+          title: Standardizer
+          type: number
+        - name: effect_size
+          type: number
+          title: "<i>d</i>"
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: number
+          visible: (show_details & !assume_equal_variance)
+        - name: df_i
+          title: <i>df</i>
+          type: integer
+          visible: (show_details & assume_equal_variance)
+        - name: d_biased
+          title: "<i>d</i><sub>biased</sub>"
+          type: number
+          visible: (show_details)
+
+    - name:  es_mean_ratio
+      title: Ratio of means
+      type: Table
+      rows:  1
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: comparison_mean
+          title: <i>M<sub>comparison</sub></i>
+          type: number
+        - name: reference_mean
+          title: <i>M<sub>reference</sub></i>
+          type: number
+        - name: effect_size
+          title: <i>M<sub>comparison</sub> / M<sub>reference</sub></i>
+          type: number
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: number
+          visible: (show_details & !assume_equal_variance)
+        - name: df_i
+          title: <i>df</i>
+          type: integer
+          visible: (show_details & assume_equal_variance)
+        - name: d_biased
+          title: "<i>d</i><sub>biased</sub>"
+          type: number
+          visible: (show_details)
+
+    - name:  es_median_difference
+      title: Median difference
+      type: Table
+      visible: (switch == 'from_raw')
+      rows:  3
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>Mdn</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+
+
+    - name:  es_median_ratio
+      title: Ration of medians
+      type: Table
+      visible: (switch == 'from_raw')
+      rows:  1
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: comparison_median
+          title: <i>Mdn<sub>comparison</sub></i>
+          type: number
+        - name: reference_median
+          title: <i>Mdn<sub>reference</sub></i>
+          type: number
+        - name: effect_size
+          title: <i>M<sub>comparison</sub> / M<sub>reference</sub></i>
+          type: number
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
 ...

@@ -15,10 +15,11 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             grouping_variable_levels = NULL,
             outcome_variable_name = "Outcome variable",
             grouping_variable_name = "Grouping variable",
-            comparison_levels = NULL,
-            reference_levels = NULL,
+            comparison_labels = " ",
+            reference_labels = " ",
             conf_level = 95,
-            assume_equal_variance = TRUE, ...) {
+            assume_equal_variance = TRUE,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -33,7 +34,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 options=list(
                     "from_raw",
                     "from_summary"))
-            private$..outcome_variable <- jmvcore::OptionVariable$new(
+            private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
                 outcome_variable,
                 permitted=list(
@@ -62,7 +63,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 "grouping_variable_levels",
                 grouping_variable_levels,
                 permitted=list(
-                    "numeric"))
+                    "factor"))
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -71,12 +72,14 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 "grouping_variable_name",
                 grouping_variable_name,
                 default="Grouping variable")
-            private$..comparison_levels <- jmvcore::OptionString$new(
-                "comparison_levels",
-                comparison_levels)
-            private$..reference_levels <- jmvcore::OptionString$new(
-                "reference_levels",
-                reference_levels)
+            private$..comparison_labels <- jmvcore::OptionString$new(
+                "comparison_labels",
+                comparison_labels,
+                default=" ")
+            private$..reference_labels <- jmvcore::OptionString$new(
+                "reference_labels",
+                reference_labels,
+                default=" ")
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -87,6 +90,10 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 "assume_equal_variance",
                 assume_equal_variance,
                 default=TRUE)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
@@ -97,10 +104,11 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$.addOption(private$..grouping_variable_levels)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..grouping_variable_name)
-            self$.addOption(private$..comparison_levels)
-            self$.addOption(private$..reference_levels)
+            self$.addOption(private$..comparison_labels)
+            self$.addOption(private$..reference_labels)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..assume_equal_variance)
+            self$.addOption(private$..show_details)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -112,10 +120,11 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         grouping_variable_levels = function() private$..grouping_variable_levels$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         grouping_variable_name = function() private$..grouping_variable_name$value,
-        comparison_levels = function() private$..comparison_levels$value,
-        reference_levels = function() private$..reference_levels$value,
+        comparison_labels = function() private$..comparison_labels$value,
+        reference_labels = function() private$..reference_labels$value,
         conf_level = function() private$..conf_level$value,
-        assume_equal_variance = function() private$..assume_equal_variance$value),
+        assume_equal_variance = function() private$..assume_equal_variance$value,
+        show_details = function() private$..show_details$value),
     private = list(
         ..switch = NA,
         ..outcome_variable = NA,
@@ -126,17 +135,23 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         ..grouping_variable_levels = NA,
         ..outcome_variable_name = NA,
         ..grouping_variable_name = NA,
-        ..comparison_levels = NA,
-        ..reference_levels = NA,
+        ..comparison_labels = NA,
+        ..reference_labels = NA,
         ..conf_level = NA,
-        ..assume_equal_variance = NA)
+        ..assume_equal_variance = NA,
+        ..show_details = NA)
 )
 
 jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffindcontrastResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]],
+        es_mean_difference = function() private$.items[["es_mean_difference"]],
+        es_smd = function() private$.items[["es_smd"]],
+        es_median_difference = function() private$.items[["es_median_difference"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -146,8 +161,306 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 title="Mdiff - Independent Groups Contrast")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Mdiff - Independent Groups Contrast"))}))
+                name="debug",
+                visible=FALSE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows=1,
+                clearWith=list(
+                    "switch",
+                    "grouping_variable_levels",
+                    "means",
+                    "sds",
+                    "ns",
+                    "outcome_variable_name",
+                    "outcome_variable",
+                    "grouping_variable",
+                    "reference_levels",
+                    "comparison_levels",
+                    "conf_level",
+                    "assume_equal_variance"),
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable name", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_level", 
+                        `title`="Group", 
+                        `type`="text"),
+                    list(
+                        `name`="mean", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="mean_LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="mean_UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="median", 
+                        `title`="Median", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="median_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="median_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="sd", 
+                        `type`="number", 
+                        `title`="<i>s</i>"),
+                    list(
+                        `name`="min", 
+                        `title`="Minimum", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="max", 
+                        `title`="Maximum", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="q1", 
+                        `title`="25th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="q3", 
+                        `title`="75th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>n</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="missing", 
+                        `type`="integer", 
+                        `title`="Missing", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="df_i", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE<sub>Mean</sub></i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE<sub>Median</sub></i>", 
+                        `visible`="(show_details & switch == 'from_raw')"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_mean_difference",
+                title="Mean difference",
+                rows=3,
+                clearWith=list(
+                    "switch",
+                    "grouping_variable_levels",
+                    "means",
+                    "sds",
+                    "ns",
+                    "outcome_variable_name",
+                    "outcome_variable",
+                    "grouping_variable",
+                    "reference_levels",
+                    "comparison_levels",
+                    "conf_level",
+                    "assume_equal_variance"),
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="number", 
+                        `visible`="(show_details & !assume_equal_variance)"),
+                    list(
+                        `name`="df_i", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details & assume_equal_variance)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_smd",
+                title="Standardized mean difference",
+                rows=1,
+                clearWith=list(
+                    "switch",
+                    "grouping_variable_levels",
+                    "means",
+                    "sds",
+                    "ns",
+                    "outcome_variable_name",
+                    "outcome_variable",
+                    "grouping_variable",
+                    "reference_levels",
+                    "comparison_levels",
+                    "conf_level",
+                    "assume_equal_variance"),
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="numerator", 
+                        `title`="<i>M</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="denominator", 
+                        `title`="Standardizer", 
+                        `type`="number"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>d</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="number", 
+                        `visible`="(show_details & !assume_equal_variance)"),
+                    list(
+                        `name`="df_i", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details & assume_equal_variance)"),
+                    list(
+                        `name`="d_biased", 
+                        `title`="<i>d</i><sub>biased</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_median_difference",
+                title="Median difference",
+                visible="(switch == 'from_raw')",
+                rows=3,
+                clearWith=list(
+                    "switch",
+                    "grouping_variable_levels",
+                    "means",
+                    "sds",
+                    "ns",
+                    "outcome_variable_name",
+                    "outcome_variable",
+                    "grouping_variable",
+                    "reference_levels",
+                    "comparison_levels",
+                    "conf_level",
+                    "assume_equal_variance"),
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>Mdn</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))}))
 
 jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffindcontrastBase",
@@ -182,14 +495,26 @@ jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
 #' @param grouping_variable_levels .
 #' @param outcome_variable_name .
 #' @param grouping_variable_name .
-#' @param comparison_levels .
-#' @param reference_levels .
+#' @param comparison_labels .
+#' @param reference_labels .
 #' @param conf_level .
 #' @param assume_equal_variance .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamovimdiffindcontrast <- function(
@@ -203,10 +528,11 @@ jamovimdiffindcontrast <- function(
     grouping_variable_levels,
     outcome_variable_name = "Outcome variable",
     grouping_variable_name = "Grouping variable",
-    comparison_levels,
-    reference_levels,
+    comparison_labels = " ",
+    reference_labels = " ",
     conf_level = 95,
-    assume_equal_variance = TRUE) {
+    assume_equal_variance = TRUE,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimdiffindcontrast requires jmvcore to be installed (restart may be required)")
@@ -228,6 +554,7 @@ jamovimdiffindcontrast <- function(
             `if`( ! missing(grouping_variable_levels), grouping_variable_levels, NULL))
 
     for (v in grouping_variable) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+    for (v in grouping_variable_levels) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- jamovimdiffindcontrastOptions$new(
         switch = switch,
@@ -239,10 +566,11 @@ jamovimdiffindcontrast <- function(
         grouping_variable_levels = grouping_variable_levels,
         outcome_variable_name = outcome_variable_name,
         grouping_variable_name = grouping_variable_name,
-        comparison_levels = comparison_levels,
-        reference_levels = reference_levels,
+        comparison_labels = comparison_labels,
+        reference_labels = reference_labels,
         conf_level = conf_level,
-        assume_equal_variance = assume_equal_variance)
+        assume_equal_variance = assume_equal_variance,
+        show_details = show_details)
 
     analysis <- jamovimdiffindcontrastClass$new(
         options = options,

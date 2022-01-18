@@ -18,7 +18,6 @@ children:
         children:
           - type: VariablesListBox
             name: outcome_variable
-            maxItemCount: 1
             isTarget: true
       - type: TargetLayoutBox
         label: Grouping variable
@@ -32,37 +31,37 @@ children:
     children:
       - type: TextBox
         name: comparison_mean
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: comparison_sd
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: comparison_n
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: reference_mean
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: reference_sd
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: reference_n
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
@@ -85,6 +84,12 @@ children:
     margin: large
     children:
       - type: TextBox
+        name: grouping_variable_name
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
         name: conf_level
         format: number
   - type: LayoutBox
@@ -92,3 +97,7 @@ children:
     children:
       - type: CheckBox
         name: assume_equal_variance
+      - type: CheckBox
+        name: switch_comparison_order
+      - type: CheckBox
+        name: show_details

@@ -20,7 +20,7 @@ options:
 
     - name: outcome_variable
       title: Outcome variable
-      type: Variable
+      type: Variables
       permitted: [numeric]
 
     - name: grouping_variable
@@ -30,29 +30,33 @@ options:
 
     - name: comparison_mean
       title: Comparison mean (<i>M<sub>comparison</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: comparison_sd
       title: Comparison standard deviation (<i>s<sub>comparison</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: comparison_n
       title: Comparison group sample size (<i>N<sub>comparison</sub></i>)
-      type: Integer
-      min: 1
+      type: String
+      default: ' '
 
     - name: reference_mean
       title: Reference mean (<i>M<sub>reference</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: reference_sd
       title: Comparison standard deviation (<i>s<sub>reference</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: reference_n
       title: Comparison group sample size (<i>N<sub>reference</sub></i>)
-      type: Integer
-      min: 1
+      type: String
+      default: ' '
 
     - name: comparison_level_name
       title: Comparison level name
@@ -69,6 +73,11 @@ options:
       type: String
       default: Outcome variable
 
+    - name: grouping_variable_name
+      title: Grouping variable name
+      type: String
+      default: Grouping variable
+
     - name: conf_level
       type: Number
       title: Confidence level
@@ -80,4 +89,14 @@ options:
       title: Assume equal variances
       type: Bool
       default: true
+
+    - name: switch_comparison_order
+      title: Switch comparison order
+      type: Bool
+      default: false
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 ...

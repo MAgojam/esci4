@@ -60,11 +60,12 @@ jamovi_table_filler <- function(jmv_table, result_table, expand = FALSE) {
 jamovi_set_confidence <- function(jmv_table, CI) {
 
   CI_columns <- c(
-    "mean_LL", "mean_UL", "median_LL", "median_UL"
+    "mean_LL", "mean_UL", "median_LL", "median_UL",
+    "LL", "UL"
   )
-  MoE_columns <- c(
-    "mean_SE"
-  )
+  # MoE_columns <- c(
+  #
+  # )
 
   for (column_name in CI_columns) {
     try(
@@ -74,13 +75,13 @@ jamovi_set_confidence <- function(jmv_table, CI) {
     )
   }
 
-  for (column_name in MoE_columns) {
-    try(
-      jmv_table$getColumn(column_name)$setTitle(
-        paste(CI, "% <i>", jmv_table$getColumn(column_name)$title, "</i>", sep = "")
-      )
-    )
-  }
+  # for (column_name in MoE_columns) {
+  #   try(
+  #     jmv_table$getColumn(column_name)$setTitle(
+  #       paste(CI, "% <i>", jmv_table$getColumn(column_name)$title, "</i>", sep = "")
+  #     )
+  #   )
+  # }
 
   return(TRUE)
 }

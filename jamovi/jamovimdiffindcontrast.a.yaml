@@ -19,8 +19,8 @@ options:
       type: Data
 
     - name: outcome_variable
-      title: Outcome variable
-      type: Variable
+      title: Outcome variable(s)
+      type: Variables
       permitted: [numeric]
 
     - name: grouping_variable
@@ -46,7 +46,7 @@ options:
     - name: grouping_variable_levels
       title: Grouping variable levels
       type: Variable
-      permitted: [numeric]
+      permitted: [factor]
 
     - name: outcome_variable_name
       title: Outcome variable name
@@ -58,13 +58,15 @@ options:
       type: String
       default: Grouping variable
 
-    - name: comparison_levels
+    - name: comparison_labels
       title: Comparison levels
       type: String
+      default: ' '
 
-    - name: reference_levels
+    - name: reference_labels
       title: Reference levels
       type: String
+      default: ' '
 
     - name: conf_level
       type: Number
@@ -77,5 +79,11 @@ options:
       title: Assume equal variances
       type: Bool
       default: true
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
+
 
 ...
