@@ -22,8 +22,9 @@ jamovi_estimate_filler <- function(self, estimate, expand = FALSE) {
 # For this to work, the column names in the data frame must be exactly the same
 # as defined in the results file for the jamovi table (can be different) order.
 # Can have columns in the result_table that are not in the jamovi table
-jamovi_table_filler <- function(jmv_table, result_table, expand = FALSE) {
+jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) {
   # Loop through rows in dataframe
+  if (is.null(jmv_table)) return(FALSE)
   if (is.null(result_table)) return(FALSE)
 
   if (!is.null(result_table$df)) {
@@ -57,7 +58,9 @@ jamovi_table_filler <- function(jmv_table, result_table, expand = FALSE) {
 # based on the CI passed. Lower and upper are set with supertitles MoE is set by
 # adjusting the name. All changes are wrapped in try statements, so if you pass
 # a table without some of these columns, no errors will be thrown
-jamovi_set_confidence <- function(jmv_table, CI) {
+jamovi_set_confidence <- function(jmv_table = NULL, CI) {
+
+  if (is.null(jmv_table)) return(FALSE)
 
   CI_columns <- c(
     "mean_LL", "mean_UL", "median_LL", "median_UL",
@@ -89,7 +92,9 @@ jamovi_set_confidence <- function(jmv_table, CI) {
 
 # This helper function expands a jamovi table to the desired number of rows
 #  and it also optionally creates groupings every breaks rows
-jamovi_init_table <- function(jmv_table, desired_rows, breaks = NULL) {
+jamovi_init_table <- function(jmv_table = NULL, desired_rows, breaks = NULL) {
+
+  if (is.null(jmv_table)) return(FALSE)
 
   current_length <- length(jmv_table$rowKeys)
   if (current_length < desired_rows) {
@@ -240,6 +245,97 @@ jamovi_sanitize <- function(
     return(return_value)
   }
 
+
+  return(fvalue)
+
+}
+
+jamovi_required_numeric <- function(
+  my_value = NULL,
+  integer_required = FALSE,
+  lower = NULL,
+  upper = NULL,
+  lower_inclusive = FALSE,
+  upper_inclusive = FALSE
+) {
+
+  my_value_name <- deparse(substitute(my_value))
+  my_value_name <- gsub("self\\$options\\$", "", my_value_name)
+  my_value_name <- gsub("_", " ", my_value_name)
+
+  return_value <- NA
+  names(return_value) <- my_value_name
+
+
+  # Lots of ways a jamovi input can be invalid
+  #   Check for null, na, trims length of 0, or one of several
+  #   text strings that shouldn't be passed on
+  if(is.null(my_value)) {
+    return(return_value)
+  }
+
+  if(is.na(my_value)) {
+    return(return_value)
+  }
+
+  if(length(trimws(as.character(my_value))) == 0) {
+    return(return_value)
+  }
+
+  if(trimws(as.character(my_value)) %in% c("")) {
+    return(return_value)
+  }
+
+
+  if(trimws(as.character(my_value))
+     %in%
+     c("NaN", "Na", "NA", "None")
+  ) {
+    return(return_value)
+  }
+
+  # Now, if specified, try to convert to a number
+  fvalue <- as.numeric(my_value)
+
+  # If conversion didn't succeed, don't send the value back
+  if (is.na(fvalue)) {
+    return(return_value)
+  }
+
+  # Check range of numeric parameter
+  out_of_range <- NULL
+  lower_symbol <- ifelse(lower_inclusive, ">=", ">")
+  upper_symbol <- ifelse(upper_inclusive, "<=", "<")
+
+  if(!is.null(lower)) {
+    if(lower_inclusive) {
+      if(fvalue < lower) out_of_range <- paste(lower_symbol, lower)
+    } else {
+      if(fvalue <= lower) out_of_range <- paste(lower_symbol, lower)
+    }
+  }
+
+  if (integer_required & !is.whole.number(fvalue)) {
+    reason <- glue::glue(
+      "Error: {my_value_name} is {fvalue} but must be an integer"
+    )
+    return(reason)
+  }
+
+  if(!is.null(upper)) {
+    if(upper_inclusive) {
+      if(fvalue > upper) out_of_range <- paste(upper_symbol, upper)
+    } else {
+      if(fvalue >= upper) out_of_range <- paste(upper_symbol, upper)
+    }
+  }
+
+  if(!is.null(out_of_range)) {
+    reason <- glue::glue(
+      "Error: {my_value_name} is {fvalue} but must be {out_of_range}"
+    )
+    return(reason)
+  }
 
   return(fvalue)
 

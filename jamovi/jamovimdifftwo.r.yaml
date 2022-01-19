@@ -15,7 +15,7 @@ items:
     - name:  overview
       title: Overview
       type: Table
-      rows:  1
+      rows:  2
       clearWith:
         - switch
         - grouping_variable_levels
@@ -218,7 +218,8 @@ items:
     - name:  es_mean_ratio
       title: Ratio of means
       type: Table
-      rows:  1
+      visible: (switch == 'from_raw')
+      rows:  (outcome_variable)
       clearWith:
         - switch
         - grouping_variable_levels
@@ -259,22 +260,6 @@ items:
         - name: UL
           title: UL
           type: number
-        - name: SE
-          title: <i>SE</i>
-          type: number
-          visible: (show_details)
-        - name: df
-          title: <i>df</i>
-          type: number
-          visible: (show_details & !assume_equal_variance)
-        - name: df_i
-          title: <i>df</i>
-          type: integer
-          visible: (show_details & assume_equal_variance)
-        - name: d_biased
-          title: "<i>d</i><sub>biased</sub>"
-          type: number
-          visible: (show_details)
 
     - name:  es_median_difference
       title: Median difference
@@ -322,10 +307,10 @@ items:
 
 
     - name:  es_median_ratio
-      title: Ration of medians
+      title: Ratio of medians
       type: Table
       visible: (switch == 'from_raw')
-      rows:  1
+      rows:  (outcome_variable)
       clearWith:
         - switch
         - grouping_variable_levels
@@ -358,7 +343,7 @@ items:
           title: <i>Mdn<sub>reference</sub></i>
           type: number
         - name: effect_size
-          title: <i>M<sub>comparison</sub> / M<sub>reference</sub></i>
+          title: <i>Mdn<sub>comparison</sub> / Mdn<sub>reference</sub></i>
           type: number
         - name: LL
           title: LL

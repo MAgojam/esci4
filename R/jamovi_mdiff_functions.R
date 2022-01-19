@@ -7,10 +7,18 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   from_raw <- (self$options$switch == "from_raw")
 
   # Get a handle for each table
-  tbl_overview <- self$results$overview
-  tbl_es_mean_difference <- self$results$es_mean_difference
-  tbl_es_smd <- self$results$es_smd
-  tbl_es_median_difference <- self$results$es_median_difference
+  tbl_overview <- NULL
+  tbl_es_mean_difference <- NULL
+  tbl_es_mean_ratio <- NULL
+  tbl_es_smd <- NULL
+  tbl_es_median_difference <- NULL
+  tbl_es_median_ratio <- NULL
+  try(tbl_overview <- self$results$overview)
+  try(tbl_es_mean_difference <- self$results$es_mean_difference)
+  try(tbl_es_mean_ratio <- self$results$es_mean_ratio)
+  try(tbl_es_smd <- self$results$es_smd)
+  try(tbl_es_median_difference <- self$results$es_median_difference)
+  try(tbl_es_median_ratio <- self$results$es_median_ratio)
 
 
   # Prep output -------------------------------------------
@@ -25,7 +33,9 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   jamovi_set_confidence(tbl_overview, conf_level)
   jamovi_set_confidence(tbl_es_mean_difference, conf_level)
   jamovi_set_confidence(tbl_es_smd, conf_level)
+  jamovi_set_confidence(tbl_es_mean_ratio, conf_level)
   jamovi_set_confidence(tbl_es_median_difference, conf_level)
+  jamovi_set_confidence(tbl_es_median_ratio, conf_level)
 
 
   # Outcomes: 1 if from summary, length of outcome_variables if raw
@@ -64,8 +74,10 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
 
   jamovi_init_table(tbl_overview, overview_rows)
   jamovi_init_table(tbl_es_mean_difference, mdiff_rows, breaks = 3)
-  jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
   jamovi_init_table(tbl_es_smd, smd_rows)
+  jamovi_init_table(tbl_es_mean_ratio, smd_rows)
+  jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
+  jamovi_init_table(tbl_es_median_ratio, smd_rows, breaks = 3)
 
 
 }
@@ -273,45 +285,63 @@ jamovi_mdiff_two <- function(self, save_raw_data = FALSE) {
       length(self$options$outcome_variable) == 0
     ) return(NULL)
   } else {
-    args$comparison_mean <- jamovi_sanitize(
-        self$options$comparison_mean,
-        convert_to_number = TRUE
+    args$comparison_mean <- jamovi_required_numeric(
+        self$options$comparison_mean
     )
-    args$comparison_sd <- jamovi_sanitize(
+    args$comparison_sd <- jamovi_required_numeric(
       self$options$comparison_sd,
-      convert_to_number = TRUE,
       lower = 0,
       lower_inclusive = FALSE
     )
-    args$comparison_n <- jamovi_sanitize(
+    args$comparison_n <- jamovi_required_numeric(
       self$options$comparison_n,
-      convert_to_number = TRUE,
+      integer_required = TRUE,
       lower = 0,
       lower_inclusive = FALSE
     )
 
-    args$reference_mean <- jamovi_sanitize(
-      self$options$reference_mean,
-      convert_to_number = TRUE
+    args$reference_mean <- jamovi_required_numeric(
+      self$options$reference_mean
     )
-    args$reference_sd <- jamovi_sanitize(
+    args$reference_sd <- jamovi_required_numeric(
       self$options$reference_sd,
-      convert_to_number = TRUE,
       lower = 0,
       lower_inclusive = FALSE
     )
-    args$reference_n <- jamovi_sanitize(
+    args$reference_n <- jamovi_required_numeric(
       self$options$reference_n,
-      convert_to_number = TRUE,
+      integer_required = TRUE,
       lower = 0,
       lower_inclusive = FALSE
     )
 
+    unfilled <- names(args[which(is.na(args))])
+
+    for (element in args) {
+      if (is.character(element)) {
+        notes <- c(notes, element)
+      }
+    }
+
+    if (length(unfilled) > 0) {
+      notes <- c(
+        paste(
+          "For summary data, please specify: ",
+          paste0(unfilled, collapse = ", ")
+        ),
+        notes
+      )
+    }
+
+    if (length(notes) > 0) {
+      self$results$help$setState(notes)
+      return(NULL)
+    }
 
   }
 
 
-  # Step 2: Get analysis propoerties-----------------------------
+  # Step 2: Get analysis properties-----------------------------
   call <- esci4::estimate_mdiff_two
 
   args$save_raw_data <- save_raw_data
@@ -366,10 +396,6 @@ jamovi_mdiff_two <- function(self, save_raw_data = FALSE) {
 
   }
 
-  # Gather any notes from collecting arguments
-
-  self$results$help$setState(notes)
-
 
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))
@@ -377,9 +403,10 @@ jamovi_mdiff_two <- function(self, save_raw_data = FALSE) {
   if (!is(estimate, "try-error")) {
     if (length(estimate$warnings) > 0) {
       notes <- c(notes, estimate$warnings)
-      self$results$help$setState(notes)
     }
   }
+
+  self$results$help$setState(notes)
 
   return(estimate)
 

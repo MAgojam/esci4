@@ -193,7 +193,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="overview",
                 title="Overview",
-                rows=1,
+                rows=2,
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -436,7 +436,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="es_mean_ratio",
                 title="Ratio of means",
-                rows=1,
+                visible="(switch == 'from_raw')",
+                rows="(outcome_variable)",
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -484,27 +485,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="UL", 
                         `title`="UL", 
-                        `type`="number"),
-                    list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
-                        `type`="number", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="df", 
-                        `title`="<i>df</i>", 
-                        `type`="number", 
-                        `visible`="(show_details & !assume_equal_variance)"),
-                    list(
-                        `name`="df_i", 
-                        `title`="<i>df</i>", 
-                        `type`="integer", 
-                        `visible`="(show_details & assume_equal_variance)"),
-                    list(
-                        `name`="d_biased", 
-                        `title`="<i>d</i><sub>biased</sub>", 
-                        `type`="number", 
-                        `visible`="(show_details)"))))
+                        `type`="number"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_median_difference",
@@ -559,9 +540,9 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_median_ratio",
-                title="Ration of medians",
+                title="Ratio of medians",
                 visible="(switch == 'from_raw')",
-                rows=1,
+                rows="(outcome_variable)",
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -600,7 +581,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number"),
                     list(
                         `name`="effect_size", 
-                        `title`="<i>M<sub>comparison</sub> / M<sub>reference</sub></i>", 
+                        `title`="<i>Mdn<sub>comparison</sub> / Mdn<sub>reference</sub></i>", 
                         `type`="number"),
                     list(
                         `name`="LL", 
