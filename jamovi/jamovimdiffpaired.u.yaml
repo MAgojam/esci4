@@ -24,7 +24,7 @@ children:
         label: Reference variable
         children:
           - type: VariablesListBox
-            name: reference_variable
+            name: reference_measure
             maxItemCount: 1
             isTarget: true
   - type: LayoutBox
@@ -32,37 +32,37 @@ children:
     children:
       - type: TextBox
         name: comparison_mean
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: comparison_sd
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: reference_mean
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: reference_sd
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
         name: 'n'
-        format: number
+        format: string
   - type: LayoutBox
     margin: large
     children:
       - type: TextBox
-        name: r
-        format: number
+        name: correlation
+        format: string
   - type: LayoutBox
     margin: large
     children:
@@ -81,3 +81,8 @@ children:
       - type: TextBox
         name: conf_level
         format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: show_details

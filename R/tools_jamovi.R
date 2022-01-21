@@ -104,7 +104,7 @@ jamovi_init_table <- function(jmv_table = NULL, desired_rows, breaks = NULL) {
     }
   }
 
-  if (!is.null(breaks)) {
+  if (!is.null(breaks) & !is.null(jmv_table$rowKeys) & (length(jmv_table$rowKeys) > 0)) {
     # Create groups every breaks rows
     for (y in 1:length(jmv_table$rowKeys)) {
       if (y %% breaks == 1) {

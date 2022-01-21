@@ -304,11 +304,20 @@ estimate_mdiff_paired.summary <- function(
     conf_level = conf_level
   )
 
+  es_r <- wrapper_ci.cor(
+    r = correlation,
+    n = n,
+    conf_level = conf_level,
+    x_variable_name = grouping_variable_levels[1],
+    y_variable_name = grouping_variable_levels[2]
+  )
+
   # output prep -----------------------------------------
   estimate <- list(
     overview = overview,
     es_mean_difference = es_mean_difference,
     es_smd = smd$es_smd,
+    es_r = es_r,
     es_smd_properties = smd$es_smd_properties
   )
 
