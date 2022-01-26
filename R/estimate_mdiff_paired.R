@@ -457,7 +457,7 @@ estimate_mdiff_paired.data.frame <- function(
     reference_mean = overview$mean[2],
     reference_sd = overview$sd[2],
     n = overview$n[1],
-    correlation = cor(data[[comparison_measure]], data[[reference_measure]]),
+    correlation = cor(data[[comparison_measure]], data[[reference_measure]], use = "complete.obs"),
     grouping_variable_levels = grouping_variable_levels,
     conf_level = conf_level
   )

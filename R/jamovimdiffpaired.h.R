@@ -153,7 +153,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
-                visible=FALSE))
+                visible=TRUE))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="help",

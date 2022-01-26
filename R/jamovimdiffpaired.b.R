@@ -34,25 +34,30 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
         },
         .run = function() {
 
+
           estimate <- jamovi_mdiff_paired(self, save_raw_data = FALSE)
 
+
           # Print any notes that emerged from running the analysis
-          jamovi_set_notes(self$results$help)
+         jamovi_set_notes(self$results$help)
 
           # Check to see if the analysis ran
           #  If null, return
           #  If error, return the error
-          if(is.null(estimate)) return(TRUE)
-          if(is(estimate, "try-error")) stop(estimate[1])
+         if(is.null(estimate)) return(TRUE)
+         if(is(estimate, "try-error")) stop(estimate[1])
 
           # Fill tables
-          jamovi_estimate_filler(self, estimate, TRUE)
+         jamovi_estimate_filler(self, estimate, TRUE)
 
         })
 )
 
 
 jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
+
+
+
 
   # Prelim -----------------------------------------------------
   from_raw <- (self$options$switch == "from_raw")
@@ -86,7 +91,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       lower_inclusive = FALSE
     )
     args$n <- jamovi_required_numeric(
-      self$options$reference_n,
+      self$options$n,
       integer_required = TRUE,
       lower = 0,
       lower_inclusive = FALSE
@@ -94,7 +99,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
 
     args$correlation <- jamovi_required_numeric(
       self$options$correlation,
-      integer_required = TRUE,
+      integer_required = FALSE,
       lower = -1,
       lower_inclusive = TRUE,
       upper = 1,
@@ -144,6 +149,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
     my_value_name = "Confidence level"
   )/100
 
+
   if(from_raw) {
     args$data <- self$data
     args$comparison_measure <- unname(self$options$comparison_measure)
@@ -166,6 +172,18 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
 
   }
 
+  classes <- NULL
+  for (e in args) {
+    classes <- paste(classes, class(e))
+  }
+
+  self$results$debug$setContent(
+    paste(
+      paste(names(args), collapse = ", "),
+      paste(args, collapse = ", "),
+      paste(classes, collapse = ", ")
+    )
+  )
 
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))
