@@ -6,12 +6,14 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
+            switch = "from_raw",
             outcome_variable = NULL,
-            mean = NULL,
-            sd = NULL,
-            n = NULL,
+            mean = " ",
+            sd = " ",
+            n = " ",
             outcome_variable_name = "Outcome variable",
-            conf_level = 95, ...) {
+            conf_level = 95,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -19,21 +21,30 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 requiresData=TRUE,
                 ...)
 
-            private$..outcome_variable <- jmvcore::OptionVariable$new(
+            private$..switch <- jmvcore::OptionList$new(
+                "switch",
+                switch,
+                default="from_raw",
+                options=list(
+                    "from_raw",
+                    "from_summary"))
+            private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
                 outcome_variable,
                 permitted=list(
                     "numeric"))
-            private$..mean <- jmvcore::OptionNumber$new(
+            private$..mean <- jmvcore::OptionString$new(
                 "mean",
-                mean)
-            private$..sd <- jmvcore::OptionNumber$new(
+                mean,
+                default=" ")
+            private$..sd <- jmvcore::OptionString$new(
                 "sd",
-                sd)
-            private$..n <- jmvcore::OptionInteger$new(
+                sd,
+                default=" ")
+            private$..n <- jmvcore::OptionString$new(
                 "n",
                 n,
-                min=1)
+                default=" ")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -44,35 +55,47 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 min=1,
                 max=99.999999,
                 default=95)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
+            self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..mean)
             self$.addOption(private$..sd)
             self$.addOption(private$..n)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
+            self$.addOption(private$..show_details)
         }),
     active = list(
+        switch = function() private$..switch$value,
         outcome_variable = function() private$..outcome_variable$value,
         mean = function() private$..mean$value,
         sd = function() private$..sd$value,
         n = function() private$..n$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
-        conf_level = function() private$..conf_level$value),
+        conf_level = function() private$..conf_level$value,
+        show_details = function() private$..show_details$value),
     private = list(
+        ..switch = NA,
         ..outcome_variable = NA,
         ..mean = NA,
         ..sd = NA,
         ..n = NA,
         ..outcome_variable_name = NA,
-        ..conf_level = NA)
+        ..conf_level = NA,
+        ..show_details = NA)
 )
 
 jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimagnitudeResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -82,8 +105,95 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 title="Magnitude/Quantity")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Magnitude/Quantity"))}))
+                name="debug",
+                visible=FALSE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows="(outcome_variable)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome Variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="mean", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="mean_LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="mean_UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="median", 
+                        `title`="Median", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="median_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="median_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="sd", 
+                        `type`="number", 
+                        `title`="<i>s</i>"),
+                    list(
+                        `name`="min", 
+                        `title`="Minimum", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="max", 
+                        `title`="Maximum", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="q1", 
+                        `title`="25th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="q3", 
+                        `title`="75th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>n</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="missing", 
+                        `type`="integer", 
+                        `title`="Missing", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SEM</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))}))
 
 jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimagnitudeBase",
@@ -108,6 +218,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' Magnitude/Quantity
 #'
 #' 
+#' @param switch .
 #' @param data .
 #' @param outcome_variable .
 #' @param mean .
@@ -115,20 +226,31 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param n .
 #' @param outcome_variable_name .
 #' @param conf_level .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamovimagnitude <- function(
+    switch = "from_raw",
     data,
     outcome_variable,
-    mean,
-    sd,
-    n,
+    mean = " ",
+    sd = " ",
+    n = " ",
     outcome_variable_name = "Outcome variable",
-    conf_level = 95) {
+    conf_level = 95,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimagnitude requires jmvcore to be installed (restart may be required)")
@@ -141,12 +263,14 @@ jamovimagnitude <- function(
 
 
     options <- jamovimagnitudeOptions$new(
+        switch = switch,
         outcome_variable = outcome_variable,
         mean = mean,
         sd = sd,
         n = n,
         outcome_variable_name = outcome_variable_name,
-        conf_level = conf_level)
+        conf_level = conf_level,
+        show_details = show_details)
 
     analysis <- jamovimagnitudeClass$new(
         options = options,

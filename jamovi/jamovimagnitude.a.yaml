@@ -6,26 +6,37 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
     - name: data
       type: Data
 
     - name: outcome_variable
       title: Outcome variable
-      type: Variable
+      type: Variables
       permitted: [numeric]
 
     - name: mean
       title: Mean (<i>M</i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: sd
       title: Standard deviation (<i>s</i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: n
       title: Sample size (<i>N</i>)
-      type: Integer
-      min: 1
+      type: String
+      default: ' '
 
     - name: outcome_variable_name
       title: Outcome variable name
@@ -39,4 +50,8 @@ options:
       max: 99.999999
       default: 95
 
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 ...
