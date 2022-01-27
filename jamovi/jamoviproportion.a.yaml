@@ -6,31 +6,61 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
     - name: data
       type: Data
 
-    - name: dep
-      title: Dependent Variable
-      type: Variable
+    - name: outcome_variable
+      title: Outcome variable
+      type: Variables
 
-    - name: group
-      title: Grouping Variable
-      type: Variable
+    - name: cases
+      title: Cases
+      type: String
+      default: ' '
 
-    - name: alt
-      title: Alternative hypothesis
-      type: List
-      options:
-        - title: Not equal
-          name:  notequal
-        - title: One greater
-          name:  onegreater
-        - title: Two greater
-          name:  twogreater
-      default: notequal
+    - name: observations
+      title: Observations
+      type: String
+      default: ' '
 
-    - name: varEq
-      title: Assume equal variances
+    - name: case_label
+      title: Cases
+      type: String
+      default: 'Affected'
+
+    - name: not_case_label
+      title: Cases
+      type: String
+      default: 'Not Affected'
+
+    - name: outcome_variable_name
+      title: Outcome variable name
+      type: String
+      default: Outcome variable
+
+    - name: count_NA
+      title: Count missing cases?
       type: Bool
-      default: true
+      default: false
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 ...

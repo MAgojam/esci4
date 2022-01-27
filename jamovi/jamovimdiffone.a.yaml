@@ -20,23 +20,27 @@ options:
 
     - name: outcome_variable
       title: Outcome variable
-      type: Variable
+      type: Variables
 
     - name: comparison_mean
       title: Comparison mean (<i>M<sub>comparison</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: comparison_sd
       title: Comparison standard deviation (<i>s<sub>comparison</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: comparison_n
       title: Comparison group sample size (<i>N<sub>comparison</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: reference_mean
       title: Reference mean (<i>M<sub>reference</sub></i>)
-      type: Number
+      type: String
+      default: ' '
 
     - name: outcome_variable_name
       title: Outcome variable name
@@ -49,4 +53,9 @@ options:
       min: 1
       max: 99.999999
       default: 95
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 ...

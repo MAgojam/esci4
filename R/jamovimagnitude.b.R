@@ -21,7 +21,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
         },
         .run = function() {
 
-            estimate <- jamovi_magnitude(self, save_raw_data = FALSE)
+            estimate <- jamovi_magnitude(self, FALSE)
 
 
             # Print any notes that emerged from running the analysis

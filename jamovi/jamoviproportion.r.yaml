@@ -4,8 +4,44 @@ title: Count/Proportion
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Count/Proportion
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: false
+
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  1
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_level
+          type: text
+          title: Level
+        - name: cases
+          title: Cases
+          type: integer
+        - name: n
+          title: <i>N</i>
+          type: integer
+        - name: P
+          title: <i>P</i>
+          type: number
+        - name: P_LL
+          title: LL
+          type: number
+        - name: P_UL
+          title: UL
+          type: number
+        - name: P_SE
+          type: number
+          title: <i>SE<sub>P</sub></i>
+          visible: (show_details)
 
 ...

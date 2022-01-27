@@ -6,10 +6,16 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            dep = NULL,
-            group = NULL,
-            alt = "notequal",
-            varEq = TRUE, ...) {
+            switch = "from_raw",
+            outcome_variable = NULL,
+            cases = " ",
+            observations = " ",
+            case_label = "Affected",
+            not_case_label = "Not Affected",
+            outcome_variable_name = "Outcome variable",
+            count_NA = FALSE,
+            conf_level = 95,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -17,47 +23,93 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 requiresData=TRUE,
                 ...)
 
-            private$..dep <- jmvcore::OptionVariable$new(
-                "dep",
-                dep)
-            private$..group <- jmvcore::OptionVariable$new(
-                "group",
-                group)
-            private$..alt <- jmvcore::OptionList$new(
-                "alt",
-                alt,
+            private$..switch <- jmvcore::OptionList$new(
+                "switch",
+                switch,
+                default="from_raw",
                 options=list(
-                    "notequal",
-                    "onegreater",
-                    "twogreater"),
-                default="notequal")
-            private$..varEq <- jmvcore::OptionBool$new(
-                "varEq",
-                varEq,
-                default=TRUE)
+                    "from_raw",
+                    "from_summary"))
+            private$..outcome_variable <- jmvcore::OptionVariables$new(
+                "outcome_variable",
+                outcome_variable)
+            private$..cases <- jmvcore::OptionString$new(
+                "cases",
+                cases,
+                default=" ")
+            private$..observations <- jmvcore::OptionString$new(
+                "observations",
+                observations,
+                default=" ")
+            private$..case_label <- jmvcore::OptionString$new(
+                "case_label",
+                case_label,
+                default="Affected")
+            private$..not_case_label <- jmvcore::OptionString$new(
+                "not_case_label",
+                not_case_label,
+                default="Not Affected")
+            private$..outcome_variable_name <- jmvcore::OptionString$new(
+                "outcome_variable_name",
+                outcome_variable_name,
+                default="Outcome variable")
+            private$..count_NA <- jmvcore::OptionBool$new(
+                "count_NA",
+                count_NA,
+                default=FALSE)
+            private$..conf_level <- jmvcore::OptionNumber$new(
+                "conf_level",
+                conf_level,
+                min=1,
+                max=99.999999,
+                default=95)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
-            self$.addOption(private$..dep)
-            self$.addOption(private$..group)
-            self$.addOption(private$..alt)
-            self$.addOption(private$..varEq)
+            self$.addOption(private$..switch)
+            self$.addOption(private$..outcome_variable)
+            self$.addOption(private$..cases)
+            self$.addOption(private$..observations)
+            self$.addOption(private$..case_label)
+            self$.addOption(private$..not_case_label)
+            self$.addOption(private$..outcome_variable_name)
+            self$.addOption(private$..count_NA)
+            self$.addOption(private$..conf_level)
+            self$.addOption(private$..show_details)
         }),
     active = list(
-        dep = function() private$..dep$value,
-        group = function() private$..group$value,
-        alt = function() private$..alt$value,
-        varEq = function() private$..varEq$value),
+        switch = function() private$..switch$value,
+        outcome_variable = function() private$..outcome_variable$value,
+        cases = function() private$..cases$value,
+        observations = function() private$..observations$value,
+        case_label = function() private$..case_label$value,
+        not_case_label = function() private$..not_case_label$value,
+        outcome_variable_name = function() private$..outcome_variable_name$value,
+        count_NA = function() private$..count_NA$value,
+        conf_level = function() private$..conf_level$value,
+        show_details = function() private$..show_details$value),
     private = list(
-        ..dep = NA,
-        ..group = NA,
-        ..alt = NA,
-        ..varEq = NA)
+        ..switch = NA,
+        ..outcome_variable = NA,
+        ..cases = NA,
+        ..observations = NA,
+        ..case_label = NA,
+        ..not_case_label = NA,
+        ..outcome_variable_name = NA,
+        ..count_NA = NA,
+        ..conf_level = NA,
+        ..show_details = NA)
 )
 
 jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamoviproportionResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -67,8 +119,52 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 title="Count/Proportion")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Count/Proportion"))}))
+                name="debug",
+                visible=FALSE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="outcome_variable_level", 
+                        `type`="text", 
+                        `title`="Level"),
+                    list(
+                        `name`="cases", 
+                        `title`="Cases", 
+                        `type`="integer"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>N</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="P", 
+                        `title`="<i>P</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="P_LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="P_UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="P_SE", 
+                        `type`="number", 
+                        `title`="<i>SE<sub>P</sub></i>", 
+                        `visible`="(show_details)"))))}))
 
 jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamoviproportionBase",
@@ -93,41 +189,65 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
 #' Count/Proportion
 #'
 #' 
+#' @param switch .
 #' @param data .
-#' @param dep .
-#' @param group .
-#' @param alt .
-#' @param varEq .
+#' @param outcome_variable .
+#' @param cases .
+#' @param observations .
+#' @param case_label .
+#' @param not_case_label .
+#' @param outcome_variable_name .
+#' @param count_NA .
+#' @param conf_level .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamoviproportion <- function(
+    switch = "from_raw",
     data,
-    dep,
-    group,
-    alt = "notequal",
-    varEq = TRUE) {
+    outcome_variable,
+    cases = " ",
+    observations = " ",
+    case_label = "Affected",
+    not_case_label = "Not Affected",
+    outcome_variable_name = "Outcome variable",
+    count_NA = FALSE,
+    conf_level = 95,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamoviproportion requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
-    if ( ! missing(group)) group <- jmvcore::resolveQuo(jmvcore::enquo(group))
+    if ( ! missing(outcome_variable)) outcome_variable <- jmvcore::resolveQuo(jmvcore::enquo(outcome_variable))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(dep), dep, NULL),
-            `if`( ! missing(group), group, NULL))
+            `if`( ! missing(outcome_variable), outcome_variable, NULL))
 
 
     options <- jamoviproportionOptions$new(
-        dep = dep,
-        group = group,
-        alt = alt,
-        varEq = varEq)
+        switch = switch,
+        outcome_variable = outcome_variable,
+        cases = cases,
+        observations = observations,
+        case_label = case_label,
+        not_case_label = not_case_label,
+        outcome_variable_name = outcome_variable_name,
+        count_NA = count_NA,
+        conf_level = conf_level,
+        show_details = show_details)
 
     analysis <- jamoviproportionClass$new(
         options = options,

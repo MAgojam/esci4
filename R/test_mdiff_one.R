@@ -59,6 +59,6 @@ test_mdiff_one <- function() {
 
   estimate_mdiff_one(pen_data, transcription)
 
-  estimate_mdiff_one(pen_data, c("transcription", "other"))
+  estimate_mdiff_one(pen_data, c("transcription", "other"), reference_mean = 10)
 
 }

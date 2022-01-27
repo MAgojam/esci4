@@ -8,12 +8,13 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         initialize = function(
             switch = "from_raw",
             outcome_variable = NULL,
-            comparison_mean = NULL,
-            comparison_sd = NULL,
-            comparison_n = NULL,
-            reference_mean = NULL,
+            comparison_mean = " ",
+            comparison_sd = " ",
+            comparison_n = " ",
+            reference_mean = " ",
             outcome_variable_name = "Outcome variable",
-            conf_level = 95, ...) {
+            conf_level = 95,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -28,21 +29,25 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=list(
                     "from_raw",
                     "from_summary"))
-            private$..outcome_variable <- jmvcore::OptionVariable$new(
+            private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
                 outcome_variable)
-            private$..comparison_mean <- jmvcore::OptionNumber$new(
+            private$..comparison_mean <- jmvcore::OptionString$new(
                 "comparison_mean",
-                comparison_mean)
-            private$..comparison_sd <- jmvcore::OptionNumber$new(
+                comparison_mean,
+                default=" ")
+            private$..comparison_sd <- jmvcore::OptionString$new(
                 "comparison_sd",
-                comparison_sd)
-            private$..comparison_n <- jmvcore::OptionNumber$new(
+                comparison_sd,
+                default=" ")
+            private$..comparison_n <- jmvcore::OptionString$new(
                 "comparison_n",
-                comparison_n)
-            private$..reference_mean <- jmvcore::OptionNumber$new(
+                comparison_n,
+                default=" ")
+            private$..reference_mean <- jmvcore::OptionString$new(
                 "reference_mean",
-                reference_mean)
+                reference_mean,
+                default=" ")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -53,6 +58,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 min=1,
                 max=99.999999,
                 default=95)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
@@ -62,6 +71,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..reference_mean)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
+            self$.addOption(private$..show_details)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -71,7 +81,8 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         comparison_n = function() private$..comparison_n$value,
         reference_mean = function() private$..reference_mean$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
-        conf_level = function() private$..conf_level$value),
+        conf_level = function() private$..conf_level$value,
+        show_details = function() private$..show_details$value),
     private = list(
         ..switch = NA,
         ..outcome_variable = NA,
@@ -80,14 +91,19 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..comparison_n = NA,
         ..reference_mean = NA,
         ..outcome_variable_name = NA,
-        ..conf_level = NA)
+        ..conf_level = NA,
+        ..show_details = NA)
 )
 
 jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]],
+        es_mean_difference = function() private$.items[["es_mean_difference"]],
+        es_smd = function() private$.items[["es_smd"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -97,8 +113,187 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 title="Mdiff - Single Group")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Mdiff - Single Group"))}))
+                name="debug",
+                visible=FALSE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="mean", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="mean_LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="mean_UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="median", 
+                        `title`="Median", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="median_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="median_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="sd", 
+                        `type`="number", 
+                        `title`="<i>s</i>"),
+                    list(
+                        `name`="min", 
+                        `title`="Minimum", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="max", 
+                        `title`="Maximum", 
+                        `type`="number", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="q1", 
+                        `title`="25th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="q3", 
+                        `title`="75th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>n</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="missing", 
+                        `type`="integer", 
+                        `title`="Missing", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE<sub>Mean</sub></i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE<sub>Median</sub></i>", 
+                        `visible`="(show_details & switch == 'from_raw')"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_mean_difference",
+                title="Mean difference",
+                rows="(outcome_variable)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_smd",
+                title="Standardized mean difference",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="numerator", 
+                        `title`="<i>M</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="denominator", 
+                        `title`="Standardizer", 
+                        `type`="number"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>d</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="d_biased", 
+                        `title`="<i>d</i><sub>biased</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -132,22 +327,34 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param reference_mean .
 #' @param outcome_variable_name .
 #' @param conf_level .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamovimdiffone <- function(
     switch = "from_raw",
     data,
     outcome_variable,
-    comparison_mean,
-    comparison_sd,
-    comparison_n,
-    reference_mean,
+    comparison_mean = " ",
+    comparison_sd = " ",
+    comparison_n = " ",
+    reference_mean = " ",
     outcome_variable_name = "Outcome variable",
-    conf_level = 95) {
+    conf_level = 95,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimdiffone requires jmvcore to be installed (restart may be required)")
@@ -167,7 +374,8 @@ jamovimdiffone <- function(
         comparison_n = comparison_n,
         reference_mean = reference_mean,
         outcome_variable_name = outcome_variable_name,
-        conf_level = conf_level)
+        conf_level = conf_level,
+        show_details = show_details)
 
     analysis <- jamovimdiffoneClass$new(
         options = options,

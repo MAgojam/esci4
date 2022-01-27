@@ -4,8 +4,78 @@ title: Pdiff - Single Group
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Pdiff - Single Group
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: false
+
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  1
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_level
+          type: text
+          title: Level
+        - name: cases
+          title: Cases
+          type: integer
+        - name: n
+          title: <i>N</i>
+          type: integer
+        - name: P
+          title: <i>P</i>
+          type: number
+        - name: P_LL
+          title: LL
+          type: number
+        - name: P_UL
+          title: UL
+          type: number
+        - name: P_SE
+          type: number
+          title: <i>SE<sub>P</sub></i>
+          visible: (show_details)
+
+    - name:  es_proportion_difference
+      title: Proportion difference
+      type: Table
+      rows:  2
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>P</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: cases
+          title: <i>Cases</i>
+          type: integer
+          visible: (show_details)
+        - name: n
+          title: <i>N</i>
+          type: integer
+          visible: (show_details)
 
 ...

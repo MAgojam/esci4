@@ -153,6 +153,7 @@ estimate_mdiff_one <- function(
     estimate <- estimate_mdiff_one.jamovi(
       data = data,
       outcome_variables = outcome_variable,
+      reference_mean = reference_mean,
       conf_level = conf_level,
       save_raw_data = save_raw_data
     )
@@ -278,6 +279,8 @@ estimate_mdiff_one.jamovi <- function(
     res[[outcome_variable]] <- estimate_mdiff_one(
       data = data,
       outcome_variable = outcome_variable,
+      outcome_variable_name = outcome_variable,
+      reference_mean = reference_mean,
       conf_level = conf_level,
       save_raw_data = save_raw_data
     )
