@@ -70,9 +70,61 @@ jamovi_pdiff_one <- function(self) {
       self$results$help$setState(notes)
       return(NULL)
     }
+
     if (
       is.null(self$options$outcome_variable)
     ) return(NULL)
+
+    vlevels <- NULL
+    vmax <- NULL
+    for(v in self$options$outcome_variable) {
+      vlength <- length(levels(self$data[[v]]))
+      if (is.null(vmax)) {
+        vmax <- vlength
+      } else {
+        if(vlength < vmax) {
+          vmax <- vlength
+        }
+      }
+
+      lpaste <- paste(levels(self$data[[v]]), collapse = ", ")
+      thismsg <- glue::glue(
+        "Variable {v} has {vlength} levels, which are {lpaste}"
+      )
+      vlevels <- c(
+        vlevels,
+        thismsg
+      )
+    }
+
+    #self$results$debug$setContent(vlevels)
+
+    args$case_label <- jamovi_required_numeric(
+      self$options$raw_case_label,
+      lower = 1,
+      lower_inclusive = TRUE,
+      upper = vmax,
+      upper_inclusive = TRUE,
+      integer_required = TRUE
+    )
+
+    if (is.na(args$case_label) | is.character(args$case_label)) {
+      if (is.na(args$case_label)) {
+        error_msg <- "Error setting Case level: Case level is blank/NA"
+      } else {
+        error_msg <- paste("Errors setting Case level: ", args$case_label)
+      }
+      notes <- c(
+        notes,
+        error_msg,
+        paste("Set 'Case level' to an integer between 1 and ", vmax, " to specify which level of the outcome variable(s) to use for the proportion difference:", sep = ""),
+        vlevels
+      )
+      self$results$help$setState(notes)
+      return(NULL)
+    }
+
+
   } else {
     args$comparison_cases <- jamovi_required_numeric(
       self$options$comparison_cases,
@@ -134,11 +186,6 @@ jamovi_pdiff_one <- function(self) {
   if(from_raw) {
     args$data <- self$data
     args$outcome_variable <- unname(self$options$outcome_variable)
-    args$case_label <- jamovi_sanitize(
-      self$options$raw_case_label,
-      return_value = 1,
-      na_ok = FALSE
-    )
 
   } else {
     args$case_label <- jamovi_sanitize(

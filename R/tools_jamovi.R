@@ -64,7 +64,8 @@ jamovi_set_confidence <- function(jmv_table = NULL, CI) {
 
   CI_columns <- c(
     "mean_LL", "mean_UL", "median_LL", "median_UL",
-    "LL", "UL"
+    "LL", "UL",
+    "P_LL", "P_UL"
   )
   # MoE_columns <- c(
   #
