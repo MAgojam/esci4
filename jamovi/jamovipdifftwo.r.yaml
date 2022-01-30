@@ -4,8 +4,107 @@ title: Pdiff - Two Groups
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Pdiff - Two Groups
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: true
 
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  1
+      columns:
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_level
+          title: 'Grouping variable level'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_level
+          title: 'Outcome variable level'
+          type: text
+          combineBelow: true
+        - name: cases
+          title: Cases
+          type: integer
+        - name: n
+          title: <i>N</i>
+          type: integer
+        - name: P
+          title: <i>P</i>
+          type: number
+        - name: P_LL
+          title: LL
+          type: number
+        - name: P_UL
+          title: UL
+          type: number
+        - name: P_SE
+          type: number
+          title: <i>SE<sub>P</sub></i>
+          visible: (show_details)
+
+    - name:  es_proportion_difference
+      title: Proportion difference
+      type: Table
+      rows:  2
+      columns:
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>P</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+
+    - name:  es_odds_ratio
+      title: Odds ratio
+      type: Table
+      rows:  (outcome_variable)
+      columns:
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>OR</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
 ...

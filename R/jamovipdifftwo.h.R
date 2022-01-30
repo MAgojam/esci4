@@ -6,10 +6,22 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            dep = NULL,
-            group = NULL,
-            alt = "notequal",
-            varEq = TRUE, ...) {
+            switch = "from_raw",
+            outcome_variable = NULL,
+            grouping_variable = NULL,
+            comparison_cases = " ",
+            comparison_n = " ",
+            reference_cases = " ",
+            reference_n = " ",
+            case_label = "Sick",
+            not_case_label = "Well",
+            grouping_variable_level1 = "Treated",
+            grouping_variable_level2 = "Control",
+            outcome_variable_name = "Outcome variable",
+            grouping_variable_name = "Grouping variable",
+            count_NA = FALSE,
+            conf_level = 95,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -17,47 +29,136 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresData=TRUE,
                 ...)
 
-            private$..dep <- jmvcore::OptionVariable$new(
-                "dep",
-                dep)
-            private$..group <- jmvcore::OptionVariable$new(
-                "group",
-                group)
-            private$..alt <- jmvcore::OptionList$new(
-                "alt",
-                alt,
+            private$..switch <- jmvcore::OptionList$new(
+                "switch",
+                switch,
+                default="from_raw",
                 options=list(
-                    "notequal",
-                    "onegreater",
-                    "twogreater"),
-                default="notequal")
-            private$..varEq <- jmvcore::OptionBool$new(
-                "varEq",
-                varEq,
-                default=TRUE)
+                    "from_raw",
+                    "from_summary"))
+            private$..outcome_variable <- jmvcore::OptionVariables$new(
+                "outcome_variable",
+                outcome_variable)
+            private$..grouping_variable <- jmvcore::OptionVariables$new(
+                "grouping_variable",
+                grouping_variable)
+            private$..comparison_cases <- jmvcore::OptionString$new(
+                "comparison_cases",
+                comparison_cases,
+                default=" ")
+            private$..comparison_n <- jmvcore::OptionString$new(
+                "comparison_n",
+                comparison_n,
+                default=" ")
+            private$..reference_cases <- jmvcore::OptionString$new(
+                "reference_cases",
+                reference_cases,
+                default=" ")
+            private$..reference_n <- jmvcore::OptionString$new(
+                "reference_n",
+                reference_n,
+                default=" ")
+            private$..case_label <- jmvcore::OptionString$new(
+                "case_label",
+                case_label,
+                default="Sick")
+            private$..not_case_label <- jmvcore::OptionString$new(
+                "not_case_label",
+                not_case_label,
+                default="Well")
+            private$..grouping_variable_level1 <- jmvcore::OptionString$new(
+                "grouping_variable_level1",
+                grouping_variable_level1,
+                default="Treated")
+            private$..grouping_variable_level2 <- jmvcore::OptionString$new(
+                "grouping_variable_level2",
+                grouping_variable_level2,
+                default="Control")
+            private$..outcome_variable_name <- jmvcore::OptionString$new(
+                "outcome_variable_name",
+                outcome_variable_name,
+                default="Outcome variable")
+            private$..grouping_variable_name <- jmvcore::OptionString$new(
+                "grouping_variable_name",
+                grouping_variable_name,
+                default="Grouping variable")
+            private$..count_NA <- jmvcore::OptionBool$new(
+                "count_NA",
+                count_NA,
+                default=FALSE)
+            private$..conf_level <- jmvcore::OptionNumber$new(
+                "conf_level",
+                conf_level,
+                min=1,
+                max=99.999999,
+                default=95)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
-            self$.addOption(private$..dep)
-            self$.addOption(private$..group)
-            self$.addOption(private$..alt)
-            self$.addOption(private$..varEq)
+            self$.addOption(private$..switch)
+            self$.addOption(private$..outcome_variable)
+            self$.addOption(private$..grouping_variable)
+            self$.addOption(private$..comparison_cases)
+            self$.addOption(private$..comparison_n)
+            self$.addOption(private$..reference_cases)
+            self$.addOption(private$..reference_n)
+            self$.addOption(private$..case_label)
+            self$.addOption(private$..not_case_label)
+            self$.addOption(private$..grouping_variable_level1)
+            self$.addOption(private$..grouping_variable_level2)
+            self$.addOption(private$..outcome_variable_name)
+            self$.addOption(private$..grouping_variable_name)
+            self$.addOption(private$..count_NA)
+            self$.addOption(private$..conf_level)
+            self$.addOption(private$..show_details)
         }),
     active = list(
-        dep = function() private$..dep$value,
-        group = function() private$..group$value,
-        alt = function() private$..alt$value,
-        varEq = function() private$..varEq$value),
+        switch = function() private$..switch$value,
+        outcome_variable = function() private$..outcome_variable$value,
+        grouping_variable = function() private$..grouping_variable$value,
+        comparison_cases = function() private$..comparison_cases$value,
+        comparison_n = function() private$..comparison_n$value,
+        reference_cases = function() private$..reference_cases$value,
+        reference_n = function() private$..reference_n$value,
+        case_label = function() private$..case_label$value,
+        not_case_label = function() private$..not_case_label$value,
+        grouping_variable_level1 = function() private$..grouping_variable_level1$value,
+        grouping_variable_level2 = function() private$..grouping_variable_level2$value,
+        outcome_variable_name = function() private$..outcome_variable_name$value,
+        grouping_variable_name = function() private$..grouping_variable_name$value,
+        count_NA = function() private$..count_NA$value,
+        conf_level = function() private$..conf_level$value,
+        show_details = function() private$..show_details$value),
     private = list(
-        ..dep = NA,
-        ..group = NA,
-        ..alt = NA,
-        ..varEq = NA)
+        ..switch = NA,
+        ..outcome_variable = NA,
+        ..grouping_variable = NA,
+        ..comparison_cases = NA,
+        ..comparison_n = NA,
+        ..reference_cases = NA,
+        ..reference_n = NA,
+        ..case_label = NA,
+        ..not_case_label = NA,
+        ..grouping_variable_level1 = NA,
+        ..grouping_variable_level2 = NA,
+        ..outcome_variable_name = NA,
+        ..grouping_variable_name = NA,
+        ..count_NA = NA,
+        ..conf_level = NA,
+        ..show_details = NA)
 )
 
 jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovipdifftwoResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]],
+        es_proportion_difference = function() private$.items[["es_proportion_difference"]],
+        es_odds_ratio = function() private$.items[["es_odds_ratio"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -67,8 +168,131 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 title="Pdiff - Two Groups")
             self$add(jmvcore::Preformatted$new(
                 options=options,
-                name="text",
-                title="Pdiff - Two Groups"))}))
+                name="debug",
+                visible=TRUE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_level", 
+                        `title`="Grouping variable level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="outcome_variable_level", 
+                        `title`="Outcome variable level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="cases", 
+                        `title`="Cases", 
+                        `type`="integer"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>N</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="P", 
+                        `title`="<i>P</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="P_LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="P_UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="P_SE", 
+                        `type`="number", 
+                        `title`="<i>SE<sub>P</sub></i>", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_proportion_difference",
+                title="Proportion difference",
+                rows=2,
+                columns=list(
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>P</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_odds_ratio",
+                title="Odds ratio",
+                rows="(outcome_variable)",
+                columns=list(
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text"),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>OR</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"))))}))
 
 jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovipdifftwoBase",
@@ -93,41 +317,87 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' Pdiff - Two Groups
 #'
 #' 
+#' @param switch .
 #' @param data .
-#' @param dep .
-#' @param group .
-#' @param alt .
-#' @param varEq .
+#' @param outcome_variable .
+#' @param grouping_variable .
+#' @param comparison_cases .
+#' @param comparison_n .
+#' @param reference_cases .
+#' @param reference_n .
+#' @param case_label .
+#' @param not_case_label .
+#' @param grouping_variable_level1 .
+#' @param grouping_variable_level2 .
+#' @param outcome_variable_name .
+#' @param grouping_variable_name .
+#' @param count_NA .
+#' @param conf_level .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_odds_ratio} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamovipdifftwo <- function(
+    switch = "from_raw",
     data,
-    dep,
-    group,
-    alt = "notequal",
-    varEq = TRUE) {
+    outcome_variable,
+    grouping_variable,
+    comparison_cases = " ",
+    comparison_n = " ",
+    reference_cases = " ",
+    reference_n = " ",
+    case_label = "Sick",
+    not_case_label = "Well",
+    grouping_variable_level1 = "Treated",
+    grouping_variable_level2 = "Control",
+    outcome_variable_name = "Outcome variable",
+    grouping_variable_name = "Grouping variable",
+    count_NA = FALSE,
+    conf_level = 95,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovipdifftwo requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
-    if ( ! missing(group)) group <- jmvcore::resolveQuo(jmvcore::enquo(group))
+    if ( ! missing(outcome_variable)) outcome_variable <- jmvcore::resolveQuo(jmvcore::enquo(outcome_variable))
+    if ( ! missing(grouping_variable)) grouping_variable <- jmvcore::resolveQuo(jmvcore::enquo(grouping_variable))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(dep), dep, NULL),
-            `if`( ! missing(group), group, NULL))
+            `if`( ! missing(outcome_variable), outcome_variable, NULL),
+            `if`( ! missing(grouping_variable), grouping_variable, NULL))
 
 
     options <- jamovipdifftwoOptions$new(
-        dep = dep,
-        group = group,
-        alt = alt,
-        varEq = varEq)
+        switch = switch,
+        outcome_variable = outcome_variable,
+        grouping_variable = grouping_variable,
+        comparison_cases = comparison_cases,
+        comparison_n = comparison_n,
+        reference_cases = reference_cases,
+        reference_n = reference_n,
+        case_label = case_label,
+        not_case_label = not_case_label,
+        grouping_variable_level1 = grouping_variable_level1,
+        grouping_variable_level2 = grouping_variable_level2,
+        outcome_variable_name = outcome_variable_name,
+        grouping_variable_name = grouping_variable_name,
+        count_NA = count_NA,
+        conf_level = conf_level,
+        show_details = show_details)
 
     analysis <- jamovipdifftwoClass$new(
         options = options,

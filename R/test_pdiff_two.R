@@ -9,6 +9,20 @@ test_pdiff_two <- function() {
   )
 
   estimate_pdiff_two(
+    comparison_cases = 20,
+    comparison_n = 200,
+    reference_cases = 10,
+    reference_n = 100,
+    count_NA = FALSE,
+    case_label = "Depressed",
+    not_case_label = "Anxious",
+    grouping_variable_levels = c("Original", "Replication"),
+    outcome_variable_name = "Eval",
+    grouping_variable_name = "Study",
+    conf_level = 0.95
+  )
+
+  estimate_pdiff_two(
     comparison_cases = 10,
     comparison_n = 20,
     reference_cases = 78,

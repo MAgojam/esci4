@@ -6,31 +6,90 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
     - name: data
       type: Data
 
-    - name: dep
-      title: Dependent Variable
-      type: Variable
+    - name: outcome_variable
+      title: Outcome variable(s)
+      type: Variables
 
-    - name: group
-      title: Grouping Variable
-      type: Variable
+    - name: grouping_variable
+      title: Grouping variable
+      type: Variables
 
-    - name: alt
-      title: Alternative hypothesis
-      type: List
-      options:
-        - title: Not equal
-          name:  notequal
-        - title: One greater
-          name:  onegreater
-        - title: Two greater
-          name:  twogreater
-      default: notequal
+    - name: comparison_cases
+      title: Comparison cases
+      type: String
+      default: ' '
 
-    - name: varEq
-      title: Assume equal variances
+    - name: comparison_n
+      title: Comparison observations
+      type: String
+      default: ' '
+
+    - name: reference_cases
+      title: Reference cases
+      type: String
+      default: ' '
+
+    - name: reference_n
+      title: Reference observations
+      type: String
+      default: ' '
+
+    - name: case_label
+      title: Label for cases
+      type: String
+      default: 'Sick'
+
+    - name: not_case_label
+      title: Label for not cases
+      type: String
+      default: 'Well'
+
+    - name: grouping_variable_level1
+      title: Group 1 label
+      type: String
+      default: 'Treated'
+
+    - name: grouping_variable_level2
+      title: Group 2 label
+      type: String
+      default: 'Control'
+
+    - name: outcome_variable_name
+      title: Outcome variable name
+      type: String
+      default: Outcome variable
+
+    - name: grouping_variable_name
+      title: Grouping variable name
+      type: String
+      default: Grouping variable
+
+    - name: count_NA
+      title: Count missing cases?
       type: Bool
-      default: true
+      default: false
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 ...
