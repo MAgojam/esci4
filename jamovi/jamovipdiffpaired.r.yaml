@@ -4,8 +4,100 @@ title: Pdiff - Paired
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Pdiff - Paired
-      type:  Preformatted
+    - name: debug
+      type: Preformatted
+      visible: true
+
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  4
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable name'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_level
+          title: 'Level'
+          type: text
+          combineBelow: true
+        - name: cases
+          title: Cases
+          type: integer
+        - name: n
+          title: <i>N</i>
+          type: integer
+        - name: P
+          title: <i>P</i>
+          type: number
+        - name: P_LL
+          title: LL
+          type: number
+        - name: P_UL
+          title: UL
+          type: number
+        - name: P_SE
+          type: number
+          title: <i>SE<sub>P</sub></i>
+          visible: (show_details)
+
+    - name:  es_proportion_difference
+      title: Proportion difference
+      type: Table
+      rows:  3
+      columns:
+        - name: comparison_measure_name
+          title: 'Comparison measure'
+          type: text
+          combineBelow: true
+        - name: reference_measure_name
+          title: 'Reference measure'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>P</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+
+    - name:  es_phi
+      title: Association
+      type: Table
+      rows:  1
+      columns:
+        - name: outcome_variable_1
+          title: 'Outcome variable 1'
+          type: text
+          combineBelow: true
+        - name: outcome_variable_2
+          title: 'Outcome variable 2'
+          type: text
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>Phi</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
 
 ...

@@ -6,10 +6,15 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            dep = NULL,
-            group = NULL,
-            alt = "notequal",
-            varEq = TRUE, ...) {
+            switch = "from_raw",
+            x = NULL,
+            y = NULL,
+            r = " ",
+            n = " ",
+            x_variable_name = "X variable",
+            y_variable_name = "Y variable",
+            conf_level = 95,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -17,40 +22,80 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 requiresData=TRUE,
                 ...)
 
-            private$..dep <- jmvcore::OptionVariable$new(
-                "dep",
-                dep)
-            private$..group <- jmvcore::OptionVariable$new(
-                "group",
-                group)
-            private$..alt <- jmvcore::OptionList$new(
-                "alt",
-                alt,
+            private$..switch <- jmvcore::OptionList$new(
+                "switch",
+                switch,
+                default="from_raw",
                 options=list(
-                    "notequal",
-                    "onegreater",
-                    "twogreater"),
-                default="notequal")
-            private$..varEq <- jmvcore::OptionBool$new(
-                "varEq",
-                varEq,
-                default=TRUE)
+                    "from_raw",
+                    "from_summary"))
+            private$..x <- jmvcore::OptionVariable$new(
+                "x",
+                x,
+                permitted=list(
+                    "numeric"))
+            private$..y <- jmvcore::OptionVariable$new(
+                "y",
+                y,
+                permitted=list(
+                    "numeric"))
+            private$..r <- jmvcore::OptionString$new(
+                "r",
+                r,
+                default=" ")
+            private$..n <- jmvcore::OptionString$new(
+                "n",
+                n,
+                default=" ")
+            private$..x_variable_name <- jmvcore::OptionString$new(
+                "x_variable_name",
+                x_variable_name,
+                default="X variable")
+            private$..y_variable_name <- jmvcore::OptionString$new(
+                "y_variable_name",
+                y_variable_name,
+                default="Y variable")
+            private$..conf_level <- jmvcore::OptionNumber$new(
+                "conf_level",
+                conf_level,
+                min=1,
+                max=99.999999,
+                default=95)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
-            self$.addOption(private$..dep)
-            self$.addOption(private$..group)
-            self$.addOption(private$..alt)
-            self$.addOption(private$..varEq)
+            self$.addOption(private$..switch)
+            self$.addOption(private$..x)
+            self$.addOption(private$..y)
+            self$.addOption(private$..r)
+            self$.addOption(private$..n)
+            self$.addOption(private$..x_variable_name)
+            self$.addOption(private$..y_variable_name)
+            self$.addOption(private$..conf_level)
+            self$.addOption(private$..show_details)
         }),
     active = list(
-        dep = function() private$..dep$value,
-        group = function() private$..group$value,
-        alt = function() private$..alt$value,
-        varEq = function() private$..varEq$value),
+        switch = function() private$..switch$value,
+        x = function() private$..x$value,
+        y = function() private$..y$value,
+        r = function() private$..r$value,
+        n = function() private$..n$value,
+        x_variable_name = function() private$..x_variable_name$value,
+        y_variable_name = function() private$..y_variable_name$value,
+        conf_level = function() private$..conf_level$value,
+        show_details = function() private$..show_details$value),
     private = list(
-        ..dep = NA,
-        ..group = NA,
-        ..alt = NA,
-        ..varEq = NA)
+        ..switch = NA,
+        ..x = NA,
+        ..y = NA,
+        ..r = NA,
+        ..n = NA,
+        ..x_variable_name = NA,
+        ..y_variable_name = NA,
+        ..conf_level = NA,
+        ..show_details = NA)
 )
 
 jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -58,7 +103,9 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
     inherit = jmvcore::Group,
     active = list(
         debug = function() private$.items[["debug"]],
-        help = function() private$.items[["help"]]),
+        help = function() private$.items[["help"]],
+        overview = function() private$.items[["overview"]],
+        es_r = function() private$.items[["es_r"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -69,11 +116,140 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
-                visible=TRUE))
+                visible=FALSE))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="help",
-                visible=FALSE))}))
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="overview",
+                title="Overview",
+                rows=2,
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome Variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="mean", 
+                        `type`="number", 
+                        `title`="<i>M</i>"),
+                    list(
+                        `name`="mean_LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="mean_UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="median", 
+                        `title`="Median", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="median_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="median_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="sd", 
+                        `type`="number", 
+                        `title`="<i>s</i>"),
+                    list(
+                        `name`="min", 
+                        `title`="Minimum", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="max", 
+                        `title`="Maximum", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="q1", 
+                        `title`="25th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="q3", 
+                        `title`="75th", 
+                        `type`="number", 
+                        `superTitle`="Percentile", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>n</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="missing", 
+                        `type`="integer", 
+                        `title`="Missing", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SEM</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_r",
+                title="Linear correlation of magnitude",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="x_variable_name", 
+                        `title`="Comparison variable name", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="y_variable_name", 
+                        `title`="Reference measure name", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>r</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="n", 
+                        `title`="<i>N</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer"))))}))
 
 jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovicorrelationBase",
@@ -98,42 +274,65 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' Linear Correlation
 #'
 #' 
+#' @param switch .
 #' @param data .
-#' @param dep .
-#' @param group .
-#' @param alt .
-#' @param varEq .
+#' @param x .
+#' @param y .
+#' @param r .
+#' @param n .
+#' @param x_variable_name .
+#' @param y_variable_name .
+#' @param conf_level .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$overview$asDF}
+#'
+#' \code{as.data.frame(results$overview)}
 #'
 #' @export
 jamovicorrelation <- function(
+    switch = "from_raw",
     data,
-    dep,
-    group,
-    alt = "notequal",
-    varEq = TRUE) {
+    x,
+    y,
+    r = " ",
+    n = " ",
+    x_variable_name = "X variable",
+    y_variable_name = "Y variable",
+    conf_level = 95,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovicorrelation requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
-    if ( ! missing(group)) group <- jmvcore::resolveQuo(jmvcore::enquo(group))
+    if ( ! missing(x)) x <- jmvcore::resolveQuo(jmvcore::enquo(x))
+    if ( ! missing(y)) y <- jmvcore::resolveQuo(jmvcore::enquo(y))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(dep), dep, NULL),
-            `if`( ! missing(group), group, NULL))
+            `if`( ! missing(x), x, NULL),
+            `if`( ! missing(y), y, NULL))
 
 
     options <- jamovicorrelationOptions$new(
-        dep = dep,
-        group = group,
-        alt = alt,
-        varEq = varEq)
+        switch = switch,
+        x = x,
+        y = y,
+        r = r,
+        n = n,
+        x_variable_name = x_variable_name,
+        y_variable_name = y_variable_name,
+        conf_level = conf_level,
+        show_details = show_details)
 
     analysis <- jamovicorrelationClass$new(
         options = options,

@@ -6,31 +6,57 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
     - name: data
       type: Data
 
-    - name: dep
-      title: Dependent Variable
+    - name: x
+      title: x Variable
       type: Variable
+      permitted: [numeric]
 
-    - name: group
-      title: Grouping Variable
+    - name: y
+      title: y variable
       type: Variable
+      permitted: [numeric]
 
-    - name: alt
-      title: Alternative hypothesis
-      type: List
-      options:
-        - title: Not equal
-          name:  notequal
-        - title: One greater
-          name:  onegreater
-        - title: Two greater
-          name:  twogreater
-      default: notequal
+    - name: r
+      title: Pearson's correlation coefficient (<i>r</i>)
+      type: String
+      default: ' '
 
-    - name: varEq
-      title: Assume equal variances
+    - name: n
+      title: Sample size (<i>N</i>)
+      type: String
+      default: ' '
+
+    - name: x_variable_name
+      title: X-variable name
+      type: String
+      default: X variable
+
+    - name: y_variable_name
+      title: Y-variable name
+      type: String
+      default: Y variable
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: show_details
+      title: Show details
       type: Bool
-      default: true
+      default: false
 ...

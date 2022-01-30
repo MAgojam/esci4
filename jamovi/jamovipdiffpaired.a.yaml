@@ -6,31 +6,75 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Analyze full data
+          - name: from_summary
+            title: Analyze summary data
+
     - name: data
       type: Data
 
-    - name: dep
-      title: Dependent Variable
+    - name: reference_measure
+      title: Reference measure
       type: Variable
 
-    - name: group
-      title: Grouping Variable
+    - name: comparison_measure
+      title: Comparison measure
       type: Variable
 
-    - name: alt
-      title: Alternative hypothesis
-      type: List
-      options:
-        - title: Not equal
-          name:  notequal
-        - title: One greater
-          name:  onegreater
-        - title: Two greater
-          name:  twogreater
-      default: notequal
+    - name: cases_consistent
+      title: Cases that stayed cases
+      type: String
+      default: ' '
 
-    - name: varEq
-      title: Assume equal variances
+    - name: cases_inconsistent
+      title: Cases that changed
+      type: String
+      default: ' '
+
+    - name: not_cases_consistent
+      title: Non-cases that stayed non-cases
+      type: String
+      default: ' '
+
+    - name: not_cases_inconsistent
+      title: Non-cases that changed
+      type: String
+      default: ' '
+
+    - name: case_label
+      title: Label for cases
+      type: String
+      default: 'Sick'
+
+    - name: not_case_label
+      title: Label for not cases
+      type: String
+      default: 'Well'
+
+    - name: comparison_measure_name
+      title: Comparison measure name
+      type: String
+      default: 'Pretest'
+
+    - name: reference_measure_name
+      title: Reference measure name
+      type: String
+      default: 'Posttest'
+
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: show_details
+      title: Show details
       type: Bool
-      default: true
+      default: false
 ...

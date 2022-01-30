@@ -6,11 +6,113 @@ jrs:   '1.1'
 items:
     - name: debug
       type: Preformatted
-      visible: true
+      visible: false
 
     - name: help
       type: Html
       visible: false
 
+    - name:  overview
+      title: Overview
+      type: Table
+      rows:  2
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome Variable'
+          type: text
+          combineBelow: true
+        - name: mean
+          type: number
+          title: <i>M</i>
+        - name: mean_LL
+          title: LL
+          type: number
+        - name: mean_UL
+          title: UL
+          type: number
+        - name: median
+          title: Median
+          type: number
+          visible: (switch == 'from_raw')
+        - name: median_LL
+          title: LL
+          type: number
+          visible: (switch == 'from_raw')
+        - name: median_UL
+          title: UL
+          type: number
+          visible: (switch == 'from_raw')
+        - name: sd
+          type: number
+          title: <i>s</i>
+        - name: min
+          title: Minimum
+          type: number
+          visible: (switch == 'from_raw')
+        - name: max
+          title: Maximum
+          type: number
+          visible: (switch == 'from_raw')
+        - name: q1
+          title: 25th
+          type: number
+          superTitle: Percentile
+          visible: (switch == 'from_raw')
+        - name: q3
+          title: 75th
+          type: number
+          superTitle: Percentile
+          visible: (switch == 'from_raw')
+        - name: n
+          title: <i>n</i>
+          type: integer
+        - name: missing
+          type: integer
+          title: Missing
+          visible: (switch == 'from_raw')
+        - name: df
+          title: <i>df</i>
+          type: integer
+          visible: (show_details)
+        - name: mean_SE
+          title: <i>SEM</i>
+          type: number
+          visible: (show_details)
 
+    - name:  es_r
+      title: Linear correlation of magnitude
+      type: Table
+      rows:  1
+      columns:
+        - name: x_variable_name
+          title: 'Comparison variable name'
+          type: text
+          combineBelow: true
+        - name: y_variable_name
+          title: 'Reference measure name'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>r</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: n
+          title: <i>N</i>
+          type: integer
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: integer
 ...

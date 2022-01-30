@@ -56,7 +56,7 @@ items:
     - name:  es_proportion_difference
       title: Proportion difference
       type: Table
-      rows:  2
+      rows:  3
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable'

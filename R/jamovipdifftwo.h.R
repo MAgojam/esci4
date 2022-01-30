@@ -229,7 +229,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="es_proportion_difference",
                 title="Proportion difference",
-                rows=2,
+                rows=3,
                 columns=list(
                     list(
                         `name`="grouping_variable_name", 
