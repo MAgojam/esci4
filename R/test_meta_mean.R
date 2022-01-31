@@ -64,23 +64,26 @@ test_estimate_meta_mdiff_two <- function() {
   sds <- "rt_sd"
   ns <- "rt_n"
   labels <- "study_name"
+  moderator <- "subset"
 
   estimate <- meta_mean(
     data = original_7,
     means = !!means,
     sds = !!sds,
     ns = !!ns,
-    labels = !!labels
+    labels = !!labels,
+    moderator = subset
   )
 
-  do.call(
+  estimate <- do.call(
     what = meta_mean,
     args = list(
       data = original_7,
       means = means,
       sds = sds,
       ns = ns,
-      labels = labels
+      labels = labels,
+      moderator = "subset"
     )
   )
 
