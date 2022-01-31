@@ -31,6 +31,10 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     result_table$df_i <- result_table$df
   }
 
+  if (!is.null(result_table$effect_size)) {
+    result_table$effect_size_smd <- result_table$effect_size
+  }
+
   for (x in 1:nrow(result_table)) {
     # Initialize a named list
     row_list <- list()
@@ -65,7 +69,9 @@ jamovi_set_confidence <- function(jmv_table = NULL, CI) {
   CI_columns <- c(
     "mean_LL", "mean_UL", "median_LL", "median_UL",
     "LL", "UL",
-    "P_LL", "P_UL"
+    "P_LL", "P_UL",
+    "I2_LL", "I2_UL",
+    "diamond_ratio_LL", "diamond_ratio_UL"
   )
   # MoE_columns <- c(
   #

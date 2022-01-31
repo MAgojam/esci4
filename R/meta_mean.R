@@ -221,7 +221,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   )
 
   # reduce data down to just needed columns with cannonical names
-  data <- data[ , just_cols]
+  data <- data[just_cols]
   colnames(data) <- col_names
 
 

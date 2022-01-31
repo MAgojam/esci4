@@ -60,6 +60,30 @@ test_estimate_meta_mdiff_two <- function() {
   estimate$raw_data
   estimate
 
+  means <- "rt_mean"
+  sds <- "rt_sd"
+  ns <- "rt_n"
+  labels <- "study_name"
+
+  estimate <- meta_mean(
+    data = original_7,
+    means = !!means,
+    sds = !!sds,
+    ns = !!ns,
+    labels = !!labels
+  )
+
+  do.call(
+    what = meta_mean,
+    args = list(
+      data = original_7,
+      means = means,
+      sds = sds,
+      ns = ns,
+      labels = labels
+    )
+  )
+
   estimate <- meta_mean(
     original_7,
     rt_mean,

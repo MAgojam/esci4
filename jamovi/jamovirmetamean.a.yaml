@@ -9,28 +9,62 @@ options:
     - name: data
       type: Data
 
-    - name: dep
-      title: Dependent Variable
+    - name: means
+      title: Means
+      type: Variable
+      permitted: [numeric]
+
+    - name: sds
+      title: Standard deviations
+      type: Variable
+      permitted: [numeric]
+
+    - name: ns
+      title: Sample sizes
+      type: Variable
+      permitted: [numeric]
+
+    - name: labels
+      title: labels
       type: Variable
 
-    - name: group
-      title: Grouping Variable
+    - name: moderator
+      title: Moderator (optional)
       type: Variable
 
-    - name: alt
-      title: Alternative hypothesis
+    - name: reference_mean
+      title: Reference mean
+      type: String
+      default: '0'
+
+    - name: effect_label
+      title: Effect label
+      type: String
+      default: My effect
+
+    - name: reported_effect_size
       type: List
+      default: mean_difference
       options:
-        - title: Not equal
-          name:  notequal
-        - title: One greater
-          name:  onegreater
-        - title: Two greater
-          name:  twogreater
-      default: notequal
+          - name: mean_difference
+            title: Raw score
+          - name: smd
+            title: Standardized mean difference
 
-    - name: varEq
-      title: Assume equal variances
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      min: 1
+      max: 99.999999
+      default: 95
+
+    - name: random_effects
+      title: Random effects?
       type: Bool
       default: true
+
+    - name: show_details
+      title: Show details
+      type: Bool
+      default: false
 ...

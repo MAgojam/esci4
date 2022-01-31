@@ -4,8 +4,101 @@ title: Magnitude/Quantity - Meta-analysis
 jrs:   '1.1'
 
 items:
-    - name:  text
-      title: Magnitude/Quantity - Meta-analysis
-      type:  Preformatted
+    - name: debug
+      type: Html
+      visible: true
+
+    - name: help
+      type: Html
+      visible: false
+
+    - name:  raw_data
+      title: Overview
+      type: Table
+      rows:  1
+      columns:
+        - name: label
+          title: 'label'
+          type: text
+          combineBelow: true
+        - name: effect_size
+          type: number
+          title: <i>M</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: weight
+          title: weight
+          type: number
+          visible: (show_details)
+        - name: sample_variance
+          title: v2
+          type: number
+          visible: (show_details)
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: mean
+          title: <i>M</i>
+          type: number
+          visible: (show_details)
+        - name: sd
+          title: <i>s</i>
+          type: number
+          visible: (show_details)
+        - name: n
+          title: <i>N</i>
+          type: integer
+          visible: (show_details)
+
+    - name:  es_meta
+      title: Meta-analysis
+      type: Table
+      rows:  1
+      columns:
+        - name: effect_label
+          title: 'Effect'
+          type: text
+          combineBelow: true
+        - name: effect_label
+          title: 'Effect'
+          type: text
+          combineBelow: true
+        - name: effect_size
+          type: number
+          title: <i>M</i>
+          visible: (reported_effect_size == "mean_difference")
+        - name: effect_size_smd
+          type: number
+          title: <i>d</i><sub>1 - corrected</sub>
+          visible: (reported_effect_size == "smd")
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: k
+          type: integer
+        - name: diamond_ratio
+          type: number
+        - name: diamond_ratio_LL
+          type: number
+        - name: diamond_ratio_UL
+          type: number
+        - name: I2
+          type: number
+        - name: I2_LL
+          type: number
+        - name: I2_UL
+          type: number
 
 ...
