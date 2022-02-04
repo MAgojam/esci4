@@ -427,7 +427,15 @@ After dropping any NA rows, current data has:
     RE_contrast <- NULL
 
     for (x in 1:length(contrasts)) {
-      FE_anova <- anova(FEgroups, X = contrasts[[x]])
+      FE_anova <- summary(
+        multcomp::glht(
+          FEgroups,
+          linfct = rbind(contrasts[[x]])
+        ),
+        test = multcomp::adjusted("none")
+      )$test
+
+      # FE_anova <- anova(FEgroups, X = contrasts[[x]])
       FE_contrast <- rbind(
         FE_contrast,
         anova_to_table(
@@ -439,7 +447,15 @@ After dropping any NA rows, current data has:
           conf_level = conf_level
         )
       )
-      RE_anova <- anova(REgroups, X = contrasts[[x]])
+      RE_anova <- summary(
+        multcomp::glht(
+          REgroups,
+          linfct = rbind(contrasts[[x]])
+        ),
+        test = multcomp::adjusted("none")
+      )$test
+
+      #RE_anova <- anova(REgroups, X = contrasts[[x]])
       RE_contrast <- rbind(
         RE_contrast,
         anova_to_table(
@@ -584,8 +600,8 @@ anova_to_table <- function(
   moderator_level,
   conf_level
 ) {
-  c_es <- cres$Xb[[1, 1]]
-  c_se <- cres$se
+  c_es <- cres$coefficients[[1]]
+  c_se <- cres$sigma
   z_crit <- qnorm((1-conf_level)/2, lower.tail = FALSE)
   c_LL <- c_es - (c_se * z_crit)
   c_UL <- c_es + (c_se * z_crit)

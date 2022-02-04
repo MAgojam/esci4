@@ -17,6 +17,7 @@ Imports:
   rlang,
   methods,
   stats,
+  multcomp,
   sadists,
   statpsych,
   metafor,

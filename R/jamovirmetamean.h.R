@@ -120,7 +120,8 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
         raw_data = function() private$.items[["raw_data"]],
-        es_meta = function() private$.items[["es_meta"]]),
+        es_meta = function() private$.items[["es_meta"]],
+        es_meta_difference = function() private$.items[["es_meta_difference"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -131,7 +132,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
-                visible=TRUE))
+                visible=FALSE))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="help",
@@ -145,12 +146,21 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="label", 
                         `title`="label", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
+                        `type`="text"),
+                    list(
+                        `name`="moderator", 
+                        `title`="Moderator level", 
+                        `type`="text"),
                     list(
                         `name`="effect_size", 
                         `type`="number", 
-                        `title`="<i>M</i>"),
+                        `title`="<i>M</i>", 
+                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                    list(
+                        `name`="effect_size_smd", 
+                        `type`="number", 
+                        `title`="<i>d</i><sub>1 - corrected</sub>", 
+                        `visible`="(reported_effect_size == \"smd\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -201,8 +211,13 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="effect_label", 
-                        `title`="Effect", 
+                        `name`="moderator_variable_name", 
+                        `title`="Moderator", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_variable_level", 
+                        `title`="Level", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -248,7 +263,71 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="number"),
                     list(
                         `name`="I2_UL", 
-                        `type`="number"))))}))
+                        `type`="number"),
+                    list(
+                        `name`="FE_effect_size", 
+                        `type`="number", 
+                        `title`="Fixed effects effect size", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="RE_effect_size", 
+                        `type`="number", 
+                        `title`="Random effects effect size", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="FE_CI_width", 
+                        `type`="number", 
+                        `title`="Fixed effects CI width", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="RE_CI_width", 
+                        `type`="number", 
+                        `title`="Random effects CI width", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_meta_difference",
+                title="Moderator analysis",
+                rows=3,
+                columns=list(
+                    list(
+                        `name`="effect_label", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_variable_name", 
+                        `title`="Moderator", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_level", 
+                        `title`="Level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>M</i>", 
+                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                    list(
+                        `name`="effect_size_smd", 
+                        `type`="number", 
+                        `title`="<i>d</i><sub>1 - corrected</sub>", 
+                        `visible`="(reported_effect_size == \"smd\")"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))}))
 
 jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovirmetameanBase",
@@ -291,6 +370,7 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$raw_data} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_meta} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_meta_difference} \tab \tab \tab \tab \tab a table \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

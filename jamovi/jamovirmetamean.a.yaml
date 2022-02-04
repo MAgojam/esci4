@@ -25,7 +25,7 @@ options:
       permitted: [numeric]
 
     - name: labels
-      title: labels
+      title: Labels (optional)
       type: Variable
 
     - name: moderator

@@ -6,10 +6,19 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            dep = NULL,
-            group = NULL,
-            alt = "notequal",
-            varEq = TRUE, ...) {
+            comparison_means = NULL,
+            comparison_sds = NULL,
+            comparison_ns = NULL,
+            reference_means = NULL,
+            reference_sds = NULL,
+            reference_ns = NULL,
+            labels = NULL,
+            moderator = NULL,
+            effect_label = "My effect",
+            reported_effect_size = "mean_difference",
+            conf_level = 95,
+            random_effects = TRUE,
+            show_details = FALSE, ...) {
 
             super$initialize(
                 package="esci4",
@@ -17,47 +26,121 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 requiresData=TRUE,
                 ...)
 
-            private$..dep <- jmvcore::OptionVariable$new(
-                "dep",
-                dep)
-            private$..group <- jmvcore::OptionVariable$new(
-                "group",
-                group)
-            private$..alt <- jmvcore::OptionList$new(
-                "alt",
-                alt,
+            private$..comparison_means <- jmvcore::OptionVariable$new(
+                "comparison_means",
+                comparison_means,
+                permitted=list(
+                    "numeric"))
+            private$..comparison_sds <- jmvcore::OptionVariable$new(
+                "comparison_sds",
+                comparison_sds,
+                permitted=list(
+                    "numeric"))
+            private$..comparison_ns <- jmvcore::OptionVariable$new(
+                "comparison_ns",
+                comparison_ns,
+                permitted=list(
+                    "numeric"))
+            private$..reference_means <- jmvcore::OptionVariable$new(
+                "reference_means",
+                reference_means,
+                permitted=list(
+                    "numeric"))
+            private$..reference_sds <- jmvcore::OptionVariable$new(
+                "reference_sds",
+                reference_sds,
+                permitted=list(
+                    "numeric"))
+            private$..reference_ns <- jmvcore::OptionVariable$new(
+                "reference_ns",
+                reference_ns,
+                permitted=list(
+                    "numeric"))
+            private$..labels <- jmvcore::OptionVariable$new(
+                "labels",
+                labels)
+            private$..moderator <- jmvcore::OptionVariable$new(
+                "moderator",
+                moderator)
+            private$..effect_label <- jmvcore::OptionString$new(
+                "effect_label",
+                effect_label,
+                default="My effect")
+            private$..reported_effect_size <- jmvcore::OptionList$new(
+                "reported_effect_size",
+                reported_effect_size,
+                default="mean_difference",
                 options=list(
-                    "notequal",
-                    "onegreater",
-                    "twogreater"),
-                default="notequal")
-            private$..varEq <- jmvcore::OptionBool$new(
-                "varEq",
-                varEq,
+                    "mean_difference",
+                    "smd"))
+            private$..conf_level <- jmvcore::OptionNumber$new(
+                "conf_level",
+                conf_level,
+                min=1,
+                max=99.999999,
+                default=95)
+            private$..random_effects <- jmvcore::OptionBool$new(
+                "random_effects",
+                random_effects,
                 default=TRUE)
+            private$..show_details <- jmvcore::OptionBool$new(
+                "show_details",
+                show_details,
+                default=FALSE)
 
-            self$.addOption(private$..dep)
-            self$.addOption(private$..group)
-            self$.addOption(private$..alt)
-            self$.addOption(private$..varEq)
+            self$.addOption(private$..comparison_means)
+            self$.addOption(private$..comparison_sds)
+            self$.addOption(private$..comparison_ns)
+            self$.addOption(private$..reference_means)
+            self$.addOption(private$..reference_sds)
+            self$.addOption(private$..reference_ns)
+            self$.addOption(private$..labels)
+            self$.addOption(private$..moderator)
+            self$.addOption(private$..effect_label)
+            self$.addOption(private$..reported_effect_size)
+            self$.addOption(private$..conf_level)
+            self$.addOption(private$..random_effects)
+            self$.addOption(private$..show_details)
         }),
     active = list(
-        dep = function() private$..dep$value,
-        group = function() private$..group$value,
-        alt = function() private$..alt$value,
-        varEq = function() private$..varEq$value),
+        comparison_means = function() private$..comparison_means$value,
+        comparison_sds = function() private$..comparison_sds$value,
+        comparison_ns = function() private$..comparison_ns$value,
+        reference_means = function() private$..reference_means$value,
+        reference_sds = function() private$..reference_sds$value,
+        reference_ns = function() private$..reference_ns$value,
+        labels = function() private$..labels$value,
+        moderator = function() private$..moderator$value,
+        effect_label = function() private$..effect_label$value,
+        reported_effect_size = function() private$..reported_effect_size$value,
+        conf_level = function() private$..conf_level$value,
+        random_effects = function() private$..random_effects$value,
+        show_details = function() private$..show_details$value),
     private = list(
-        ..dep = NA,
-        ..group = NA,
-        ..alt = NA,
-        ..varEq = NA)
+        ..comparison_means = NA,
+        ..comparison_sds = NA,
+        ..comparison_ns = NA,
+        ..reference_means = NA,
+        ..reference_sds = NA,
+        ..reference_ns = NA,
+        ..labels = NA,
+        ..moderator = NA,
+        ..effect_label = NA,
+        ..reported_effect_size = NA,
+        ..conf_level = NA,
+        ..random_effects = NA,
+        ..show_details = NA)
 )
 
 jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimetamdiffResults",
     inherit = jmvcore::Group,
     active = list(
-        text = function() private$.items[["text"]]),
+        debug = function() private$.items[["debug"]],
+        help = function() private$.items[["help"]],
+        raw_data = function() private$.items[["raw_data"]],
+        es_meta = function() private$.items[["es_meta"]],
+        es_meta_difference = function() private$.items[["es_meta_difference"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -65,10 +148,220 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 options=options,
                 name="",
                 title="Mdiff - Meta-analysis")
-            self$add(jmvcore::Preformatted$new(
+            self$add(jmvcore::Html$new(
                 options=options,
-                name="text",
-                title="Mdiff - Meta-analysis"))}))
+                name="debug",
+                visible=FALSE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="help",
+                visible=FALSE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="raw_data",
+                title="Overview",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="label", 
+                        `title`="label", 
+                        `type`="text"),
+                    list(
+                        `name`="moderator", 
+                        `title`="Moderator level", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>M</i><sub>reference - comparison</sub>", 
+                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                    list(
+                        `name`="effect_size_smd", 
+                        `type`="number", 
+                        `title`="<i>d</i><sub>? - corrected</sub>", 
+                        `visible`="(reported_effect_size == \"smd\")"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="weight", 
+                        `title`="weight", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="sample_variance", 
+                        `title`="v2", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="reference_mean", 
+                        `title`="<i>M</i><sub>reference</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="reference_sd", 
+                        `title`="<i>s</i>sub>reference</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="reference_n", 
+                        `title`="<i>N</i>sub>reference</sub>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="comparison_mean", 
+                        `title`="<i>M</i><sub>comparison</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="comparison_sd", 
+                        `title`="<i>s</i>sub>comparison</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="comparisone_n", 
+                        `title`="<i>N</i>sub>comparison</sub>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_meta",
+                title="Meta-analysis",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="effect_label", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_variable_name", 
+                        `title`="Moderator", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_variable_level", 
+                        `title`="Level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>M</i><sub>reference - comparison</sub>", 
+                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                    list(
+                        `name`="effect_size_smd", 
+                        `type`="number", 
+                        `title`="<i>d</i><sub>? - corrected</sub>", 
+                        `visible`="(reported_effect_size == \"smd\")"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="k", 
+                        `type`="integer"),
+                    list(
+                        `name`="diamond_ratio", 
+                        `type`="number"),
+                    list(
+                        `name`="diamond_ratio_LL", 
+                        `type`="number"),
+                    list(
+                        `name`="diamond_ratio_UL", 
+                        `type`="number"),
+                    list(
+                        `name`="I2", 
+                        `type`="number"),
+                    list(
+                        `name`="I2_LL", 
+                        `type`="number"),
+                    list(
+                        `name`="I2_UL", 
+                        `type`="number"),
+                    list(
+                        `name`="FE_effect_size", 
+                        `type`="number", 
+                        `title`="Fixed effects effect size", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="RE_effect_size", 
+                        `type`="number", 
+                        `title`="Random effects effect size", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="FE_CI_width", 
+                        `type`="number", 
+                        `title`="Fixed effects CI width", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="RE_CI_width", 
+                        `type`="number", 
+                        `title`="Random effects CI width", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_meta_difference",
+                title="Moderator analysis",
+                rows=3,
+                columns=list(
+                    list(
+                        `name`="effect_label", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_variable_name", 
+                        `title`="Moderator", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_level", 
+                        `title`="Level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>M</i><sub>reference - comparison</sub>", 
+                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                    list(
+                        `name`="effect_size_smd", 
+                        `type`="number", 
+                        `title`="<i>d</i><sub>? - corrected</sub>", 
+                        `visible`="(reported_effect_size == \"smd\")"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))}))
 
 jamovimetamdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimetamdiffBase",
@@ -94,40 +387,89 @@ jamovimetamdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'
 #' 
 #' @param data .
-#' @param dep .
-#' @param group .
-#' @param alt .
-#' @param varEq .
+#' @param comparison_means .
+#' @param comparison_sds .
+#' @param comparison_ns .
+#' @param reference_means .
+#' @param reference_sds .
+#' @param reference_ns .
+#' @param labels .
+#' @param moderator .
+#' @param effect_label .
+#' @param reported_effect_size .
+#' @param conf_level .
+#' @param random_effects .
+#' @param show_details .
 #' @return A results object containing:
 #' \tabular{llllll}{
-#'   \code{results$text} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$debug} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$raw_data} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_meta} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_meta_difference} \tab \tab \tab \tab \tab a table \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$raw_data$asDF}
+#'
+#' \code{as.data.frame(results$raw_data)}
 #'
 #' @export
 jamovimetamdiff <- function(
     data,
-    dep,
-    group,
-    alt = "notequal",
-    varEq = TRUE) {
+    comparison_means,
+    comparison_sds,
+    comparison_ns,
+    reference_means,
+    reference_sds,
+    reference_ns,
+    labels,
+    moderator,
+    effect_label = "My effect",
+    reported_effect_size = "mean_difference",
+    conf_level = 95,
+    random_effects = TRUE,
+    show_details = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimetamdiff requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(dep)) dep <- jmvcore::resolveQuo(jmvcore::enquo(dep))
-    if ( ! missing(group)) group <- jmvcore::resolveQuo(jmvcore::enquo(group))
+    if ( ! missing(comparison_means)) comparison_means <- jmvcore::resolveQuo(jmvcore::enquo(comparison_means))
+    if ( ! missing(comparison_sds)) comparison_sds <- jmvcore::resolveQuo(jmvcore::enquo(comparison_sds))
+    if ( ! missing(comparison_ns)) comparison_ns <- jmvcore::resolveQuo(jmvcore::enquo(comparison_ns))
+    if ( ! missing(reference_means)) reference_means <- jmvcore::resolveQuo(jmvcore::enquo(reference_means))
+    if ( ! missing(reference_sds)) reference_sds <- jmvcore::resolveQuo(jmvcore::enquo(reference_sds))
+    if ( ! missing(reference_ns)) reference_ns <- jmvcore::resolveQuo(jmvcore::enquo(reference_ns))
+    if ( ! missing(labels)) labels <- jmvcore::resolveQuo(jmvcore::enquo(labels))
+    if ( ! missing(moderator)) moderator <- jmvcore::resolveQuo(jmvcore::enquo(moderator))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(dep), dep, NULL),
-            `if`( ! missing(group), group, NULL))
+            `if`( ! missing(comparison_means), comparison_means, NULL),
+            `if`( ! missing(comparison_sds), comparison_sds, NULL),
+            `if`( ! missing(comparison_ns), comparison_ns, NULL),
+            `if`( ! missing(reference_means), reference_means, NULL),
+            `if`( ! missing(reference_sds), reference_sds, NULL),
+            `if`( ! missing(reference_ns), reference_ns, NULL),
+            `if`( ! missing(labels), labels, NULL),
+            `if`( ! missing(moderator), moderator, NULL))
 
 
     options <- jamovimetamdiffOptions$new(
-        dep = dep,
-        group = group,
-        alt = alt,
-        varEq = varEq)
+        comparison_means = comparison_means,
+        comparison_sds = comparison_sds,
+        comparison_ns = comparison_ns,
+        reference_means = reference_means,
+        reference_sds = reference_sds,
+        reference_ns = reference_ns,
+        labels = labels,
+        moderator = moderator,
+        effect_label = effect_label,
+        reported_effect_size = reported_effect_size,
+        conf_level = conf_level,
+        random_effects = random_effects,
+        show_details = show_details)
 
     analysis <- jamovimetamdiffClass$new(
         options = options,
