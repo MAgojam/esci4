@@ -2,55 +2,68 @@ title: Magnitude/Quantity
 name: jamovimagnitude
 jus: '3.0'
 stage: 0
-compilerMode: aggressive
+compilerMode: tame
 children:
   - type: LayoutBox
-    margin: large
+    margin: small
+    style: inline
     children:
-      - type: ComboBox
-        name: switch
-  - type: VariableSupplier
-    persistentItems: false
-    stretchFactor: 1
+      - type: RadioButton
+        name: raw_button
+        optionName: switch
+        optionPart: from_raw
+      - type: RadioButton
+        name: summary_button
+        optionName: switch
+        optionPart: from_summary
+  - type: CollapseBox
+    label: Work with full data
+    name: rpanel
+    collapsed: false
     children:
-      - type: TargetLayoutBox
-        label: Outcome variable
+      - type: Label
+        label: Raw data
+      - type: VariableSupplier
+        persistentItems: false
+        stretchFactor: 1
         children:
-          - type: VariablesListBox
-            name: outcome_variable
-            isTarget: true
-  - type: LayoutBox
-    margin: large
+          - type: TargetLayoutBox
+            label: Outcome variable
+            children:
+              - type: VariablesListBox
+                name: outcome_variable
+                isTarget: true
+                enable: '(switch:from_raw)'
+  - type: CollapseBox
+    label: Work with summary data
+    name: spanel
+    stretchFactor: 1
+    collapsed: true
     children:
+      - type: Label
+        label: Summary data
+        enable: '(switch:from_summary)'
       - type: TextBox
         name: mean
         format: string
-  - type: LayoutBox
-    margin: large
-    children:
+        enable: '(switch:from_summary)'
       - type: TextBox
         name: sd
         format: string
-  - type: LayoutBox
-    margin: large
-    children:
+        enable: '(switch:from_summary)'
       - type: TextBox
         name: 'n'
         format: string
-  - type: LayoutBox
-    margin: large
-    children:
+        enable: '(switch:from_summary)'
       - type: TextBox
         name: outcome_variable_name
         format: string
-  - type: LayoutBox
-    margin: large
+        enable: '(switch:from_summary)'
+  - type: Label
+    label: Analysis options
     children:
       - type: TextBox
         name: conf_level
         format: number
-  - type: LayoutBox
-    margin: large
-    children:
       - type: CheckBox
         name: show_details

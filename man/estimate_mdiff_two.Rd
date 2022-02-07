@@ -19,7 +19,8 @@ estimate_mdiff_two(
   grouping_variable_name = "My grouping variable",
   conf_level = 0.95,
   assume_equal_variance = FALSE,
-  save_raw_data = TRUE
+  save_raw_data = TRUE,
+  switch_comparison_order = FALSE
 )
 }
 \arguments{
@@ -61,6 +62,8 @@ decimal form.  Defaults to 0.95.}
 
 \item{save_raw_data}{For raw data; defaults to TRUE; set to FALSE to save
 memory by not returning raw data in estimate object}
+
+\item{switch_comparison_order}{Defaults to FALSE}
 }
 \value{
 Returnsobject of class esci_estimate
