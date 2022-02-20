@@ -249,7 +249,7 @@ estimate_correlation.summary <- function(
   estimate$properties <- list(
     data_type = "Summary",
     data_source = NULL,
-    conv_level = conf_level
+    conf_level = conf_level
   )
 
   return(estimate)
