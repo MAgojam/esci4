@@ -9,10 +9,11 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Outcome variables
+        label: Outcome variable
         children:
           - type: VariablesListBox
             name: outcome_variable
+            maxItemCount: 1
             isTarget: true
   - type: LayoutBox
     margin: large

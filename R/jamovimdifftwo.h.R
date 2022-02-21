@@ -612,7 +612,7 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Mdiff - Two Groups
+#' Two groups
 #'
 #' 
 #' @param switch .

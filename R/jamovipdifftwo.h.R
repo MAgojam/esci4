@@ -314,7 +314,7 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Pdiff - Two Groups
+#' Two groups
 #'
 #' 
 #' @param switch .

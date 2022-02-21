@@ -383,7 +383,7 @@ jamovimetamdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Mdiff - Meta-analysis
+#' Difference in means
 #'
 #' 
 #' @param data .

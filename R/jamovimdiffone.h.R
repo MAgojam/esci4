@@ -315,7 +315,7 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Mdiff - Single Group
+#' Single group
 #'
 #' 
 #' @param switch .

@@ -186,7 +186,7 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 requiresMissings = FALSE)
         }))
 
-#' Count/Proportion
+#' Proportion
 #'
 #' 
 #' @param switch .

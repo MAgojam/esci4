@@ -1,6 +1,6 @@
 ---
 name:  jamovimetamdiff
-title: Mdiff - Meta-analysis
+title: Difference in means
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

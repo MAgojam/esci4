@@ -90,7 +90,7 @@ jamovirdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' rdiff - Paired
+#' Paired
 #'
 #' 
 #' @param data .

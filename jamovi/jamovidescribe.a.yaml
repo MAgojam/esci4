@@ -10,8 +10,8 @@ options:
       type: Data
 
     - name: outcome_variable
-      title: Outcome variables
-      type: Variables
+      title: Outcome variable
+      type: Variable
       permitted: [numeric]
 
     - name: show_details

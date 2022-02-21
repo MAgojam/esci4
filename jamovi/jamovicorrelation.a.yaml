@@ -1,6 +1,6 @@
 ---
 name:  jamovicorrelation
-title: Linear Correlation
+title: Correlation
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

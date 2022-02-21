@@ -1,6 +1,6 @@
 ---
 name:  jamovimetapdiff
-title: Pdiff - Meta-analysis
+title: Difference in proportions
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

@@ -298,7 +298,7 @@ jamovirmetaproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 requiresMissings = FALSE)
         }))
 
-#' Count/Proportion - Meta-analysis
+#' Proportions
 #'
 #' 
 #' @param data .

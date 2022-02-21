@@ -126,6 +126,146 @@ jamovi_init_table <- function(jmv_table = NULL, desired_rows, breaks = NULL) {
 }
 
 
+jamovi_arg_builder <- function(
+  args,
+  arg_name,
+  my_value = NULL,
+  return_value = NULL,
+  na_ok = FALSE,
+  convert_to_number = FALSE,
+  lower = NULL,
+  upper = NULL,
+  lower_inclusive = FALSE,
+  upper_inclusive = FALSE,
+  my_value_name = NULL
+) {
+
+
+  if(is.null(my_value_name)) {
+    my_value_name <- deparse(substitute(my_value))
+    my_value_name <- gsub("self\\$options\\$", "", my_value_name)
+    my_value_name <- gsub("_", " ", my_value_name)
+  }
+
+  # Lots of ways a jamovi input can be invalid
+  #   Check for null, na, trims length of 0, or one of several
+  #   text strings that shouldn't be passed on
+  if(is.null(my_value)) {
+    reason <- glue::glue(
+      "{my_value_name} was null; replaced with: {return_value}"
+    )
+    args$warnings <- c(args$warnings, reason)
+    args[[arg_name]] <- return_value
+    return(args)
+  }
+
+  if(!na_ok & is.na(my_value)) {
+    reason <- glue::glue(
+      "{my_value_name} was NA/missing; replaced with: {return_value}"
+    )
+    args$warnings <- c(args$warnings, reason)
+    args[[arg_name]] <- return_value
+    return(args)
+  }
+
+  if(length(trimws(as.character(my_value))) == 0) {
+    reason <- glue::glue(
+      "{my_value_name} was empty string (''); replaced with: {return_value}"
+    )
+    args$warnings <- c(args$warnings, reason)
+    args[[arg_name]] <- return_value
+    return(args)
+  }
+
+  if(trimws(as.character(my_value)) %in% c("")) {
+    reason <- glue::glue(
+      "{my_value_name} was empty string (''); replaced with: {return_value}"
+    )
+    args$warnings <- c(args$warnings, reason)
+    args[[arg_name]] <- return_value
+    return(args)
+  }
+
+  if(trimws(as.character(my_value)) %in% c("auto")) {
+    return(return_value)
+  }
+
+  if(trimws(as.character(my_value))
+     %in%
+     c("NaN", "Na", "NA", "None")
+  ) {
+    if(na_ok) {
+      return(NA)
+    } else {
+      reason <- glue::glue(
+        "{my_value_name} was NaN/Na/NA/None; replaced with: {return_value}"
+      )
+      args$warnings <- c(args$warnings, reason)
+      args[[arg_name]] <- return_value
+      return(args)
+    }
+  }
+
+  # Now, if specified, try to convert to a number
+  fvalue <- if(convert_to_number) {
+    as.numeric(my_value)
+  } else {
+    my_value
+  }
+
+  # If conversion didn't succeed, don't send the value back
+  if (is.na(fvalue)) {
+    if(na_ok) {
+      args[[arg_name]] <- NA
+      return(args)
+    } else {
+      reason <- glue::glue(
+        "{my_value_name} conversion to number yielded Na/Missing;
+        replaced with: {return_value}"
+      )
+      args$warnings <- c(args$warnings, reason)
+      args[[arg_name]] <- return_value
+      return(args)
+    }
+  }
+
+  # Check range of numeric parameter
+  out_of_range <- NULL
+  lower_symbol <- ifelse(lower_inclusive, ">=", ">")
+  upper_symbol <- ifelse(upper_inclusive, "<=", "<")
+
+  if(!is.null(lower)) {
+    if(lower_inclusive) {
+      if(fvalue < lower) out_of_range <- paste(lower_symbol, lower)
+    } else {
+      if(fvalue <= lower) out_of_range <- paste(lower_symbol, lower)
+    }
+  }
+
+  if(!is.null(upper)) {
+    if(upper_inclusive) {
+      if(fvalue > upper) out_of_range <- paste(upper_symbol, upper)
+    } else {
+      if(fvalue >= upper) out_of_range <- paste(upper_symbol, upper)
+    }
+  }
+
+  if(!is.null(out_of_range)) {
+    reason <- glue::glue(
+      "{my_value_name} is {fvalue} but must be {out_of_range};
+        replaced with: {return_value}"
+    )
+    args$warnings <- c(args$warnings, reason)
+    args[[arg_name]] <- return_value
+    return(args)
+  }
+
+  args[[arg_name]] <- fvalue
+  return(args)
+
+}
+
+
 # This function sanitizes an input from jamovi
 # If the input is null, length is 0, all spaces, or NA, it returns return value
 # Otherwise it returns the input value, converted to as.numeric if specified
@@ -457,6 +597,7 @@ jamovi_set_notes <- function(result_element) {
     )
     result_element$setVisible(TRUE)
   } else {
+    result_element$setContent("")
     result_element$setVisible(FALSE)
   }
 

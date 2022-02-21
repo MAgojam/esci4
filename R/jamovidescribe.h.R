@@ -15,7 +15,7 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresData=TRUE,
                 ...)
 
-            private$..outcome_variable <- jmvcore::OptionVariables$new(
+            private$..outcome_variable <- jmvcore::OptionVariable$new(
                 "outcome_variable",
                 outcome_variable,
                 permitted=list(

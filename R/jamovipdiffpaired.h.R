@@ -280,7 +280,7 @@ jamovipdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' Pdiff - Paired
+#' Paired
 #'
 #' 
 #' @param switch .

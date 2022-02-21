@@ -179,64 +179,12 @@ plot_magnitude <- function(
 
   }
 
+  # Customize plot -------------------------------
   # No legend
   myplot <- myplot + ggplot2::theme(legend.position = "none")
 
-
-  # Customize plot -------------------------------
-  # Points
-  myplot <- myplot + ggplot2::scale_shape_manual(
-    values = c("raw" = "circle filled", "summary" = "circle filled")
-  )
-  myplot <- myplot + ggplot2::scale_color_manual(
-    values = c("raw" = "black", "summary" = "black"),
-    aesthetics = c("color", "point_color")
-  )
-  myplot <- myplot + ggplot2::scale_fill_manual(
-    values = c("raw" = "NA", "summary" = "gray"),
-    aesthetics = c("fill", "point_fill")
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("size", "point_size"),
-    "point_size_d",
-    function(n) return(c("raw" = 1, "summary" = 3))
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("alpha", "point_alpha"),
-    "point_alpha_d",
-    function(n) return(c("raw" = 0.8, "summary" = 1))
-  )
-
-  # Error bars
-  myplot <- myplot + ggplot2::scale_linetype_manual(
-    values = c("summary" = "solid")
-  )
-  myplot <- myplot + ggplot2::scale_color_manual(
-    values = c("summary" = "black"),
-    aesthetics = "interval_color"
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_alpha",
-    "interval_alpha_d",
-    function(n) return(c("summary" = 1))
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_size",
-    "interval_size_d",
-    function(n) return(c("summary" = 3))
-  )
-
-  # Slab
-  myplot <- myplot + ggplot2::scale_fill_manual(
-    values = c("summary" = "gray"),
-    aesthetics = "slab_fill"
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "slab_alpha",
-    "slab_alpha_d",
-    function(n) return(c("summary" = 1))
-  )
-
+  # Default aesthetics
+  myplot <- esci_plot_simple_aesthetics(myplot)
 
   # Labels -----------------------------
   vnames <- paste(estimate$es_mean$outcome_variable_name, collapse = ", ")
@@ -246,7 +194,7 @@ plot_magnitude <- function(
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
 
-  # Attach warnings and return
+  # Attach warnings and return    -------------------
   myplot$warnings <- warnings
 
   return(myplot)
@@ -292,49 +240,163 @@ plot_correlation <- function(
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
 
-  myplot <- myplot + ggdist::stat_dist_halfeye(
-    data = gdata,
-    ggplot2::aes(
-      y = effect_size,
-      x = paste(x_variable_name, "\nvs.\n", y_variable_name),
-      color = type,
-      shape = type,
-      size = type,
-      point_color = type,
-      point_fill = type,
-      point_size = type,
-      point_alpha = type,
-      linetype = type,
-      interval_color = type,
-      interval_size = type,
-      interval_alpha = type,
-      slab_fill = type,
-      slab_alpha = type,
-      slab_linetype = type,
-      dist = distributional::dist_transformed(
-        distributional::dist_normal(
-          mu = esci_trans_r_to_z(effect_size),
-          sigma = esci_trans_rse_to_sez(n)
-        ),
-        transform = esci_trans_z_to_r,
-        inverse = esci_trans_identity
+  error_glue <-
+    "
+     myplot <- myplot + {error_call}(
+      data = gdata,
+      ggplot2::aes(
+        y = effect_size,
+        x = paste(x_variable_name, '\nvs.\', y_variable_name),
+        color = type,
+        shape = type,
+        size = type,
+        point_color = type,
+        point_fill = type,
+        point_size = type,
+        point_alpha = type,
+        linetype = type,
+        interval_color = type,
+        interval_size = type,
+        interval_alpha = type,
+        slab_fill = type,
+        slab_alpha = type,
+        slab_linetype = type,
+        dist = distributional::dist_transformed(
+          distributional::dist_normal(
+            mu = esci_trans_r_to_z(effect_size),
+            sigma = esci_trans_rse_to_sez(n)
+          ),
+          transform = esci_trans_z_to_r,
+          inverse = esci_trans_identity
+        )
+      ),
+      scale = {error_scale},
+      .width = c({conf_level}),
+      normalize = '{error_normalize}'
+    )
+    "
+  error_call <- esci_plot_error_layouts(error_layout)
+  error_expression <- parse(text = glue::glue(error_glue))
+  myplot <- try(eval(error_expression))
+
+
+  # Customize plot ------------------------------
+  # No legend
+  myplot <- myplot + ggplot2::theme(legend.position = "none")
+
+  # Defualt look
+  myplot <- esci_plot_simple_aesthetics(myplot)
+
+  #Labels
+  ylab <- glue::glue("Pearson's r and {conf_level*100}% confidence interval")
+  xlab <- NULL
+  myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
+
+  # Limits
+  myplot <- myplot + ylim(-1, 1)
+
+
+  # Attach warnings and return    -------------------
+  myplot$warnings <- warnings
+
+  return(myplot)
+
+}
+
+
+#' @export
+plot_proportion <- function(
+  estimate,
+  error_layout = c("halfeye", "eye", "gradient", "none"),
+  error_scale = 0.3,
+  error_normalize = c("groups", "all", "panels"),
+  ggtheme = NULL
+) {
+
+  # Input checks ---------------------------------------------------------------
+  warnings <- NULL
+
+  esci_assert_type(estimate, "is.estimate")
+  error_layout <- match.arg(error_layout)
+  error_normalize <- match.arg(error_normalize)
+  if (is.null(error_scale) | !is.numeric(error_scale) | error_scale < 0) {
+    warnings <- c(
+      warnings,
+      glue::glue(
+        "error_scale = {error_scale} but this is invalid; replaced with 0.3"
       )
-    ),
-    scale = error_scale,
-    .width = c(conf_level),
-    normalize = error_normalize
-  )
+    )
+    error_scale = 0.3
+  }
 
- myplot <- esci_plot_simple_aesthetics(myplot)
 
- ylab <- glue::glue("Pearson's r and {conf_level*100}% confidence interval")
- xlab <- NULL
+  # Data prep --------------------------------------
+  conf_level <- estimate$properties$conf_level
 
- myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
+  gdata <- estimate$overview
+  gdata$type <- as.factor("summary")
 
- myplot <- myplot + ylim(-1, 1)
 
- return(myplot)
+  # Build plot ------------------------------------
+  # Base plot
+  myplot <- ggplot2::ggplot() + ggtheme
+
+  error_glue <-
+    "
+     myplot <- myplot + {error_call}(
+      data = gdata,
+      ggplot2::aes(
+        y = P,
+        x = outcome_variable_level,
+        color = type,
+        shape = type,
+        size = type,
+        point_color = type,
+        point_fill = type,
+        point_size = type,
+        point_alpha = type,
+        linetype = type,
+        interval_color = type,
+        interval_size = type,
+        interval_alpha = type,
+        slab_fill = type,
+        slab_alpha = type,
+        slab_linetype = type,
+        dist = distributional::dist_transformed(
+          distributional::dist_normal(
+            mu = P,
+            sigma = P_SE
+          ),
+          transform = esci_trans_P,
+          inverse = esci_trans_identity
+        )
+      ),
+      scale = {error_scale},
+      .width = c({conf_level}),
+      normalize = '{error_normalize}'
+    )
+    "
+
+  error_call <- esci_plot_error_layouts(error_layout)
+  error_expression <- parse(text = glue::glue(error_glue))
+  myplot <- try(eval(error_expression))
+
+  # Customize ----------------------------
+  # No legend
+  myplot <- myplot + ggplot2::theme(legend.position = "none")
+
+  # Default look
+  myplot <- esci_plot_simple_aesthetics(myplot)
+
+  # Labels
+  ylab <- glue::glue("Proportion and {conf_level*100}% confidence interval")
+  xlab <- NULL
+  myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
+
+  # Limits
+  myplot <- myplot + ylim(0, 1)
+
+  return(myplot)
 
 }
 
@@ -415,6 +477,12 @@ esci_trans_z_to_r <- function(x) {
   return ( (exp(2*x) - 1)/(exp(2*x) + 1) )
 }
 
+esci_trans_P <- function(x) {
+  x[which(x < 0)] <- 0
+  x[which(x > 1)] <- 1
+  return(x)
+}
+
 esci_trans_identity <- function(x) {
   return(x)
 }
@@ -426,3 +494,15 @@ rtrans <- function(x) {
 rback <- function(x) {
   return ( (exp(2*x) - 1)/(exp(2*x) + 1) )
 }
+
+
+dist_P <- function(mu = 0, sigma = 1, f, n){
+  mu <- vec_cast(mu, double())
+  sigma <- vec_cast(sigma, double())
+  if(any(sigma[!is.na(sigma)] < 0)){
+    abort("Standard deviation of a normal distribution must be non-negative")
+  }
+  new_dist(mu = mu, sigma = sigma, f = f, n = n, class = "dist_normal")
+}
+
+

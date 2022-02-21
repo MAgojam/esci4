@@ -79,5 +79,17 @@ items:
           type: number
           visible: (show_details)
 
+    - name: magnitude_plot_warnings
+      title: Figure warnings
+      type: Html
+      visible: true
+
+    - name: magnitude_plot
+      title: Magnitude
+      type: Image
+      requiresData: true
+      width:  400
+      height: 300
+      renderFun: .magnitude_plot
 
 ...

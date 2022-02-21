@@ -298,7 +298,7 @@ jamovirmetarBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 requiresMissings = FALSE)
         }))
 
-#' Linear Correlation - Meta-analysis
+#' Correlations
 #'
 #' 
 #' @param data .

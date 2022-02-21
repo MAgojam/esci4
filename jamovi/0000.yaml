@@ -14,10 +14,9 @@ description: >-
   provides high-quality visualizations that emphasize effect sizes and
   uncertainty.</br></br>
 
-  Currently, all analyses are frequentist, returning confidence
-  intervals.</br></br>
+  All analyses are frequentist, returning confidence intervals.</br></br>
 
-  This is an alpha release.  Please submit feedback, bug reports, and feature
+  This is a beta release.  Please submit feedback, bug reports, and feature
   requests via the links provided <a href =
   "https://thenewstatistics.com/itns/esci/jesci/" target="_blank">here</a>: <a
   href = "https://thenewstatistics.com/itns/esci/jesci/"
@@ -35,116 +34,115 @@ analyses:
     name: jamovidescribe
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Descriptive Stats
     menuTitle: Describe
-  - title: Magnitude/Quantity
+  - title: Magnitude
     name: jamovimagnitude
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Simple Estimates
-    menuTitle: Magnitude/Quantity
-  - title: Magnitude/Quantity - Meta-analysis
-    name: jamovirmetamean
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Simple Estimates
-    menuTitle: Magnitude/Quantity - Meta-analysis
-  - title: Count/Proportion
-    name: jamoviproportion
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Simple Estimates
-    menuTitle: Count/Proportion
-  - title: Count/Proportion - Meta-analysis
-    name: jamovirmetaproportion
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Simple Estimates
-    menuTitle: Count/Proportion - Meta-analysis
-  - title: Linear Correlation
-    name: jamovicorrelation
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Simple Estimates
-    menuTitle: Linear Correlation
-  - title: Linear Correlation - Meta-analysis
-    name: jamovirmetar
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Simple Estimates
-    menuTitle: Linear Correlation - Meta-analysis
-  - title: Mdiff - Single Group
+    menuSubgroup: Magnitude
+    menuTitle: Magnitude
+  - title: Single group
     name: jamovimdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Magnitude
-    menuTitle: Mdiff - Single Group
-  - title: Mdiff - Two Groups
+    menuSubgroup: Magnitude
+    menuTitle: Single group
+  - title: Two groups
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Magnitude
-    menuTitle: Mdiff - Two Groups
-  - title: Mdiff - Paired
+    menuSubgroup: Magnitude
+    menuTitle: Two groups
+  - title: Paired
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Magnitude
-    menuTitle: Mdiff - Paired
-  - title: Mdiff - Independent Groups Contrast
+    menuSubgroup: Magnitude
+    menuTitle: Paired
+  - title: Independent groups contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Magnitude
-    menuTitle: Mdiff - Independent Groups Contrast
-  - title: Mdiff - Meta-analysis
-    name: jamovimetamdiff
+    menuSubgroup: Magnitude
+    menuTitle: Independent groups contrast
+  - title: Proportion
+    name: jamoviproportion
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Magnitude
-    menuTitle: Mdiff - Meta-analysis
-  - title: Pdiff - Single Group
+    menuSubgroup: Proportion
+    menuTitle: Proportion
+  - title: Single group
     name: jamovipdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Proportion
-    menuTitle: Pdiff - Single Group
-  - title: Pdiff - Two Groups
+    menuSubgroup: Proportion
+    menuTitle: Single group
+  - title: Two groups
     name: jamovipdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Proportion
-    menuTitle: Pdiff - Two Groups
-  - title: Pdiff - Paired
+    menuSubgroup: Proportion
+    menuTitle: Two groups
+  - title: Paired
     name: jamovipdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Proportion
-    menuTitle: Pdiff - Paired
-  - title: Pdiff - Independent Groups Contrast
+    menuSubgroup: Proportion
+    menuTitle: Paired
+  - title: Independent groups contrast
     name: jamovipdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Proportion
-    menuTitle: Pdiff - Independent Groups Contrast
-  - title: Pdiff - Meta-analysis
-    name: jamovimetapdiff
+    menuSubgroup: Proportion
+    menuTitle: Independent groups contrast
+  - title: Correlation
+    name: jamovicorrelation
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Proportion
-    menuTitle: Pdiff - Meta-analysis
-  - title: rdiff - Two Groups
+    menuSubgroup: Association
+    menuTitle: Correlation
+  - title: Two groups
     name: jamovirdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Association
-    menuTitle: rdiff - Two Groups
-  - title: rdiff - Paired
+    menuSubgroup: Association
+    menuTitle: Two groups
+  - title: Paired
     name: jamovirdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Differences in Association
-    menuTitle: rdiff - Paired
+    menuSubgroup: Association
+    menuTitle: Paired
+  - title: Means
+    name: jamovirmetamean
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Meta-analysis
+    menuTitle: Means
+  - title: Difference in means
+    name: jamovimetamdiff
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Meta-analysis
+    menuTitle: Difference in means
+  - title: Proportions
+    name: jamovirmetaproportion
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Meta-analysis
+    menuTitle: Proportions
+  - title: Difference in proportions
+    name: jamovimetapdiff
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Meta-analysis
+    menuTitle: Difference in proportions
+  - title: Correlations
+    name: jamovirmetar
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Meta-analysis
+    menuTitle: Correlations
 usesNative: true
 minApp: 1.0.8
 

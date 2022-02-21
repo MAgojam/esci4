@@ -349,7 +349,7 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Magnitude/Quantity - Meta-analysis
+#' Means
 #'
 #' 
 #' @param data .

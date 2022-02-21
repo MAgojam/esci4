@@ -158,7 +158,7 @@ jamovipdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
                 requiresMissings = FALSE)
         }))
 
-#' Pdiff - Independent Groups Contrast
+#' Independent groups contrast
 #'
 #' 
 #' @param data .
