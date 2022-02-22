@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovipdiffone.h.R
 \name{jamovipdiffone}
 \alias{jamovipdiffone}
-\title{Pdiff - Single Group}
+\title{Single group}
 \usage{
 jamovipdiffone(
   switch = "from_raw",
@@ -60,5 +60,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Pdiff - Single Group
+Single group
 }

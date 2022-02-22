@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovirmetamean.h.R
 \name{jamovirmetamean}
 \alias{jamovirmetamean}
-\title{Magnitude/Quantity - Meta-analysis}
+\title{Means}
 \usage{
 jamovirmetamean(
   data,
@@ -61,5 +61,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$raw_data)}
 }
 \description{
-Magnitude/Quantity - Meta-analysis
+Means
 }

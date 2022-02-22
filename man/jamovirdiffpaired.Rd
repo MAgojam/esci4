@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovirdiffpaired.h.R
 \name{jamovirdiffpaired}
 \alias{jamovirdiffpaired}
-\title{rdiff - Paired}
+\title{Paired}
 \usage{
 jamovirdiffpaired(data, dep, group, alt = "notequal", varEq = TRUE)
 }
@@ -24,5 +24,5 @@ A results object containing:
 }
 }
 \description{
-rdiff - Paired
+Paired
 }

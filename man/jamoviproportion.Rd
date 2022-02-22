@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamoviproportion.h.R
 \name{jamoviproportion}
 \alias{jamoviproportion}
-\title{Count/Proportion}
+\title{Proportion}
 \usage{
 jamoviproportion(
   switch = "from_raw",
@@ -56,5 +56,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Count/Proportion
+Proportion
 }

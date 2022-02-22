@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovipdiffpaired.h.R
 \name{jamovipdiffpaired}
 \alias{jamovipdiffpaired}
-\title{Pdiff - Paired}
+\title{Paired}
 \usage{
 jamovipdiffpaired(
   switch = "from_raw",
@@ -67,5 +67,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Pdiff - Paired
+Paired
 }

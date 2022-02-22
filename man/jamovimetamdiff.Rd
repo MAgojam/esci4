@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimetamdiff.h.R
 \name{jamovimetamdiff}
 \alias{jamovimetamdiff}
-\title{Mdiff - Meta-analysis}
+\title{Difference in means}
 \usage{
 jamovimetamdiff(
   data,
@@ -67,5 +67,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$raw_data)}
 }
 \description{
-Mdiff - Meta-analysis
+Difference in means
 }

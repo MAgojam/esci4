@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovipdiffindcontrast.h.R
 \name{jamovipdiffindcontrast}
 \alias{jamovipdiffindcontrast}
-\title{Pdiff - Independent Groups Contrast}
+\title{Independent groups contrast}
 \usage{
 jamovipdiffindcontrast(
   data,
@@ -54,5 +54,5 @@ A results object containing:
 }
 }
 \description{
-Pdiff - Independent Groups Contrast
+Independent groups contrast
 }

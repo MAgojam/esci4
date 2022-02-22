@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovipdifftwo.h.R
 \name{jamovipdifftwo}
 \alias{jamovipdifftwo}
-\title{Pdiff - Two Groups}
+\title{Two groups}
 \usage{
 jamovipdifftwo(
   switch = "from_raw",
@@ -76,5 +76,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Pdiff - Two Groups
+Two groups
 }

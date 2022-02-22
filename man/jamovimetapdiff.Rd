@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimetapdiff.h.R
 \name{jamovimetapdiff}
 \alias{jamovimetapdiff}
-\title{Pdiff - Meta-analysis}
+\title{Difference in proportions}
 \usage{
 jamovimetapdiff(data, dep, group, alt = "notequal", varEq = TRUE)
 }
@@ -24,5 +24,5 @@ A results object containing:
 }
 }
 \description{
-Pdiff - Meta-analysis
+Difference in proportions
 }

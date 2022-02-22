@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovirmetar.h.R
 \name{jamovirmetar}
 \alias{jamovirmetar}
-\title{Linear Correlation - Meta-analysis}
+\title{Correlations}
 \usage{
 jamovirmetar(
   data,
@@ -52,5 +52,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$raw_data)}
 }
 \description{
-Linear Correlation - Meta-analysis
+Correlations
 }

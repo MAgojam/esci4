@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiffone.h.R
 \name{jamovimdiffone}
 \alias{jamovimdiffone}
-\title{Mdiff - Single Group}
+\title{Single group}
 \usage{
 jamovimdiffone(
   switch = "from_raw",
@@ -55,5 +55,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Mdiff - Single Group
+Single group
 }

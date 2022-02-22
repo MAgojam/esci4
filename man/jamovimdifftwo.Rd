@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdifftwo.h.R
 \name{jamovimdifftwo}
 \alias{jamovimdifftwo}
-\title{Mdiff - Two Groups}
+\title{Two groups}
 \usage{
 jamovimdifftwo(
   switch = "from_raw",
@@ -82,5 +82,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Mdiff - Two Groups
+Two groups
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiffindcontrast.h.R
 \name{jamovimdiffindcontrast}
 \alias{jamovimdiffindcontrast}
-\title{Mdiff - Independent Groups Contrast}
+\title{Independent groups contrast}
 \usage{
 jamovimdiffindcontrast(
   switch = "from_raw",
@@ -71,5 +71,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Mdiff - Independent Groups Contrast
+Independent groups contrast
 }

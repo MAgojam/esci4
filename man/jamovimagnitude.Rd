@@ -2,18 +2,50 @@
 % Please edit documentation in R/jamovimagnitude.h.R
 \name{jamovimagnitude}
 \alias{jamovimagnitude}
-\title{Magnitude/Quantity}
+\title{Magnitude}
 \usage{
 jamovimagnitude(
   switch = "from_raw",
   data,
   outcome_variable,
-  mean = " ",
-  sd = " ",
-  n = " ",
+  mean = "",
+  sd = "",
+  n = "",
   outcome_variable_name = "Outcome variable",
   conf_level = 95,
-  show_details = FALSE
+  show_details = FALSE,
+  es_plot_width = "450",
+  es_plot_height = "450",
+  ymin = "auto",
+  ymax = "auto",
+  breaks = "auto",
+  ylab = "auto",
+  xlab = "auto",
+  axis.text.y = "10",
+  axis.title.y = "12",
+  axis.text.x = "10",
+  axis.title.x = "12",
+  error_layout = "halfeye",
+  error_scale = "0.25",
+  error_nudge = "0.4",
+  data_layout = "random",
+  data_spread = "0.25",
+  shape_raw = "circle filled",
+  shape_summary = "circle filled",
+  color_raw = "gray",
+  color_summary = "black",
+  fill_raw = "white",
+  fill_summary = "black",
+  size_raw = "2",
+  size_summary = "3",
+  alpha_raw = "1",
+  alpha_summary = "1",
+  linetype_summary = "solid",
+  color_interval = "black",
+  size_interval = "1",
+  alpha_interval = "1",
+  alpha_error = "1",
+  fill_error = "gray"
 )
 }
 \arguments{
@@ -34,6 +66,70 @@ jamovimagnitude(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{es_plot_width}{.}
+
+\item{es_plot_height}{.}
+
+\item{ymin}{.}
+
+\item{ymax}{.}
+
+\item{breaks}{.}
+
+\item{ylab}{.}
+
+\item{xlab}{.}
+
+\item{axis.text.y}{.}
+
+\item{axis.title.y}{.}
+
+\item{axis.text.x}{.}
+
+\item{axis.title.x}{.}
+
+\item{error_layout}{.}
+
+\item{error_scale}{.}
+
+\item{error_nudge}{.}
+
+\item{data_layout}{.}
+
+\item{data_spread}{.}
+
+\item{shape_raw}{.}
+
+\item{shape_summary}{.}
+
+\item{color_raw}{.}
+
+\item{color_summary}{.}
+
+\item{fill_raw}{.}
+
+\item{fill_summary}{.}
+
+\item{size_raw}{.}
+
+\item{size_summary}{.}
+
+\item{alpha_raw}{.}
+
+\item{alpha_summary}{.}
+
+\item{linetype_summary}{.}
+
+\item{color_interval}{.}
+
+\item{size_interval}{.}
+
+\item{alpha_interval}{.}
+
+\item{alpha_error}{.}
+
+\item{fill_error}{.}
 }
 \value{
 A results object containing:
@@ -41,6 +137,8 @@ A results object containing:
 \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+\code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -50,5 +148,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Magnitude/Quantity
+Magnitude
 }

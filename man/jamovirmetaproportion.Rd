@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovirmetaproportion.h.R
 \name{jamovirmetaproportion}
 \alias{jamovirmetaproportion}
-\title{Count/Proportion - Meta-analysis}
+\title{Proportions}
 \usage{
 jamovirmetaproportion(
   data,
@@ -52,5 +52,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$raw_data)}
 }
 \description{
-Count/Proportion - Meta-analysis
+Proportions
 }
