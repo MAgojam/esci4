@@ -53,7 +53,6 @@ plot_magnitude <- function(
   # Data prep --------------------------------------
   conf_level <- estimate$properties$conf_level
 
-
   # Raw data
   plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
   if (plot_raw) {
@@ -64,125 +63,35 @@ plot_magnitude <- function(
     nudge <- 0
   }
 
+
   # Group data
   if (effect_size == "mean") {
     gdata <- estimate$es_mean
-   } else {
+  } else {
     gdata <- estimate$es_median
   }
   gdata$type <- as.factor("summary")
-
-  multiple_groups <- (nrow(gdata) > 1)
+  gdata$x_value <- gdata$outcome_variable_name
+  gdata$y_value <- gdata$effect_size
 
 
   # Build plot ------------------------------------
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
 
+  # Group data
+  error_glue <-esci_plot_group_data(effect_size)
+  error_call <- esci_plot_error_layouts(error_layout)
+  error_expression <- parse(text = glue::glue(error_glue))
+  myplot <- try(eval(error_expression))
+
   # Raw data
   if (plot_raw) {
-      raw_glue <-
-        "
-    myplot <- myplot + ggplot2::geom_point(
-      data = rdata,
-      ggplot2::aes(
-        x = grouping_variable,
-        y = outcome_variable,
-        color = type,
-        shape = type,
-        fill = type,
-        alpha = type,
-        size = type
-      ),
-      position = {raw_call$call}(
-        groupOnX = TRUE,
-        {raw_call$extras}
-      )
-    )
-    "
-      raw_call <- esci_plot_data_layouts(data_layout, data_spread)
-      raw_expression <- parse(text = glue::glue(raw_glue))
-      myplot <- try(eval(raw_expression))
-
-  }
-
-
-  # Group data
-  if (effect_size == "mean") {
-
-    error_glue <-
-    "
-      myplot <- myplot + {error_call}(
-      data = gdata,
-      orientation = 'vertical',
-      ggplot2::aes(
-        x = outcome_variable_name,
-        y = effect_size,
-        color = type,
-        shape = type,
-        size = type,
-        point_color = type,
-        point_fill = type,
-        point_size = type,
-        point_alpha = type,
-        linetype = type,
-        interval_color = type,
-        interval_size = type,
-        interval_alpha = type,
-        slab_fill = type,
-        slab_alpha = type,
-        slab_linetype = type,
-        dist = distributional::dist_student_t(
-          df = df,
-          mu = effect_size,
-          sigma = SE
-        )
-      ),
-      scale = {error_scale},
-      .width = c({conf_level}),
-      normalize = '{error_normalize}',
-      position = ggplot2::position_nudge(x = {nudge})
-    )
-    "
-    error_call <- esci_plot_error_layouts(error_layout)
-    error_expression <- parse(text = glue::glue(error_glue))
-    myplot <- try(eval(error_expression))
-  } else {
-
-    myplot <- myplot + ggplot2::geom_segment(
-      data = gdata,
-      ggplot2::aes(
-        x = outcome_variable_name,
-        xend = outcome_variable_name,
-        y = LL,
-        yend = UL,
-        alpha = type,
-        size = type,
-        linetype = type
-      ),
-      position = ggplot2::position_nudge(x = nudge)
-    )
-
-    myplot <- myplot + ggplot2::geom_point(
-      data = gdata,
-      ggplot2::aes(
-        x = outcome_variable_name,
-        y = effect_size,
-        color = type,
-        shape = type,
-        fill = type,
-        alpha = type,
-        size = type
-      ),
-      position = ggplot2::position_nudge(x = nudge)
-    )
-
+    raw_expression <- esci_plot_raw_data(myplot, data_layout, data_spread)
+    myplot <- try(eval(raw_expression))
   }
 
   # Customize plot -------------------------------
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
-
   # Default aesthetics
   myplot <- esci_plot_simple_aesthetics(myplot)
 
@@ -190,15 +99,13 @@ plot_magnitude <- function(
   vnames <- paste(estimate$es_mean$outcome_variable_name, collapse = ", ")
   ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{effect_size} and {conf_level*100}% confidence interval")
   xlab <- NULL
-
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
 
   # Attach warnings and return    -------------------
-  myplot$warnings <- warnings
+  myplot$warnings <- c(myplot$warnings, warnings)
 
   return(myplot)
-
 
 }
 
@@ -228,63 +135,32 @@ plot_correlation <- function(
     error_scale = 0.3
   }
 
-
   # Data prep --------------------------------------
   conf_level <- estimate$properties$conf_level
+  effect_size <- "r"
+  nudge <- 0
 
   gdata <- estimate$es_r
   gdata$type <- as.factor("summary")
+  gdata$x_value <- gdata$effect
+  gdata$y_value <- gdata$effect_size
 
 
+  # Build plot ------------------------------------
   # Build plot ------------------------------------
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
 
-  error_glue <-
-    "
-     myplot <- myplot + {error_call}(
-      data = gdata,
-      ggplot2::aes(
-        y = effect_size,
-        x = paste(x_variable_name, '\nvs.\', y_variable_name),
-        color = type,
-        shape = type,
-        size = type,
-        point_color = type,
-        point_fill = type,
-        point_size = type,
-        point_alpha = type,
-        linetype = type,
-        interval_color = type,
-        interval_size = type,
-        interval_alpha = type,
-        slab_fill = type,
-        slab_alpha = type,
-        slab_linetype = type,
-        dist = distributional::dist_transformed(
-          distributional::dist_normal(
-            mu = esci_trans_r_to_z(effect_size),
-            sigma = esci_trans_rse_to_sez(n)
-          ),
-          transform = esci_trans_z_to_r,
-          inverse = esci_trans_identity
-        )
-      ),
-      scale = {error_scale},
-      .width = c({conf_level}),
-      normalize = '{error_normalize}'
-    )
-    "
+  # Group data
+  error_glue <- esci_plot_group_data(effect_size = effect_size)
   error_call <- esci_plot_error_layouts(error_layout)
   error_expression <- parse(text = glue::glue(error_glue))
   myplot <- try(eval(error_expression))
 
 
-  # Customize plot ------------------------------
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
 
-  # Defualt look
+  # Customize plot ------------------------------
+  # Default look
   myplot <- esci_plot_simple_aesthetics(myplot)
 
   #Labels
@@ -295,9 +171,8 @@ plot_correlation <- function(
   # Limits
   myplot <- myplot + ylim(-1, 1)
 
-
   # Attach warnings and return    -------------------
-  myplot$warnings <- warnings
+  myplot$warnings <- c(myplot$warnings, warnings)
 
   return(myplot)
 
@@ -332,65 +207,41 @@ plot_proportion <- function(
 
   # Data prep --------------------------------------
   conf_level <- estimate$properties$conf_level
+  nudge <- 0
+  effect_size <- "P"
 
   gdata <- estimate$overview
   gdata$type <- as.factor("summary")
+  gdata$x_value <- gdata$outcome_variable_level
+  gdata$y_value <- gdata$P
+  gdata$LL <- gdata$P_LL
+  gdata$UL <- gdata$P_UL
 
 
   # Build plot ------------------------------------
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
 
-  error_glue <-
-    "
-     myplot <- myplot + {error_call}(
-      data = gdata,
-      ggplot2::aes(
-        y = P,
-        x = outcome_variable_level,
-        color = type,
-        shape = type,
-        size = type,
-        point_color = type,
-        point_fill = type,
-        point_size = type,
-        point_alpha = type,
-        linetype = type,
-        interval_color = type,
-        interval_size = type,
-        interval_alpha = type,
-        slab_fill = type,
-        slab_alpha = type,
-        slab_linetype = type,
-        dist = distributional::dist_transformed(
-          distributional::dist_normal(
-            mu = P,
-            sigma = P_SE
-          ),
-          transform = esci_trans_P,
-          inverse = esci_trans_identity
-        )
-      ),
-      scale = {error_scale},
-      .width = c({conf_level}),
-      normalize = '{error_normalize}'
-    )
-    "
-
+  # Group data
+  error_glue <- esci_plot_group_data(effect_size = effect_size)
   error_call <- esci_plot_error_layouts(error_layout)
   error_expression <- parse(text = glue::glue(error_glue))
   myplot <- try(eval(error_expression))
 
-  # Customize ----------------------------
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
 
+  # Customize ----------------------------
   # Default look
   myplot <- esci_plot_simple_aesthetics(myplot)
 
+  myplot <- myplot + ggplot2::discrete_scale(
+    c("size"),
+    "point_size_d",
+    function(n) return(c("raw" = 1, "summary" = 1))
+  )
+
   # Labels
   ylab <- glue::glue("Proportion and {conf_level*100}% confidence interval")
-  xlab <- NULL
+  xlab <- gdata$outcome_variable_name[[1]]
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
   # Limits
@@ -400,69 +251,6 @@ plot_proportion <- function(
 
 }
 
-
-
-esci_plot_simple_aesthetics <- function(myplot) {
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
-
-
-  # Customize plot -------------------------------
-  # Points
-  myplot <- myplot + ggplot2::scale_shape_manual(
-    values = c("raw" = "circle filled", "summary" = "circle filled")
-  )
-  myplot <- myplot + ggplot2::scale_color_manual(
-    values = c("raw" = "black", "summary" = "black"),
-    aesthetics = c("color", "point_color")
-  )
-  myplot <- myplot + ggplot2::scale_fill_manual(
-    values = c("raw" = "NA", "summary" = "gray"),
-    aesthetics = c("fill", "point_fill")
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("size", "point_size"),
-    "point_size_d",
-    function(n) return(c("raw" = 1, "summary" = 3))
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("alpha", "point_alpha"),
-    "point_alpha_d",
-    function(n) return(c("raw" = 0.8, "summary" = 1))
-  )
-
-  # Error bars
-  myplot <- myplot + ggplot2::scale_linetype_manual(
-    values = c("summary" = "solid")
-  )
-  myplot <- myplot + ggplot2::scale_color_manual(
-    values = c("summary" = "black"),
-    aesthetics = "interval_color"
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_alpha",
-    "interval_alpha_d",
-    function(n) return(c("summary" = 1))
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_size",
-    "interval_size_d",
-    function(n) return(c("summary" = 3))
-  )
-
-  # Slab
-  myplot <- myplot + ggplot2::scale_fill_manual(
-    values = c("summary" = "gray"),
-    aesthetics = "slab_fill"
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "slab_alpha",
-    "slab_alpha_d",
-    function(n) return(c("summary" = 1))
-  )
-
-  return(myplot)
-}
 
 
 esci_trans_r_to_z <- function(r) {

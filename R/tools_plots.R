@@ -49,3 +49,150 @@ esci_plot_data_layouts <- function(data_layout = "none", data_spread){
   # Return appropriate ggdist geom
   return(res)
 }
+
+
+esci_plot_raw_data <- function(myplot, data_layout = "none", data_spread) {
+
+  raw_glue <-
+    "
+    myplot <- myplot + ggplot2::geom_point(
+      data = rdata,
+      ggplot2::aes(
+        x = grouping_variable,
+        y = outcome_variable,
+        color = type,
+        shape = type,
+        fill = type,
+        alpha = type,
+        size = type
+      ),
+      position = {raw_call$call}(
+        groupOnX = TRUE,
+        {raw_call$extras}
+      )
+    )
+    "
+
+  raw_call <- esci_plot_data_layouts(data_layout, data_spread)
+  raw_expression <- parse(text = glue::glue(raw_glue))
+  return(raw_expression)
+}
+
+esci_plot_group_data <- function(effect_size) {
+
+  error_glue <- NULL
+
+  if (effect_size == "mean" | effect_size == "mean_difference") {
+
+    error_glue <-
+      "
+      myplot <- myplot + {error_call}(
+        data = gdata,
+        orientation = 'vertical',
+        ggplot2::aes(
+          x = x_value,
+          y = y_value,
+          color = type,
+          shape = type,
+          size = type,
+          point_color = type,
+          point_fill = type,
+          point_size = type,
+          point_alpha = type,
+          linetype = type,
+          interval_color = type,
+          interval_size = type,
+          interval_alpha = type,
+          slab_fill = type,
+          slab_alpha = type,
+          slab_linetype = type,
+          dist = distributional::dist_student_t(
+            df = df,
+            mu = y_value,
+            sigma = SE
+          )
+        ),
+      scale = {error_scale},
+      .width = c({conf_level}),
+      normalize = '{error_normalize}',
+      position = ggplot2::position_nudge(nudge)
+      )
+    "
+  }
+
+  if (effect_size == "r") {
+    error_glue <-
+      "
+     myplot <- myplot + {error_call}(
+      data = gdata,
+      ggplot2::aes(
+        x = x_value,
+        y = y_value,
+        color = type,
+        shape = type,
+        size = type,
+        point_color = type,
+        point_fill = type,
+        point_size = type,
+        point_alpha = type,
+        linetype = type,
+        interval_color = type,
+        interval_size = type,
+        interval_alpha = type,
+        slab_fill = type,
+        slab_alpha = type,
+        slab_linetype = type,
+        dist = distributional::dist_transformed(
+          distributional::dist_normal(
+            mu = esci_trans_r_to_z(effect_size),
+            sigma = esci_trans_rse_to_sez(n)
+          ),
+          transform = esci_trans_z_to_r,
+          inverse = esci_trans_identity
+        )
+      ),
+      scale = {error_scale},
+      .width = c({conf_level}),
+      normalize = '{error_normalize}'
+    )
+    "
+  }
+
+
+  if (is.null(error_glue)) {
+    error_glue <-
+      "
+    myplot <- myplot + ggplot2::geom_segment(
+      data = gdata,
+      ggplot2::aes(
+        x = x_value,
+        xend = x_value,
+        y = LL,
+        yend = UL,
+        alpha = type,
+        size = type,
+        linetype = type
+      ),
+      position = ggplot2::position_nudge(x = nudge)
+    )
+
+    myplot <- myplot + ggplot2::geom_point(
+      data = gdata,
+      ggplot2::aes(
+        x = x_value,
+        y = y_value,
+        color = type,
+        shape = type,
+        fill = type,
+        alpha = type,
+        size = type
+      ),
+      position = ggplot2::position_nudge(x = nudge)
+    )
+
+    "
+  }
+
+
+  return(error_glue)
+}

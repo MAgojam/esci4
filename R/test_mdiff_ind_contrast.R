@@ -117,7 +117,7 @@ test_overview <- function() {
   )
 
   # Check - works with dataframe
-  estimate <- estimate_mdiff_ind_contrast(
+  estimate_two <- estimate_mdiff_ind_contrast(
     data = rattan,
     outcome_variable = motivation,
     grouping_variable = condition,

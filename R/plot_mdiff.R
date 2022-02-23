@@ -56,43 +56,23 @@ plot_mdiff <- function(
   contrast <- estimate$properties$contrast
   reference_groups <- names(contrast[which(contrast < 0)])
   comparison_groups <- names(contrast[which(contrast > 0)])
+  plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
   simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
 
 
-  # Prep raw data
-  plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
-  if (plot_raw) {
-    rdata <- estimate$raw_data
-    rdata$type <- "Unused"
-    rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
-    rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
-    rdata$type <- paste(rdata$type, "_raw", sep = "")
-    nudge <- error_nudge
-  } else {
-    nudge <- 0
-  }
+  # Raw data
+  if (plot_raw) rdata <- estimate$raw_data else rdata <- NULL
 
-
-  # Prep group data
+  # Group data
   if (effect_size == "mean") {
     gdata <- estimate$es_mean_difference
   } else {
     gdata <- estimate$es_median_difference
     gdata$df <- NA
   }
+  gdata$x_value <- gdata$effect
+  gdata$y_value <- gdata$effect_size
 
-  # Add comparison values to differnce row
-  comparison_es <- gdata[[2, "effect_size"]]
-  gdata[3, c("effect_size", "LL", "UL")] <- gdata[3, c("effect_size", "LL", "UL")]  + comparison_es
-
-  # Wrap effect in () if only 1 level
-  if(!simple_contrast) {
-    if (length(reference_groups) == 1) gdata[[2, "effect"]] <- paste("(", gdata[[2, "effect"]], ")", sep = "")
-    if (length(comparison_groups) == 1) gdata[[1, "effect"]] <- paste("(", gdata[[1, "effect"]], ")", sep = "")
-  }
-
-  # Swap comparison and reference rows for graph
-  gdata <- gdata[c(2, 1, 3), ]
 
   # If complex contrast, add overview data
   if (!simple_contrast) {
@@ -105,9 +85,107 @@ plot_mdiff <- function(
       LL = if (effect_size == "mean") estimate$overview$mean_LL else estimate$overview$median_LL,
       UL = if (effect_size == "mean") estimate$overview$mean_UL else estimate$overview$median_UL,
       SE = if (effect_size == "mean") estimate$overview$mean_SE else estimate$overview$median_SE,
-      df = estimate$overview$df
+      df = estimate$overview$df,
+      x_value = estimate$overview$grouping_variable_level,
+      y_value = if (effect_size == "mean") estimate$overview$mean else estimate$overview$median
     )
+  } else {
+    overview <- NULL
+  }
 
+  myplot <- plot_mdiff_base(
+    gdata = gdata,
+    conf_level = conf_level,
+    contrast = contrast,
+    rdata = rdata,
+    overview = overview,
+    effect_size = effect_size,
+    data_layout = data_layout,
+    data_spread = data_spread,
+    error_layout = error_layout,
+    error_scale = error_scale,
+    error_nudge = error_nudge,
+    error_normalize = error_normalize,
+    ggtheme = ggtheme
+  )
+
+  # Customize plot -------------------------------
+  # Default aesthetics
+  myplot <- esci_plot_mdiff_aesthetics(myplot)
+
+  # No legend
+  myplot <- myplot + ggplot2::theme(legend.position = "none")
+
+
+  # Labels -----------------------------
+  vnames <- estimate$es_mean_difference$outcome_variable_name[[1]]
+  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{effect_size} and {conf_level*100}% confidence interval")
+  xlab <- estimate$es_mean_difference$grouping_variable_name[[1]]
+
+
+  myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
+
+
+  # Attach warnings and return    -------------------
+  myplot$warnings <- c(myplot$warnings, warnings)
+
+  return(myplot)
+
+}
+
+plot_mdiff_base <- function(
+  gdata,
+  conf_level,
+  contrast,
+  rdata = NULL,
+  overview = NULL,
+  effect_size = c("mean", "median", "r", "P"),
+  data_layout = c("random", "swarm", "none"),
+  data_spread = 0.25,
+  error_layout = c("halfeye", "eye", "gradient", "none"),
+  error_scale = 0.3,
+  error_nudge = 0.35,
+  error_normalize = c("groups", "all", "panels"),
+  ggtheme = NULL
+) {
+
+  # Input checks ---------------------------------------------------------------
+  warnings <- NULL
+
+  # Data prep --------------------------------------
+  # Initialization
+  reference_groups <- names(contrast[which(contrast < 0)])
+  comparison_groups <- names(contrast[which(contrast > 0)])
+  simple_contrast <- is.null(overview)
+
+  # Prep raw data
+  plot_raw <- !is.null(rdata)
+  if (plot_raw) {
+    rdata$type <- "Unused"
+    rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
+    rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
+    rdata$type <- paste(rdata$type, "_raw", sep = "")
+    nudge <- error_nudge
+  } else {
+    nudge <- 0
+  }
+
+  # Add comparison values to difference row
+  comparison_es <- gdata[[2, "y_value"]]
+  gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + comparison_es
+
+  # Wrap effect in () if only 1 level
+  if(!simple_contrast) {
+    if (length(reference_groups) == 1) gdata[[2, "x_value"]] <- paste("(", gdata[[2, "x_value"]], ")", sep = "")
+    if (length(comparison_groups) == 1) gdata[[1, "x_value"]] <- paste("(", gdata[[1, "x_value"]], ")", sep = "")
+  }
+
+  # Swap comparison and reference rows for graph
+  gdata <- gdata[c(2, 1, 3), ]
+
+  # If complex contrast, add overview data
+  if (!simple_contrast) {
+    overview$type <- "Unused"
     overview[overview$effect %in% reference_groups, ]$type <- "Reference"
     overview[overview$effect %in% comparison_groups, ]$type <- "Comparison"
 
@@ -115,10 +193,10 @@ plot_mdiff <- function(
       overview,
       gdata
     )
-
-    gdata$effect <- factor(gdata$effect, levels = gdata$effect)
-
   }
+
+  # Set plot order
+  gdata$x_value <- factor(gdata$x_value, levels = gdata$x_value)
 
   # Update types for aesthetic control
   gdata$type <- paste(gdata$type, "_summary", sep = "")
@@ -129,113 +207,27 @@ plot_mdiff <- function(
   myplot <- ggplot2::ggplot() + ggtheme
 
   # Group data
-  if (effect_size == "mean") {
-
-    error_glue <-
-      "
-      myplot <- myplot + {error_call}(
-      data = gdata,
-      orientation = 'vertical',
-      ggplot2::aes(
-        x = effect,
-        y = effect_size,
-        color = type,
-        shape = type,
-        size = type,
-        point_color = type,
-        point_fill = type,
-        point_size = type,
-        point_alpha = type,
-        linetype = type,
-        interval_color = type,
-        interval_size = type,
-        interval_alpha = type,
-        slab_fill = type,
-        slab_alpha = type,
-        slab_linetype = type,
-        dist = distributional::dist_student_t(
-          df = df,
-          mu = effect_size,
-          sigma = SE
-        )
-      ),
-      scale = {error_scale},
-      .width = c({conf_level}),
-      normalize = '{error_normalize}',
-      position = ggplot2::position_nudge(nudge)
-    )
-    "
-    error_call <- esci_plot_error_layouts(error_layout)
-    error_expression <- parse(text = glue::glue(error_glue))
-    myplot <- try(eval(error_expression))
-  } else {
-
-    myplot <- myplot + ggplot2::geom_segment(
-      data = gdata,
-      ggplot2::aes(
-        x = effect,
-        xend = effect,
-        y = LL,
-        yend = UL,
-        alpha = type,
-        size = type,
-        linetype = type
-      ),
-      position = ggplot2::position_nudge(x = nudge)
-    )
-
-    myplot <- myplot + ggplot2::geom_point(
-      data = gdata,
-      ggplot2::aes(
-        x = effect,
-        y = effect_size,
-        color = type,
-        shape = type,
-        fill = type,
-        alpha = type,
-        size = type
-      ),
-      position = ggplot2::position_nudge(x = nudge)
-    )
-
-  }
-
+  error_glue <-esci_plot_group_data(effect_size)
+  error_call <- esci_plot_error_layouts(error_layout)
+  error_expression <- parse(text = glue::glue(error_glue))
+  myplot <- try(eval(error_expression))
 
   # Raw data
   if (plot_raw) {
-      raw_glue <-
-        "
-    myplot <- myplot + ggplot2::geom_point(
-      data = rdata,
-      ggplot2::aes(
-        x = grouping_variable,
-        y = outcome_variable,
-        color = type,
-        shape = type,
-        fill = type,
-        alpha = type,
-        size = type
-      ),
-      position = {raw_call$call}(
-        groupOnX = TRUE,
-        {raw_call$extras}
-      )
-    )
-    "
-      raw_call <- esci_plot_data_layouts(data_layout, data_spread)
-      raw_expression <- parse(text = glue::glue(raw_glue))
-      myplot <- try(eval(raw_expression))
-
+    raw_expression <- esci_plot_raw_data(myplot, data_layout, data_spread)
+    myplot <- try(eval(raw_expression))
   }
 
+  # Attach warnings and return    -------------------
+  myplot$warnings <- warnings
+
+  return(myplot)
 
 
-
-  # Customize plot -------------------------------
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
+}
 
 
+esci_plot_mdiff_aesthetics <- function(myplot) {
   # Customize plot -------------------------------
   # Points
   myplot <- myplot + ggplot2::scale_shape_manual(
@@ -365,21 +357,6 @@ plot_mdiff <- function(
     ))
   )
 
-
-  # Labels -----------------------------
-  vnames <- estimate$es_mean_difference$outcome_variable_name[[1]]
-  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{effect_size} and {conf_level*100}% confidence interval")
-  xlab <- estimate$es_mean_difference$grouping_variable_name[[1]]
-
-  myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
-
-
-  # Attach warnings and return    -------------------
-  myplot$warnings <- warnings
-
   return(myplot)
 
-
 }
-
-
