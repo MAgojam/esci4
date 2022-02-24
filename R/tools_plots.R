@@ -58,8 +58,8 @@ esci_plot_raw_data <- function(myplot, data_layout = "none", data_spread) {
     myplot <- myplot + ggplot2::geom_point(
       data = rdata,
       ggplot2::aes(
-        x = grouping_variable,
-        y = outcome_variable,
+        x = x_value,
+        y = y_value,
         color = type,
         shape = type,
         fill = type,

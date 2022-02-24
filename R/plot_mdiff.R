@@ -70,8 +70,9 @@ plot_mdiff <- function(
     gdata <- estimate$es_median_difference
     gdata$df <- NA
   }
-  gdata$x_value <- gdata$effect
+  gdata$x_label <- gdata$effect
   gdata$y_value <- gdata$effect_size
+  gdata$x_label[[3]] <- gsub(" - ", "\n-\n", gdata$x_label[[3]])
 
 
   # If complex contrast, add overview data
@@ -86,7 +87,7 @@ plot_mdiff <- function(
       UL = if (effect_size == "mean") estimate$overview$mean_UL else estimate$overview$median_UL,
       SE = if (effect_size == "mean") estimate$overview$mean_SE else estimate$overview$median_SE,
       df = estimate$overview$df,
-      x_value = estimate$overview$grouping_variable_level,
+      x_label = estimate$overview$grouping_variable_level,
       y_value = if (effect_size == "mean") estimate$overview$mean else estimate$overview$median
     )
   } else {
@@ -112,6 +113,15 @@ plot_mdiff <- function(
   # Customize plot -------------------------------
   # Default aesthetics
   myplot <- esci_plot_mdiff_aesthetics(myplot)
+
+  if (effect_size == "median")  {
+    myplot <- myplot + ggplot2::discrete_scale(
+      "interval_size",
+      "interval_size_d",
+      function(n) return(c("summary" = 1))
+    )
+  }
+
 
   # No legend
   myplot <- myplot + ggplot2::theme(legend.position = "none")
@@ -152,39 +162,23 @@ plot_mdiff_base <- function(
   # Input checks ---------------------------------------------------------------
   warnings <- NULL
 
-  # Data prep --------------------------------------
+
+    # Data prep --------------------------------------
   # Initialization
   reference_groups <- names(contrast[which(contrast < 0)])
   comparison_groups <- names(contrast[which(contrast > 0)])
   simple_contrast <- is.null(overview)
   one_group <- is.na(gdata$SE[[2]])
-
-  # Prep raw data ------------------
   plot_raw <- !is.null(rdata)
-  if (plot_raw) {
-    rdata$type <- "Unused"
-    if (!one_group) {
-      rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
-    }
-    rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
-    rdata$type <- paste(rdata$type, "_raw", sep = "")
-    nudge <- error_nudge
-  } else {
-    nudge <- 0
-  }
+  nudge <- 0
+  x_nudge <- if (plot_raw) error_nudge/2 else 0
+  x_end <- 3
 
   # Group data --------------------------------
   # Add comparison values to difference row
   comparison_es <- gdata[[2, "y_value"]]
   gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + comparison_es
 
-  # Wrap effect in () if only 1 level
-  if(!simple_contrast) {
-    if (length(reference_groups) == 1) gdata[[2, "x_value"]] <- paste("(", gdata[[2, "x_value"]], ")", sep = "")
-    if (length(comparison_groups) == 1) gdata[[1, "x_value"]] <- paste("(", gdata[[1, "x_value"]], ")", sep = "")
-  }
-
-  # Swap comparison and reference rows for graph
   gdata <- gdata[c(2, 1, 3), ]
 
   # Handle comparisons to a specified reference value
@@ -194,23 +188,49 @@ plot_mdiff_base <- function(
   }
 
   # If complex contrast, add overview data -----------------
+  gdata_only <- gdata
   if (!simple_contrast) {
     overview$type <- "Unused"
     overview[overview$effect %in% reference_groups, ]$type <- "Reference"
     overview[overview$effect %in% comparison_groups, ]$type <- "Comparison"
-
+    orows <- nrow(overview)
+    overview$x_breaks <- seq(from = 1, to = orows, by = 1)
+    overview$x_values <- overview$x_breaks + x_nudge
+    gdata$x_breaks <- seq(from = orows + 2, to = orows + 4, by = 1)
+    gdata$x_value <- gdata$x_breaks + x_nudge
     gdata <- rbind(
       overview,
       gdata
     )
+    x_end <- 4 + orows
+  } else {
+    gdata$x_breaks <- c(1, 2, 3)
+    gdata$x_value <- gdata$x_breaks + x_nudge
   }
-
-  # Set plot order
-  gdata$x_value <- factor(gdata$x_value, levels = gdata$x_value)
 
   # Update types for aesthetic control
   gdata$type <- paste(gdata$type, "_summary", sep = "")
 
+
+  # Prep raw data ------------------
+  if (plot_raw) {
+    # Types
+    rdata$type <- "Unused"
+    if (!one_group) {
+      rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
+    }
+    rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
+    rdata$type <- paste(rdata$type, "_raw", sep = "")
+
+    # x_value
+    if (simple_contrast) {
+      rdata$x_value <- gdata[match(rdata$grouping_variable, gdata$effect), "x_value"] - x_nudge
+    } else {
+      rdata$x_value <- overview[match(rdata$grouping_variable, overview$effect), "x_value"] - x_nudge
+    }
+
+    rdata$y_value <- rdata$outcome_variable
+  }
 
   # Build plot ------------------------------------
   # Base plot
@@ -228,145 +248,13 @@ plot_mdiff_base <- function(
     myplot <- try(eval(raw_expression))
   }
 
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    breaks = gdata$xbreaks,
+    labels = gdata$x_labels
+  )
+
   # Attach warnings and return    -------------------
   myplot$warnings <- warnings
 
   return(myplot)
-
-
-}
-
-
-esci_plot_mdiff_aesthetics <- function(myplot) {
-  # Customize plot -------------------------------
-  # Points
-  myplot <- myplot + ggplot2::scale_shape_manual(
-    values = c(
-      "Reference_raw" = "circle filled",
-      "Comparison_raw" = "square filled",
-      "Difference_raw" = "triangle filled",
-      "Unused_raw" = "diamond filled",
-      "Reference_summary" = "square filled",
-      "Comparison_summary" = "diamond filled",
-      "Difference_summary" = "triangle filled",
-      "Unused_summary" = "circle filled"
-    )
-  )
-  myplot <- myplot + ggplot2::scale_color_manual(
-    values = c(
-      "Reference_raw" = "black",
-      "Comparison_raw" = "black",
-      "Difference_raw" = "black",
-      "Unused_raw" = "black",
-      "Reference_summary" = "black",
-      "Comparison_summary" = "black",
-      "Difference_summary" = "black",
-      "Unused_summary" = "gray80"
-    ),
-    aesthetics = c("color", "point_color")
-  )
-  myplot <- myplot + ggplot2::scale_fill_manual(
-    values = c(
-      "Reference_raw" = "#E69F00",
-      "Comparison_raw" = "#0072B2",
-      "Difference_raw" = "#000000",
-      "Unused_raw" = "gray80",
-      "Reference_summary" = "#E69F00",
-      "Comparison_summary" = "#0072B2",
-      "Difference_summary" = "#000000",
-      "Unused_summary" = "gray80"
-    ),
-    aesthetics = c("fill", "point_fill")
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("size", "point_size"),
-    "point_size_d",
-    function(n) return(c(
-      "Reference_raw" = 2,
-      "Comparison_raw" = 2,
-      "Difference_raw" = 2,
-      "Unused_raw" = 1,
-      "Reference_summary" = 3,
-      "Comparison_summary" = 3,
-      "Difference_summary" = 3,
-      "Unused_summary" = 3
-    ))
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("alpha", "point_alpha"),
-    "point_alpha_d",
-    function(n) return(c(
-      "Reference_raw" = .8,
-      "Comparison_raw" = .8,
-      "Difference_raw" = .8,
-      "Unused_raw" = .5,
-      "Reference_summary" = 1,
-      "Comparison_summary" = 1,
-      "Difference_summary" = 1,
-      "Unused_summary" = 1
-    ))
-  )
-
-  # Error bars
-  myplot <- myplot + ggplot2::scale_linetype_manual(
-    values = c(
-      "Reference_summary" = "solid",
-      "Comparison_summary" = "solid",
-      "Difference_summary" = "solid",
-      "Unused_summary" = "dotted"
-    )
-  )
-  myplot <- myplot + ggplot2::scale_color_manual(
-    values = c(
-      "Reference_summary" = "black",
-      "Comparison_summary" = "black",
-      "Difference_summary" = "black",
-      "Unused_summary" = "gray"
-    ),
-    aesthetics = "interval_color"
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_alpha",
-    "interval_alpha_d",
-    function(n) return(c(
-      "Reference_summary" = 1,
-      "Comparison_summary" = 1,
-      "Difference_summary" = 1,
-      "Unused_summary" = 1
-    ))
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_size",
-    "interval_size_d",
-    function(n) return(c(
-      "Reference_summary" = 2,
-      "Comparison_summary" = 2,
-      "Difference_summary" = 2,
-      "Unused_summary" = 1
-    ))
-  )
-
-  # Slab
-  myplot <- myplot + ggplot2::scale_fill_manual(
-    values = c(
-      "Reference_summary" = "gray",
-      "Comparison_summary" = "gray",
-      "Difference_summary" = "gray",
-      "Unused_summary" = "gray"
-    ),
-    aesthetics = "slab_fill"
-  )
-  myplot <- myplot + ggplot2::discrete_scale(
-    "slab_alpha",
-    "slab_alpha_d",
-    function(n) return(c(
-      "Reference_summary" = 1,
-      "Comparison_summary" = 1,
-      "Difference_summary" = 1,
-      "Unused_summary" = 1
-    ))
-  )
-
-  return(myplot)
-
 }

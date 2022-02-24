@@ -58,6 +58,8 @@ plot_magnitude <- function(
   if (plot_raw) {
     rdata <- estimate$raw_data
     rdata$type <- as.factor("raw")
+    rdata$x_value <- rdata$grouping_variable
+    rdata$y_value <- rdata$outcome_variable
     nudge <- error_nudge
   } else {
     nudge <- 0

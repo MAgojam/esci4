@@ -3,12 +3,6 @@ esci_plot_mdiff_aesthetics <- function(myplot) {
   # No legend
   myplot <- myplot + ggplot2::theme(legend.position = "none")
 
-  myplot <- myplot + ggplot2::discrete_scale(
-    "interval_size",
-    "interval_size_d",
-    function(n) return(c("summary" = 3))
-  )
-
   # Points
   myplot <- myplot + ggplot2::scale_shape_manual(
     values = c(

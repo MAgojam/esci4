@@ -97,7 +97,7 @@ test_mdiff_paired <- function() {
   )
 
   # Check data frame, column as strings
-  estimate_mdiff_paired(
+  mdiff_paired <- estimate_mdiff_paired(
     data = wrapper,
     comparison_measure = "wc",
     reference_measure = "bk"

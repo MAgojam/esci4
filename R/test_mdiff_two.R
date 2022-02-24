@@ -112,7 +112,7 @@ test_mdiff_two <- function() {
     "other" = rnorm(n = 65, mean = 100, sd = 15)
   )
 
-  estimate <- estimate_mdiff_two(
+  mdiff_two <- estimate_mdiff_two(
     outcome_variable = transcription_scores,
     grouping_variable = note_taking,
     assume_equal_variance = TRUE
