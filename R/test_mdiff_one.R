@@ -48,7 +48,7 @@ test_mdiff_one <- function() {
   )
 
   # Check via vector
-  estimate_mdiff_one(
+  estimate_one <- estimate_mdiff_one(
     outcome_variable = pen_transcription
   )
 

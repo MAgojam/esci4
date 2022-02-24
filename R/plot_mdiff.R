@@ -157,12 +157,15 @@ plot_mdiff_base <- function(
   reference_groups <- names(contrast[which(contrast < 0)])
   comparison_groups <- names(contrast[which(contrast > 0)])
   simple_contrast <- is.null(overview)
+  one_group <- is.na(gdata$SE[[2]])
 
-  # Prep raw data
+  # Prep raw data ------------------
   plot_raw <- !is.null(rdata)
   if (plot_raw) {
     rdata$type <- "Unused"
-    rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
+    if (!one_group) {
+      rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
+    }
     rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
     rdata$type <- paste(rdata$type, "_raw", sep = "")
     nudge <- error_nudge
@@ -170,6 +173,7 @@ plot_mdiff_base <- function(
     nudge <- 0
   }
 
+  # Group data --------------------------------
   # Add comparison values to difference row
   comparison_es <- gdata[[2, "y_value"]]
   gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + comparison_es
@@ -183,7 +187,13 @@ plot_mdiff_base <- function(
   # Swap comparison and reference rows for graph
   gdata <- gdata[c(2, 1, 3), ]
 
-  # If complex contrast, add overview data
+  # Handle comparisons to a specified reference value
+  if (one_group) {
+    gdata[is.na(gdata$df), "df"] <- 1
+    gdata[is.na(gdata$SE), "SE"] <- .Machine$double.xmin
+  }
+
+  # If complex contrast, add overview data -----------------
   if (!simple_contrast) {
     overview$type <- "Unused"
     overview[overview$effect %in% reference_groups, ]$type <- "Reference"
