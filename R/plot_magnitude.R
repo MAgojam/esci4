@@ -17,6 +17,9 @@ plot_magnitude <- function(
 
   esci_assert_type(estimate, "is.estimate")
   effect_size <- match.arg(effect_size)
+  if (effect_size == "median" & is.null(estimate$es_median)) {
+    stop("effect_size parameter is 'median' but no median-based effect size available to plot")
+  }
   data_layout <- match.arg(data_layout)
   error_layout <- match.arg(error_layout)
   error_normalize <- match.arg(error_normalize)
@@ -55,16 +58,7 @@ plot_magnitude <- function(
 
   # Raw data
   plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
-  if (plot_raw) {
-    rdata <- estimate$raw_data
-    rdata$type <- as.factor("raw")
-    rdata$x_value <- rdata$grouping_variable
-    rdata$y_value <- rdata$outcome_variable
-    nudge <- error_nudge
-  } else {
-    nudge <- 0
-  }
-
+  nudge <- if(plot_raw) error_nudge else 0
 
   # Group data
   if (effect_size == "mean") {
@@ -73,8 +67,23 @@ plot_magnitude <- function(
     gdata <- estimate$es_median
   }
   gdata$type <- as.factor("summary")
-  gdata$x_value <- gdata$outcome_variable_name
+  gdata$x_label <- gdata$outcome_variable_name
   gdata$y_value <- gdata$effect_size
+  gdata$x_value <- seq(from = 1, to = nrow(gdata), by = 1)
+  gdata$nudge <- nudge
+
+  # Raw data
+  if (plot_raw) {
+    rdata <- estimate$raw_data
+    rdata$type <- as.factor("raw")
+    rdata$x_label <- rdata$grouping_variable
+    rdata$y_value <- rdata$outcome_variable
+    rdata$x_value <- gdata[match(rdata$x_label, gdata$x_label), "x_value"]
+    rdata$nudge <- 0
+    nudge <- error_nudge
+  } else {
+    nudge <- 0
+  }
 
 
   # Build plot ------------------------------------
@@ -95,7 +104,16 @@ plot_magnitude <- function(
 
   # Customize plot -------------------------------
   # Default aesthetics
-  myplot <- esci_plot_simple_aesthetics(myplot)
+  myplot <- esci_plot_simple_aesthetics(myplot, use_ggdist = (effect_size == "mean"))
+
+  # X axis
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    breaks = gdata$x_value + (gdata$nudge*.5),
+    labels = gdata$x_label
+  )
+  myplot <- myplot + ggplot2::coord_cartesian(
+    xlim = c(min(gdata$x_value)-0.5, max(gdata$x_value)+0.5)
+  )
 
   # Labels -----------------------------
   vnames <- paste(estimate$es_mean$outcome_variable_name, collapse = ", ")
@@ -144,8 +162,10 @@ plot_correlation <- function(
 
   gdata <- estimate$es_r
   gdata$type <- as.factor("summary")
-  gdata$x_value <- gdata$effect
+  gdata$x_label <- gdata$effect
   gdata$y_value <- gdata$effect_size
+  gdata$x_value <- seq(from = 1, to = nrow(gdata), by = 1)
+  gdata$nudge <- nudge
 
 
   # Build plot ------------------------------------
@@ -160,10 +180,19 @@ plot_correlation <- function(
   myplot <- try(eval(error_expression))
 
 
-
   # Customize plot ------------------------------
   # Default look
-  myplot <- esci_plot_simple_aesthetics(myplot)
+  myplot <- esci_plot_simple_aesthetics(myplot, use_ggdist = TRUE)
+
+  # X axis
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    breaks = gdata$x_value + gdata$nudge,
+    labels = gdata$x_label,
+  )
+
+  myplot <- myplot + ggplot2::coord_cartesian(
+    xlim = c(min(gdata$x_value)-0.5, max(gdata$x_value)+0.5)
+  )
 
   #Labels
   ylab <- glue::glue("Pearson's r and {conf_level*100}% confidence interval")
@@ -214,8 +243,10 @@ plot_proportion <- function(
 
   gdata <- estimate$overview
   gdata$type <- as.factor("summary")
-  gdata$x_value <- gdata$outcome_variable_level
+  gdata$x_label <- gdata$outcome_variable_level
   gdata$y_value <- gdata$P
+  gdata$x_value <- seq(from = 1, to = nrow(gdata), by = 1)
+  gdata$nudge <- nudge
   gdata$LL <- gdata$P_LL
   gdata$UL <- gdata$P_UL
 
@@ -233,13 +264,18 @@ plot_proportion <- function(
 
   # Customize ----------------------------
   # Default look
-  myplot <- esci_plot_simple_aesthetics(myplot)
+  myplot <- esci_plot_simple_aesthetics(myplot, use_ggdist = FALSE)
 
-  myplot <- myplot + ggplot2::discrete_scale(
-    c("size"),
-    "point_size_d",
-    function(n) return(c("raw" = 1, "summary" = 1))
+  # X axis
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    breaks = gdata$x_value + gdata$nudge,
+    labels = gdata$x_label
   )
+
+  myplot <- myplot + ggplot2::coord_cartesian(
+    xlim = c(min(gdata$x_value)-0.5, max(gdata$x_value)+0.5)
+  )
+
 
   # Labels
   ylab <- glue::glue("Proportion and {conf_level*100}% confidence interval")

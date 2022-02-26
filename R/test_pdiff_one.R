@@ -1,7 +1,7 @@
 test_pdiff_one <- function() {
 
   # Esci one proportion - 8/22
-  estimate_pdiff_one(
+  pdiff_one <- estimate_pdiff_one(
     comparison_cases = 8,
     comparison_n = 22,
     reference_p = 0.10
@@ -27,7 +27,7 @@ test_pdiff_one <- function() {
     )
   )
 
-  estimate_pdiff_one(
+  pdiff_one <- estimate_pdiff_one(
     outcome_variable = dep_status,
     reference_p = 0.10,
     count_NA = FALSE

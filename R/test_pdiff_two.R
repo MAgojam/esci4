@@ -1,6 +1,6 @@
 test_pdiff_two <- function() {
 
-  estimate_pdiff_two(
+  pdiff_two <- estimate_pdiff_two(
     comparison_cases = 10,
     comparison_n = 20,
     reference_cases = 78,
@@ -8,7 +8,7 @@ test_pdiff_two <- function() {
     conf_level = 0.95
   )
 
-  estimate_pdiff_two(
+  pdiff_two <- estimate_pdiff_two(
     comparison_cases = 20,
     comparison_n = 200,
     reference_cases = 10,
@@ -57,7 +57,7 @@ test_pdiff_two <- function() {
     treat = treatment
   )
 
-  estimate_pdiff_two(
+  pdiff_two <- estimate_pdiff_two(
     outcome_variable = psych_status,
     grouping_variable = treatment
   )
@@ -68,7 +68,7 @@ test_pdiff_two <- function() {
     case_label = 2
   )
 
-  estimate_pdiff_two(
+  pdiff_two <- estimate_pdiff_two(
     outcome_variable = psych_status,
     grouping_variable = treatment,
     case_label = "Depressed"

@@ -90,7 +90,7 @@ esci_plot_group_data <- function(effect_size) {
         data = gdata,
         orientation = 'vertical',
         ggplot2::aes(
-          x = x_value,
+          x = x_value + nudge,
           y = y_value,
           color = type,
           shape = type,
@@ -114,8 +114,7 @@ esci_plot_group_data <- function(effect_size) {
         ),
       scale = {error_scale},
       .width = c({conf_level}),
-      normalize = '{error_normalize}',
-      position = ggplot2::position_nudge(nudge)
+      normalize = '{error_normalize}'
       )
     "
   }
@@ -126,7 +125,7 @@ esci_plot_group_data <- function(effect_size) {
      myplot <- myplot + {error_call}(
       data = gdata,
       ggplot2::aes(
-        x = x_value,
+        x = x_value + nudge,
         y = y_value,
         color = type,
         shape = type,
@@ -152,8 +151,7 @@ esci_plot_group_data <- function(effect_size) {
         )
       ),
       scale = {error_scale},
-      .width = c({conf_level}),
-      normalize = '{error_normalize}'
+      .width = c({conf_level})
     )
     "
   }
@@ -162,33 +160,49 @@ esci_plot_group_data <- function(effect_size) {
   if (is.null(error_glue)) {
     error_glue <-
       "
-    myplot <- myplot + ggplot2::geom_segment(
+
+    myplot <- myplot + ggplot2::geom_pointrange(
       data = gdata,
       ggplot2::aes(
-        x = x_value,
-        xend = x_value,
-        y = LL,
-        yend = UL,
-        alpha = type,
+        x = x_value + nudge,
+        y = y_value,
+        ymin = LL,
+        ymax = UL,
         size = type,
-        linetype = type
+        linetype = type,
+        shape = type,
+        colour = type,
+        fill = type,
+        alpha = type
       ),
-      position = ggplot2::position_nudge(x = nudge)
+      fatten = 3
     )
 
-    myplot <- myplot + ggplot2::geom_point(
-      data = gdata,
-      ggplot2::aes(
-        x = x_value,
-        y = y_value,
-        color = type,
-        shape = type,
-        fill = type,
-        alpha = type,
-        size = type
-      ),
-      position = ggplot2::position_nudge(x = nudge)
-    )
+    # myplot <- myplot + ggplot2::geom_segment(
+    #   data = gdata,
+    #   ggplot2::aes(
+    #     x = x_value + nudge,
+    #     xend = x_value + nudge,
+    #     y = LL,
+    #     yend = UL,
+    #     alpha = type,
+    #     size = type,
+    #     linetype = type
+    #   )
+    # )
+    #
+    # myplot <- myplot + ggplot2::geom_point(
+    #   data = gdata,
+    #   ggplot2::aes(
+    #     x = x_value + nudge,
+    #     y = y_value,
+    #     color = type,
+    #     shape = type,
+    #     fill = type,
+    #     alpha = type,
+    #     size = type
+    #   )
+    # )
 
     "
   }
