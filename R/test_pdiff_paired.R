@@ -1,6 +1,6 @@
 test_pdiff_paired <- function() {
   # From summary data -------------------
-  estimate_pdiff_paired(
+  pdiff_paired <- estimate_pdiff_paired(
     cases_consistent = 60,
     cases_inconsistent = 50,
     not_cases_consistent = 68,
