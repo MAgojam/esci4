@@ -9,7 +9,11 @@ plot_mdiff <- function(
   error_scale = 0.3,
   error_nudge = 0.35,
   error_normalize = c("groups", "all", "panels"),
+  difference_axis_units = c("raw", "sd"),
+  difference_axis_breaks = 5,
   simple_contrast_labels = TRUE,
+  ylim = c(NA, NA),
+  ybreaks = 5,
   ggtheme = NULL
 ) {
 
@@ -24,6 +28,7 @@ plot_mdiff <- function(
   data_layout <- match.arg(data_layout)
   error_layout <- match.arg(error_layout)
   error_normalize <- match.arg(error_normalize)
+  difference_axis_units <- match.arg(difference_axis_units)
   if (is.null(data_spread) | !is.numeric(data_spread) | data_spread < 0) {
     warnings <- c(
       warnings,
@@ -51,6 +56,15 @@ plot_mdiff <- function(
     )
     error_nudge <- 0.25
   }
+  if (is.null(difference_axis_breaks) | !is.numeric(difference_axis_breaks) | difference_axis_breaks < 1) {
+    warnings <- c(
+      warnings,
+      glue::glue(
+        "difference_axis_breaks = {difference_axis_breaks} but this is invalid; replaced with 5"
+      )
+    )
+    difference_axis_breaks = 5
+  }
   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
 
 
@@ -63,7 +77,13 @@ plot_mdiff <- function(
   plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
   simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
   plot_paired <- !is.null(estimate$es_r)
-
+  difference_es_name <- if (difference_axis_units == "sd")
+    estimate$es_smd_properties$effect_size_name_html
+  else
+    if (effect_size == "mean")
+      "<i>Mean</i><sub>diff</sub>"
+    else
+      "<i>Median</i><sub>diff</sub>"
 
   # Raw data
   if (plot_raw) {
@@ -129,6 +149,12 @@ plot_mdiff <- function(
     error_scale = error_scale,
     error_nudge = error_nudge,
     error_normalize = error_normalize,
+    difference_axis_units = difference_axis_units,
+    difference_axis_breaks = difference_axis_breaks,
+    difference_axis_normalizer = estimate$es_smd$denominator[[1]],
+    difference_es_name = difference_es_name,
+    ylim = ylim,
+    ybreaks = ybreaks,
     ggtheme = ggtheme
   )
 
@@ -139,9 +165,6 @@ plot_mdiff <- function(
     use_ggdist = (effect_size == "mean"),
     plot_paired = plot_paired
   )
-
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
 
 
   # Labels -----------------------------
@@ -177,6 +200,12 @@ plot_mdiff_base <- function(
   error_scale = 0.3,
   error_nudge = 0.35,
   error_normalize = c("groups", "all", "panels"),
+  difference_axis_units = c("sd", "raw"),
+  difference_axis_breaks = 5,
+  difference_axis_normalizer = 1,
+  difference_es_name = "Difference",
+  ylim = c(NA, NA),
+  ybreaks = 5,
   daxis_space = 1,
   ggtheme = NULL
 ) {
@@ -193,12 +222,16 @@ plot_mdiff_base <- function(
   one_group <- is.na(gdata$SE[[2]])
   plot_raw <- !is.null(rdata)
   nudge <- if (plot_raw) error_nudge/2 else 0
+  pooled_sd <- difference_axis_normalizer
 
   # Group data --------------------------------
   # Add comparison values to difference row
-  comparison_es <- gdata[[2, "y_value"]]
-  reference_es <- gdata[[1, "y_value"]]
-  gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + comparison_es
+  comparison_es <- gdata[[1, "y_value"]]
+  reference_es <- gdata[[2, "y_value"]]
+  difference_LL <- gdata[[3, "LL"]]
+  difference_UL <- gdata[[3, "UL"]]
+
+  gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + reference_es
 
   # Reorder comparison data
   gdata <- gdata[c(2, 1, 3), ]
@@ -276,8 +309,51 @@ plot_mdiff_base <- function(
   }
 
 
-  # Difference axis
+  # Difference axis ------------------------------------
   daxis_x <- max(gdata$x_value) + daxis_space
+
+  if ( (difference_UL + reference_es) > reference_es) {
+    rawEnd <- difference_UL
+    saxisEnd <- ceiling(difference_UL/pooled_sd)
+    if (saxisEnd < 1) saxisEnd = 1
+  } else {
+    rawEnd <- 0
+    saxisEnd <- 0
+  }
+
+  if ( (difference_LL + reference_es) < reference_es) {
+    rawStart <- difference_LL
+    saxisStart <- floor(difference_LL/pooled_sd)
+    if (saxisStart > -1) saxisStart = -1
+  } else {
+    rawStart <- 0
+    saxisStart <- 0
+  }
+
+
+  if (difference_axis_units == "raw") {
+    saxisBreaks <- pretty(c(rawStart,rawEnd), n = difference_axis_breaks)
+    if(! 0 %in% saxisBreaks) {
+      saxisBreaks <- sort(c(0, saxisBreaks))
+    }
+    slabels <- esci_scaleFUN(saxisBreaks)
+  } else {
+    saxisBreaks <- pretty(c(saxisStart,saxisEnd), n = difference_axis_breaks)
+    slabels <- esci_scaleFUN(saxisBreaks)
+    saxisBreaks <- saxisBreaks * pooled_sd
+  }
+
+  saxisStart <- reference_es + (saxisBreaks[1])
+  saxisEnd <- reference_es + (saxisBreaks[length(saxisBreaks)])
+
+  daxis_name <- difference_es_name
+  # epart <-
+  daxis_name <- gsub("<sub>", "[", daxis_name)
+  daxis_name <- gsub("</sub>", "]", daxis_name)
+  daxis_name <- gsub("<i>", "italic(", daxis_name)
+  daxis_name <- gsub("</i>", ")", daxis_name)
+  daxis_name <- parse(text = daxis_name)
+
 
 
   # Build plot ------------------------------------
@@ -337,6 +413,7 @@ plot_mdiff_base <- function(
 
   }
 
+  # paired measure lines
   if (plot_paired) {
     myplot <- myplot + ggplot2::geom_segment(
       data = NULL,
@@ -351,6 +428,57 @@ plot_mdiff_base <- function(
     )
   }
 
+
+  # Floating axis
+  myplot <- myplot + ggplot2::geom_segment(color="black",
+                                           linetype="solid",
+                                           ggplot2::aes(x=daxis_x,
+                                                        xend=daxis_x,
+                                                        y=saxisStart,
+                                                        yend=saxisEnd
+                                           ),
+                                           size=1
+  )
+
+
+  # Now define the y-axis
+  p <- ggplot2::ggplot_build(myplot)
+  lowest <- min(c(gdata$y_value, ylim[[1]]), na.rm = TRUE)
+  highest <- max(c(gdata$y_value, ylim[[2]]), na.rm = TRUE)
+  for (x in 1:length(p$data)) {
+    lowest <- min(c(lowest, p$data[[x]]$y), na.rm = TRUE)
+    highest <- max(c(highest, p$data[[x]]$y), na.rm = TRUE)
+  }
+  if (is.na(ylim[[1]])) {
+    switch(
+      effect_size,
+      mean = {ylim[[1]] <- lowest*.85},
+      r = {ylim[[1]] <- -1},
+      P = {ylim[[1]] <- 0}
+    )
+  }
+  if (is.na(ylim[[2]])) {
+    switch(
+      effect_size,
+      mean = {ylim[[2]] <- highest*1.1},
+      r = {ylim[[2]] <- 1},
+      P = {ylim[[2]] <- 1}
+    )
+  }
+
+  myplot <- myplot + ggplot2::scale_y_continuous(
+    limits = ylim,
+    n.breaks = ybreaks,
+    sec.axis = ggplot2::sec_axis(
+      name = daxis_name,
+      trans = ~.-reference_es,
+      breaks = saxisBreaks,
+      labels = slabels
+    )
+  )
+
+
+  # Set x axis labels
   mybreaks <- gdata$x_value + gdata$nudge
   if (plot_paired) mybreaks[[1]] <- mybreaks[[1]] + nudge
 
@@ -359,13 +487,24 @@ plot_mdiff_base <- function(
     labels = gdata$x_label
   )
 
+
+  # No legend and difference axis placement
+
+  label_placement <- (highest-((saxisStart + saxisEnd)/2)) / (highest - lowest)
+
+  myplot <- myplot + ggplot2::theme(
+    legend.position = "none",
+    axis.line.y.right = ggplot2::element_blank(),
+    axis.title.y.right = ggplot2::element_text(hjust = label_placement)
+  )
+
+
+  # And finally, adjust coordinates
   # Set boundaries
   xmin <- min(gdata$x_value)
   xdeduct <- if (plot_paired) 2*nudge else nudge
   xmin <- xmin - xdeduct - 0.25
-  ylim <- NULL
-  if (effect_size == "r") ylim <- c(-1, 1)
-  if (effect_size == "P") ylim <- c(0, 1)
+
 
 
   myplot <- myplot + ggplot2::coord_cartesian(
@@ -376,6 +515,7 @@ plot_mdiff_base <- function(
     ylim = ylim,
     expand = FALSE
   )
+
 
   # Attach warnings and return    -------------------
   myplot$warnings <- warnings
@@ -494,9 +634,6 @@ plot_pdiff <- function(
     plot_paired = plot_paired
   )
 
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
-
 
   # Labels -----------------------------
   vname <- estimate$es_proportion_difference$outcome_variable_name[[1]]
@@ -606,10 +743,6 @@ plot_rdiff <- function(
     use_ggdist = TRUE,
     plot_paired = plot_paired
   )
-
-  # No legend
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
-
 
   # Labels -----------------------------
   vname <- paste(estimate$es_r$x_variable_name[[1]], estimate$es_r$y_variable_name, collapse = "and")

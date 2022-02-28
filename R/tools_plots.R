@@ -1,3 +1,7 @@
+# This function is for formatting the floating axis on difference plots
+esci_scaleFUN <- function(x) sprintf("%.2f", x)
+
+
 # This function helps with plotting sampling error in esci graphs
 #  The user provides a short/user-friendly name for the style of
 #  plotting sampling error, and this maps it onto the specific
