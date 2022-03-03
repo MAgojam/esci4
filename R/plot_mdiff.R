@@ -4,13 +4,14 @@ plot_mdiff <- function(
   estimate,
   effect_size = c("mean", "median"),
   data_layout = c("random", "swarm", "none"),
-  data_spread = 0.25,
+  data_spread = 0.15,
   error_layout = c("halfeye", "eye", "gradient", "none"),
   error_scale = 0.3,
-  error_nudge = 0.35,
+  error_nudge = 0.4,
   error_normalize = c("groups", "all", "panels"),
   difference_axis_units = c("raw", "sd"),
   difference_axis_breaks = 5,
+  difference_axis_space = 1,
   simple_contrast_labels = TRUE,
   ylim = c(NA, NA),
   ybreaks = 5,
@@ -156,6 +157,7 @@ plot_mdiff <- function(
     difference_es_name = difference_es_name,
     ylim = ylim,
     ybreaks = ybreaks,
+    daxis_space = difference_axis_space,
     ggtheme = ggtheme
   )
 
@@ -201,7 +203,7 @@ plot_mdiff_base <- function(
   error_scale = 0.3,
   error_nudge = 0.35,
   error_normalize = c("groups", "all", "panels"),
-  difference_axis_units = c("sd", "raw"),
+  difference_axis_units = c("raw", "sd"),
   difference_axis_breaks = 5,
   difference_axis_normalizer = 1,
   difference_es_name = "Difference",
@@ -213,7 +215,7 @@ plot_mdiff_base <- function(
 
   # Input checks ---------------------------------------------------------------
   warnings <- NULL
-
+  difference_axis_units <- match.arg(difference_axis_units)
 
     # Data prep --------------------------------------
   # Initialization
@@ -253,8 +255,10 @@ plot_mdiff_base <- function(
     overview$x_value <- seq(from = 1, to = orows, by = 1)
     overview$nudge <- nudge
 
-    rlines <- overview[overview$type == "Reference", c("y_value", "x_value", "nudge")]
-    clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge") ]
+    rlines <- overview[overview$type == "Reference", c("y_value", "x_value", "nudge", "type")]
+    clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge", "type") ]
+
+
 
     gdata$x_value <- seq(from = orows + 2, to = orows + 4, by = 1)
     gdata$nudge <- 0
@@ -274,6 +278,7 @@ plot_mdiff_base <- function(
           y_value = c(min(clines$yend), gdata$y_value[[2]]),
           x_value = c(comp_x - 0.5, comp_x - 0.5),
           nudge = c(0, 0),
+          type = "Comparison",
           xend = c(comp_x - 0.5, comp_x),
           yend = c(max(clines$yend), gdata$y_value[[2]])
         )
@@ -287,11 +292,14 @@ plot_mdiff_base <- function(
           y_value = c(min(rlines$yend), gdata$y_value[[1]]),
           x_value = c(ref_x - 0.5, ref_x - 0.5),
           nudge = c(0, 0),
+          type = "Reference",
           xend = c(ref_x - 0.5, ref_x),
           yend = c(max(rlines$yend), gdata$y_value[[1]])
         )
       )
     }
+    rlines$type <- paste(rlines$type, "_summary", sep = "")
+    clines$type <- paste(clines$type, "_summary", sep = "")
 
     gdata <- rbind(
       overview,
@@ -400,6 +408,21 @@ plot_mdiff_base <- function(
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
 
+  if (!simple_contrast) {
+    myplot <- myplot + ggplot2::geom_segment(
+      data = rbind(rlines, clines),
+      aes(
+        x = x_value + nudge,
+        xend = xend,
+        y = y_value,
+        yend = yend,
+        color = type
+      ),
+      linetype = "solid"
+    )
+
+  }
+
   # Group data
   error_glue <-esci_plot_group_data(effect_size)
   error_call <- esci_plot_error_layouts(error_layout)
@@ -417,18 +440,6 @@ plot_mdiff_base <- function(
     ),
     linetype = "dotted"
   )
-
-  myplot <- myplot + ggplot2::geom_segment(
-    data = rbind(rlines, clines),
-    aes(
-      x = x_value + nudge,
-      xend = xend,
-      y = y_value,
-      yend = yend,
-    ),
-    linetype = "solid"
-  )
-
 
   # Raw data
   if (plot_raw) {
@@ -505,18 +516,20 @@ plot_mdiff_base <- function(
     switch(
       effect_size,
       mean = {ylim[[1]] <- lowest*.85},
-      r = {ylim[[1]] <- -1},
-      P = {ylim[[1]] <- 0}
+      rdiff = {ylim[[1]] <- min(c(-1, saxisBreaks+reference_es))},
+      P = {ylim[[1]] <- min(c(0, saxisBreaks+reference_es))}
     )
   }
   if (is.na(ylim[[2]])) {
     switch(
       effect_size,
       mean = {ylim[[2]] <- highest*1.1},
-      r = {ylim[[2]] <- 1},
-      P = {ylim[[2]] <- 1}
+      rdiff = {ylim[[2]] <- max(c(1, saxisBreaks+reference_es))},
+      P = {ylim[[2]] <- max(c(1, saxisBreaks+reference_es))}
     )
   }
+  lowest <- min(c(lowest, ylim))
+  highest <- max(c(highest, ylim))
 
   myplot <- myplot + ggplot2::scale_y_continuous(
     limits = ylim,
@@ -616,6 +629,7 @@ plot_pdiff <- function(
   plot_paired <- !is.null(estimate$es_phi)
   rdata <- NULL
   effect_size <- "P"
+  difference_es_name <- "<i>Proportion</i><sub>diff</sub>"
 
   gdata <- estimate$es_proportion_difference
   x <- 1
@@ -671,6 +685,7 @@ plot_pdiff <- function(
     rdata = rdata,
     overview = overview,
     effect_size = effect_size,
+    difference_es_name = difference_es_name,
     error_layout = error_layout,
     error_scale = error_scale,
     error_nudge = 0,
@@ -688,9 +703,15 @@ plot_pdiff <- function(
 
 
   # Labels -----------------------------
-  vname <- estimate$es_proportion_difference$outcome_variable_name[[1]]
+  if (plot_paired) {
+    vname <- NULL
+    xlab <- NULL
+  } else {
+    vname <- estimate$es_proportion_difference$outcome_variable_name[[1]]
+    xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
+  }
   ylab <- glue::glue("{vname}\nProportion {clevel} and {conf_level*100}% confidence interval")
-  xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
+
 
 
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
@@ -738,13 +759,14 @@ plot_rdiff <- function(
   # Initialization
   conf_level <- estimate$properties$conf_level
   contrast <- c(1, -1)
-  names(contrast) <- estimate$es_r$effect[[1:2]]
+  names(contrast) <- estimate$es_r[1:2, "effect"]
   reference_groups <- names(contrast[which(contrast < 0)])
   comparison_groups <- names(contrast[which(contrast > 0)])
   simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
   plot_paired <- FALSE
   rdata <- NULL
-  effect_size <- "r"
+  effect_size <- "rdiff"
+  difference_es_name <- "<i>r</i><sub>diff</sub>"
 
   gdata <- estimate$es_rdiff
   if (is.null(gdata)) gdata <- estimate$es_r
@@ -781,6 +803,7 @@ plot_rdiff <- function(
     rdata = rdata,
     overview = overview,
     effect_size = effect_size,
+    difference_es_name = difference_es_name,
     error_layout = error_layout,
     error_scale = error_scale,
     error_nudge = 0,
@@ -792,14 +815,14 @@ plot_rdiff <- function(
   # Default aesthetics
   myplot <- esci_plot_mdiff_aesthetics(
     myplot,
-    use_ggdist = TRUE,
+    use_ggdist = FALSE,
     plot_paired = plot_paired
   )
 
   # Labels -----------------------------
-  vname <- paste(estimate$es_r$x_variable_name[[1]], estimate$es_r$y_variable_name, collapse = "and")
+  vname <- paste(estimate$es_r$x_variable_name[[1]], estimate$es_r$y_variable_name[[1]], sep = " and ")
   ylab <- glue::glue("Correlation between {vname}\nr and {conf_level*100}% confidence interval")
-  xlab <- estimate$es_r$gouping_variable[[1]]
+  xlab <- estimate$es_r$grouping_variable[[1]]
 
 
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)

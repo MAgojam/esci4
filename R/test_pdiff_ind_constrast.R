@@ -1,5 +1,5 @@
 test_pdiff_ind_contrast <- function() {
-  estimate <- estimate_pdiff_ind_contrast(
+  pdiff_contrast <- estimate_pdiff_ind_contrast(
     cases = c(78, 10),
     ns = c(252, 20),
     case_label = "egocentric",
@@ -9,8 +9,16 @@ test_pdiff_ind_contrast <- function() {
   )
 
 
-  estimate <- estimate_pdiff_ind_contrast(
+  pdiff_contrast <- estimate_pdiff_ind_contrast(
     cases = c(10, 20, 30),
+    ns = c(50, 50, 50),
+    case_label = "Depressed",
+    grouping_variable_levels = c("Control", "Drug", "Therapy"),
+    contrast = c(-1, 1/2, 1/2)
+  )
+
+  pdiff_contrast <- estimate_pdiff_ind_contrast(
+    cases = c(48, 50, 45),
     ns = c(50, 50, 50),
     case_label = "Depressed",
     grouping_variable_levels = c("Control", "Drug", "Therapy"),

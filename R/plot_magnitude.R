@@ -154,6 +154,7 @@ plot_correlation <- function(
     )
     error_scale = 0.3
   }
+  if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
 
   # Data prep --------------------------------------
   conf_level <- estimate$properties$conf_level
@@ -234,6 +235,7 @@ plot_proportion <- function(
     )
     error_scale = 0.3
   }
+  if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
 
 
   # Data prep --------------------------------------

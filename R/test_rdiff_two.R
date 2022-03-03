@@ -12,7 +12,7 @@ test_r <- function() {
   )
 
 
-  estimate_rdiff_two(
+  rdiff_two <- estimate_rdiff_two(
     comparison_r = .53,
     comparison_n = 45,
     reference_r = .41,

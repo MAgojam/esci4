@@ -182,32 +182,6 @@ esci_plot_group_data <- function(effect_size) {
       fatten = 3
     )
 
-    # myplot <- myplot + ggplot2::geom_segment(
-    #   data = gdata,
-    #   ggplot2::aes(
-    #     x = x_value + nudge,
-    #     xend = x_value + nudge,
-    #     y = LL,
-    #     yend = UL,
-    #     alpha = type,
-    #     size = type,
-    #     linetype = type
-    #   )
-    # )
-    #
-    # myplot <- myplot + ggplot2::geom_point(
-    #   data = gdata,
-    #   ggplot2::aes(
-    #     x = x_value + nudge,
-    #     y = y_value,
-    #     color = type,
-    #     shape = type,
-    #     fill = type,
-    #     alpha = type,
-    #     size = type
-    #   )
-    # )
-
     "
   }
 
