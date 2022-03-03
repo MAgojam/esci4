@@ -131,6 +131,7 @@ plot_mdiff <- function(
       x_label = estimate$overview$grouping_variable_level,
       y_value = if (effect_size == "mean") estimate$overview$mean else estimate$overview$median
     )
+
   } else {
     overview <- NULL
   }
@@ -251,8 +252,47 @@ plot_mdiff_base <- function(
     orows <- nrow(overview)
     overview$x_value <- seq(from = 1, to = orows, by = 1)
     overview$nudge <- nudge
+
+    rlines <- overview[overview$type == "Reference", c("y_value", "x_value", "nudge")]
+    clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge") ]
+
     gdata$x_value <- seq(from = orows + 2, to = orows + 4, by = 1)
     gdata$nudge <- 0
+
+    ref_x <- gdata$x_value[[1]] + gdata$nudge[[1]]
+    comp_x <- gdata$x_value[[2]] + gdata$nudge[[2]]
+    rlines$xend <- ref_x
+    clines$xend <- comp_x
+    rlines$yend <- rlines$y_value
+    clines$yend <- clines$y_value
+
+    if (nrow(clines) > 1) {
+      clines$xend <- clines$xend - 0.5
+      clines <- rbind(
+        clines,
+        data.frame(
+          y_value = c(min(clines$yend), gdata$y_value[[2]]),
+          x_value = c(comp_x - 0.5, comp_x - 0.5),
+          nudge = c(0, 0),
+          xend = c(comp_x - 0.5, comp_x),
+          yend = c(max(clines$yend), gdata$y_value[[2]])
+        )
+      )
+    }
+    if (nrow(rlines) > 1) {
+      rlines$xend <- rlines$xend - 0.5
+      rlines <- rbind(
+        clines,
+        data.frame(
+          y_value = c(min(rlines$yend), gdata$y_value[[1]]),
+          x_value = c(ref_x - 0.5, ref_x - 0.5),
+          nudge = c(0, 0),
+          xend = c(ref_x - 0.5, ref_x),
+          yend = c(max(rlines$yend), gdata$y_value[[1]])
+        )
+      )
+    }
+
     gdata <- rbind(
       overview,
       gdata
@@ -377,6 +417,18 @@ plot_mdiff_base <- function(
     ),
     linetype = "dotted"
   )
+
+  myplot <- myplot + ggplot2::geom_segment(
+    data = rbind(rlines, clines),
+    aes(
+      x = x_value + nudge,
+      xend = xend,
+      y = y_value,
+      yend = yend,
+    ),
+    linetype = "solid"
+  )
+
 
   # Raw data
   if (plot_raw) {
