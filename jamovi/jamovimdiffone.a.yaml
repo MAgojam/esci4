@@ -58,4 +58,118 @@ options:
       title: Show details
       type: Bool
       default: false
+
+    - name: es_plot_width
+      title: Width
+      type: String
+      default: '450'
+
+    - name: es_plot_height
+      title: Height
+      type: String
+      default: '450'
+
+    - name: ymin
+      title: Min
+      type: String
+      default: auto
+
+    - name: ymax
+      title: Max
+      type: String
+      default: auto
+
+    - name: ybreaks
+      title: 'Num. tick marks'
+      type: String
+      default: auto
+
+    - name: ylab
+      title: Label
+      type: String
+      default: auto
+
+    - name: xlab
+      title: Label
+      type: String
+      default: auto
+
+    - name: axis.text.y
+      title: 'Tick font size'
+      type: String
+      default: '10'
+
+    - name: axis.title.y
+      title: 'Label font size'
+      type: String
+      default: '12'
+
+    - name: axis.text.x
+      title: 'Tick font size'
+      type: String
+      default: '10'
+
+    - name: axis.title.x
+      title: 'Label font size'
+      type: String
+      default: '12'
+
+    - name: simple_contrast_labels
+      title: Simple contrast labels
+      type: Bool
+      default: false
+
+    - name: error_layout
+      type: List
+      title: Style
+      default: halfeye
+      options:
+        - name: halfeye
+          title: Plausibility curve
+        - name: eye
+          title: "Cat's eye"
+        - name: none
+          title: None
+
+    - name: error_scale
+      title: Width
+      type: String
+      default: '0.25'
+
+    - name: error_nudge
+      title: 'Offset from data'
+      type: String
+      default: '0.4'
+
+    - name: data_layout
+      type: List
+      title: Layout
+      default: random
+      options:
+        - name: random
+          title: Random
+        - name: swarm
+          title: Swarm
+        - name: none
+          title: None
+
+    - name: data_spread
+      title: Spread
+      type: String
+      default: '0.25'
+
+    - name: difference_axis_units
+      title: Difference axis units
+      type: List
+      default: raw
+      options:
+        - name: raw
+          title: Raw scores
+        - name: sd
+          title: Standard deviations
+
+    - name: difference_axis_breaks
+      title: Difference axis breaks
+      type: String
+      default: '5'
 ...

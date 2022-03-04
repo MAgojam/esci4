@@ -72,3 +72,113 @@ children:
         format: number
       - type: CheckBox
         name: show_details
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: es_plot_width
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: es_plot_height
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: ymin
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: ymax
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: ylab
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: ybreaks
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: xlab
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.text.y
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.title.y
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.text.x
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.title.x
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: error_layout
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: simple_contrast_labels
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: error_scale
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: error_nudge
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: data_layout
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: data_spread
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: difference_axis_units
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: difference_axis_breaks
+        format: string

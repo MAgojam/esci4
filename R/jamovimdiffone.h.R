@@ -14,7 +14,26 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             reference_mean = " ",
             outcome_variable_name = "Outcome variable",
             conf_level = 95,
-            show_details = FALSE, ...) {
+            show_details = FALSE,
+            es_plot_width = "450",
+            es_plot_height = "450",
+            ymin = "auto",
+            ymax = "auto",
+            ybreaks = "auto",
+            ylab = "auto",
+            xlab = "auto",
+            axis.text.y = "10",
+            axis.title.y = "12",
+            axis.text.x = "10",
+            axis.title.x = "12",
+            simple_contrast_labels = FALSE,
+            error_layout = "halfeye",
+            error_scale = "0.25",
+            error_nudge = "0.4",
+            data_layout = "random",
+            data_spread = "0.25",
+            difference_axis_units = "raw",
+            difference_axis_breaks = "5", ...) {
 
             super$initialize(
                 package="esci4",
@@ -62,6 +81,93 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..es_plot_width <- jmvcore::OptionString$new(
+                "es_plot_width",
+                es_plot_width,
+                default="450")
+            private$..es_plot_height <- jmvcore::OptionString$new(
+                "es_plot_height",
+                es_plot_height,
+                default="450")
+            private$..ymin <- jmvcore::OptionString$new(
+                "ymin",
+                ymin,
+                default="auto")
+            private$..ymax <- jmvcore::OptionString$new(
+                "ymax",
+                ymax,
+                default="auto")
+            private$..ybreaks <- jmvcore::OptionString$new(
+                "ybreaks",
+                ybreaks,
+                default="auto")
+            private$..ylab <- jmvcore::OptionString$new(
+                "ylab",
+                ylab,
+                default="auto")
+            private$..xlab <- jmvcore::OptionString$new(
+                "xlab",
+                xlab,
+                default="auto")
+            private$..axis.text.y <- jmvcore::OptionString$new(
+                "axis.text.y",
+                axis.text.y,
+                default="10")
+            private$..axis.title.y <- jmvcore::OptionString$new(
+                "axis.title.y",
+                axis.title.y,
+                default="12")
+            private$..axis.text.x <- jmvcore::OptionString$new(
+                "axis.text.x",
+                axis.text.x,
+                default="10")
+            private$..axis.title.x <- jmvcore::OptionString$new(
+                "axis.title.x",
+                axis.title.x,
+                default="12")
+            private$..simple_contrast_labels <- jmvcore::OptionBool$new(
+                "simple_contrast_labels",
+                simple_contrast_labels,
+                default=FALSE)
+            private$..error_layout <- jmvcore::OptionList$new(
+                "error_layout",
+                error_layout,
+                default="halfeye",
+                options=list(
+                    "halfeye",
+                    "eye",
+                    "none"))
+            private$..error_scale <- jmvcore::OptionString$new(
+                "error_scale",
+                error_scale,
+                default="0.25")
+            private$..error_nudge <- jmvcore::OptionString$new(
+                "error_nudge",
+                error_nudge,
+                default="0.4")
+            private$..data_layout <- jmvcore::OptionList$new(
+                "data_layout",
+                data_layout,
+                default="random",
+                options=list(
+                    "random",
+                    "swarm",
+                    "none"))
+            private$..data_spread <- jmvcore::OptionString$new(
+                "data_spread",
+                data_spread,
+                default="0.25")
+            private$..difference_axis_units <- jmvcore::OptionList$new(
+                "difference_axis_units",
+                difference_axis_units,
+                default="raw",
+                options=list(
+                    "raw",
+                    "sd"))
+            private$..difference_axis_breaks <- jmvcore::OptionString$new(
+                "difference_axis_breaks",
+                difference_axis_breaks,
+                default="5")
 
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
@@ -72,6 +178,25 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..es_plot_width)
+            self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..ymin)
+            self$.addOption(private$..ymax)
+            self$.addOption(private$..ybreaks)
+            self$.addOption(private$..ylab)
+            self$.addOption(private$..xlab)
+            self$.addOption(private$..axis.text.y)
+            self$.addOption(private$..axis.title.y)
+            self$.addOption(private$..axis.text.x)
+            self$.addOption(private$..axis.title.x)
+            self$.addOption(private$..simple_contrast_labels)
+            self$.addOption(private$..error_layout)
+            self$.addOption(private$..error_scale)
+            self$.addOption(private$..error_nudge)
+            self$.addOption(private$..data_layout)
+            self$.addOption(private$..data_spread)
+            self$.addOption(private$..difference_axis_units)
+            self$.addOption(private$..difference_axis_breaks)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -82,7 +207,26 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         reference_mean = function() private$..reference_mean$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         conf_level = function() private$..conf_level$value,
-        show_details = function() private$..show_details$value),
+        show_details = function() private$..show_details$value,
+        es_plot_width = function() private$..es_plot_width$value,
+        es_plot_height = function() private$..es_plot_height$value,
+        ymin = function() private$..ymin$value,
+        ymax = function() private$..ymax$value,
+        ybreaks = function() private$..ybreaks$value,
+        ylab = function() private$..ylab$value,
+        xlab = function() private$..xlab$value,
+        axis.text.y = function() private$..axis.text.y$value,
+        axis.title.y = function() private$..axis.title.y$value,
+        axis.text.x = function() private$..axis.text.x$value,
+        axis.title.x = function() private$..axis.title.x$value,
+        simple_contrast_labels = function() private$..simple_contrast_labels$value,
+        error_layout = function() private$..error_layout$value,
+        error_scale = function() private$..error_scale$value,
+        error_nudge = function() private$..error_nudge$value,
+        data_layout = function() private$..data_layout$value,
+        data_spread = function() private$..data_spread$value,
+        difference_axis_units = function() private$..difference_axis_units$value,
+        difference_axis_breaks = function() private$..difference_axis_breaks$value),
     private = list(
         ..switch = NA,
         ..outcome_variable = NA,
@@ -92,7 +236,26 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..reference_mean = NA,
         ..outcome_variable_name = NA,
         ..conf_level = NA,
-        ..show_details = NA)
+        ..show_details = NA,
+        ..es_plot_width = NA,
+        ..es_plot_height = NA,
+        ..ymin = NA,
+        ..ymax = NA,
+        ..ybreaks = NA,
+        ..ylab = NA,
+        ..xlab = NA,
+        ..axis.text.y = NA,
+        ..axis.title.y = NA,
+        ..axis.text.x = NA,
+        ..axis.title.x = NA,
+        ..simple_contrast_labels = NA,
+        ..error_layout = NA,
+        ..error_scale = NA,
+        ..error_nudge = NA,
+        ..data_layout = NA,
+        ..data_spread = NA,
+        ..difference_axis_units = NA,
+        ..difference_axis_breaks = NA)
 )
 
 jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -103,7 +266,9 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_mean_difference = function() private$.items[["es_mean_difference"]],
-        es_smd = function() private$.items[["es_smd"]]),
+        es_smd = function() private$.items[["es_smd"]],
+        estimation_plots = function() private$.items[["estimation_plots"]],
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -114,7 +279,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
-                visible=FALSE))
+                visible=TRUE))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="help",
@@ -293,7 +458,23 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="d_biased", 
                         `title`="<i>d</i><sub>biased</sub>", 
                         `type`="number", 
-                        `visible`="(show_details)"))))}))
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="estimation_plots",
+                title="Estimation Figures",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    width=300,
+                    height=450,
+                    requiresData=TRUE,
+                    renderFun=".estimation_plots")))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Estimation figure warnings",
+                visible=TRUE))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -328,6 +509,25 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param outcome_variable_name .
 #' @param conf_level .
 #' @param show_details .
+#' @param es_plot_width .
+#' @param es_plot_height .
+#' @param ymin .
+#' @param ymax .
+#' @param ybreaks .
+#' @param ylab .
+#' @param xlab .
+#' @param axis.text.y .
+#' @param axis.title.y .
+#' @param axis.text.x .
+#' @param axis.title.x .
+#' @param simple_contrast_labels .
+#' @param error_layout .
+#' @param error_scale .
+#' @param error_nudge .
+#' @param data_layout .
+#' @param data_spread .
+#' @param difference_axis_units .
+#' @param difference_axis_breaks .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
@@ -335,6 +535,8 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -354,7 +556,26 @@ jamovimdiffone <- function(
     reference_mean = " ",
     outcome_variable_name = "Outcome variable",
     conf_level = 95,
-    show_details = FALSE) {
+    show_details = FALSE,
+    es_plot_width = "450",
+    es_plot_height = "450",
+    ymin = "auto",
+    ymax = "auto",
+    ybreaks = "auto",
+    ylab = "auto",
+    xlab = "auto",
+    axis.text.y = "10",
+    axis.title.y = "12",
+    axis.text.x = "10",
+    axis.title.x = "12",
+    simple_contrast_labels = FALSE,
+    error_layout = "halfeye",
+    error_scale = "0.25",
+    error_nudge = "0.4",
+    data_layout = "random",
+    data_spread = "0.25",
+    difference_axis_units = "raw",
+    difference_axis_breaks = "5") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimdiffone requires jmvcore to be installed (restart may be required)")
@@ -375,7 +596,26 @@ jamovimdiffone <- function(
         reference_mean = reference_mean,
         outcome_variable_name = outcome_variable_name,
         conf_level = conf_level,
-        show_details = show_details)
+        show_details = show_details,
+        es_plot_width = es_plot_width,
+        es_plot_height = es_plot_height,
+        ymin = ymin,
+        ymax = ymax,
+        ybreaks = ybreaks,
+        ylab = ylab,
+        xlab = xlab,
+        axis.text.y = axis.text.y,
+        axis.title.y = axis.title.y,
+        axis.text.x = axis.text.x,
+        axis.title.x = axis.title.x,
+        simple_contrast_labels = simple_contrast_labels,
+        error_layout = error_layout,
+        error_scale = error_scale,
+        error_nudge = error_nudge,
+        data_layout = data_layout,
+        data_spread = data_spread,
+        difference_axis_units = difference_axis_units,
+        difference_axis_breaks = difference_axis_breaks)
 
     analysis <- jamovimdiffoneClass$new(
         options = options,

@@ -187,7 +187,8 @@ jamovi_arg_builder <- function(
   }
 
   if(trimws(as.character(my_value)) %in% c("auto")) {
-    return(return_value)
+    args[[arg_name]] <- return_value
+    return(args)
   }
 
   if(trimws(as.character(my_value))

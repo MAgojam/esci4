@@ -28,8 +28,6 @@ Imports:
   glue,
   Rdpack,
   mathjaxr
-Remotes:  
-  dgbonett/statpsych@9c5114d
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 RdMacros: Rdpack, mathjaxr

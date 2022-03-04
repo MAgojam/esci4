@@ -6,7 +6,7 @@ jrs:   '1.1'
 items:
     - name: debug
       type: Preformatted
-      visible: false
+      visible: true
 
     - name: help
       type: Html
@@ -152,5 +152,21 @@ items:
           title: "<i>d</i><sub>biased</sub>"
           type: number
           visible: (show_details)
+
+    - name: estimation_plots
+      title: Estimation Figures
+      type: Array
+      template:
+          title: $key
+          type: Image
+          width:  300
+          height: 450
+          requiresData: true
+          renderFun: .estimation_plots
+
+    - name: estimation_plot_warnings
+      title: Estimation figure warnings
+      type: Html
+      visible: true
 
 ...

@@ -49,10 +49,51 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           jamovi_init_table(tbl_es_mean_difference, mdiff_rows, breaks = 3)
           jamovi_init_table(tbl_es_smd, smd_rows)
 
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 200,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 2000,
+            upper_inclusive = TRUE
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 550,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE
+          )
+
+          keys <- if (from_raw)
+            self$options$outcome_variable
+          else
+            jamovi_sanitize(
+              self$options$outcome_variable_name,
+              "My outcome variable",
+              na_ok = FALSE
+            )
+
+          for (my_key in keys) {
+            self$results$estimation_plots$addItem(key = my_key)
+            image <- self$results$estimation_plots$get(my_key)
+            image$setSize(width , height)
+          }
+
         },
         .run = function() {
 
-          estimate <- jamovi_mdiff_one(self, FALSE)
+          from_raw <- (self$options$switch == "from_raw")
+
+          estimate <- jamovi_mdiff_one(
+            self,
+            outcome_variable = NULL,
+            save_raw_data = FALSE
+          )
 
           # Print any notes that emerged from running the analysis
           jamovi_set_notes(self$results$help)
@@ -66,11 +107,54 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           # Fill tables
           jamovi_estimate_filler(self, estimate, TRUE)
 
+          # Deal with plots ----------------------------------------
+          # Set up array of estimation plots
+          keys <- if (from_raw)
+            self$options$outcome_variable
+          else
+            jamovi_sanitize(
+              self$options$outcome_variable_name,
+              "My outcome variable",
+              na_ok = FALSE
+            )
+
+          for (my_key in keys) {
+            image <- self$results$estimation_plots$get(key=my_key)
+            image$setState(my_key)
+          }
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          if (is.null(image$state))
+            return(FALSE)
+
+          # Redo analysis
+          estimate <- jamovi_mdiff_one(
+            self,
+            outcome_variable = c(image$state),
+            save_raw_data = TRUE
+          )
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          myplot <- jamovi_plot_mdiff(
+            self,
+            estimate,
+            image,
+            ggtheme,
+            theme
+          )
+
+          print(myplot)
+          TRUE
+
         })
 )
 
 
-jamovi_mdiff_one <- function(self, save_raw_data = FALSE) {
+jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALSE) {
 
   # Prelim -----------------------------------------------------
   from_raw <- (self$options$switch == "from_raw")
@@ -94,10 +178,13 @@ jamovi_mdiff_one <- function(self, save_raw_data = FALSE) {
       return(NULL)
     }
 
-    if (
-      is.null(self$options$outcome_variable) |
-      length(self$options$outcome_variable) == 0
-    ) return(NULL)
+    if (is.null(outcome_variable)) {
+      if (
+        is.null(self$options$outcome_variable) |
+        length(self$options$outcome_variable) == 0
+      ) return(NULL)
+    }
+
 
   } else {
     args$comparison_mean <- jamovi_required_numeric(
@@ -164,7 +251,12 @@ jamovi_mdiff_one <- function(self, save_raw_data = FALSE) {
 
   if(from_raw) {
     args$data <- self$data
-    args$outcome_variable <- unname(self$options$outcome_variable)
+    if (is.null(outcome_variable)) {
+      args$outcome_variable <- unname(self$options$outcome_variable)
+    } else {
+      args$outcome_variable <- unname(outcome_variable)
+      args$outcome_variable_name <- outcome_variable
+    }
   } else {
     args$outcome_variable_name <- jamovi_sanitize(
       self$options$outcome_variable_name,

@@ -343,6 +343,8 @@ plot_mdiff_base <- function(
       rdata[rdata$grouping_variable %in% reference_groups, ]$type <- "Reference"
     }
     rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
+
+
     rdata$type <- paste(rdata$type, "_raw", sep = "")
 
     # x_value
