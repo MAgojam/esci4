@@ -72,113 +72,492 @@ children:
         format: number
       - type: CheckBox
         name: show_details
-  - type: LayoutBox
-    margin: large
+  - type: CollapseBox
+    label: Figure options
+    stretchFactor: 1
+    collapsed: true
     children:
-      - type: TextBox
-        name: es_plot_width
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: es_plot_height
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: ymin
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: ymax
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: ylab
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: ybreaks
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: xlab
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.text.y
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.title.y
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.text.x
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.title.x
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: error_layout
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: CheckBox
-        name: simple_contrast_labels
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: error_scale
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: error_nudge
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: data_layout
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: data_spread
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: difference_axis_units
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: difference_axis_breaks
-        format: string
+      - type: LayoutBox
+        stretchFactor: 1
+        margin: none
+        children:
+          - type: Label
+            label: 'Base dimensions:'
+            cell:
+              column: 0
+              row: 1
+          - type: TextBox
+            name: es_plot_width
+            format: string
+            cell:
+              column: 1
+              row: 1
+          - type: TextBox
+            name: es_plot_height
+            format: string
+            cell:
+              column: 2
+              row: 1
+          - type: Label
+            label: 'y-axis: '
+            cell:
+              column: 0
+              row: 2
+          - type: TextBox
+            name: ylab
+            stretchFactor: 2
+            format: string
+            cell:
+              column: 1
+              row: 2
+          - type: TextBox
+            name: axis.text.y
+            format: string
+            cell:
+              column: 1
+              row: 3
+          - type: TextBox
+            name: axis.title.y
+            format: string
+            cell:
+              column: 2
+              row: 3
+          - type: TextBox
+            name: ymin
+            format: string
+            cell:
+              column: 1
+              row: 4
+          - type: TextBox
+            name: ymax
+            format: string
+            cell:
+              column: 2
+              row: 4
+          - type: TextBox
+            name: ybreaks
+            format: string
+            cell:
+              column: 1
+              row: 5
+          - type: Label
+            label: 'x-axis: '
+            cell:
+              column: 0
+              row: 6
+          - type: TextBox
+            name: xlab
+            stretchFactor: 2
+            format: string
+            cell:
+              column: 1
+              row: 6
+          - type: TextBox
+            name: axis.text.x
+            format: string
+            cell:
+              column: 1
+              row: 7
+          - type: TextBox
+            name: axis.title.x
+            format: string
+            cell:
+              column: 2
+              row: 7
+          - type: CheckBox
+            name: simple_contrast_labels
+            cell:
+              column: 1
+              row: 8
+          - type: Label
+            label: 'difference-axis: '
+            cell:
+              column: 0
+              row: 9
+          - type: ComboBox
+            name: difference_axis_units
+            cell:
+              column: 1
+              row: 9
+          - type: TextBox
+            name: difference_axis_breaks
+            format: string
+            cell:
+              column: 1
+              row: 10
+          - type: Label
+            label: 'Distributions:'
+            cell:
+              column: 0
+              row: 11
+          - type: TextBox
+            name: error_scale
+            format: string
+            cell:
+              column: 1
+              row: 11
+          - type: TextBox
+            name: error_nudge
+            format: string
+            enable: '(switch:from_raw)'
+            cell:
+              column: 2
+              row: 11
+          - type: ComboBox
+            name: error_layout
+            cell:
+              column: 1
+              row: 12
+          - type: Label
+            label: 'Data:'
+            cell:
+              column: 0
+              row: 13
+          - type: ComboBox
+            name: data_layout
+            enable: '(switch:from_raw)'
+            cell:
+              column: 1
+              row: 13
+          - type: TextBox
+            name: data_spread
+            format: string
+            enable: '(switch:from_raw)'
+            cell:
+              column: 2
+              row: 13
+          - type: CollapseBox
+            label: Aesthetics
+            stretchFactor: 1
+            collapsed: true
+            children:
+              - type: Label
+                label: 'Reference'
+                cell:
+                  column: 1
+                  row: 1
+              - type: Label
+                label: 'Comparison'
+                cell:
+                  column: 2
+                  row: 1
+              - type: Label
+                label: 'Difference'
+                cell:
+                  column: 3
+                  row: 1
+              - type: Label
+                label: 'Summary'
+                cell:
+                  column: 0
+                  row: 2
+              - type: Label
+                label: 'CI'
+                cell:
+                  column: 0
+                  row: 8
+              - type: Label
+                label: 'Error distribution'
+                cell:
+                  column: 0
+                  row: 13
+              - type: Label
+                label: 'Raw data'
+                cell:
+                  column: 0
+                  row: 16
+              - type: Label
+                label: '  Shape'
+                cell:
+                  column: 0
+                  row: 3
+              - type: Label
+                label: '  Size'
+                cell:
+                  column: 0
+                  row: 4
+              - type: Label
+                label: '  Outline'
+                cell:
+                  column: 0
+                  row: 5
+              - type: Label
+                label: '  Fill'
+                cell:
+                  column: 0
+                  row: 6
+              - type: Label
+                label: '  Transparency'
+                cell:
+                  column: 0
+                  row: 7
+              - type: Label
+                label: '  Style'
+                cell:
+                  column: 0
+                  row: 9
+              - type: Label
+                label: '  Thickness'
+                cell:
+                  column: 0
+                  row: 10
+              - type: Label
+                label: '  Color'
+                cell:
+                  column: 0
+                  row: 11
+              - type: Label
+                label: '  Transparency'
+                cell:
+                  column: 0
+                  row: 12
+              - type: Label
+                label: '  Fill'
+                cell:
+                  column: 0
+                  row: 14
+              - type: Label
+                label: '  Transparency'
+                cell:
+                  column: 0
+                  row: 15
+              - type: Label
+                label: '  Shape'
+                cell:
+                  column: 0
+                  row: 17
+              - type: Label
+                label: '  Size'
+                cell:
+                  column: 0
+                  row: 18
+              - type: Label
+                label: '  Outline'
+                cell:
+                  column: 0
+                  row: 19
+              - type: Label
+                label: '  Fill'
+                cell:
+                  column: 0
+                  row: 20
+              - type: Label
+                label: '  Transparency'
+                cell:
+                  column: 0
+                  row: 21
+              - type: ComboBox
+                name: shape_raw_reference
+                cell:
+                  column: 1
+                  row: 17
+              - type: ComboBox
+                name: shape_raw_comparison
+                cell:
+                  column: 2
+                  row: 17
+              - type: ComboBox
+                name: shape_summary_reference
+                cell:
+                  column: 1
+                  row: 3
+              - type: ComboBox
+                name: shape_summary_comparison
+                cell:
+                  column: 2
+                  row: 3
+              - type: ComboBox
+                name: shape_summary_difference
+                cell:
+                  column: 3
+                  row: 3
+              - type: ComboBox
+                name: color_raw_reference
+                cell:
+                  column: 1
+                  row: 19
+              - type: ComboBox
+                name: color_raw_comparison
+                cell:
+                  column: 2
+                  row: 19
+              - type: ComboBox
+                name: color_summary_reference
+                cell:
+                  column: 1
+                  row: 5
+              - type: ComboBox
+                name: color_summary_comparison
+                cell:
+                  column: 2
+                  row: 5
+              - type: ComboBox
+                name: color_summary_difference
+                cell:
+                  column: 3
+                  row: 5
+              - type: ComboBox
+                name: fill_raw_reference
+                cell:
+                  column: 1
+                  row: 20
+              - type: ComboBox
+                name: fill_raw_comparison
+                cell:
+                  column: 2
+                  row: 20
+              - type: ComboBox
+                name: fill_summary_reference
+                cell:
+                  column: 1
+                  row: 6
+              - type: ComboBox
+                name: fill_summary_comparison
+                cell:
+                  column: 2
+                  row: 6
+              - type: ComboBox
+                name: fill_summary_difference
+                cell:
+                  column: 3
+                  row: 6
+              - type: ComboBox
+                name: size_raw_reference
+                cell:
+                  column: 1
+                  row: 18
+              - type: ComboBox
+                name: size_raw_comparison
+                cell:
+                  column: 2
+                  row: 18
+              - type: ComboBox
+                name: size_summary_reference
+                cell:
+                  column: 1
+                  row: 4
+              - type: ComboBox
+                name: size_summary_comparison
+                cell:
+                  column: 2
+                  row: 4
+              - type: ComboBox
+                name: size_summary_difference
+                cell:
+                  column: 3
+                  row: 4
+              - type: ComboBox
+                name: alpha_raw_reference
+                cell:
+                  column: 1
+                  row: 21
+              - type: ComboBox
+                name: alpha_raw_comparison
+                cell:
+                  column: 2
+                  row: 21
+              - type: ComboBox
+                name: alpha_summary_reference
+                cell:
+                  column: 1
+                  row: 7
+              - type: ComboBox
+                name: alpha_summary_comparison
+                cell:
+                  column: 2
+                  row: 7
+              - type: ComboBox
+                name: alpha_summary_difference
+                cell:
+                  column: 3
+                  row: 7
+              - type: ComboBox
+                name: linetype_summary_reference
+                cell:
+                  column: 1
+                  row: 9
+              - type: ComboBox
+                name: linetype_summary_comparison
+                cell:
+                  column: 2
+                  row: 9
+              - type: ComboBox
+                name: linetype_summary_difference
+                cell:
+                  column: 3
+                  row: 9
+              - type: ComboBox
+                name: color_interval_reference
+                cell:
+                  column: 1
+                  row: 11
+              - type: ComboBox
+                name: color_interval_comparison
+                cell:
+                  column: 2
+                  row: 11
+              - type: ComboBox
+                name: color_interval_difference
+                cell:
+                  column: 3
+                  row: 11
+              - type: ComboBox
+                name: size_interval_reference
+                cell:
+                  column: 1
+                  row: 10
+              - type: ComboBox
+                name: size_interval_comparison
+                cell:
+                  column: 2
+                  row: 10
+              - type: ComboBox
+                name: size_interval_difference
+                cell:
+                  column: 3
+                  row: 10
+              - type: ComboBox
+                name: alpha_interval_reference
+                cell:
+                  column: 1
+                  row: 12
+              - type: ComboBox
+                name: alpha_interval_comparison
+                cell:
+                  column: 2
+                  row: 12
+              - type: ComboBox
+                name: alpha_interval_difference
+                cell:
+                  column: 3
+                  row: 12
+              - type: ComboBox
+                name: alpha_error_reference
+                cell:
+                  column: 1
+                  row: 15
+              - type: ComboBox
+                name: alpha_error_comparison
+                cell:
+                  column: 2
+                  row: 15
+              - type: ComboBox
+                name: alpha_error_difference
+                cell:
+                  column: 3
+                  row: 15
+              - type: ComboBox
+                name: fill_error_reference
+                cell:
+                  column: 1
+                  row: 14
+              - type: ComboBox
+                name: fill_error_comparison
+                cell:
+                  column: 2
+                  row: 14
+              - type: ComboBox
+                name: fill_error_difference
+                cell:
+                  column: 3
+                  row: 14
