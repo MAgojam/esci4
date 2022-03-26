@@ -231,7 +231,7 @@ jamovi_plot_mdiff <- function(
       "Difference_raw" = 2,
       "Unused_raw" = 1,
       "Reference_summary" = as.integer(self$options$size_summary_reference),
-      "Comparison_summary" = as.interger(self$options$size_summary_comparison),
+      "Comparison_summary" = as.integer(self$options$size_summary_comparison),
       "Difference_summary" = as.integer(self$options$size_summary_difference),
       "Unused_summary" = 3
     ))
@@ -241,13 +241,13 @@ jamovi_plot_mdiff <- function(
     c("alpha", "point_alpha"),
     "point_alpha_d",
     function(n) return(c(
-      "Reference_raw" = as.number(self$options$alpha_raw_reference),
-      "Comparison_raw" = .as.number(self$options$alpha_raw_comparison),
+      "Reference_raw" = as.numeric(self$options$alpha_raw_reference),
+      "Comparison_raw" = as.numeric(self$options$alpha_raw_comparison),
       "Difference_raw" = .8,
       "Unused_raw" = .5,
-      "Reference_summary" = as.number(self$options$alpha_summary_reference),
-      "Comparison_summary" = as.number(self$options$alpha_summary_comparison),
-      "Difference_summary" = as.number(self$options$alpha_summary_difference),
+      "Reference_summary" = as.numeric(self$options$alpha_summary_reference),
+      "Comparison_summary" = as.numeric(self$options$alpha_summary_comparison),
+      "Difference_summary" = as.numeric(self$options$alpha_summary_difference),
       "Unused_summary" = 1
     ))
   )
