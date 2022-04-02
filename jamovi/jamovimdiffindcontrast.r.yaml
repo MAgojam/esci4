@@ -259,4 +259,19 @@ items:
           type: number
           visible: (show_details)
 
+    - name: estimation_plots
+      title: Estimation Figures
+      type: Array
+      template:
+          title: $key
+          type: Image
+          width:  300
+          height: 450
+          requiresData: true
+          renderFun: .estimation_plots
+
+    - name: estimation_plot_warnings
+      title: Estimation figure warnings
+      type: Html
+      visible: true
 ...

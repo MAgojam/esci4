@@ -180,44 +180,172 @@ jamovi_plot_mdiff <- function(
     myplot <- myplot + ggplot2::ylab(ylab)
   }
 
+  shape_raw_reference <- "circle"
+  color_raw_reference <- "black"
+  fill_raw_reference <- "black"
+  size_raw_reference <- 1
+  alpha_raw_reference <- 1
+
+  shape_raw_difference <- "circle"
+  color_raw_difference <- "black"
+  fill_raw_difference <- "black"
+  size_raw_difference <- 1
+  alpha_raw_difference <- 1
+
+  shape_raw_unused <- "circle"
+  shape_summary_unused <- "circle"
+  color_raw_unused <- "black"
+  color_summary_unused <- "black"
+  fill_raw_unused <- "black"
+  fill_summary_unused <- "black"
+  size_raw_unused <- 1
+  size_summary_unused <- 1
+  alpha_raw_unused <- 1
+  alpha_summary_unused <- 1
+  linetype_summary_unused <- "solid"
+  color_interval_unused <- "black"
+  alpha_interval_reference_unused <- 1
+  size_interval_unused <- 1
+  fill_error_unused <- "black"
+  alpha_error_unused <- 1
+
+  try(shape_raw_difference <- self$options$shape_raw_difference)
+  try(color_raw_difference <- self$options$color_raw_difference)
+  try(fill_raw_difference <- self$options$fill_raw_difference)
+  try(size_raw_difference <- as.integer(self$options$size_raw_difference))
+  try(alpha_raw_difference <- as.numeric(self$options$alpha_raw_difference))
+
+  try(shape_raw_reference <- self$options$shape_raw_reference)
+  try(color_raw_reference <- self$options$color_raw_reference)
+  try(fill_raw_reference <- self$options$fill_raw_reference)
+  try(size_raw_reference <- as.integer(self$options$size_raw_reference))
+  try(alpha_raw_reference <- as.numeric(self$options$alpha_raw_reference))
+
+  try(shape_raw_unused <- self$options$shape_raw_unused)
+  try(shape_summary_unused <- self$options$shape_summary_unused)
+  try(color_raw_unused <- self$options$color_raw_unused)
+  try(color_summary_unused <- self$options$color_summary_unused)
+  try(fill_raw_unused <- self$options$fill_raw_unused)
+  try(fill_summary_unused <- self$options$fill_summary_unused)
+  try(size_raw_unused <- as.integer(self$options$size_raw_reference))
+  try(size_summary_unused <- as.integer(self$options$size_summary_unused))
+  try(alpha_raw_unused <- as.numeric(self$options$alpha_raw_unused))
+  try(alpha_summary_unused <- as.numeric(self$options$alpha_summary_unused))
+  try(linetype_summary_unused <- self$options$linetype_summary_unused)
+  try(color_interval_unused <- self$options$color_interval_unused)
+  try(alpha_interval_reference_unused <- as.numeric(self$options$alpha_interval_reference_unused))
+  try(size_interval_unused <- as.integer(self$options$size_interval_unused))
+  try(fill_error_unused <- self$options$fill_error_unused)
+  try(alpha_error_unused <- as.numeric(self$options$alpha_error_unused))
+
+  # raw_difference_present <- exists("self$options$shape_raw_difference")
+  # unused_present <- exists("self$options$shape_raw_unused")
+  # raw_reference_present <- exists("self$options$shape_raw_reference")
+  #
+  # if (raw_difference_present) {
+  #   shape_raw_difference <- self$options$shape_raw_difference
+  #   color_raw_difference <- self$options$color_raw_difference
+  #   fill_raw_difference <- self$options$fill_raw_difference
+  #   size_raw_difference <- self$options$size_raw_difference
+  #   alpha_raw_difference <- self$options$alpha_raw_difference
+  # } else {
+  #   shape_raw_difference <- "circle"
+  #   color_raw_difference <- "black"
+  #   fill_raw_difference <- "black"
+  #   size_raw_difference <- 1
+  #   alpha_raw_difference <- 1
+  # }
+  #
+  # if (raw_reference_present) {
+  #   shape_raw_reference <- self$options$shape_raw_reference
+  #   color_raw_reference <- self$options$color_raw_reference
+  #   fill_raw_reference <- self$options$fill_raw_reference
+  #   size_raw_reference <- self$options$size_raw_reference
+  #   alpha_raw_reference <- self$options$alpha_raw_reference
+  # } else {
+  #   shape_raw_reference <- "circle"
+  #   color_raw_reference <- "black"
+  #   fill_raw_reference <- "black"
+  #   size_raw_reference <- 1
+  #   alpha_raw_reference <- 1
+  # }
+  #
+  #
+  # if (unused_present) {
+  #   shape_raw_unused <- self$options$shape_raw_unused
+  #   shape_summary_unused <- self$options$shape_summary_unused
+  #   color_raw_unused <- self$options$color_raw_unused
+  #   color_summary_unused <- self$options$color_summary_unused
+  #   fill_raw_unused <- self$options$fill_raw_unused
+  #   fill_summary_unused <- self$options$fill_summary_unused
+  #   size_raw_unused <- self$options$size_raw_reference
+  #   size_summary_unused <- self$options$size_summary_unused
+  #   alpha_raw_unused <- self$options$alpha_raw_unused
+  #   alpha_summary_unused <- self$options$alpha_summary_unused
+  #   linetype_summary_unused <- self$options$linetype_summary_unused
+  #   color_interval_unused <- self$options$color_interval_unused
+  #   alpha_interval_reference_unused <- self$options$alpha_interval_reference_unused
+  #   size_interval_unused <- self$options$size_interval_unused
+  #   fill_error_unused <- self$options$fill_error_unused
+  #   alpha_error_unused <- self$options$alpha_error_unused
+  # } else {
+  #   shape_raw_unused <- "circle"
+  #   shape_summary_unused <- "circle"
+  #   color_raw_unused <- "black"
+  #   color_summary_unused <- "black"
+  #   fill_raw_unused <- "black"
+  #   fill_summary_unused <- "black"
+  #   size_raw_unused <- 1
+  #   size_summary_unused <- 1
+  #   alpha_raw_unused <- 1
+  #   alpha_summary_unused <- 1
+  #   linetype_summary_unused <- "solid"
+  #   color_interval_unused <- "black"
+  #   alpha_interval_reference_unused <- 1
+  #   size_interval_unused <- 1
+  #   fill_error_unused <- "black"
+  #   alpha_error_unused <- 1
+  # }
+
+
   # Aesthetics
   myplot <- myplot + ggplot2::scale_shape_manual(
     values = c(
-      "Reference_raw" = self$options$shape_raw_reference,
+      "Reference_raw" = shape_raw_reference,
       "Comparison_raw" = self$options$shape_raw_comparison,
-      "Difference_raw" = "triangle filled",
-      "Unused_raw" = "diamond filled",
+      "Difference_raw" = shape_raw_difference,
+      "Unused_raw" = shape_raw_unused,
       "Reference_summary" = self$options$shape_summary_reference,
       "Comparison_summary" = self$options$shape_summary_comparison,
       "Difference_summary" = self$options$shape_summary_difference,
-      "Unused_summary" = "circle filled"
+      "Unused_summary" = shape_summary_unused
     )
   )
 
   myplot <- myplot + ggplot2::scale_color_manual(
     values = c(
-      "Reference_raw" = self$options$color_raw_reference,
+      "Reference_raw" = color_raw_reference,
       "Comparison_raw" = self$options$color_raw_comparison,
-      "Difference_raw" = "black",
-      "Unused_raw" = "black",
+      "Difference_raw" = color_raw_difference,
+      "Unused_raw" = color_raw_unused,
       "Reference_summary" = self$options$color_summary_reference,
       "Comparison_summary" = self$options$color_summary_comparison,
       "Difference_summary" = self$options$color_summary_difference,
-      "Unused_summary" = "gray80"
+      "Unused_summary" = color_summary_unused
     ),
     aesthetics = c("color", "point_color")
   )
 
   myplot <- myplot + ggplot2::scale_fill_manual(
     values = c(
-      "Reference_raw" = self$options$fill_raw_reference,
+      "Reference_raw" = fill_raw_reference,
       "Comparison_raw" = self$options$fill_raw_comparison,
-      "Difference_raw" = "NA",
-      "Unused_raw" = "gray80",
+      "Difference_raw" = fill_raw_difference,
+      "Unused_raw" = fill_raw_unused,
       "Reference_summary" = self$options$fill_summary_reference,
       "Comparison_summary" = self$options$fill_summary_comparison,
       "Difference_summary" = self$options$fill_summary_difference,
-      "Unused_summary" = "gray80"
+      "Unused_summary" = fill_summary_unused
     ),
     aesthetics = c("fill", "point_fill")
   )
@@ -226,14 +354,14 @@ jamovi_plot_mdiff <- function(
     c("size", "point_size"),
     "point_size_d",
     function(n) return(c(
-      "Reference_raw" = as.integer(self$options$size_raw_reference),
+      "Reference_raw" = size_raw_reference,
       "Comparison_raw" = as.integer(self$options$size_raw_comparison),
-      "Difference_raw" = 2,
-      "Unused_raw" = 1,
+      "Difference_raw" = size_raw_difference,
+      "Unused_raw" = size_raw_unused,
       "Reference_summary" = as.integer(self$options$size_summary_reference),
       "Comparison_summary" = as.integer(self$options$size_summary_comparison),
       "Difference_summary" = as.integer(self$options$size_summary_difference),
-      "Unused_summary" = 3
+      "Unused_summary" = size_summary_unused
     ))
   )
 
@@ -241,14 +369,74 @@ jamovi_plot_mdiff <- function(
     c("alpha", "point_alpha"),
     "point_alpha_d",
     function(n) return(c(
-      "Reference_raw" = as.numeric(self$options$alpha_raw_reference),
+      "Reference_raw" = alpha_raw_reference,
       "Comparison_raw" = as.numeric(self$options$alpha_raw_comparison),
-      "Difference_raw" = .8,
-      "Unused_raw" = .5,
+      "Difference_raw" = alpha_raw_difference,
+      "Unused_raw" = alpha_raw_unused,
       "Reference_summary" = as.numeric(self$options$alpha_summary_reference),
       "Comparison_summary" = as.numeric(self$options$alpha_summary_comparison),
       "Difference_summary" = as.numeric(self$options$alpha_summary_difference),
-      "Unused_summary" = 1
+      "Unused_summary" = alpha_summary_unused
+    ))
+  )
+
+  # Error bars
+  myplot <- myplot + ggplot2::scale_linetype_manual(
+    values = c(
+      "Reference_summary" = self$options$linetype_summary_reference,
+      "Comparison_summary" = self$options$linetype_summary_comparison,
+      "Difference_summary" = self$options$linetype_summary_difference,
+      "Unused_summary" = linetype_summary_unused
+    )
+  )
+  myplot <- myplot + ggplot2::scale_color_manual(
+    values = c(
+      "Reference_summary" = self$options$color_interval_reference,
+      "Comparison_summary" = self$options$color_interval_comparison,
+      "Difference_summary" = self$options$color_interval_difference,
+      "Unused_summary" = color_interval_unused
+    ),
+    aesthetics = "interval_color"
+  )
+  myplot <- myplot + ggplot2::discrete_scale(
+    "interval_alpha",
+    "interval_alpha_d",
+    function(n) return(c(
+      "Reference_summary" = as.numeric(self$options$alpha_interval_reference),
+      "Comparison_summary" = as.numeric(self$options$alpha_interval_comparison),
+      "Difference_summary" = as.numeric(self$options$alpha_interval_difference),
+      "Unused_summary" = alpha_interval_reference_unused
+    ))
+  )
+  myplot <- myplot + ggplot2::discrete_scale(
+    "interval_size",
+    "interval_size_d",
+    function(n) return(c(
+      "Reference_summary" = as.integer(self$options$size_interval_reference),
+      "Comparison_summary" = as.integer(self$options$size_interval_comparison),
+      "Difference_summary" = as.integer(self$options$size_interval_difference),
+      "Unused_summary" = size_interval_unused
+    ))
+  )
+
+  # Slab
+  myplot <- myplot + ggplot2::scale_fill_manual(
+    values = c(
+      "Reference_summary" = self$options$fill_error_reference,
+      "Comparison_summary" = self$options$fill_error_comparison,
+      "Difference_summary" = self$options$fill_error_difference,
+      "Unused_summary" = fill_error_unused
+    ),
+    aesthetics = "slab_fill"
+  )
+  myplot <- myplot + ggplot2::discrete_scale(
+    "slab_alpha",
+    "slab_alpha_d",
+    function(n) return(c(
+      "Reference_summary" = as.numeric(self$options$alpha_error_reference),
+      "Comparison_summary" = as.numeric(self$options$alpha_error_comparison),
+      "Difference_summary" = as.numeric(self$options$alpha_error_difference),
+      "Unused_summary" = alpha_error_unused
     ))
   )
 
