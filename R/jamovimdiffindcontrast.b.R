@@ -9,41 +9,6 @@ jamovimdiffindcontrastClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6
 
           jamovi_mdiff_initialize(self, grouping_variable = TRUE)
 
-          from_raw <- (self$options$switch == "from_raw")
-
-          width <- jamovi_sanitize(
-            my_value = self$options$es_plot_width,
-            return_value = 200,
-            convert_to_number = TRUE,
-            lower = 10,
-            lower_inclusive = TRUE,
-            upper = 2000,
-            upper_inclusive = TRUE
-          )
-          height <- jamovi_sanitize(
-            my_value = self$options$es_plot_height,
-            return_value = 550,
-            convert_to_number = TRUE,
-            lower = 10,
-            lower_inclusive = TRUE,
-            upper = 4000,
-            upper_inclusive = TRUE
-          )
-
-          keys <- if (from_raw)
-            self$options$outcome_variable
-          else
-            jamovi_sanitize(
-              self$options$outcome_variable_name,
-              "My outcome variable",
-              na_ok = FALSE
-            )
-
-          for (my_key in keys) {
-            self$results$estimation_plots$addItem(key = my_key)
-            image <- self$results$estimation_plots$get(my_key)
-            image$setSize(width , height)
-          }
 
         },
         .run = function() {
@@ -97,13 +62,16 @@ jamovimdiffindcontrastClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6
           # Redo analysis
           estimate <- jamovi_mdiff_contrastindependent(
             self = self,
-            outcome_variables = self$options$outcome_variable,
-            save_raw_data = FALSE
+            outcome_variables = c(image$state),
+            save_raw_data = TRUE
           )
-
 
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
+
+          if (is.null(estimate$properties$contrast)) {
+            return(TRUE)
+          }
 
           myplot <- jamovi_plot_mdiff(
             self,

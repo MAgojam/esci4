@@ -12,8 +12,13 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         },
         .run = function() {
 
+        from_raw <- (self$options$switch == "from_raw")
 
-        estimate <- jamovi_mdiff_two(self, save_raw_data = FALSE)
+        estimate <- jamovi_mdiff_two(
+          self,
+          outcome_variable = NULL,
+          save_raw_data = FALSE
+        )
 
         # Print any notes that emerged from running the analysis
         jamovi_set_notes(self$results$help)
@@ -27,12 +32,65 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         # Fill tables
         jamovi_estimate_filler(self, estimate, TRUE)
 
+        # Deal with plots ----------------------------------------
+        # Set up array of estimation plots
+        keys <- if (from_raw)
+          self$options$outcome_variable
+        else
+          jamovi_sanitize(
+            self$options$outcome_variable_name,
+            "My outcome variable",
+            na_ok = FALSE
+          )
+
+        for (my_key in keys) {
+          image <- self$results$estimation_plots$get(key=my_key)
+          image$setState(my_key)
+        }
+
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          if (is.null(image$state))
+            return(FALSE)
+
+          # Redo analysis
+          estimate <- jamovi_mdiff_two(
+            self = self,
+            outcome_variable = c(image$state),
+            save_raw_data = TRUE
+          )
+
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          if (is.null(estimate$properties$contrast)) {
+            return(TRUE)
+          }
+
+          myplot <- jamovi_plot_mdiff(
+            self,
+            estimate,
+            image,
+            ggtheme,
+            theme
+          )
+
+          print(myplot)
+          TRUE
+
         })
 )
 
 
 
-jamovi_mdiff_two <- function(self, save_raw_data = FALSE) {
+jamovi_mdiff_two <- function(
+  self,
+  outcome_variable = NULL,
+  save_raw_data = FALSE
+) {
   # Prelim -----------------------------------------------------
   from_raw <- (self$options$switch == "from_raw")
   notes <- c(NULL)
@@ -41,11 +99,18 @@ jamovi_mdiff_two <- function(self, save_raw_data = FALSE) {
   # Step 1 - Check if analysis basics are defined ---------------
   args <- list()
 
+
+
+
   if(from_raw) {
+    if (is.null(outcome_variable)) {
+      if (
+        is.null(self$options$outcome_variable) |
+        length(self$options$outcome_variable) == 0
+      ) return(NULL)
+    }
     if (
-      is.null(self$options$grouping_variable) |
-      is.null(self$options$outcome_variable) |
-      length(self$options$outcome_variable) == 0
+      is.null(self$options$grouping_variable)
     ) return(NULL)
   } else {
     args$comparison_mean <- jamovi_required_numeric(
@@ -125,7 +190,12 @@ jamovi_mdiff_two <- function(self, save_raw_data = FALSE) {
 
   if(from_raw) {
     args$data <- self$data
-    args$outcome_variable <- unname(self$options$outcome_variable)
+    if (is.null(outcome_variable)) {
+      args$outcome_variable <- unname(self$options$outcome_variable)
+    } else {
+      args$outcome_variable <- unname(outcome_variable)
+      args$outcome_variable_name <- outcome_variable
+    }
     args$grouping_variable <- unname(self$options$grouping_variable)
   } else {
     args$outcome_variable_name <- jamovi_sanitize(

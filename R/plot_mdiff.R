@@ -76,7 +76,8 @@ plot_mdiff <- function(
   reference_groups <- names(contrast[which(contrast < 0)])
   comparison_groups <- names(contrast[which(contrast > 0)])
   plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
-  simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
+  # simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
+  simple_contrast <- (length(contrast) == 2)
   plot_paired <- !is.null(estimate$es_r)
   difference_es_name <- if (difference_axis_units == "sd")
     estimate$es_smd_properties$effect_size_name_html

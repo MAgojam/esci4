@@ -126,6 +126,7 @@ items:
       title: Mean difference
       type: Table
       rows:  3
+      visible: (effect_size == 'mean_difference')
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -162,6 +163,7 @@ items:
       title: Standardized mean difference
       type: Table
       rows:  1
+      visible: (effect_size == 'mean_difference')
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -207,7 +209,7 @@ items:
     - name:  es_mean_ratio
       title: Ratio of means
       type: Table
-      visible: (switch == 'from_raw')
+      visible: (show_ratio & effect_size == 'mean_difference')
       rows:  1
       columns:
         - name: comparison_measure_name
@@ -242,7 +244,7 @@ items:
     - name:  es_median_difference
       title: Median difference
       type: Table
-      visible: (switch == 'from_raw')
+      visible: (effect_size == 'median_difference')
       rows:  3
       columns:
         - name: comparison_measure_name
@@ -276,7 +278,7 @@ items:
     - name:  es_median_ratio
       title: Ratio of medians
       type: Table
-      visible: (switch == 'from_raw')
+      visible: (show_ratio & effect_size == 'median_difference')
       rows:  1
       columns:
         - name: comparison_measure_name
@@ -307,5 +309,18 @@ items:
         - name: UL
           title: UL
           type: number
+
+    - name: estimation_plots
+      title: Estimation Figures
+      type: Image
+      width:  300
+      height: 450
+      requiresData: true
+      renderFun: .estimation_plots
+
+    - name: estimation_plot_warnings
+      title: Estimation figure warnings
+      type: Html
+      visible: true
 
 ...

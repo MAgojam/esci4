@@ -6,11 +6,19 @@ jamovi_plot_mdiff <- function(
   theme
 ) {
 
+  effect_size <- "mean"
+  from_raw <- (self$options$switch == "from_raw")
+  plot_median <- FALSE
+  if (from_raw) {
+    try(plot_median <- (self$options$effect_size == "median_difference"))
+  }
+  if (from_raw & plot_median) effect_size <- "median"
+
   # Basic plot
   notes <- NULL
   args <- list()
   args$estimate <- estimate
-  args$effect_size <- "mean"
+  args$effect_size <- effect_size
   args$data_layout <- self$options$data_layout
   args <- jamovi_arg_builder(
     args,
@@ -237,75 +245,6 @@ jamovi_plot_mdiff <- function(
   try(size_interval_unused <- as.integer(self$options$size_interval_unused))
   try(fill_error_unused <- self$options$fill_error_unused)
   try(alpha_error_unused <- as.numeric(self$options$alpha_error_unused))
-
-  # raw_difference_present <- exists("self$options$shape_raw_difference")
-  # unused_present <- exists("self$options$shape_raw_unused")
-  # raw_reference_present <- exists("self$options$shape_raw_reference")
-  #
-  # if (raw_difference_present) {
-  #   shape_raw_difference <- self$options$shape_raw_difference
-  #   color_raw_difference <- self$options$color_raw_difference
-  #   fill_raw_difference <- self$options$fill_raw_difference
-  #   size_raw_difference <- self$options$size_raw_difference
-  #   alpha_raw_difference <- self$options$alpha_raw_difference
-  # } else {
-  #   shape_raw_difference <- "circle"
-  #   color_raw_difference <- "black"
-  #   fill_raw_difference <- "black"
-  #   size_raw_difference <- 1
-  #   alpha_raw_difference <- 1
-  # }
-  #
-  # if (raw_reference_present) {
-  #   shape_raw_reference <- self$options$shape_raw_reference
-  #   color_raw_reference <- self$options$color_raw_reference
-  #   fill_raw_reference <- self$options$fill_raw_reference
-  #   size_raw_reference <- self$options$size_raw_reference
-  #   alpha_raw_reference <- self$options$alpha_raw_reference
-  # } else {
-  #   shape_raw_reference <- "circle"
-  #   color_raw_reference <- "black"
-  #   fill_raw_reference <- "black"
-  #   size_raw_reference <- 1
-  #   alpha_raw_reference <- 1
-  # }
-  #
-  #
-  # if (unused_present) {
-  #   shape_raw_unused <- self$options$shape_raw_unused
-  #   shape_summary_unused <- self$options$shape_summary_unused
-  #   color_raw_unused <- self$options$color_raw_unused
-  #   color_summary_unused <- self$options$color_summary_unused
-  #   fill_raw_unused <- self$options$fill_raw_unused
-  #   fill_summary_unused <- self$options$fill_summary_unused
-  #   size_raw_unused <- self$options$size_raw_reference
-  #   size_summary_unused <- self$options$size_summary_unused
-  #   alpha_raw_unused <- self$options$alpha_raw_unused
-  #   alpha_summary_unused <- self$options$alpha_summary_unused
-  #   linetype_summary_unused <- self$options$linetype_summary_unused
-  #   color_interval_unused <- self$options$color_interval_unused
-  #   alpha_interval_reference_unused <- self$options$alpha_interval_reference_unused
-  #   size_interval_unused <- self$options$size_interval_unused
-  #   fill_error_unused <- self$options$fill_error_unused
-  #   alpha_error_unused <- self$options$alpha_error_unused
-  # } else {
-  #   shape_raw_unused <- "circle"
-  #   shape_summary_unused <- "circle"
-  #   color_raw_unused <- "black"
-  #   color_summary_unused <- "black"
-  #   fill_raw_unused <- "black"
-  #   fill_summary_unused <- "black"
-  #   size_raw_unused <- 1
-  #   size_summary_unused <- 1
-  #   alpha_raw_unused <- 1
-  #   alpha_summary_unused <- 1
-  #   linetype_summary_unused <- "solid"
-  #   color_interval_unused <- "black"
-  #   alpha_interval_reference_unused <- 1
-  #   size_interval_unused <- 1
-  #   fill_error_unused <- "black"
-  #   alpha_error_unused <- 1
-  # }
 
 
   # Aesthetics

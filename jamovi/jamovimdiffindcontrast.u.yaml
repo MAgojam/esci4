@@ -105,17 +105,23 @@ children:
       - type: TextBox
         name: comparison_labels
         format: string
+        stretchFactor: 1
       - type: TextBox
         name: reference_labels
         format: string
+        stretchFactor: 1
   - type: Label
     label: Analysis options
     children:
       - type: TextBox
         name: conf_level
         format: number
+      - type: ComboBox
+        name: effect_size
+        enable: '(switch:from_raw)'
       - type: CheckBox
         name: assume_equal_variance
+        enable: '(effect_size:mean_difference)'
       - type: CheckBox
         name: show_details
   - type: CollapseBox
@@ -239,6 +245,7 @@ children:
           - type: TextBox
             name: error_scale
             format: string
+            enable: '(effect_size:mean_difference)'
             cell:
               column: 1
               row: 11
@@ -251,6 +258,7 @@ children:
               row: 11
           - type: ComboBox
             name: error_layout
+            enable: '(effect_size:mean_difference)'
             cell:
               column: 1
               row: 12

@@ -81,6 +81,40 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
   jamovi_init_table(tbl_es_median_ratio, smd_rows, breaks = 3)
 
+  width <- jamovi_sanitize(
+    my_value = self$options$es_plot_width,
+    return_value = 200,
+    convert_to_number = TRUE,
+    lower = 10,
+    lower_inclusive = TRUE,
+    upper = 2000,
+    upper_inclusive = TRUE
+  )
+  height <- jamovi_sanitize(
+    my_value = self$options$es_plot_height,
+    return_value = 550,
+    convert_to_number = TRUE,
+    lower = 10,
+    lower_inclusive = TRUE,
+    upper = 4000,
+    upper_inclusive = TRUE
+  )
+
+  keys <- if (from_raw)
+    self$options$outcome_variable
+  else
+    jamovi_sanitize(
+      self$options$outcome_variable_name,
+      "My outcome variable",
+      na_ok = FALSE
+    )
+
+  for (my_key in keys) {
+    self$results$estimation_plots$addItem(key = my_key)
+    image <- self$results$estimation_plots$get(my_key)
+    image$setSize(width , height)
+  }
+
 
 }
 

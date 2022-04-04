@@ -18,54 +18,55 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             comparison_labels = " ",
             reference_labels = " ",
             conf_level = 95,
+            effect_size = "mean_difference",
             assume_equal_variance = TRUE,
             show_details = FALSE,
-            es_plot_width = "450",
+            es_plot_width = "550",
             es_plot_height = "450",
             ymin = "auto",
             ymax = "auto",
             ybreaks = "auto",
             ylab = "auto",
             xlab = "auto",
-            axis.text.y = "10",
-            axis.title.y = "12",
-            axis.text.x = "10",
-            axis.title.x = "12",
-            simple_contrast_labels = FALSE,
+            axis.text.y = "8",
+            axis.title.y = "10",
+            axis.text.x = "8",
+            axis.title.x = "10",
+            simple_contrast_labels = TRUE,
             error_layout = "halfeye",
             error_scale = "0.25",
-            error_nudge = "0.4",
+            error_nudge = "0.5",
             data_layout = "random",
-            data_spread = "0.25",
+            data_spread = "0.20",
             difference_axis_units = "raw",
             difference_axis_breaks = "auto",
-            shape_raw_reference = "square filled",
+            shape_raw_reference = "circle filled",
             shape_raw_comparison = "circle filled",
-            shape_raw_unused = "circle filled",
-            shape_summary_reference = "square filled",
+            shape_raw_unused = "square filled",
+            shape_summary_reference = "circle filled",
             shape_summary_comparison = "circle filled",
-            shape_summary_unused = "circle filled",
+            shape_summary_unused = "square filled",
             shape_summary_difference = "triangle filled",
-            color_raw_reference = "gray",
-            color_raw_comparison = "blue",
-            color_raw_unused = "blue",
-            color_summary_reference = "black",
-            color_summary_comparison = "blue",
-            color_summary_unused = "blue",
+            color_raw_reference = "blue",
+            color_raw_comparison = "green",
+            color_raw_unused = "grey",
+            color_summary_reference = "blue",
+            color_summary_comparison = "green",
+            color_summary_unused = "slategray",
             color_summary_difference = "black",
             fill_raw_reference = "NA",
-            fill_raw_comparison = "white",
-            fill_raw_unused = "white",
-            fill_summary_reference = "black",
-            fill_summary_comparison = "black",
-            fill_summary_unused = "black",
+            fill_raw_comparison = "NA",
+            fill_raw_unused = "NA",
+            fill_summary_reference = "blue",
+            fill_summary_comparison = "green",
+            fill_summary_unused = "slategray",
             fill_summary_difference = "black",
             size_raw_reference = "2",
             size_raw_comparison = "2",
-            size_raw_unused = "2",
+            size_raw_unused = "1",
             size_summary_reference = "3",
             size_summary_comparison = "3",
-            size_summary_unused = "3",
+            size_summary_unused = "2",
             size_summary_difference = "3",
             alpha_raw_reference = "1",
             alpha_raw_comparison = "1",
@@ -80,7 +81,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             linetype_summary_difference = "solid",
             color_interval_reference = "black",
             color_interval_comparison = "black",
-            color_interval_unused = "black",
+            color_interval_unused = "slategray",
             color_interval_difference = "black",
             size_interval_reference = "1",
             size_interval_comparison = "1",
@@ -164,6 +165,13 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 min=1,
                 max=99.999999,
                 default=95)
+            private$..effect_size <- jmvcore::OptionList$new(
+                "effect_size",
+                effect_size,
+                default="mean_difference",
+                options=list(
+                    "mean_difference",
+                    "median_difference"))
             private$..assume_equal_variance <- jmvcore::OptionBool$new(
                 "assume_equal_variance",
                 assume_equal_variance,
@@ -175,7 +183,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="450")
+                default="550")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
@@ -203,23 +211,23 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..axis.text.y <- jmvcore::OptionString$new(
                 "axis.text.y",
                 axis.text.y,
-                default="10")
+                default="8")
             private$..axis.title.y <- jmvcore::OptionString$new(
                 "axis.title.y",
                 axis.title.y,
-                default="12")
+                default="10")
             private$..axis.text.x <- jmvcore::OptionString$new(
                 "axis.text.x",
                 axis.text.x,
-                default="10")
+                default="8")
             private$..axis.title.x <- jmvcore::OptionString$new(
                 "axis.title.x",
                 axis.title.x,
-                default="12")
+                default="10")
             private$..simple_contrast_labels <- jmvcore::OptionBool$new(
                 "simple_contrast_labels",
                 simple_contrast_labels,
-                default=FALSE)
+                default=TRUE)
             private$..error_layout <- jmvcore::OptionList$new(
                 "error_layout",
                 error_layout,
@@ -235,7 +243,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..error_nudge <- jmvcore::OptionString$new(
                 "error_nudge",
                 error_nudge,
-                default="0.4")
+                default="0.5")
             private$..data_layout <- jmvcore::OptionList$new(
                 "data_layout",
                 data_layout,
@@ -247,7 +255,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..data_spread <- jmvcore::OptionString$new(
                 "data_spread",
                 data_spread,
-                default="0.25")
+                default="0.20")
             private$..difference_axis_units <- jmvcore::OptionList$new(
                 "difference_axis_units",
                 difference_axis_units,
@@ -262,7 +270,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..shape_raw_reference <- jmvcore::OptionList$new(
                 "shape_raw_reference",
                 shape_raw_reference,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -280,7 +288,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..shape_raw_unused <- jmvcore::OptionList$new(
                 "shape_raw_unused",
                 shape_raw_unused,
-                default="circle filled",
+                default="square filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -289,7 +297,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..shape_summary_reference <- jmvcore::OptionList$new(
                 "shape_summary_reference",
                 shape_summary_reference,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -307,7 +315,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..shape_summary_unused <- jmvcore::OptionList$new(
                 "shape_summary_unused",
                 shape_summary_unused,
-                default="circle filled",
+                default="square filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -325,7 +333,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_raw_reference <- jmvcore::OptionList$new(
                 "color_raw_reference",
                 color_raw_reference,
-                default="gray",
+                default="blue",
                 options=list(
                     "white",
                     "aliceblue",
@@ -428,7 +436,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_raw_comparison <- jmvcore::OptionList$new(
                 "color_raw_comparison",
                 color_raw_comparison,
-                default="blue",
+                default="green",
                 options=list(
                     "white",
                     "aliceblue",
@@ -531,7 +539,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_raw_unused <- jmvcore::OptionList$new(
                 "color_raw_unused",
                 color_raw_unused,
-                default="blue",
+                default="grey",
                 options=list(
                     "white",
                     "aliceblue",
@@ -634,7 +642,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_summary_reference <- jmvcore::OptionList$new(
                 "color_summary_reference",
                 color_summary_reference,
-                default="black",
+                default="blue",
                 options=list(
                     "white",
                     "aliceblue",
@@ -737,7 +745,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_summary_comparison <- jmvcore::OptionList$new(
                 "color_summary_comparison",
                 color_summary_comparison,
-                default="blue",
+                default="green",
                 options=list(
                     "white",
                     "aliceblue",
@@ -840,7 +848,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_summary_unused <- jmvcore::OptionList$new(
                 "color_summary_unused",
                 color_summary_unused,
-                default="blue",
+                default="slategray",
                 options=list(
                     "white",
                     "aliceblue",
@@ -1150,7 +1158,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..fill_raw_comparison <- jmvcore::OptionList$new(
                 "fill_raw_comparison",
                 fill_raw_comparison,
-                default="white",
+                default="NA",
                 options=list(
                     "NA",
                     "white",
@@ -1254,7 +1262,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..fill_raw_unused <- jmvcore::OptionList$new(
                 "fill_raw_unused",
                 fill_raw_unused,
-                default="white",
+                default="NA",
                 options=list(
                     "NA",
                     "white",
@@ -1358,7 +1366,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..fill_summary_reference <- jmvcore::OptionList$new(
                 "fill_summary_reference",
                 fill_summary_reference,
-                default="black",
+                default="blue",
                 options=list(
                     "NA",
                     "white",
@@ -1462,7 +1470,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..fill_summary_comparison <- jmvcore::OptionList$new(
                 "fill_summary_comparison",
                 fill_summary_comparison,
-                default="black",
+                default="green",
                 options=list(
                     "NA",
                     "white",
@@ -1566,7 +1574,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..fill_summary_unused <- jmvcore::OptionList$new(
                 "fill_summary_unused",
                 fill_summary_unused,
-                default="black",
+                default="slategray",
                 options=list(
                     "NA",
                     "white",
@@ -1796,7 +1804,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..size_raw_unused <- jmvcore::OptionList$new(
                 "size_raw_unused",
                 size_raw_unused,
-                default="2",
+                default="1",
                 options=list(
                     "1",
                     "2",
@@ -1829,7 +1837,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..size_summary_unused <- jmvcore::OptionList$new(
                 "size_summary_unused",
                 size_summary_unused,
-                default="3",
+                default="2",
                 options=list(
                     "1",
                     "2",
@@ -2167,7 +2175,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..color_interval_unused <- jmvcore::OptionList$new(
                 "color_interval_unused",
                 color_interval_unused,
-                default="black",
+                default="slategray",
                 options=list(
                     "white",
                     "aliceblue",
@@ -2919,6 +2927,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$.addOption(private$..comparison_labels)
             self$.addOption(private$..reference_labels)
             self$.addOption(private$..conf_level)
+            self$.addOption(private$..effect_size)
             self$.addOption(private$..assume_equal_variance)
             self$.addOption(private$..show_details)
             self$.addOption(private$..es_plot_width)
@@ -3013,6 +3022,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         comparison_labels = function() private$..comparison_labels$value,
         reference_labels = function() private$..reference_labels$value,
         conf_level = function() private$..conf_level$value,
+        effect_size = function() private$..effect_size$value,
         assume_equal_variance = function() private$..assume_equal_variance$value,
         show_details = function() private$..show_details$value,
         es_plot_width = function() private$..es_plot_width$value,
@@ -3106,6 +3116,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         ..comparison_labels = NA,
         ..reference_labels = NA,
         ..conf_level = NA,
+        ..effect_size = NA,
         ..assume_equal_variance = NA,
         ..show_details = NA,
         ..es_plot_width = NA,
@@ -3195,9 +3206,9 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
+        es_median_difference = function() private$.items[["es_median_difference"]],
         es_mean_difference = function() private$.items[["es_mean_difference"]],
         es_smd = function() private$.items[["es_smd"]],
-        es_median_difference = function() private$.items[["es_median_difference"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]]),
     private = list(),
@@ -3327,9 +3338,61 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `visible`="(show_details & switch == 'from_raw')"))))
             self$add(jmvcore::Table$new(
                 options=options,
+                name="es_median_difference",
+                title="Median difference",
+                visible="(effect_size == 'median_difference')",
+                rows=3,
+                clearWith=list(
+                    "switch",
+                    "grouping_variable_levels",
+                    "means",
+                    "sds",
+                    "ns",
+                    "outcome_variable_name",
+                    "outcome_variable",
+                    "grouping_variable",
+                    "reference_levels",
+                    "comparison_levels",
+                    "conf_level",
+                    "assume_equal_variance"),
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>Mdn</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
                 name="es_mean_difference",
                 title="Mean difference",
                 rows=3,
+                visible="(effect_size == 'mean_difference')",
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -3390,6 +3453,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 name="es_smd",
                 title="Standardized mean difference",
                 rows=1,
+                visible="(effect_size == 'mean_difference')",
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -3458,57 +3522,6 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `title`="<i>d</i><sub>biased</sub>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
-            self$add(jmvcore::Table$new(
-                options=options,
-                name="es_median_difference",
-                title="Median difference",
-                visible="(switch == 'from_raw')",
-                rows=3,
-                clearWith=list(
-                    "switch",
-                    "grouping_variable_levels",
-                    "means",
-                    "sds",
-                    "ns",
-                    "outcome_variable_name",
-                    "outcome_variable",
-                    "grouping_variable",
-                    "reference_levels",
-                    "comparison_levels",
-                    "conf_level",
-                    "assume_equal_variance"),
-                columns=list(
-                    list(
-                        `name`="outcome_variable_name", 
-                        `title`="Outcome variable", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="grouping_variable_name", 
-                        `title`="Grouping variable", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="effect", 
-                        `title`="Effect", 
-                        `type`="text"),
-                    list(
-                        `name`="effect_size", 
-                        `type`="number", 
-                        `title`="<i>Mdn</i>"),
-                    list(
-                        `name`="LL", 
-                        `title`="LL", 
-                        `type`="number"),
-                    list(
-                        `name`="UL", 
-                        `title`="UL", 
-                        `type`="number"),
-                    list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
-                        `type`="number", 
-                        `visible`="(show_details)"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",
@@ -3562,6 +3575,7 @@ jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
 #' @param comparison_labels .
 #' @param reference_labels .
 #' @param conf_level .
+#' @param effect_size .
 #' @param assume_equal_variance .
 #' @param show_details .
 #' @param es_plot_width .
@@ -3647,9 +3661,9 @@ jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #' }
@@ -3675,54 +3689,55 @@ jamovimdiffindcontrast <- function(
     comparison_labels = " ",
     reference_labels = " ",
     conf_level = 95,
+    effect_size = "mean_difference",
     assume_equal_variance = TRUE,
     show_details = FALSE,
-    es_plot_width = "450",
+    es_plot_width = "550",
     es_plot_height = "450",
     ymin = "auto",
     ymax = "auto",
     ybreaks = "auto",
     ylab = "auto",
     xlab = "auto",
-    axis.text.y = "10",
-    axis.title.y = "12",
-    axis.text.x = "10",
-    axis.title.x = "12",
-    simple_contrast_labels = FALSE,
+    axis.text.y = "8",
+    axis.title.y = "10",
+    axis.text.x = "8",
+    axis.title.x = "10",
+    simple_contrast_labels = TRUE,
     error_layout = "halfeye",
     error_scale = "0.25",
-    error_nudge = "0.4",
+    error_nudge = "0.5",
     data_layout = "random",
-    data_spread = "0.25",
+    data_spread = "0.20",
     difference_axis_units = "raw",
     difference_axis_breaks = "auto",
-    shape_raw_reference = "square filled",
+    shape_raw_reference = "circle filled",
     shape_raw_comparison = "circle filled",
-    shape_raw_unused = "circle filled",
-    shape_summary_reference = "square filled",
+    shape_raw_unused = "square filled",
+    shape_summary_reference = "circle filled",
     shape_summary_comparison = "circle filled",
-    shape_summary_unused = "circle filled",
+    shape_summary_unused = "square filled",
     shape_summary_difference = "triangle filled",
-    color_raw_reference = "gray",
-    color_raw_comparison = "blue",
-    color_raw_unused = "blue",
-    color_summary_reference = "black",
-    color_summary_comparison = "blue",
-    color_summary_unused = "blue",
+    color_raw_reference = "blue",
+    color_raw_comparison = "green",
+    color_raw_unused = "grey",
+    color_summary_reference = "blue",
+    color_summary_comparison = "green",
+    color_summary_unused = "slategray",
     color_summary_difference = "black",
     fill_raw_reference = "NA",
-    fill_raw_comparison = "white",
-    fill_raw_unused = "white",
-    fill_summary_reference = "black",
-    fill_summary_comparison = "black",
-    fill_summary_unused = "black",
+    fill_raw_comparison = "NA",
+    fill_raw_unused = "NA",
+    fill_summary_reference = "blue",
+    fill_summary_comparison = "green",
+    fill_summary_unused = "slategray",
     fill_summary_difference = "black",
     size_raw_reference = "2",
     size_raw_comparison = "2",
-    size_raw_unused = "2",
+    size_raw_unused = "1",
     size_summary_reference = "3",
     size_summary_comparison = "3",
-    size_summary_unused = "3",
+    size_summary_unused = "2",
     size_summary_difference = "3",
     alpha_raw_reference = "1",
     alpha_raw_comparison = "1",
@@ -3737,7 +3752,7 @@ jamovimdiffindcontrast <- function(
     linetype_summary_difference = "solid",
     color_interval_reference = "black",
     color_interval_comparison = "black",
-    color_interval_unused = "black",
+    color_interval_unused = "slategray",
     color_interval_difference = "black",
     size_interval_reference = "1",
     size_interval_comparison = "1",
@@ -3791,6 +3806,7 @@ jamovimdiffindcontrast <- function(
         comparison_labels = comparison_labels,
         reference_labels = reference_labels,
         conf_level = conf_level,
+        effect_size = effect_size,
         assume_equal_variance = assume_equal_variance,
         show_details = show_details,
         es_plot_width = es_plot_width,

@@ -75,6 +75,16 @@ options:
       max: 99.999999
       default: 95
 
+    - name: effect_size
+      title: Effect size of interest
+      type: List
+      default: mean_difference
+      options:
+          - name: mean_difference
+            title: Mean difference
+          - name: median_difference
+            title: Median difference
+
     - name: assume_equal_variance
       title: Assume equal variances
       type: Bool
@@ -88,7 +98,7 @@ options:
     - name: es_plot_width
       title: Width
       type: String
-      default: '450'
+      default: '550'
 
     - name: es_plot_height
       title: Height
@@ -123,27 +133,27 @@ options:
     - name: axis.text.y
       title: 'Tick font size'
       type: String
-      default: '10'
+      default: '8'
 
     - name: axis.title.y
       title: 'Label font size'
       type: String
-      default: '12'
+      default: '10'
 
     - name: axis.text.x
       title: 'Tick font size'
       type: String
-      default: '10'
+      default: '8'
 
     - name: axis.title.x
       title: 'Label font size'
       type: String
-      default: '12'
+      default: '10'
 
     - name: simple_contrast_labels
       title: Simple labels
       type: Bool
-      default: false
+      default: true
 
     - name: error_layout
       type: List
@@ -165,7 +175,7 @@ options:
     - name: error_nudge
       title: 'Offset from data'
       type: String
-      default: '0.4'
+      default: '0.5'
 
     - name: data_layout
       type: List
@@ -182,7 +192,7 @@ options:
     - name: data_spread
       title: Spread
       type: String
-      default: '0.25'
+      default: '0.20'
 
     - name: difference_axis_units
       title: Units
@@ -201,7 +211,7 @@ options:
 
     - name: shape_raw_reference
       type: List
-      default: 'square filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -227,7 +237,7 @@ options:
 
     - name: shape_raw_unused
       type: List
-      default: 'circle filled'
+      default: 'square filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -240,7 +250,7 @@ options:
 
     - name: shape_summary_reference
       type: List
-      default: 'square filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -266,7 +276,7 @@ options:
 
     - name: shape_summary_unused
       type: List
-      default: 'circle filled'
+      default: 'square filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -292,7 +302,7 @@ options:
 
     - name: color_raw_reference
       type: List
-      default: 'gray'
+      default: 'blue'
       options:
          - name: 'white'
            title: 'white'
@@ -493,7 +503,7 @@ options:
 
     - name: color_raw_comparison
       type: List
-      default: 'blue'
+      default: 'green'
       options:
          - name: 'white'
            title: 'white'
@@ -694,7 +704,7 @@ options:
 
     - name: color_raw_unused
       type: List
-      default: 'blue'
+      default: 'grey'
       options:
          - name: 'white'
            title: 'white'
@@ -895,7 +905,7 @@ options:
 
     - name: color_summary_reference
       type: List
-      default: 'black'
+      default: 'blue'
       options:
          - name: 'white'
            title: 'white'
@@ -1096,7 +1106,7 @@ options:
 
     - name: color_summary_comparison
       type: List
-      default: 'blue'
+      default: 'green'
       options:
          - name: 'white'
            title: 'white'
@@ -1297,7 +1307,7 @@ options:
 
     - name: color_summary_unused
       type: List
-      default: 'blue'
+      default: 'slategray'
       options:
          - name: 'white'
            title: 'white'
@@ -1902,7 +1912,7 @@ options:
 
     - name: fill_raw_comparison
       type: List
-      default: 'white'
+      default: 'NA'
       options:
          - name: 'NA'
            title: 'None'
@@ -2105,7 +2115,7 @@ options:
 
     - name: fill_raw_unused
       type: List
-      default: 'white'
+      default: 'NA'
       options:
          - name: 'NA'
            title: 'None'
@@ -2308,7 +2318,7 @@ options:
 
     - name: fill_summary_reference
       type: List
-      default: 'black'
+      default: 'blue'
       options:
          - name: 'NA'
            title: 'None'
@@ -2511,7 +2521,7 @@ options:
 
     - name: fill_summary_comparison
       type: List
-      default: 'black'
+      default: 'green'
       options:
          - name: 'NA'
            title: 'None'
@@ -2714,7 +2724,7 @@ options:
 
     - name: fill_summary_unused
       type: List
-      default: 'black'
+      default: 'slategray'
       options:
          - name: 'NA'
            title: 'None'
@@ -3154,7 +3164,7 @@ options:
 
     - name: size_raw_unused
       type: List
-      default: '2'
+      default: '1'
       options:
         - name: '1'
           title: '1'
@@ -3205,7 +3215,7 @@ options:
 
     - name: size_summary_unused
       type: List
-      default: '3'
+      default: '2'
       options:
         - name: '1'
           title: '1'
@@ -3806,7 +3816,7 @@ options:
 
     - name: color_interval_unused
       type: List
-      default: 'black'
+      default: 'slategray'
       options:
          - name: 'white'
            title: 'white'

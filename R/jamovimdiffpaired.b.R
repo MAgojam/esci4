@@ -7,6 +7,7 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
     private = list(
         .init = function() {
 
+          from_raw <- (self$options$switch == "from_raw")
 
           try(tbl_overview <- self$results$overview)
           try(tbl_es_mean_difference <- self$results$es_mean_difference)
@@ -31,12 +32,38 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           jamovi_set_confidence(tbl_es_median_difference, conf_level)
           jamovi_set_confidence(tbl_es_median_ratio, conf_level)
 
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 200,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 2000,
+            upper_inclusive = TRUE
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 550,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE
+          )
+
+          image <- self$results$estimation_plots
+          image$setSize(width , height)
+
         },
         .run = function() {
 
+          from_raw <- (self$options$switch == "from_raw")
 
-          estimate <- jamovi_mdiff_paired(self, save_raw_data = FALSE)
-
+          estimate <- jamovi_mdiff_paired(
+            self,
+            save_raw_data = FALSE
+          )
 
           # Print any notes that emerged from running the analysis
          jamovi_set_notes(self$results$help)
@@ -50,14 +77,38 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           # Fill tables
          jamovi_estimate_filler(self, estimate, TRUE)
 
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          # Redo analysis
+          estimate <- jamovi_mdiff_paired(
+            self = self,
+            save_raw_data = TRUE
+          )
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          if (is.null(estimate$properties$contrast)) {
+            return(TRUE)
+          }
+
+          myplot <- jamovi_plot_mdiff(
+            self,
+            estimate,
+            image,
+            ggtheme,
+            theme
+          )
+
+          print(myplot)
+          TRUE
+
         })
 )
 
 
 jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
-
-
-
 
   # Prelim -----------------------------------------------------
   from_raw <- (self$options$switch == "from_raw")

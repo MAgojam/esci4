@@ -15,46 +15,41 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             outcome_variable_name = "Outcome variable",
             conf_level = 95,
             show_details = FALSE,
-            es_plot_width = "450",
+            es_plot_width = "550",
             es_plot_height = "450",
             ymin = "auto",
             ymax = "auto",
             ybreaks = "auto",
             ylab = "auto",
             xlab = "auto",
-            axis.text.y = "10",
-            axis.title.y = "12",
-            axis.text.x = "10",
-            axis.title.x = "12",
-            simple_contrast_labels = FALSE,
+            axis.text.y = "8",
+            axis.title.y = "10",
+            axis.text.x = "8",
+            axis.title.x = "10",
+            simple_contrast_labels = TRUE,
             error_layout = "halfeye",
             error_scale = "0.25",
             error_nudge = "0.4",
             data_layout = "random",
-            data_spread = "0.25",
+            data_spread = "0.20",
             difference_axis_units = "raw",
             difference_axis_breaks = "auto",
-            shape_raw_reference = "square filled",
             shape_raw_comparison = "circle filled",
-            shape_summary_reference = "square filled",
+            shape_summary_reference = "circle filled",
             shape_summary_comparison = "circle filled",
             shape_summary_difference = "triangle filled",
-            color_raw_reference = "gray",
-            color_raw_comparison = "blue",
-            color_summary_reference = "black",
-            color_summary_comparison = "blue",
+            color_raw_comparison = "green",
+            color_summary_reference = "blue",
+            color_summary_comparison = "green",
             color_summary_difference = "black",
-            fill_raw_reference = "NA",
-            fill_raw_comparison = "white",
-            fill_summary_reference = "black",
-            fill_summary_comparison = "black",
+            fill_raw_comparison = "NA",
+            fill_summary_reference = "blue",
+            fill_summary_comparison = "green",
             fill_summary_difference = "black",
-            size_raw_reference = "2",
             size_raw_comparison = "2",
             size_summary_reference = "3",
             size_summary_comparison = "3",
             size_summary_difference = "3",
-            alpha_raw_reference = "1",
             alpha_raw_comparison = "1",
             alpha_summary_reference = "1",
             alpha_summary_comparison = "1",
@@ -127,7 +122,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="450")
+                default="550")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
@@ -155,23 +150,23 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..axis.text.y <- jmvcore::OptionString$new(
                 "axis.text.y",
                 axis.text.y,
-                default="10")
+                default="8")
             private$..axis.title.y <- jmvcore::OptionString$new(
                 "axis.title.y",
                 axis.title.y,
-                default="12")
+                default="10")
             private$..axis.text.x <- jmvcore::OptionString$new(
                 "axis.text.x",
                 axis.text.x,
-                default="10")
+                default="8")
             private$..axis.title.x <- jmvcore::OptionString$new(
                 "axis.title.x",
                 axis.title.x,
-                default="12")
+                default="10")
             private$..simple_contrast_labels <- jmvcore::OptionBool$new(
                 "simple_contrast_labels",
                 simple_contrast_labels,
-                default=FALSE)
+                default=TRUE)
             private$..error_layout <- jmvcore::OptionList$new(
                 "error_layout",
                 error_layout,
@@ -199,7 +194,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..data_spread <- jmvcore::OptionString$new(
                 "data_spread",
                 data_spread,
-                default="0.25")
+                default="0.20")
             private$..difference_axis_units <- jmvcore::OptionList$new(
                 "difference_axis_units",
                 difference_axis_units,
@@ -211,15 +206,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "difference_axis_breaks",
                 difference_axis_breaks,
                 default="auto")
-            private$..shape_raw_reference <- jmvcore::OptionList$new(
-                "shape_raw_reference",
-                shape_raw_reference,
-                default="square filled",
-                options=list(
-                    "circle filled",
-                    "square filled",
-                    "triangle filled",
-                    "diamond filled"))
             private$..shape_raw_comparison <- jmvcore::OptionList$new(
                 "shape_raw_comparison",
                 shape_raw_comparison,
@@ -232,7 +218,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..shape_summary_reference <- jmvcore::OptionList$new(
                 "shape_summary_reference",
                 shape_summary_reference,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -256,113 +242,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "square filled",
                     "triangle filled",
                     "diamond filled"))
-            private$..color_raw_reference <- jmvcore::OptionList$new(
-                "color_raw_reference",
-                color_raw_reference,
-                default="gray",
-                options=list(
-                    "white",
-                    "aliceblue",
-                    "antiquewhite",
-                    "aquamarine",
-                    "azure",
-                    "beige",
-                    "bisque",
-                    "black",
-                    "blanchedalmond",
-                    "blue",
-                    "blueviolet",
-                    "brown",
-                    "burlywood",
-                    "cadetblue",
-                    "chartreuse",
-                    "chocolate",
-                    "coral",
-                    "cornflowerblue",
-                    "cornsilk",
-                    "cyan",
-                    "deeppink",
-                    "deepskyblue",
-                    "dimgray",
-                    "dimgrey",
-                    "dodgerblue",
-                    "firebrick",
-                    "floralwhite",
-                    "forestgreen",
-                    "gainsboro",
-                    "ghostwhite",
-                    "gold",
-                    "goldenrod",
-                    "gray",
-                    "green",
-                    "greenyellow",
-                    "grey",
-                    "honeydew",
-                    "hotpink",
-                    "indianred",
-                    "ivory",
-                    "khaki",
-                    "lavender",
-                    "lavenderblush",
-                    "lawngreen",
-                    "lemonchiffon",
-                    "limegreen",
-                    "linen",
-                    "magenta",
-                    "maroon",
-                    "midnightblue",
-                    "mintcream",
-                    "mistyrose",
-                    "moccasin",
-                    "navajowhite",
-                    "navy",
-                    "navyblue",
-                    "oldlace",
-                    "olivedrab",
-                    "orange",
-                    "orangered",
-                    "orchid",
-                    "palegoldenrod",
-                    "palegreen",
-                    "paleturquoise",
-                    "palevioletred",
-                    "papayawhip",
-                    "peachpuff",
-                    "peru",
-                    "pink",
-                    "plum",
-                    "powderblue",
-                    "purple",
-                    "red",
-                    "rosybrown",
-                    "royalblue",
-                    "saddlebrown",
-                    "salmon",
-                    "sandybrown",
-                    "seagreen",
-                    "seashell",
-                    "sienna",
-                    "skyblue",
-                    "slateblue",
-                    "slategray",
-                    "slategrey",
-                    "snow",
-                    "springgreen",
-                    "steelblue",
-                    "tan",
-                    "thistle",
-                    "tomato",
-                    "turquoise",
-                    "violet",
-                    "violetred",
-                    "wheat",
-                    "whitesmoke",
-                    "yellow",
-                    "yellowgreen"))
             private$..color_raw_comparison <- jmvcore::OptionList$new(
                 "color_raw_comparison",
                 color_raw_comparison,
-                default="blue",
+                default="green",
                 options=list(
                     "white",
                     "aliceblue",
@@ -465,7 +348,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..color_summary_reference <- jmvcore::OptionList$new(
                 "color_summary_reference",
                 color_summary_reference,
-                default="black",
+                default="blue",
                 options=list(
                     "white",
                     "aliceblue",
@@ -568,7 +451,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..color_summary_comparison <- jmvcore::OptionList$new(
                 "color_summary_comparison",
                 color_summary_comparison,
-                default="blue",
+                default="green",
                 options=list(
                     "white",
                     "aliceblue",
@@ -771,114 +654,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "whitesmoke",
                     "yellow",
                     "yellowgreen"))
-            private$..fill_raw_reference <- jmvcore::OptionList$new(
-                "fill_raw_reference",
-                fill_raw_reference,
-                default="NA",
-                options=list(
-                    "NA",
-                    "white",
-                    "aliceblue",
-                    "antiquewhite",
-                    "aquamarine",
-                    "azure",
-                    "beige",
-                    "bisque",
-                    "black",
-                    "blanchedalmond",
-                    "blue",
-                    "blueviolet",
-                    "brown",
-                    "burlywood",
-                    "cadetblue",
-                    "chartreuse",
-                    "chocolate",
-                    "coral",
-                    "cornflowerblue",
-                    "cornsilk",
-                    "cyan",
-                    "deeppink",
-                    "deepskyblue",
-                    "dimgray",
-                    "dimgrey",
-                    "dodgerblue",
-                    "firebrick",
-                    "floralwhite",
-                    "forestgreen",
-                    "gainsboro",
-                    "ghostwhite",
-                    "gold",
-                    "goldenrod",
-                    "gray",
-                    "green",
-                    "greenyellow",
-                    "grey",
-                    "honeydew",
-                    "hotpink",
-                    "indianred",
-                    "ivory",
-                    "khaki",
-                    "lavender",
-                    "lavenderblush",
-                    "lawngreen",
-                    "lemonchiffon",
-                    "limegreen",
-                    "linen",
-                    "magenta",
-                    "maroon",
-                    "midnightblue",
-                    "mintcream",
-                    "mistyrose",
-                    "moccasin",
-                    "navajowhite",
-                    "navy",
-                    "navyblue",
-                    "oldlace",
-                    "olivedrab",
-                    "orange",
-                    "orangered",
-                    "orchid",
-                    "palegoldenrod",
-                    "palegreen",
-                    "paleturquoise",
-                    "palevioletred",
-                    "papayawhip",
-                    "peachpuff",
-                    "peru",
-                    "pink",
-                    "plum",
-                    "powderblue",
-                    "purple",
-                    "red",
-                    "rosybrown",
-                    "royalblue",
-                    "saddlebrown",
-                    "salmon",
-                    "sandybrown",
-                    "seagreen",
-                    "seashell",
-                    "sienna",
-                    "skyblue",
-                    "slateblue",
-                    "slategray",
-                    "slategrey",
-                    "snow",
-                    "springgreen",
-                    "steelblue",
-                    "tan",
-                    "thistle",
-                    "tomato",
-                    "turquoise",
-                    "violet",
-                    "violetred",
-                    "wheat",
-                    "whitesmoke",
-                    "yellow",
-                    "yellowgreen"))
             private$..fill_raw_comparison <- jmvcore::OptionList$new(
                 "fill_raw_comparison",
                 fill_raw_comparison,
-                default="white",
+                default="NA",
                 options=list(
                     "NA",
                     "white",
@@ -982,7 +761,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..fill_summary_reference <- jmvcore::OptionList$new(
                 "fill_summary_reference",
                 fill_summary_reference,
-                default="black",
+                default="blue",
                 options=list(
                     "NA",
                     "white",
@@ -1086,7 +865,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..fill_summary_comparison <- jmvcore::OptionList$new(
                 "fill_summary_comparison",
                 fill_summary_comparison,
-                default="black",
+                default="green",
                 options=list(
                     "NA",
                     "white",
@@ -1291,17 +1070,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "whitesmoke",
                     "yellow",
                     "yellowgreen"))
-            private$..size_raw_reference <- jmvcore::OptionList$new(
-                "size_raw_reference",
-                size_raw_reference,
-                default="2",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"))
             private$..size_raw_comparison <- jmvcore::OptionList$new(
                 "size_raw_comparison",
                 size_raw_comparison,
@@ -1346,16 +1114,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "4",
                     "5",
                     "6"))
-            private$..alpha_raw_reference <- jmvcore::OptionList$new(
-                "alpha_raw_reference",
-                alpha_raw_reference,
-                default="1",
-                options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
             private$..alpha_raw_comparison <- jmvcore::OptionList$new(
                 "alpha_raw_comparison",
                 alpha_raw_comparison,
@@ -2166,27 +1924,22 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..data_spread)
             self$.addOption(private$..difference_axis_units)
             self$.addOption(private$..difference_axis_breaks)
-            self$.addOption(private$..shape_raw_reference)
             self$.addOption(private$..shape_raw_comparison)
             self$.addOption(private$..shape_summary_reference)
             self$.addOption(private$..shape_summary_comparison)
             self$.addOption(private$..shape_summary_difference)
-            self$.addOption(private$..color_raw_reference)
             self$.addOption(private$..color_raw_comparison)
             self$.addOption(private$..color_summary_reference)
             self$.addOption(private$..color_summary_comparison)
             self$.addOption(private$..color_summary_difference)
-            self$.addOption(private$..fill_raw_reference)
             self$.addOption(private$..fill_raw_comparison)
             self$.addOption(private$..fill_summary_reference)
             self$.addOption(private$..fill_summary_comparison)
             self$.addOption(private$..fill_summary_difference)
-            self$.addOption(private$..size_raw_reference)
             self$.addOption(private$..size_raw_comparison)
             self$.addOption(private$..size_summary_reference)
             self$.addOption(private$..size_summary_comparison)
             self$.addOption(private$..size_summary_difference)
-            self$.addOption(private$..alpha_raw_reference)
             self$.addOption(private$..alpha_raw_comparison)
             self$.addOption(private$..alpha_summary_reference)
             self$.addOption(private$..alpha_summary_comparison)
@@ -2239,27 +1992,22 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         data_spread = function() private$..data_spread$value,
         difference_axis_units = function() private$..difference_axis_units$value,
         difference_axis_breaks = function() private$..difference_axis_breaks$value,
-        shape_raw_reference = function() private$..shape_raw_reference$value,
         shape_raw_comparison = function() private$..shape_raw_comparison$value,
         shape_summary_reference = function() private$..shape_summary_reference$value,
         shape_summary_comparison = function() private$..shape_summary_comparison$value,
         shape_summary_difference = function() private$..shape_summary_difference$value,
-        color_raw_reference = function() private$..color_raw_reference$value,
         color_raw_comparison = function() private$..color_raw_comparison$value,
         color_summary_reference = function() private$..color_summary_reference$value,
         color_summary_comparison = function() private$..color_summary_comparison$value,
         color_summary_difference = function() private$..color_summary_difference$value,
-        fill_raw_reference = function() private$..fill_raw_reference$value,
         fill_raw_comparison = function() private$..fill_raw_comparison$value,
         fill_summary_reference = function() private$..fill_summary_reference$value,
         fill_summary_comparison = function() private$..fill_summary_comparison$value,
         fill_summary_difference = function() private$..fill_summary_difference$value,
-        size_raw_reference = function() private$..size_raw_reference$value,
         size_raw_comparison = function() private$..size_raw_comparison$value,
         size_summary_reference = function() private$..size_summary_reference$value,
         size_summary_comparison = function() private$..size_summary_comparison$value,
         size_summary_difference = function() private$..size_summary_difference$value,
-        alpha_raw_reference = function() private$..alpha_raw_reference$value,
         alpha_raw_comparison = function() private$..alpha_raw_comparison$value,
         alpha_summary_reference = function() private$..alpha_summary_reference$value,
         alpha_summary_comparison = function() private$..alpha_summary_comparison$value,
@@ -2311,27 +2059,22 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..data_spread = NA,
         ..difference_axis_units = NA,
         ..difference_axis_breaks = NA,
-        ..shape_raw_reference = NA,
         ..shape_raw_comparison = NA,
         ..shape_summary_reference = NA,
         ..shape_summary_comparison = NA,
         ..shape_summary_difference = NA,
-        ..color_raw_reference = NA,
         ..color_raw_comparison = NA,
         ..color_summary_reference = NA,
         ..color_summary_comparison = NA,
         ..color_summary_difference = NA,
-        ..fill_raw_reference = NA,
         ..fill_raw_comparison = NA,
         ..fill_summary_reference = NA,
         ..fill_summary_comparison = NA,
         ..fill_summary_difference = NA,
-        ..size_raw_reference = NA,
         ..size_raw_comparison = NA,
         ..size_summary_reference = NA,
         ..size_summary_comparison = NA,
         ..size_summary_difference = NA,
-        ..alpha_raw_reference = NA,
         ..alpha_raw_comparison = NA,
         ..alpha_summary_reference = NA,
         ..alpha_summary_comparison = NA,
@@ -2626,27 +2369,22 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param data_spread .
 #' @param difference_axis_units .
 #' @param difference_axis_breaks .
-#' @param shape_raw_reference .
 #' @param shape_raw_comparison .
 #' @param shape_summary_reference .
 #' @param shape_summary_comparison .
 #' @param shape_summary_difference .
-#' @param color_raw_reference .
 #' @param color_raw_comparison .
 #' @param color_summary_reference .
 #' @param color_summary_comparison .
 #' @param color_summary_difference .
-#' @param fill_raw_reference .
 #' @param fill_raw_comparison .
 #' @param fill_summary_reference .
 #' @param fill_summary_comparison .
 #' @param fill_summary_difference .
-#' @param size_raw_reference .
 #' @param size_raw_comparison .
 #' @param size_summary_reference .
 #' @param size_summary_comparison .
 #' @param size_summary_difference .
-#' @param alpha_raw_reference .
 #' @param alpha_raw_comparison .
 #' @param alpha_summary_reference .
 #' @param alpha_summary_comparison .
@@ -2698,46 +2436,41 @@ jamovimdiffone <- function(
     outcome_variable_name = "Outcome variable",
     conf_level = 95,
     show_details = FALSE,
-    es_plot_width = "450",
+    es_plot_width = "550",
     es_plot_height = "450",
     ymin = "auto",
     ymax = "auto",
     ybreaks = "auto",
     ylab = "auto",
     xlab = "auto",
-    axis.text.y = "10",
-    axis.title.y = "12",
-    axis.text.x = "10",
-    axis.title.x = "12",
-    simple_contrast_labels = FALSE,
+    axis.text.y = "8",
+    axis.title.y = "10",
+    axis.text.x = "8",
+    axis.title.x = "10",
+    simple_contrast_labels = TRUE,
     error_layout = "halfeye",
     error_scale = "0.25",
     error_nudge = "0.4",
     data_layout = "random",
-    data_spread = "0.25",
+    data_spread = "0.20",
     difference_axis_units = "raw",
     difference_axis_breaks = "auto",
-    shape_raw_reference = "square filled",
     shape_raw_comparison = "circle filled",
-    shape_summary_reference = "square filled",
+    shape_summary_reference = "circle filled",
     shape_summary_comparison = "circle filled",
     shape_summary_difference = "triangle filled",
-    color_raw_reference = "gray",
-    color_raw_comparison = "blue",
-    color_summary_reference = "black",
-    color_summary_comparison = "blue",
+    color_raw_comparison = "green",
+    color_summary_reference = "blue",
+    color_summary_comparison = "green",
     color_summary_difference = "black",
-    fill_raw_reference = "NA",
-    fill_raw_comparison = "white",
-    fill_summary_reference = "black",
-    fill_summary_comparison = "black",
+    fill_raw_comparison = "NA",
+    fill_summary_reference = "blue",
+    fill_summary_comparison = "green",
     fill_summary_difference = "black",
-    size_raw_reference = "2",
     size_raw_comparison = "2",
     size_summary_reference = "3",
     size_summary_comparison = "3",
     size_summary_difference = "3",
-    alpha_raw_reference = "1",
     alpha_raw_comparison = "1",
     alpha_summary_reference = "1",
     alpha_summary_comparison = "1",
@@ -2800,27 +2533,22 @@ jamovimdiffone <- function(
         data_spread = data_spread,
         difference_axis_units = difference_axis_units,
         difference_axis_breaks = difference_axis_breaks,
-        shape_raw_reference = shape_raw_reference,
         shape_raw_comparison = shape_raw_comparison,
         shape_summary_reference = shape_summary_reference,
         shape_summary_comparison = shape_summary_comparison,
         shape_summary_difference = shape_summary_difference,
-        color_raw_reference = color_raw_reference,
         color_raw_comparison = color_raw_comparison,
         color_summary_reference = color_summary_reference,
         color_summary_comparison = color_summary_comparison,
         color_summary_difference = color_summary_difference,
-        fill_raw_reference = fill_raw_reference,
         fill_raw_comparison = fill_raw_comparison,
         fill_summary_reference = fill_summary_reference,
         fill_summary_comparison = fill_summary_comparison,
         fill_summary_difference = fill_summary_difference,
-        size_raw_reference = size_raw_reference,
         size_raw_comparison = size_raw_comparison,
         size_summary_reference = size_summary_reference,
         size_summary_comparison = size_summary_comparison,
         size_summary_difference = size_summary_difference,
-        alpha_raw_reference = alpha_raw_reference,
         alpha_raw_comparison = alpha_raw_comparison,
         alpha_summary_reference = alpha_summary_reference,
         alpha_summary_comparison = alpha_summary_comparison,

@@ -232,37 +232,37 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: 'Reference'
+                label: Reference
                 cell:
                   column: 1
                   row: 1
               - type: Label
-                label: 'Comparison'
+                label: Comparison
                 cell:
                   column: 2
                   row: 1
               - type: Label
-                label: 'Difference'
+                label: Difference
                 cell:
                   column: 3
                   row: 1
               - type: Label
-                label: 'Summary'
+                label: Summary
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: 'CI'
+                label: CI
                 cell:
                   column: 0
                   row: 8
               - type: Label
-                label: 'Error distribution'
+                label: Error distribution
                 cell:
                   column: 0
                   row: 13
               - type: Label
-                label: 'Raw data'
+                label: Raw data
                 cell:
                   column: 0
                   row: 16
@@ -347,12 +347,6 @@ children:
                   column: 0
                   row: 21
               - type: ComboBox
-                name: shape_raw_reference
-                enable: '(switch:from_raw)'
-                cell:
-                  column: 1
-                  row: 17
-              - type: ComboBox
                 name: shape_raw_comparison
                 enable: '(switch:from_raw)'
                 cell:
@@ -373,12 +367,6 @@ children:
                 cell:
                   column: 3
                   row: 3
-              - type: ComboBox
-                name: color_raw_reference
-                enable: '(switch:from_raw)'
-                cell:
-                  column: 1
-                  row: 19
               - type: ComboBox
                 name: color_raw_comparison
                 enable: '(switch:from_raw)'
@@ -401,12 +389,6 @@ children:
                   column: 3
                   row: 5
               - type: ComboBox
-                name: fill_raw_reference
-                enable: '(switch:from_raw)'
-                cell:
-                  column: 1
-                  row: 20
-              - type: ComboBox
                 name: fill_raw_comparison
                 enable: '(switch:from_raw)'
                 cell:
@@ -428,12 +410,6 @@ children:
                   column: 3
                   row: 6
               - type: ComboBox
-                name: size_raw_reference
-                enable: '(switch:from_raw)'
-                cell:
-                  column: 1
-                  row: 18
-              - type: ComboBox
                 name: size_raw_comparison
                 enable: '(switch:from_raw)'
                 cell:
@@ -454,12 +430,6 @@ children:
                 cell:
                   column: 3
                   row: 4
-              - type: ComboBox
-                name: alpha_raw_reference
-                enable: '(switch:from_raw)'
-                cell:
-                  column: 1
-                  row: 21
               - type: ComboBox
                 name: alpha_raw_comparison
                 enable: '(switch:from_raw)'

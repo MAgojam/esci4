@@ -6,22 +6,27 @@
         view_updated: function(ui, event) {
             this.setPanels(ui, event);
         },
-        
+
         view_creating: function(ui, event) {
             this.setPanels(ui, event);
         },
-        
+
         view_loaded: function(ui, event) {
             // do something
             this.setPanels(ui, event);
         },
 
-        
+
         raw_button_changed: function(ui, event) {
             this.setPanels(ui, event);
         },
-        
 
+
+        effect_size_changed: function(ui, event) {
+            if (ui.effect_size.getValue() == "median_difference") {
+                ui.error_layout.setValue("none");
+            }
+        },
 
         // this is an example of an auxiliary function
         setPanels: function(ui, event) {
@@ -32,13 +37,15 @@
               // would be nice to be able to disable the controls in the raw data panel and/or expand option for that panel
               ui.spanel.expand();
               ui.rpanel.collapse();
+              ui.effect_size.setValue("mean_difference");
+              ui.show_ratio.setValue(false)
             } else {
               // raw data selected, so expand that panel, collapse summary data panel and disable its controls
               // would be nice to disable collapse/expand options on the panels, but doesn't seem possible at the moment
               ui.spanel.collapse();
               ui.rpanel.expand();
             }
- 
+
         }
 
 
