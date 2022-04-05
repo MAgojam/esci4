@@ -6,7 +6,7 @@ test_mdiff_paired <- function() {
 
   cor <- (sd1^2 + sd2^2 - sdiff^2) / (2*sd1*sd2)
 
-  estimate_mdiff_paired(
+  estimate <- estimate_mdiff_paired(
     comparison_mean = 14.25,
     comparison_sd = 4.28,
     reference_mean = 12.88,

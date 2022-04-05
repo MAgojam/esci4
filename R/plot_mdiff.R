@@ -330,9 +330,9 @@ plot_mdiff_base <- function(
             rep(gdata$effect[[3]], nrow(rdata))
           ),
           outcome_variable = c(
-            rdata$comparison_measure,
             rdata$reference_measure,
-            rdata$reference_measure - rdata$comparison_measure
+            rdata$comparison_measure,
+            rdata$comparison_measure - rdata$reference_measure + reference_es
           )
         )
        rdata$type <- "Difference"
