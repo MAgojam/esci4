@@ -146,7 +146,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `type`="number"),
                     list(
                         `name`="median", 
-                        `title`="Median", 
+                        `title`="Mdn", 
                         `type`="number", 
                         `visible`="(switch == 'from_raw')"),
                     list(

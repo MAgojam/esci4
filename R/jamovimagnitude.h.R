@@ -1052,26 +1052,28 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="mean_LL", 
                         `title`="LL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="mean_UL", 
                         `title`="UL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="median", 
-                        `title`="Median", 
+                        `title`="Mdn", 
                         `type`="number", 
                         `visible`="(switch == 'from_raw')"),
                     list(
                         `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="median_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 

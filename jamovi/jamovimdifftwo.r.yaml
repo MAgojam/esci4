@@ -47,21 +47,23 @@ items:
         - name: mean_LL
           title: LL
           type: number
+          visible: (effect_size == 'mean_difference')
         - name: mean_UL
           title: UL
           type: number
+          visible: (effect_size == 'mean_difference')
         - name: median
-          title: Median
+          title: Mdn
           type: number
-          visible: (show_details & switch == 'from_raw')
+          visible: (switch == 'from_raw')
         - name: median_LL
           title: LL
           type: number
-          visible: (show_details & switch == 'from_raw')
+          visible: (effect_size == 'median_difference' & switch == 'from_raw')
         - name: median_UL
           title: UL
           type: number
-          visible: (show_details & switch == 'from_raw')
+          visible: (effect_size == 'median_difference' & switch == 'from_raw')
         - name: sd
           type: number
           title: <i>s</i>
@@ -93,15 +95,15 @@ items:
         - name: df_i
           title: <i>df</i>
           type: integer
-          visible: (show_details)
+          visible: (show_details & effect_size == 'mean_difference')
         - name: mean_SE
           title: <i>SE<sub>Mean</sub></i>
           type: number
-          visible: (show_details)
+          visible: (show_details & effect_size == 'mean_difference')
         - name: median_SE
           type: number
           title: <i>SE<sub>Median</sub></i>
-          visible: (show_details & switch == 'from_raw')
+          visible: (show_details & effect_size == 'median_difference' & switch == 'from_raw')
 
     - name:  es_mean_difference
       title: Mean difference

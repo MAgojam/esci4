@@ -27,21 +27,23 @@ items:
         - name: mean_LL
           title: LL
           type: number
+          visible: (effect_size == 'mean_difference')
         - name: mean_UL
           title: UL
           type: number
+          visible: (effect_size == 'mean_difference')
         - name: median
-          title: Median
+          title: Mdn
           type: number
           visible: (switch == 'from_raw')
         - name: median_LL
           title: LL
           type: number
-          visible: (switch == 'from_raw')
+          visible: (effect_size == 'median_difference' & switch == 'from_raw')
         - name: median_UL
           title: UL
           type: number
-          visible: (switch == 'from_raw')
+          visible: (effect_size == 'median_difference' & switch == 'from_raw')
         - name: sd
           type: number
           title: <i>s</i>

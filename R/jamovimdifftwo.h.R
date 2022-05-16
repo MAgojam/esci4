@@ -2940,7 +2940,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `combineBelow`=TRUE),
                     list(
                         `name`="grouping_variable_name", 
-                        `title`="Grouping variable name", 
+                        `title`="Grouping variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -2954,26 +2954,28 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="mean_LL", 
                         `title`="LL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="mean_UL", 
                         `title`="UL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="median", 
-                        `title`="Median", 
+                        `title`="Mdn", 
                         `type`="number", 
-                        `visible`="(show_details & switch == 'from_raw')"),
+                        `visible`="(switch == 'from_raw')"),
                     list(
                         `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(show_details & switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="median_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(show_details & switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -3013,17 +3015,17 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
                         `name`="mean_SE", 
                         `title`="<i>SE<sub>Mean</sub></i>", 
                         `type`="number", 
-                        `visible`="(show_details)"),
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
                         `name`="median_SE", 
                         `type`="number", 
                         `title`="<i>SE<sub>Median</sub></i>", 
-                        `visible`="(show_details & switch == 'from_raw')"))))
+                        `visible`="(show_details & effect_size == 'median_difference' & switch == 'from_raw')"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_mean_difference",
