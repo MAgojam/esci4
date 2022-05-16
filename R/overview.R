@@ -261,10 +261,12 @@ overview.base <- function(
   statpsych_row <- if (assume_equal_variance | n_means == 1) 1 else 2
   statpsych_cnames <- c("LL", "UL", "df", "SE")
   esci_column_names <- c("mean_LL", "mean_UL", "df", "mean_SE")
+  statpsych_cnames_mdn <- c("LL", "UL")
+  esci_column_names_mdn <- c("median_LL", "median_UL")
 
 
   # Analysis ----------------------------------------
-    if (n_means == 1) {
+  if (n_means == 1) {
     res <- as.data.frame(
         statpsych::ci.mean1(
         alpha = 1 - conf_level,
@@ -289,7 +291,15 @@ overview.base <- function(
         v = contrasts[x,]
       )
 
+      res_median <- statpsych::ci.lc.median.bs(
+        alpha = 1 - conf_level,
+        m = overview_table$median,
+        s = overview_table$median_SE,
+        v = contrasts[x, ]
+      )
+
       overview_table[x, esci_column_names] <- res[statpsych_row, statpsych_cnames]
+      overview_table[x, esci_column_names_mdn ] <- res_median[1, statpsych_cnames_mdn]
     }
 
   }
