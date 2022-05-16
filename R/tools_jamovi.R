@@ -35,6 +35,45 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     result_table$effect_size_smd <- result_table$effect_size
   }
 
+  if (!is.null(result_table$comparison_mean) & !is.null(result_table$effect)) {
+    cmean <- strsplit(result_table$effect, " / ")
+    jmv_table$getColumn("comparison_mean")$setTitle(
+      paste("<i>M</i><sub>", cmean[[1]][1], "</sub>", sep = "")
+    )
+    jmv_table$getColumn("reference_mean")$setTitle(
+      paste("<i>M</i><sub>", cmean[[1]][2], "</sub>", sep = "")
+    )
+    jmv_table$getColumn("effect_size")$setTitle(
+      paste(
+        "<i>M</i><sub>", cmean[[1]][1], "</sub>",
+        " / ",
+        "<i>M</i><sub>", cmean[[1]][2], "</sub>",
+        sep = ""
+      )
+    )
+
+  }
+
+
+  if (!is.null(result_table$comparison_median) & !is.null(result_table$effect)) {
+    cmean <- strsplit(result_table$effect, " / ")
+    jmv_table$getColumn("comparison_median")$setTitle(
+      paste("<i>Mdn</i><sub>", cmean[[1]][1], "</sub>", sep = "")
+    )
+    jmv_table$getColumn("reference_median")$setTitle(
+      paste("<i>Mdn</i><sub>", cmean[[1]][2], "</sub>", sep = "")
+    )
+    jmv_table$getColumn("effect_size")$setTitle(
+      paste(
+        "<i>Mdn</i><sub>", cmean[[1]][1], "</sub>",
+        " / ",
+        "<i>Mdn</i><sub>", cmean[[1]][2], "</sub>",
+        sep = ""
+      )
+    )
+  }
+
+
   for (x in 1:nrow(result_table)) {
     # Initialize a named list
     row_list <- list()
