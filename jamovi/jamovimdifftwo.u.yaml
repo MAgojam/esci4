@@ -95,17 +95,10 @@ children:
   - type: Label
     label: Analysis options
     children:
-      - type: LayoutBox
-        margin: small
-        style: inline
-        children:
-          - type: TextBox
-            name: conf_level
-            format: number
-            margin: none
-          - type: Label
-            margin: none
-            label: '%'
+      - type: TextBox
+        name: conf_level
+        format: number
+        suffix: '%'
       - type: ComboBox
         name: effect_size
         enable: '(switch:from_raw)'
