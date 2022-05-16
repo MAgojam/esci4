@@ -35,7 +35,7 @@ items:
           type: text
           combineBelow: true
         - name: grouping_variable_name
-          title: 'Grouping variable name'
+          title: 'Grouping variable'
           type: text
           combineBelow: true
         - name: grouping_variable_level
