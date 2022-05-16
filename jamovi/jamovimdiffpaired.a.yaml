@@ -86,7 +86,7 @@ options:
             title: Median difference
 
     - name: show_ratio
-      title: Show ratios of means/medians
+      title: Show ratios
       type: Bool
       default: false
 
