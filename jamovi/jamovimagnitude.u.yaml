@@ -62,11 +62,23 @@ children:
   - type: Label
     label: Analysis options
     children:
-      - type: TextBox
-        name: conf_level
-        format: number
-      - type: CheckBox
-        name: show_details
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: TextBox
+            name: conf_level
+            format: number
+            margin: none
+          - type: Label
+            margin: none
+            label: '%'
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: CheckBox
+            name: show_details
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

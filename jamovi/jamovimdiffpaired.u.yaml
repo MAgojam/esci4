@@ -86,9 +86,17 @@ children:
   - type: Label
     label: Analysis options
     children:
-      - type: TextBox
-        name: conf_level
-        format: number
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: TextBox
+            name: conf_level
+            format: number
+            margin: none
+          - type: Label
+            margin: none
+            label: '%'
       - type: ComboBox
         name: effect_size
         enable: '(switch:from_raw)'
