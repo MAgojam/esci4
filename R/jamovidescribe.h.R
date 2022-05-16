@@ -66,7 +66,7 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
-                        `title`="Outcome Variable", 
+                        `title`="Outcome variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(

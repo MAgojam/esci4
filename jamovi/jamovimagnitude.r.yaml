@@ -1,6 +1,6 @@
 ---
 name:  jamovimagnitude
-title: Magnitude/Quantity
+title: Estimate Magnitude
 jrs:   '1.1'
 
 items:
@@ -18,7 +18,7 @@ items:
       rows:  (outcome_variable)
       columns:
         - name: outcome_variable_name
-          title: 'Outcome Variable'
+          title: 'Outcome variable'
           type: text
           combineBelow: true
         - name: mean

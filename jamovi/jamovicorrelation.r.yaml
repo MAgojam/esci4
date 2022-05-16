@@ -18,7 +18,7 @@ items:
       rows:  2
       columns:
         - name: outcome_variable_name
-          title: 'Outcome Variable'
+          title: 'Outcome variable'
           type: text
           combineBelow: true
         - name: mean
@@ -80,16 +80,16 @@ items:
           visible: (show_details)
 
     - name:  es_r
-      title: Linear correlation of magnitude
+      title: Linear Correlation
       type: Table
       rows:  1
       columns:
         - name: x_variable_name
-          title: 'Comparison variable name'
+          title: 'x variable'
           type: text
           combineBelow: true
         - name: y_variable_name
-          title: 'Reference measure name'
+          title: 'y variable'
           type: text
           combineBelow: true
         - name: effect

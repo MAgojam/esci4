@@ -260,23 +260,23 @@ estimate_mdiff_paired.summary <- function(
 
   # Initialize -----------------------------
   warnings <- c(NULL)
-  contrast <- c(1, -1)
+  contrast <- c(-1, 1)
   names(contrast) <- grouping_variable_levels
 
   # Analysis --------------------------
   overview <- rbind(
     estimate_magnitude.summary(
-      mean = comparison_mean,
-      sd = comparison_sd,
-      n = n,
-      outcome_variable_name = grouping_variable_levels[1],
-      conf_level = conf_level
-    )$overview,
-    estimate_magnitude.summary(
       mean = reference_mean,
       sd = reference_sd,
       n = n,
       outcome_variable_name = grouping_variable_levels[2],
+      conf_level = conf_level
+    )$overview,
+    estimate_magnitude.summary(
+      mean = comparison_mean,
+      sd = comparison_sd,
+      n = n,
+      outcome_variable_name = grouping_variable_levels[1],
       conf_level = conf_level
     )$overview
   )
@@ -396,7 +396,7 @@ The outcome_variable length is {reference_measure_report$valid} valid values.
   reference_measure <- reference_measure[!is.na(reference_measure)]
 
   # Analysis --------------------------
-    mydf <- data.frame(
+  mydf <- data.frame(
     "comparison_measure" = comparison_measure,
     "reference_measure" = reference_measure
   )
@@ -437,7 +437,7 @@ estimate_mdiff_paired.data.frame <- function(
 
   # Initialization -----------------
   warnings <- c(NULL)
-  contrast <- c(1, -1)
+  contrast <- c(-1, 1)
   grouping_variable_levels <- c(comparison_measure, reference_measure)
   names(contrast) <- grouping_variable_levels
 
@@ -446,16 +446,16 @@ estimate_mdiff_paired.data.frame <- function(
   # Overview
   overview <- estimate_magnitude.jamovi(
     data = data,
-    outcome_variables = grouping_variable_levels,
+    outcome_variables = c(reference_measure, comparison_measure),
     conf_level = conf_level
   )$overview
 
   # dispatch to .summary to obtain es_mean_difference and es_smd
   estimate <- estimate_mdiff_paired.summary(
-    comparison_mean = overview$mean[1],
-    comparison_sd = overview$sd[1],
-    reference_mean = overview$mean[2],
-    reference_sd = overview$sd[2],
+    comparison_mean = overview$mean[2],
+    comparison_sd = overview$sd[2],
+    reference_mean = overview$mean[1],
+    reference_sd = overview$sd[1],
     n = overview$n[1],
     correlation = cor(data[[comparison_measure]], data[[reference_measure]], use = "complete.obs"),
     grouping_variable_levels = grouping_variable_levels,

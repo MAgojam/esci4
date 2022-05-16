@@ -28,7 +28,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: x Variable
+            label: x variable
             children:
               - type: VariablesListBox
                 name: x

@@ -102,9 +102,9 @@ estimate_mdiff_two <- function(
         grouping_variable_name = grouping_variable_name,
         outcome_variable_name = outcome_variable_name,
         contrast = if (switch_comparison_order)
-            c(-1, 1)
+            c(1, -1)
           else
-            c(1, -1),
+            c(-1, 1),
         conf_level = conf_level,
         assume_equal_variance = assume_equal_variance
       )
@@ -211,9 +211,9 @@ estimate_mdiff_two <- function(
     }
 
     contrast <- if(switch_comparison_order)
-      c(-1, 1)
-    else
       c(1, -1)
+    else
+      c(-1, 1)
     names(contrast) <- grouping_variable_levels[1:2]
 
     estimate <- estimate_mdiff_ind_contrast(

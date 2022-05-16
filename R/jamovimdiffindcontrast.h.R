@@ -3217,7 +3217,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             super$initialize(
                 options=options,
                 name="",
-                title="Mdiff - Independent Groups Contrast")
+                title="Magnitudes - Independent Groups Contrast")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -3559,7 +3559,7 @@ jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
                 requiresMissings = FALSE)
         }))
 
-#' Independent groups contrast
+#' Magnitudes - Independent Groups Contrast
 #'
 #' 
 #' @param switch .

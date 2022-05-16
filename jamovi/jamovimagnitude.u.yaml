@@ -261,7 +261,7 @@ children:
                   column: 1
                   row: 7
               - type: Label
-                label: 'Error Distribution:'
+                label: 'Error distribution:'
                 cell:
                   column: 0
                   row: 8

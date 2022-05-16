@@ -1025,7 +1025,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Magnitude/Quantity")
+                title="Estimate Magnitude")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -1042,7 +1042,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
-                        `title`="Outcome Variable", 
+                        `title`="Outcome variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -1151,7 +1151,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Magnitude
+#' Estimate Magnitude
 #'
 #' 
 #' @param switch .

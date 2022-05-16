@@ -1,6 +1,6 @@
 ---
 name:  jamovicorrelation
-title: Correlation
+title: Linear Correlation
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
@@ -39,14 +39,14 @@ options:
       default: ' '
 
     - name: x_variable_name
-      title: X-variable name
+      title: x-variable name
       type: String
-      default: X variable
+      default: x variable
 
     - name: y_variable_name
-      title: Y-variable name
+      title: x-variable name
       type: String
-      default: Y variable
+      default: y variable
 
     - name: conf_level
       type: Number

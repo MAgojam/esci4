@@ -11,8 +11,8 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             y = NULL,
             r = " ",
             n = " ",
-            x_variable_name = "X variable",
-            y_variable_name = "Y variable",
+            x_variable_name = "x variable",
+            y_variable_name = "y variable",
             conf_level = 95,
             show_details = FALSE, ...) {
 
@@ -50,11 +50,11 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..x_variable_name <- jmvcore::OptionString$new(
                 "x_variable_name",
                 x_variable_name,
-                default="X variable")
+                default="x variable")
             private$..y_variable_name <- jmvcore::OptionString$new(
                 "y_variable_name",
                 y_variable_name,
-                default="Y variable")
+                default="y variable")
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -129,7 +129,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
-                        `title`="Outcome Variable", 
+                        `title`="Outcome variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -207,17 +207,17 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_r",
-                title="Linear correlation of magnitude",
+                title="Linear Correlation",
                 rows=1,
                 columns=list(
                     list(
                         `name`="x_variable_name", 
-                        `title`="Comparison variable name", 
+                        `title`="x variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="y_variable_name", 
-                        `title`="Reference measure name", 
+                        `title`="y variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -271,7 +271,7 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' Correlation
+#' Linear Correlation
 #'
 #' 
 #' @param switch .
@@ -306,8 +306,8 @@ jamovicorrelation <- function(
     y,
     r = " ",
     n = " ",
-    x_variable_name = "X variable",
-    y_variable_name = "Y variable",
+    x_variable_name = "x variable",
+    y_variable_name = "y variable",
     conf_level = 95,
     show_details = FALSE) {
 

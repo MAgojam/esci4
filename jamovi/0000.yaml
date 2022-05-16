@@ -35,12 +35,12 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuTitle: Describe
-  - title: Magnitude
+  - title: Estimate Magnitude
     name: jamovimagnitude
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Magnitude
-    menuTitle: Magnitude
+    menuTitle: Estimate Magnitude
   - title: Single group
     name: jamovimdiffone
     ns: esci4
@@ -59,12 +59,12 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Magnitude
     menuTitle: Paired
-  - title: Independent groups contrast
+  - title: Magnitudes - Independent Groups Contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Magnitude
-    menuTitle: Independent groups contrast
+    menuTitle: Magnitudes - Independent Groups Contrast
   - title: Proportion
     name: jamoviproportion
     ns: esci4
@@ -95,12 +95,12 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Proportion
     menuTitle: Independent groups contrast
-  - title: Correlation
+  - title: Linear Correlation
     name: jamovicorrelation
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Association
-    menuTitle: Correlation
+    menuTitle: Linear Correlation
   - title: Two groups
     name: jamovirdifftwo
     ns: esci4
