@@ -13,6 +13,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             n = "",
             outcome_variable_name = "Outcome variable",
             conf_level = 95,
+            effect_size = "mean",
             show_details = FALSE,
             es_plot_width = "450",
             es_plot_height = "450",
@@ -87,6 +88,13 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 min=1,
                 max=99.999999,
                 default=95)
+            private$..effect_size <- jmvcore::OptionList$new(
+                "effect_size",
+                effect_size,
+                default="mean",
+                options=list(
+                    "mean",
+                    "median"))
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
@@ -892,6 +900,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..n)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
+            self$.addOption(private$..effect_size)
             self$.addOption(private$..show_details)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
@@ -934,6 +943,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         n = function() private$..n$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         conf_level = function() private$..conf_level$value,
+        effect_size = function() private$..effect_size$value,
         show_details = function() private$..show_details$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
@@ -975,6 +985,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..n = NA,
         ..outcome_variable_name = NA,
         ..conf_level = NA,
+        ..effect_size = NA,
         ..show_details = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
@@ -1053,12 +1064,12 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="mean_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(effect_size == 'mean_difference')"),
+                        `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="mean_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(effect_size == 'mean_difference')"),
+                        `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="median", 
                         `title`="Mdn", 
@@ -1068,12 +1079,12 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median' & switch == 'from_raw')"),
                     list(
                         `name`="median_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median' & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -1110,15 +1121,20 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="Missing", 
                         `visible`="(switch == 'from_raw')"),
                     list(
-                        `name`="df", 
+                        `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
+                        `visible`="(show_details & effect_size == 'mean')"),
                     list(
                         `name`="mean_SE", 
-                        `title`="<i>SEM</i>", 
+                        `title`="<i>SE<sub>Mean</sub></i>", 
                         `type`="number", 
-                        `visible`="(show_details)"))))
+                        `visible`="(show_details & effect_size == 'mean')"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE<sub>Median</sub></i>", 
+                        `visible`="(show_details & effect_size == 'median' & switch == 'from_raw')"))))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="magnitude_plot_warnings",
@@ -1164,6 +1180,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param n .
 #' @param outcome_variable_name .
 #' @param conf_level .
+#' @param effect_size .
 #' @param show_details .
 #' @param es_plot_width .
 #' @param es_plot_height .
@@ -1222,6 +1239,7 @@ jamovimagnitude <- function(
     n = "",
     outcome_variable_name = "Outcome variable",
     conf_level = 95,
+    effect_size = "mean",
     show_details = FALSE,
     es_plot_width = "450",
     es_plot_height = "450",
@@ -1274,6 +1292,7 @@ jamovimagnitude <- function(
         n = n,
         outcome_variable_name = outcome_variable_name,
         conf_level = conf_level,
+        effect_size = effect_size,
         show_details = show_details,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,

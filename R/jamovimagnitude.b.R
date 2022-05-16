@@ -82,6 +82,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             args <- list()
             args$estimate <- estimate
             args$data_layout <- self$options$data_layout
+            args$effect_size = self$options$effect_size
             args <- jamovi_arg_builder(
                 args,
                 "data_spread",

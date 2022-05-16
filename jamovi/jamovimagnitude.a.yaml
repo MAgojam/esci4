@@ -50,6 +50,16 @@ options:
       max: 99.999999
       default: 95
 
+    - name: effect_size
+      title: Effect size of interest
+      type: List
+      default: mean
+      options:
+          - name: mean
+            title: Mean
+          - name: median
+            title: Median
+
     - name: show_details
       title: Show details
       type: Bool
