@@ -9,7 +9,21 @@ jamovi_estimate_filler <- function(self, estimate, expand = FALSE) {
           estimate[[e_table]],
           expand = TRUE
         )
+
+        eprop <- paste(e_table, "_properties", sep = "")
+        if (!is.null(estimate[[eprop]])) {
+          if (!is.null(estimate[[eprop]]$message_html)) {
+            j_table$setNote(
+              key = "dtable",
+              note = estimate[[eprop]]$message_html,
+              init = FALSE
+            )
+          }
+        }
+
+
       }
+
     }
   }
 
