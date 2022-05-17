@@ -2942,7 +2942,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="grouping_variable_level", 
                         `title`="Group", 
@@ -3055,7 +3056,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
@@ -3116,7 +3118,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
@@ -3190,7 +3193,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
@@ -3244,7 +3248,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
@@ -3295,7 +3300,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 

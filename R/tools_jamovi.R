@@ -35,6 +35,18 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     result_table$effect_size_smd <- result_table$effect_size
   }
 
+  if (!is.null(result_table$grouping_variable_name) & !is.null(result_table$grouping_variable_level)) {
+    jmv_table$getColumn("grouping_variable_level")$setTitle(
+      result_table$grouping_variable_name[[1]]
+    )
+  }
+
+  if (!is.null(result_table$grouping_variable_name) & !is.null(result_table$effect)) {
+    jmv_table$getColumn("effect")$setTitle(
+      result_table$grouping_variable_name[[1]]
+    )
+  }
+
   if (!is.null(result_table$comparison_mean) & !is.null(result_table$effect)) {
     cmean <- strsplit(result_table$effect, " / ")
     jmv_table$getColumn("comparison_mean")$setTitle(
@@ -53,7 +65,6 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     )
 
   }
-
 
   if (!is.null(result_table$comparison_median) & !is.null(result_table$effect)) {
     cmean <- strsplit(result_table$effect, " / ")

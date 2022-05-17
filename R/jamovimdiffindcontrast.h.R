@@ -3254,7 +3254,8 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="grouping_variable_level", 
                         `title`="Group", 
@@ -3367,7 +3368,8 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
@@ -3418,7 +3420,8 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
@@ -3479,7 +3482,8 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 

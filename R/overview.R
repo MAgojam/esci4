@@ -291,15 +291,18 @@ overview.base <- function(
         v = contrasts[x,]
       )
 
-      res_median <- statpsych::ci.lc.median.bs(
-        alpha = 1 - conf_level,
-        m = overview_table$median,
-        s = overview_table$median_SE,
-        v = contrasts[x, ]
-      )
-
       overview_table[x, esci_column_names] <- res[statpsych_row, statpsych_cnames]
-      overview_table[x, esci_column_names_mdn ] <- res_median[1, statpsych_cnames_mdn]
+
+      if (!is.null(overview_table$median_SE)) {
+        res_median <- statpsych::ci.lc.median.bs(
+          alpha = 1 - conf_level,
+          m = overview_table$median,
+          s = overview_table$median_SE,
+          v = contrasts[x, ]
+        )
+        overview_table[x, esci_column_names_mdn ] <- res_median[1, statpsych_cnames_mdn]
+      }
+
     }
 
   }

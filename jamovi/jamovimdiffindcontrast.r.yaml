@@ -38,6 +38,7 @@ items:
           title: 'Grouping variable'
           type: text
           combineBelow: true
+          visible: false
         - name: grouping_variable_level
           title: 'Group'
           type: text
@@ -132,6 +133,7 @@ items:
           title: 'Grouping variable'
           type: text
           combineBelow: true
+          visible: false
         - name: effect
           title: 'Effect'
           type: text
@@ -176,6 +178,7 @@ items:
           title: 'Grouping variable'
           type: text
           combineBelow: true
+          visible: false
         - name: effect
           title: 'Effect'
           type: text
@@ -228,6 +231,7 @@ items:
           title: 'Grouping variable'
           type: text
           combineBelow: true
+          visible: false
         - name: effect
           title: 'Effect'
           type: text
