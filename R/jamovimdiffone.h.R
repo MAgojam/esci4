@@ -1495,8 +1495,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="d_biased", 
                         `title`="<i>d</i><sub>biased</sub>", 
-                        `type`="number", 
-                        `visible`="(show_details)"))))
+                        `type`="number"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",

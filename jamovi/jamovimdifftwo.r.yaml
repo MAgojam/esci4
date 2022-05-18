@@ -220,7 +220,6 @@ items:
         - name: d_biased
           title: "<i>d</i><sub>biased</sub>"
           type: number
-          visible: (show_details)
 
     - name:  es_mean_ratio
       title: Ratio of means

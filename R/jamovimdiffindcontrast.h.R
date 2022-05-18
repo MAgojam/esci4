@@ -2229,11 +2229,13 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `type`="text"),
                     list(
                         `name`="numerator", 
-                        `title`="<i>M</i>", 
+                        `title`="<i>M</i><sub>diff</sub>", 
+                        `superTitle`="Numerator", 
                         `type`="number"),
                     list(
                         `name`="denominator", 
                         `title`="Standardizer", 
+                        `superTitle`="Standardizer", 
                         `type`="number"),
                     list(
                         `name`="effect_size", 
@@ -2266,7 +2268,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `name`="d_biased", 
                         `title`="<i>d</i><sub>biased</sub>", 
                         `type`="number", 
-                        `visible`="(show_details)"))))
+                        `visible`="(assume_equal_variance)"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",

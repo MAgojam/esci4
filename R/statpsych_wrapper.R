@@ -69,6 +69,8 @@ Correction for bias can be important when <i>df</i> < 50.<br>
   )
 
 
+
+
   smd <- list(
     es_smd = res,
     es_smd_properties = properties

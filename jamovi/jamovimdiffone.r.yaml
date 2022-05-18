@@ -151,7 +151,6 @@ items:
         - name: d_biased
           title: "<i>d</i><sub>biased</sub>"
           type: number
-          visible: (show_details)
 
     - name: estimation_plots
       title: Estimation Figures

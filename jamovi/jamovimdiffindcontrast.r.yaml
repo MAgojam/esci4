@@ -236,10 +236,12 @@ items:
           title: 'Effect'
           type: text
         - name: numerator
-          title: <i>M</i>
+          title: <i>M</i><sub>diff</sub>
+          superTitle: Numerator
           type: number
         - name: denominator
           title: Standardizer
+          superTitle: Standardizer
           type: number
         - name: effect_size
           type: number
@@ -265,7 +267,7 @@ items:
         - name: d_biased
           title: "<i>d</i><sub>biased</sub>"
           type: number
-          visible: (show_details)
+          visible: (assume_equal_variance)
 
     - name: estimation_plots
       title: Estimation Figures

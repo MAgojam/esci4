@@ -12,6 +12,32 @@ jamovi_estimate_filler <- function(self, estimate, expand = FALSE) {
 
         eprop <- paste(e_table, "_properties", sep = "")
         if (!is.null(estimate[[eprop]])) {
+
+          if (!is.null(estimate[[eprop]]$denominator_name_html)) {
+            j_table$getColumn("denominator")$setTitle(
+              estimate[[eprop]]$denominator_name_html
+            )
+          }
+
+          if (!is.null(estimate[[eprop]]$effect_size_name_html) & e_table == "es_smd") {
+            j_table$getColumn("effect_size")$setTitle(
+              estimate[[eprop]]$effect_size_name_html
+            )
+
+            to_replace <- '<sub>.biased</sub>'
+            if (grepl("biased", estimate[[eprop]]$effect_size_name_html))
+              to_replace <- ""
+
+            j_table$getColumn("d_biased")$setTitle(
+              paste(
+                estimate[[eprop]]$effect_size_name_html,
+                to_replace,
+                sep = ""
+              )
+            )
+          }
+
+
           if (!is.null(estimate[[eprop]]$message_html)) {
             j_table$setNote(
               key = "dtable",

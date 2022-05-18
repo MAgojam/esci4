@@ -1,3 +1,12 @@
+################################################################################
+# 12-color palette for deuteranopia color blindness
+# 18:05:21 Tue 19 May 2020
+# Martin Krzywinski martink@bcgsc.ca
+# Methods and details: http://mkweb.bcgsc.ca/colorblind
+# Color names: http://mkweb.bcgsc.ca/colornames
+################################################################################
+
+
 #' @importFrom glue glue
 #' @importFrom methods is
 #' @importFrom rlang enquo

@@ -1904,8 +1904,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     list(
                         `name`="d_biased", 
                         `title`="<i>d</i><sub>biased</sub>", 
-                        `type`="number", 
-                        `visible`="(show_details)"))))
+                        `type`="number"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_mean_ratio",
