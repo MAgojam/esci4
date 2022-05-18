@@ -83,7 +83,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Base dimensions:'
+            label: 'Dimensions:'
             cell:
               column: 0
               row: 1

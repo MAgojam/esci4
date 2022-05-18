@@ -90,11 +90,13 @@ children:
               row: 9
           - type: ComboBox
             name: error_layout
+            enable: '(effect_size:mean)'
             cell:
               column: 1
               row: 10
           - type: TextBox
             name: error_scale
+            enable: '(effect_size:mean)'
             format: string
             cell:
               column: 1
@@ -102,7 +104,7 @@ children:
           - type: TextBox
             name: error_nudge
             format: string
-            enable: '(switch:from_raw)'
+            enable: '(switch:from_raw & effect_size:mean)'
             cell:
               column: 2
               row: 9
@@ -254,16 +256,19 @@ children:
                   row: 6
               - type: ComboBox
                 name: size_interval
+                enable: '(effect_size:mean)'
                 cell:
                   column: 1
                   row: 6
               - type: ComboBox
                 name: color_interval
+                enable: '(effect_size:mean)'
                 cell:
                   column: 0
                   row: 7
               - type: ComboBox
                 name: alpha_interval
+                enable: '(effect_size:mean)'
                 cell:
                   column: 1
                   row: 7
@@ -274,11 +279,13 @@ children:
                   row: 8
               - type: ComboBox
                 name: fill_error
+                enable: '(effect_size:mean)'
                 cell:
                   column: 0
                   row: 9
               - type: ComboBox
                 name: alpha_error
+                enable: '(effect_size:mean)'
                 cell:
                   column: 1
                   row: 9

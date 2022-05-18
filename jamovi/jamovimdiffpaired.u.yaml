@@ -108,7 +108,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Base dimensions:'
+            label: 'Dimensions:'
             cell:
               column: 0
               row: 1
@@ -556,76 +556,91 @@ children:
                   row: 9
               - type: ComboBox
                 name: color_interval_reference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 1
                   row: 11
               - type: ComboBox
                 name: color_interval_comparison
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 2
                   row: 11
               - type: ComboBox
                 name: color_interval_difference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 3
                   row: 11
               - type: ComboBox
                 name: size_interval_reference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 1
                   row: 10
               - type: ComboBox
                 name: size_interval_comparison
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 2
                   row: 10
               - type: ComboBox
                 name: size_interval_difference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 3
                   row: 10
               - type: ComboBox
                 name: alpha_interval_reference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 1
                   row: 12
               - type: ComboBox
                 name: alpha_interval_comparison
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 2
                   row: 12
               - type: ComboBox
                 name: alpha_interval_difference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 3
                   row: 12
               - type: ComboBox
                 name: alpha_error_reference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 1
                   row: 15
               - type: ComboBox
                 name: alpha_error_comparison
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 2
                   row: 15
               - type: ComboBox
                 name: alpha_error_difference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 3
                   row: 15
               - type: ComboBox
                 name: fill_error_reference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 1
                   row: 14
               - type: ComboBox
                 name: fill_error_comparison
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 2
                   row: 14
               - type: ComboBox
                 name: fill_error_difference
+                enable: '(effect_size:mean_difference)'
                 cell:
                   column: 3
                   row: 14
