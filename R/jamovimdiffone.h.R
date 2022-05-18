@@ -1499,7 +1499,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",
-                title="Estimation Figures",
+                title="Estimation Figure",
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",

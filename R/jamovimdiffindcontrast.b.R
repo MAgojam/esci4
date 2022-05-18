@@ -51,6 +51,15 @@ jamovimdiffindcontrastClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6
           image$setState(my_key)
         }
 
+        if (length(keys) > 1) {
+          self$results$estimation_plots$setTitle(
+            paste(
+              self$results$estimation_plots$title,
+              "s",
+              sep = ""
+            )
+          )
+        }
 
 
         },

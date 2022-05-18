@@ -2272,7 +2272,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",
-                title="Estimation Figures",
+                title="Estimation Figure",
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",

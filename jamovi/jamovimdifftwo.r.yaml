@@ -362,7 +362,7 @@ items:
           type: number
 
     - name: estimation_plots
-      title: Estimation Figures
+      title: Estimation Figure
       type: Array
       template:
           title: $key

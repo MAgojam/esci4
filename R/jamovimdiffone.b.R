@@ -123,6 +123,17 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             image$setState(my_key)
           }
 
+          if (length(keys) > 1) {
+            self$results$estimation_plots$setTitle(
+              paste(
+                self$results$estimation_plots$title,
+                "s",
+                sep = ""
+              )
+            )
+          }
+
+
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
 

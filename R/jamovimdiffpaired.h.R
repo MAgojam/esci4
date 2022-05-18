@@ -2034,7 +2034,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Image$new(
                 options=options,
                 name="estimation_plots",
-                title="Estimation Figures",
+                title="Estimation Figure",
                 width=300,
                 height=450,
                 requiresData=TRUE,

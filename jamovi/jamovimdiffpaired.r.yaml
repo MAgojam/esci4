@@ -312,7 +312,7 @@ items:
           type: number
 
     - name: estimation_plots
-      title: Estimation Figures
+      title: Estimation Figure
       type: Image
       width:  300
       height: 450

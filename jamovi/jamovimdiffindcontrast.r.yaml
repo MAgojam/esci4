@@ -270,7 +270,7 @@ items:
           visible: (assume_equal_variance)
 
     - name: estimation_plots
-      title: Estimation Figures
+      title: Estimation Figure
       type: Array
       template:
           title: $key

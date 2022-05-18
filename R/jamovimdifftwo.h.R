@@ -15,8 +15,8 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             reference_mean = " ",
             reference_sd = " ",
             reference_n = " ",
-            comparison_level_name = "Comparison level",
-            reference_level_name = "Reference level",
+            comparison_level_name = "Comparison group",
+            reference_level_name = "Reference group",
             outcome_variable_name = "Outcome variable",
             grouping_variable_name = "Grouping variable",
             conf_level = 95,
@@ -138,11 +138,11 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..comparison_level_name <- jmvcore::OptionString$new(
                 "comparison_level_name",
                 comparison_level_name,
-                default="Comparison level")
+                default="Comparison group")
             private$..reference_level_name <- jmvcore::OptionString$new(
                 "reference_level_name",
                 reference_level_name,
-                default="Reference level")
+                default="Reference group")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -1968,7 +1968,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",
-                title="Estimation Figures",
+                title="Estimation Figure",
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",
@@ -2119,8 +2119,8 @@ jamovimdifftwo <- function(
     reference_mean = " ",
     reference_sd = " ",
     reference_n = " ",
-    comparison_level_name = "Comparison level",
-    reference_level_name = "Reference level",
+    comparison_level_name = "Comparison group",
+    reference_level_name = "Reference group",
     outcome_variable_name = "Outcome variable",
     grouping_variable_name = "Grouping variable",
     conf_level = 95,
