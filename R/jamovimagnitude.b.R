@@ -198,10 +198,10 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 my_value_name = "Y axis: Title"
             )
 
-            if (!is.null(xlab)) {
+            if (self$options$xlab != "auto") {
                 myplot <- myplot + ggplot2::xlab(xlab)
             }
-            if (!is.null(ylab)) {
+            if (self$options$ylab != "auto") {
                 myplot <- myplot + ggplot2::ylab(ylab)
             }
 
