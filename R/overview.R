@@ -163,13 +163,13 @@ overview <- function(
 
   if(analysis_type == "data.frame") {
     if (!is.null(grouping_variable)) {
-      grouping_variable <- make.names(grouping_variable)
+      grouping_variable <- grouping_variable
     }
     return(
       overview.data.frame(
         data = data,
         grouping_variable = grouping_variable,
-        outcome_variable = make.names(outcome_variable),
+        outcome_variable = outcome_variable,
         conf_level = conf_level,
         assume_equal_variance = assume_equal_variance
       )

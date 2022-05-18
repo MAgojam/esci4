@@ -145,7 +145,7 @@ overview_nominal <- function(
     return(
       overview_nominal.data.frame(
         data = data,
-        outcome_variable = make.names(outcome_variable),
+        outcome_variable = outcome_variable,
         grouping_variable = grouping_variable,
         conf_level = conf_level,
         count_NA = count_NA

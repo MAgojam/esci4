@@ -163,8 +163,8 @@ estimate_pdiff_paired <- function(
     return(
       estimate_pdiff_paired.data.frame(
         data = data,
-        comparison_measure = make.names(comparison_measure),
-        reference_measure = make.names(reference_measure),
+        comparison_measure = comparison_measure,
+        reference_measure = reference_measure,
         case_label = case_label,
         conf_level = conf_level,
         count_NA = count_NA

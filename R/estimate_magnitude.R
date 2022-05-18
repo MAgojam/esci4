@@ -120,10 +120,17 @@ estimate_magnitude <- function(
     return(
       estimate_magnitude.data.frame(
         data = data,
-        outcome_variable = make.names(outcome_variable),
+        outcome_variable = outcome_variable,
         conf_level = conf_level,
         save_raw_data = save_raw_data
       )
+
+      # estimate_magnitude.data.frame(
+      #   data = data,
+      #   outcome_variable = make.names(outcome_variable),
+      #   conf_level = conf_level,
+      #   save_raw_data = save_raw_data
+      # )
     )
   } else if (analysis_type == "jamovi") {
     return(

@@ -157,8 +157,8 @@ estimate_mdiff_paired <- function(
     return(
       estimate_mdiff_paired.data.frame(
         data = data,
-        comparison_measure = make.names(comparison_measure),
-        reference_measure = make.names(reference_measure),
+        comparison_measure = comparison_measure,
+        reference_measure = reference_measure,
         conf_level = conf_level,
         save_raw_data = save_raw_data
       )

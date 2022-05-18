@@ -163,8 +163,8 @@ estimate_mdiff_ind_contrast <- function(
     return(
       estimate_mdiff_ind_contrast.data.frame(
         data = data,
-        outcome_variable = make.names(outcome_variable),
-        grouping_variable = make.names(grouping_variable),
+        outcome_variable = outcome_variable,
+        grouping_variable =grouping_variable,
         contrast = contrast,
         conf_level = conf_level,
         assume_equal_variance = assume_equal_variance,
