@@ -15,6 +15,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             conf_level = 95,
             effect_size = "mean",
             show_details = FALSE,
+            show_calculations = FALSE,
             es_plot_width = "300",
             es_plot_height = "400",
             ymin = "auto",
@@ -98,6 +99,10 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
+                default=FALSE)
+            private$..show_calculations <- jmvcore::OptionBool$new(
+                "show_calculations",
+                show_calculations,
                 default=FALSE)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
@@ -558,6 +563,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..conf_level)
             self$.addOption(private$..effect_size)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..show_calculations)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -601,6 +607,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         conf_level = function() private$..conf_level$value,
         effect_size = function() private$..effect_size$value,
         show_details = function() private$..show_details$value,
+        show_calculations = function() private$..show_calculations$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -643,6 +650,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..conf_level = NA,
         ..effect_size = NA,
         ..show_details = NA,
+        ..show_calculations = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -790,7 +798,27 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="median_SE", 
                         `type`="number", 
                         `title`="<i>SE<sub>Median</sub></i>", 
-                        `visible`="(show_details & effect_size == 'median' & switch == 'from_raw')"))))
+                        `visible`="(show_details & effect_size == 'median' & switch == 'from_raw')"),
+                    list(
+                        `name`="t_multiplier", 
+                        `type`="number", 
+                        `title`="<i>t</i> component", 
+                        `visible`="(show_calculations & effect_size == 'mean')"),
+                    list(
+                        `name`="s_component", 
+                        `type`="number", 
+                        `title`="Variability component", 
+                        `visible`="(show_calculations & effect_size == 'mean')"),
+                    list(
+                        `name`="n_component", 
+                        `type`="number", 
+                        `title`="Sample size component", 
+                        `visible`="(show_calculations & effect_size == 'mean')"),
+                    list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_calculations & effect_size == 'mean')"))))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="magnitude_plot_warnings",
@@ -838,6 +866,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param conf_level .
 #' @param effect_size .
 #' @param show_details .
+#' @param show_calculations .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -897,6 +926,7 @@ jamovimagnitude <- function(
     conf_level = 95,
     effect_size = "mean",
     show_details = FALSE,
+    show_calculations = FALSE,
     es_plot_width = "300",
     es_plot_height = "400",
     ymin = "auto",
@@ -950,6 +980,7 @@ jamovimagnitude <- function(
         conf_level = conf_level,
         effect_size = effect_size,
         show_details = show_details,
+        show_calculations = show_calculations,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,

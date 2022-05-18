@@ -84,6 +84,22 @@ items:
           type: number
           title: <i>SE<sub>Median</sub></i>
           visible: (show_details & effect_size == 'median' & switch == 'from_raw')
+        - name: t_multiplier
+          type: number
+          title: <i>t</i> component
+          visible: (show_calculations & effect_size == 'mean')
+        - name: s_component
+          type: number
+          title: Variability component
+          visible: (show_calculations & effect_size == 'mean')
+        - name: n_component
+          type: number
+          title: Sample size component
+          visible: (show_calculations & effect_size == 'mean')
+        - name: moe
+          type: number
+          title: MoE
+          visible: (show_calculations & effect_size == 'mean')
 
     - name: magnitude_plot_warnings
       title: Figure warnings

@@ -76,6 +76,12 @@ children:
         children:
           - type: CheckBox
             name: show_details
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: CheckBox
+            name: show_calculations
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1
