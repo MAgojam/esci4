@@ -71,6 +71,7 @@ plot_magnitude <- function(
   gdata$y_value <- gdata$effect_size
   gdata$x_value <- seq(from = 1, to = nrow(gdata), by = 1)
   gdata$nudge <- nudge
+  gdata[gdata$SE <= 0, ]$SE <- .Machine$double.xmin
 
   # Raw data
   if (plot_raw) {
