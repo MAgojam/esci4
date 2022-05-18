@@ -29,22 +29,18 @@ options:
       permitted: [numeric]
 
     - name: comparison_mean
-      title: Comparison mean (<i>M<sub>comparison</sub></i>)
       type: String
       default: ' '
 
     - name: comparison_sd
-      title: Comparison standard deviation (<i>s<sub>comparison</sub></i>)
       type: String
       default: ' '
 
     - name: reference_mean
-      title: Reference mean (<i>M<sub>reference</sub></i>)
       type: String
       default: ' '
 
     - name: reference_sd
-      title: Comparison standard deviation (<i>s<sub>reference</sub></i>)
       type: String
       default: ' '
 
@@ -59,12 +55,10 @@ options:
       default: ' '
 
     - name: comparison_measure_name
-      title: Comparison measure name
       type: String
       default: Comparison measure
 
     - name: reference_measure_name
-      title: Reference measure name
       type: String
       default: Reference measure
 

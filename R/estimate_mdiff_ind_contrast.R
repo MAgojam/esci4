@@ -751,6 +751,12 @@ Invalid groups are those with n < 2.
             )
         )
 
+        estimate$es_mean_ratio_properties <- list(
+          message_html = "
+          For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
+        )
+
+
         estimate$es_median_ratio <- as.data.frame(
           statpsych::ci.ratio.median2(
             alpha = 1 - conf_level,
@@ -758,6 +764,12 @@ Invalid groups are those with n < 2.
             y2 = vec_reference
           )
         )
+
+        estimate$es_median_ratio_properties <- list(
+          message_html = "
+          For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
+        )
+
 
         estimate$es_mean_ratio <- estimate$es_mean_ratio[ , c(3, 4, 5, 1, 2)]
         colnames(estimate$es_mean_ratio) <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")

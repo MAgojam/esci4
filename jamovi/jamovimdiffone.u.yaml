@@ -65,7 +65,8 @@ children:
         name: reference_mean
         format: string
   - type: Label
-    label: Analysis options
+    label: '<hr>Analysis options'
+    stretchFactor: 1
     children:
       - type: TextBox
         name: conf_level

@@ -40,7 +40,7 @@ jamovi_estimate_filler <- function(self, estimate, expand = FALSE) {
 
           if (!is.null(estimate[[eprop]]$message_html)) {
             j_table$setNote(
-              key = "dtable",
+              key = "rtable",
               note = estimate[[eprop]]$message_html,
               init = FALSE
             )

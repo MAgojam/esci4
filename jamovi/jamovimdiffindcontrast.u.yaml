@@ -92,9 +92,11 @@ children:
         children:
           - type: TextBox
             name: outcome_variable_name
+            stretchFactor: 1
             format: string
           - type: TextBox
             name: grouping_variable_name
+            stretchFactor: 1
             format: string
   - type: LayoutBox
     margin: small
@@ -111,7 +113,8 @@ children:
         format: string
         stretchFactor: 1
   - type: Label
-    label: Analysis options
+    label: '<hr>Analysis options'
+    stretchFactor: 1
     children:
       - type: TextBox
         name: conf_level

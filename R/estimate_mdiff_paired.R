@@ -480,12 +480,22 @@ estimate_mdiff_paired.data.frame <- function(
     conf_level = conf_level
   )
 
+  estimate$es_mean_ratio_properties <- list(
+    message_html = "
+          For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
+  )
+
   estimate$es_median_ratio <- wrapper_ci_ratio.ps(
     mean_or_median = "median",
     comparison_measure = data[[comparison_measure]],
     reference_measure = data[[reference_measure]],
     grouping_variable_levels = grouping_variable_levels,
     conf_level = conf_level
+  )
+
+  estimate$es_median_ratio_properties <- list(
+    message_html = "
+          For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
   )
 
   estimate$overview <- overview
