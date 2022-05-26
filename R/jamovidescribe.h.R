@@ -7,7 +7,13 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
     public = list(
         initialize = function(
             outcome_variable = NULL,
-            show_details = FALSE, ...) {
+            show_details = FALSE,
+            mark_mean = FALSE,
+            mark_median = FALSE,
+            mark_sd = FALSE,
+            mark_quartiles = FALSE,
+            mark_z_lines = FALSE,
+            mark_percentile = " ", ...) {
 
             super$initialize(
                 package="esci4",
@@ -24,16 +30,58 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..mark_mean <- jmvcore::OptionBool$new(
+                "mark_mean",
+                mark_mean,
+                default=FALSE)
+            private$..mark_median <- jmvcore::OptionBool$new(
+                "mark_median",
+                mark_median,
+                default=FALSE)
+            private$..mark_sd <- jmvcore::OptionBool$new(
+                "mark_sd",
+                mark_sd,
+                default=FALSE)
+            private$..mark_quartiles <- jmvcore::OptionBool$new(
+                "mark_quartiles",
+                mark_quartiles,
+                default=FALSE)
+            private$..mark_z_lines <- jmvcore::OptionBool$new(
+                "mark_z_lines",
+                mark_z_lines,
+                default=FALSE)
+            private$..mark_percentile <- jmvcore::OptionString$new(
+                "mark_percentile",
+                mark_percentile,
+                default=" ")
 
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..mark_mean)
+            self$.addOption(private$..mark_median)
+            self$.addOption(private$..mark_sd)
+            self$.addOption(private$..mark_quartiles)
+            self$.addOption(private$..mark_z_lines)
+            self$.addOption(private$..mark_percentile)
         }),
     active = list(
         outcome_variable = function() private$..outcome_variable$value,
-        show_details = function() private$..show_details$value),
+        show_details = function() private$..show_details$value,
+        mark_mean = function() private$..mark_mean$value,
+        mark_median = function() private$..mark_median$value,
+        mark_sd = function() private$..mark_sd$value,
+        mark_quartiles = function() private$..mark_quartiles$value,
+        mark_z_lines = function() private$..mark_z_lines$value,
+        mark_percentile = function() private$..mark_percentile$value),
     private = list(
         ..outcome_variable = NA,
-        ..show_details = NA)
+        ..show_details = NA,
+        ..mark_mean = NA,
+        ..mark_median = NA,
+        ..mark_sd = NA,
+        ..mark_quartiles = NA,
+        ..mark_z_lines = NA,
+        ..mark_percentile = NA)
 )
 
 jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -42,7 +90,8 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
     active = list(
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
-        overview = function() private$.items[["overview"]]),
+        overview = function() private$.items[["overview"]],
+        describe_plot = function() private$.items[["describe_plot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -137,7 +186,15 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="mean_SE", 
                         `title`="<i>SEM</i>", 
                         `type`="number", 
-                        `visible`="(show_details)"))))}))
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="describe_plot",
+                title="Describe",
+                requiresData=TRUE,
+                width=400,
+                height=300,
+                renderFun=".describe_plot"))}))
 
 jamovidescribeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovidescribeBase",
@@ -165,11 +222,18 @@ jamovidescribeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param data .
 #' @param outcome_variable .
 #' @param show_details .
+#' @param mark_mean .
+#' @param mark_median .
+#' @param mark_sd .
+#' @param mark_quartiles .
+#' @param mark_z_lines .
+#' @param mark_percentile .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$describe_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -182,7 +246,13 @@ jamovidescribeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 jamovidescribe <- function(
     data,
     outcome_variable,
-    show_details = FALSE) {
+    show_details = FALSE,
+    mark_mean = FALSE,
+    mark_median = FALSE,
+    mark_sd = FALSE,
+    mark_quartiles = FALSE,
+    mark_z_lines = FALSE,
+    mark_percentile = " ") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovidescribe requires jmvcore to be installed (restart may be required)")
@@ -196,7 +266,13 @@ jamovidescribe <- function(
 
     options <- jamovidescribeOptions$new(
         outcome_variable = outcome_variable,
-        show_details = show_details)
+        show_details = show_details,
+        mark_mean = mark_mean,
+        mark_median = mark_median,
+        mark_sd = mark_sd,
+        mark_quartiles = mark_quartiles,
+        mark_z_lines = mark_z_lines,
+        mark_percentile = mark_percentile)
 
     analysis <- jamovidescribeClass$new(
         options = options,

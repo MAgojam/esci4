@@ -19,4 +19,36 @@ options:
       type: Bool
       default: false
 
+    - name: mark_mean
+      title: Mark mean
+      type: Bool
+      default: false
+
+    - name: mark_median
+      title: Mark median
+      type: Bool
+      default: false
+
+    - name: mark_sd
+      title: Mark standard deviation
+      type: Bool
+      default: false
+
+    - name: mark_quartiles
+      title: Mark quartiles
+      type: Bool
+      default: false
+
+    - name: mark_z_lines
+      title: Mark z lines
+      type: Bool
+      default: false
+
+    - name: mark_percentile
+      title: Mark percentile
+      type: String
+      default: ' '
+
+
+
 ...

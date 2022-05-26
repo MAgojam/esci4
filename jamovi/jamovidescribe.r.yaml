@@ -76,4 +76,12 @@ items:
           type: number
           visible: (show_details)
 
+    - name: describe_plot
+      title: Describe
+      type: Image
+      requiresData: true
+      width:  400
+      height: 300
+      renderFun: .describe_plot
+
 ...

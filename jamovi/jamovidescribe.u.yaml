@@ -20,3 +20,19 @@ children:
     children:
       - type: CheckBox
         name: show_details
+      - type: CheckBox
+        name: mark_mean
+      - type: CheckBox
+        name: mark_median
+      - type: CheckBox
+        name: mark_sd
+      - type: CheckBox
+        name: mark_quartiles
+      - type: CheckBox
+        name: mark_z_lines
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: mark_percentile
+        format: string

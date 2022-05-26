@@ -129,7 +129,7 @@ sd_{pooled} = { \frac{ \sum_{i=1}^{a} (n_i -1) s_i^2 }
 }{sqrt(sum(variances*dfs) / sum(dfs))}
 
 The CI for d_s is derived from lambda-prime transformation from
-Lecoutre, 2007 with coded adapted from Cousineau & Goulet-Pelletier, 2020.
+Lecoutre, 2007 with code adapted from Cousineau & Goulet-Pelletier, 2020.
 Kelley, 2007 explains the general approach for linear contrasts.
 
 This approach to generating the CI is 'exact', meaning coverage should be

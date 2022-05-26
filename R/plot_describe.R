@@ -21,7 +21,7 @@
 #' @param ggtheme theme to apply, if any
 #'
 #' @export
-esci_plot_describe <- function(
+plot_describe <- function(
   estimate,
   type = c("histogram", "dotplot"),
   mark_mean = FALSE,

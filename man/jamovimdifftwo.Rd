@@ -15,14 +15,78 @@ jamovimdifftwo(
   reference_mean = " ",
   reference_sd = " ",
   reference_n = " ",
-  comparison_level_name = "Comparison level",
-  reference_level_name = "Reference level",
+  comparison_level_name = "Comparison group",
+  reference_level_name = "Reference group",
   outcome_variable_name = "Outcome variable",
   grouping_variable_name = "Grouping variable",
   conf_level = 95,
   assume_equal_variance = TRUE,
+  effect_size = "mean_difference",
+  show_ratio = FALSE,
   switch_comparison_order = FALSE,
-  show_details = FALSE
+  show_details = FALSE,
+  es_plot_width = "600",
+  es_plot_height = "400",
+  ymin = "auto",
+  ymax = "auto",
+  ybreaks = "auto",
+  ylab = "auto",
+  xlab = "auto",
+  axis.text.y = "14",
+  axis.title.y = "15",
+  axis.text.x = "14",
+  axis.title.x = "15",
+  simple_contrast_labels = TRUE,
+  error_layout = "halfeye",
+  error_scale = "0.25",
+  error_nudge = "0.5",
+  data_layout = "random",
+  data_spread = "0.20",
+  difference_axis_units = "raw",
+  difference_axis_breaks = "auto",
+  shape_raw_reference = "circle filled",
+  shape_raw_comparison = "circle filled",
+  shape_summary_reference = "circle filled",
+  shape_summary_comparison = "circle filled",
+  shape_summary_difference = "triangle filled",
+  color_raw_reference = "#008DF9",
+  color_raw_comparison = "#009F81",
+  color_summary_reference = "#008DF9",
+  color_summary_comparison = "#009F81",
+  color_summary_difference = "black",
+  fill_raw_reference = "NA",
+  fill_raw_comparison = "NA",
+  fill_summary_reference = "#008DF9",
+  fill_summary_comparison = "#009F81",
+  fill_summary_difference = "black",
+  size_raw_reference = "2",
+  size_raw_comparison = "2",
+  size_summary_reference = "4",
+  size_summary_comparison = "4",
+  size_summary_difference = "4",
+  alpha_raw_reference = "1",
+  alpha_raw_comparison = "1",
+  alpha_summary_reference = "1",
+  alpha_summary_comparison = "1",
+  alpha_summary_difference = "1",
+  linetype_summary_reference = "solid",
+  linetype_summary_comparison = "solid",
+  linetype_summary_difference = "solid",
+  color_interval_reference = "black",
+  color_interval_comparison = "black",
+  color_interval_difference = "black",
+  size_interval_reference = "1",
+  size_interval_comparison = "1",
+  size_interval_difference = "1",
+  alpha_interval_reference = "1",
+  alpha_interval_comparison = "1",
+  alpha_interval_difference = "1",
+  alpha_error_reference = "1",
+  alpha_error_comparison = "1",
+  alpha_error_difference = "1",
+  fill_error_reference = "gray75",
+  fill_error_comparison = "gray75",
+  fill_error_difference = "gray75"
 )
 }
 \arguments{
@@ -58,9 +122,137 @@ jamovimdifftwo(
 
 \item{assume_equal_variance}{.}
 
+\item{effect_size}{.}
+
+\item{show_ratio}{.}
+
 \item{switch_comparison_order}{.}
 
 \item{show_details}{.}
+
+\item{es_plot_width}{.}
+
+\item{es_plot_height}{.}
+
+\item{ymin}{.}
+
+\item{ymax}{.}
+
+\item{ybreaks}{.}
+
+\item{ylab}{.}
+
+\item{xlab}{.}
+
+\item{axis.text.y}{.}
+
+\item{axis.title.y}{.}
+
+\item{axis.text.x}{.}
+
+\item{axis.title.x}{.}
+
+\item{simple_contrast_labels}{.}
+
+\item{error_layout}{.}
+
+\item{error_scale}{.}
+
+\item{error_nudge}{.}
+
+\item{data_layout}{.}
+
+\item{data_spread}{.}
+
+\item{difference_axis_units}{.}
+
+\item{difference_axis_breaks}{.}
+
+\item{shape_raw_reference}{.}
+
+\item{shape_raw_comparison}{.}
+
+\item{shape_summary_reference}{.}
+
+\item{shape_summary_comparison}{.}
+
+\item{shape_summary_difference}{.}
+
+\item{color_raw_reference}{.}
+
+\item{color_raw_comparison}{.}
+
+\item{color_summary_reference}{.}
+
+\item{color_summary_comparison}{.}
+
+\item{color_summary_difference}{.}
+
+\item{fill_raw_reference}{.}
+
+\item{fill_raw_comparison}{.}
+
+\item{fill_summary_reference}{.}
+
+\item{fill_summary_comparison}{.}
+
+\item{fill_summary_difference}{.}
+
+\item{size_raw_reference}{.}
+
+\item{size_raw_comparison}{.}
+
+\item{size_summary_reference}{.}
+
+\item{size_summary_comparison}{.}
+
+\item{size_summary_difference}{.}
+
+\item{alpha_raw_reference}{.}
+
+\item{alpha_raw_comparison}{.}
+
+\item{alpha_summary_reference}{.}
+
+\item{alpha_summary_comparison}{.}
+
+\item{alpha_summary_difference}{.}
+
+\item{linetype_summary_reference}{.}
+
+\item{linetype_summary_comparison}{.}
+
+\item{linetype_summary_difference}{.}
+
+\item{color_interval_reference}{.}
+
+\item{color_interval_comparison}{.}
+
+\item{color_interval_difference}{.}
+
+\item{size_interval_reference}{.}
+
+\item{size_interval_comparison}{.}
+
+\item{size_interval_difference}{.}
+
+\item{alpha_interval_reference}{.}
+
+\item{alpha_interval_comparison}{.}
+
+\item{alpha_interval_difference}{.}
+
+\item{alpha_error_reference}{.}
+
+\item{alpha_error_comparison}{.}
+
+\item{alpha_error_difference}{.}
+
+\item{fill_error_reference}{.}
+
+\item{fill_error_comparison}{.}
+
+\item{fill_error_difference}{.}
 }
 \value{
 A results object containing:
@@ -73,6 +265,8 @@ A results object containing:
 \code{results$es_mean_ratio} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
+\code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

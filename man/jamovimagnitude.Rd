@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimagnitude.h.R
 \name{jamovimagnitude}
 \alias{jamovimagnitude}
-\title{Magnitude}
+\title{Estimate Magnitude}
 \usage{
 jamovimagnitude(
   switch = "from_raw",
@@ -13,31 +13,33 @@ jamovimagnitude(
   n = "",
   outcome_variable_name = "Outcome variable",
   conf_level = 95,
+  effect_size = "mean",
   show_details = FALSE,
-  es_plot_width = "450",
-  es_plot_height = "450",
+  show_calculations = FALSE,
+  es_plot_width = "300",
+  es_plot_height = "400",
   ymin = "auto",
   ymax = "auto",
   breaks = "auto",
   ylab = "auto",
   xlab = "auto",
-  axis.text.y = "10",
-  axis.title.y = "12",
-  axis.text.x = "10",
-  axis.title.x = "12",
+  axis.text.y = "14",
+  axis.title.y = "15",
+  axis.text.x = "14",
+  axis.title.x = "15",
   error_layout = "halfeye",
-  error_scale = "0.25",
-  error_nudge = "0.4",
+  error_scale = "0.20",
+  error_nudge = "0.3",
   data_layout = "random",
   data_spread = "0.25",
   shape_raw = "circle filled",
   shape_summary = "circle filled",
-  color_raw = "gray",
-  color_summary = "black",
-  fill_raw = "white",
-  fill_summary = "black",
+  color_raw = "#008DF9",
+  color_summary = "#008DF9",
+  fill_raw = "NA",
+  fill_summary = "#008DF9",
   size_raw = "2",
-  size_summary = "3",
+  size_summary = "4",
   alpha_raw = "1",
   alpha_summary = "1",
   linetype_summary = "solid",
@@ -45,7 +47,7 @@ jamovimagnitude(
   size_interval = "1",
   alpha_interval = "1",
   alpha_error = "1",
-  fill_error = "gray"
+  fill_error = "gray75"
 )
 }
 \arguments{
@@ -65,7 +67,11 @@ jamovimagnitude(
 
 \item{conf_level}{.}
 
+\item{effect_size}{.}
+
 \item{show_details}{.}
+
+\item{show_calculations}{.}
 
 \item{es_plot_width}{.}
 
@@ -148,5 +154,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Magnitude
+Estimate Magnitude
 }
