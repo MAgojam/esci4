@@ -31,17 +31,17 @@ plot_describe <- function(
   mark_z_lines = FALSE,
   mark_percentile = NULL,
   histogram_bins = 12,
-  ylim = c(NA, NA),
+  ylim = c(0, NA),
   xlim = c(NA, NA),
-  fill_regular = "gray45",
-  fill_highlighted = "red",
-  color = "blue",
+  fill_regular = "#008DF9",
+  fill_highlighted = "#E20134",
+  color = "black",
   marker_size = 5,
   ggtheme = NULL
 ) {
 
   # Input checks ------------------------------------------------------
-  esci_assert_type(estimate, "is.estimate")
+  # esci_assert_type(estimate, "is.estimate")
 
   if(is.null(estimate$es_mean)) {
     stop("This plot function is for a single quantiative variable; this estimate passed is not the right type.")
@@ -57,14 +57,14 @@ plot_describe <- function(
     draw_percentile <- FALSE
   } else {
     draw_percentile <- TRUE
-    esci_assert_type(mark_percentile, "is.numeric")
-    esci_assert_range(
-      mark_percentile,
-      lower = 0,
-      upper = 1,
-      lower_inclusive = TRUE,
-      upper_inclusive = TRUE
-    )
+    # esci_assert_type(mark_percentile, "is.numeric")
+    # esci_assert_range(
+    #   mark_percentile,
+    #   lower = 0,
+    #   upper = 1,
+    #   lower_inclusive = TRUE,
+    #   upper_inclusive = TRUE
+    # )
   }
 
   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
@@ -106,52 +106,98 @@ plot_describe <- function(
 
   # Histogram or dotplot
   if (type == "histogram") {
-    myplot <- myplot + ggdist::stat_histinterval(
-      slab_color = color,
-      outline_bars = TRUE,
-      orientation = "horizontal",
-      breaks = histogram_bins,
-      interval_alpha = 0,
-      point_alpha = 0
+    myplot <- myplot + ggplot2::geom_histogram(
+      color = color
     )
+
   } else {
-    myplot <- myplot + ggdist::stat_dotsinterval(
+    myplot <- myplot + ggdist::geom_dots(
       orientation = "horizontal",
-      interval_alpha = 0,
-      point_alpha = 0
+      scale = 1,
+      color = color
+    )
+
+  }
+
+
+  # z lines
+  if (mark_z_lines) {
+    z <- seq(from = -3, to = 3, by = 1)
+    zdata <- data.frame(
+      z = z,
+      x = rd_mean + (rd_sd * z),
+      y = 0,
+      label = paste("z = ", z)
+    )
+
+    myplot <- myplot + ggplot2::geom_vline(
+      data = zdata,
+      color = "black",
+      linetype = "dotted",
+      ggplot2::aes(xintercept = x)
     )
   }
+
+
+  # Get top and bottom
+  top <- if (type == "histogram")
+    max(
+      c(
+        ylim[2],
+        ggplot2::ggplot_build(myplot)$data[[1]]$count
+      ),
+      na.rm = TRUE
+    )
+  else
+    max(c(1, ylim[2]), na.rm = TRUE)
+
+  spacing <- if (type == "histogram")
+    top * .05
+  else
+    .05
+
+  bottom <- min(
+    c(
+      0,
+      ylim[1]
+    ),
+    na.rm = TRUE
+  )
+
 
   # Mark mean
   if (mark_mean) {
     myplot <- myplot + ggplot2::geom_vline(
       xintercept = rd_mean,
-      linetype = "dotted"
+      linetype = "solid",
+      color = "#00FCCF",
+      size = 1.5
     )
     myplot <- myplot + ggplot2::geom_point(
       data = data.frame(
         x = rd_mean,
-        y = 0
+        y = bottom - spacing*.5
       ),
       ggplot2::aes(
         x = x,
         y = y
       ),
       shape = 24,
-      size = marker_size
+      size = marker_size,
+      fill = "#00FCCF",
+      color = "black"
     )
   }
 
   # Median
-  top <- max(ggplot2::ggplot_build(myplot)$data[[1]]$cdf)
-
   if (mark_median) {
     myplot <- myplot + ggplot2::geom_point(
       data = data.frame(
         x = rd_median,
-        y = top + .2
+        y = top + spacing*2
       ),
-      fill = "pink",
+      color = "black",
+      fill = "#FF5AAF",
       shape = 23,
       size = marker_size,
       ggplot2::aes(
@@ -162,33 +208,33 @@ plot_describe <- function(
 
     myplot <- myplot + ggplot2::geom_vline(
       xintercept = rd_median,
-      color = "black",
-      linetype = "dashed"
+      color = "#FF5AAF",
+      linetype = "solid",
+      size = 1.5
     )
   }
 
 
   if (mark_sd) {
-    sd_begin <- rd_mean - rd_sd
-    sd_end <- rd_mean - rd_sd
+    mults <- seq(from = -1, to = 1, by = 1)
     sd_df <- data.frame(
-      x = c(sd_begin, sd_end),
-      y = top + .4
+      x = rd_mean + mults*rd_sd,
+      y = top + spacing
     )
     myplot <- myplot + ggplot2::geom_segment(
-      color = "black",
+      color = "#009F81",
       linetype = "solid",
       ggplot2::aes(
-        x = sd_begin,
-        xend = sd_end,
-        y = top + .4,
-        yend = top + .4
+        x = min(sd_df$x),
+        xend = max(sd_df$x),
+        y = top + spacing,
+        yend = top + spacing
       )
     )
     myplot <- myplot + ggplot2::geom_point(
       data = sd_df,
-      fill = "blue",
-      shape = 25,
+      color = "#009F81",
+      shape = 8,
       size = marker_size,
       ggplot2::aes(
         x = x,
@@ -197,22 +243,47 @@ plot_describe <- function(
     )
   }
 
-  if (mark_z_lines) {
-    for (i in -3:3) {
-      cz <- rd_mean + (rd_sd * i)
-      myplot <- myplot + ggplot2::geom_vline(
-        color = "black",
-        linetype = "dotted",
-        xintercept = cz
-      )
-    }
-    zdata <- data.frame(
-      z = c(-3:3),
-      x = cz,
-      y = top + .5
+
+  if (mark_quartiles) {
+    q_df <- data.frame(
+      x = c(estimate$overview$q1[1], estimate$overview$q3[1]),
+      y = top + spacing*2
     )
-    zdata$label <- "z ="
-    zdata$label <- paste(zdata$label, zdata$z)
+    myplot <- myplot + ggplot2::geom_segment(
+      color = "#FF5AAF",
+      linetype = "solid",
+      ggplot2::aes(
+        x = estimate$overview$q1[1],
+        xend = estimate$overview$q3[1],
+        y = top + spacing*2,
+        yend = top + spacing*2
+      )
+    )
+    myplot <- myplot + ggplot2::geom_vline(
+      color = "#FF5AAF",
+      linetype = "solid",
+      data = q_df,
+      ggplot2::aes(
+        xintercept = x
+      )
+    )
+
+    myplot <- myplot + ggplot2::geom_point(
+      data = q_df,
+      color = "#FF5AAF",
+      fill = "white",
+      shape = 23,
+      size = marker_size,
+      ggplot2::aes(
+        x = x,
+        y = y
+      )
+    )
+  }
+
+
+  if (mark_z_lines) {
+    zdata$y = top + spacing * 3.5
     myplot <- myplot + ggplot2::geom_text(
       data = zdata,
       ggplot2::aes(
@@ -225,15 +296,49 @@ plot_describe <- function(
   }
 
 
+
   # Finishing touches ------------------------------------
-  myplot <- myplot +  ggplot2::scale_y_continuous(
-    limits = ylim,
-    expand = c(0,NA)
+  myx <- estimate$overview$outcome_variable_name[1]
+
+  if (mark_mean) {
+    myx <- paste("\n", myx)
+  }
+
+  myplot <- myplot + ggplot2::xlab(myx)
+
+  if (type == "histogram") {
+    myplot <- myplot + ggplot2::ylab("Frequency")
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      expand = c(0, NA)
+    )
+  } else {
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      NULL, breaks = NULL,
+      expand = c(0, NA)
+    )
+    myplot <- myplot + ggplot2::theme(
+      axis.line.y = ggplot2::element_blank()
+    )
+
+  }
+
+  myplot <- myplot + ggplot2::coord_cartesian(
+    xlim = xlim,
+    ylim = ylim,
+    expand = FALSE,
+    clip = "off"
   )
-  myplot <- myplot + ggplot2::scale_x_continuous(
-    limits = xlim
+  # myplot <- myplot +  ggplot2::scale_y_continuous(
+  #   limits = ylim,
+  #   expand = c(0,NA)
+  # )
+  # myplot <- myplot + ggplot2::scale_x_continuous(
+  #   limits = xlim
+  # )
+  myplot <- myplot + ggplot2::theme(
+    legend.position="none",
+    plot.margin = ggplot2::margin(30, 30, 30, 45, "pt")
   )
-  myplot <- myplot + ggplot2::theme(legend.position="none")
 
 
 
