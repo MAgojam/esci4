@@ -14,10 +14,13 @@
 #' @param mark_percentile a percentile (0 to 1) to be marked
 #' @param histogram_bins number of bins if a histogram
 #' @param ylim 2-length numeric vector
+#' @param ybreaks numeric >= 1
 #' @param xlim 2-length numeric vector
+#' @param xbreaks numeric >= 1
 #' @param fill_regular color for
 #' @param fill_highlighted color for
 #' @param color outline color
+#' @param marker_size Size of markers
 #' @param ggtheme theme to apply, if any
 #'
 #' @export
@@ -32,7 +35,9 @@ plot_describe <- function(
   mark_percentile = NULL,
   histogram_bins = 12,
   ylim = c(0, NA),
+  ybreaks = NULL,
   xlim = c(NA, NA),
+  xbreaks = NULL,
   fill_regular = "#008DF9",
   fill_highlighted = "#E20134",
   color = "black",
@@ -41,7 +46,7 @@ plot_describe <- function(
 ) {
 
   # Input checks ------------------------------------------------------
-  # esci_assert_type(estimate, "is.estimate")
+  #esci_assert_type(estimate, "is.estimate")
 
   if(is.null(estimate$es_mean)) {
     stop("This plot function is for a single quantiative variable; this estimate passed is not the right type.")
@@ -56,18 +61,25 @@ plot_describe <- function(
   if (is.null(mark_percentile)) {
     draw_percentile <- FALSE
   } else {
-    draw_percentile <- TRUE
-    # esci_assert_type(mark_percentile, "is.numeric")
-    # esci_assert_range(
-    #   mark_percentile,
-    #   lower = 0,
-    #   upper = 1,
-    #   lower_inclusive = TRUE,
-    #   upper_inclusive = TRUE
-    # )
+    if (mark_percentile == 0) {
+      draw_percentile <- FALSE
+    } else {
+      draw_percentile <- TRUE
+      #esci_assert_type(mark_percentile, "is.numeric")
+      # esci_assert_range(
+      #   mark_percentile,
+      #   lower = 0,
+      #   upper = 1,
+      #   lower_inclusive = TRUE,
+      #   upper_inclusive = TRUE
+      # )
+
+    }
   }
 
   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
+
+  if (type == "dotplot") ylim <- c(0, NA)
 
 
   # Prep -------------------------------------------------------------
@@ -82,10 +94,11 @@ plot_describe <- function(
   q_value <- if(draw_percentile)
       quantile(
         x = rd$outcome_variable,
-        probs = c(mark_percentile)
+        probs = c(mark_percentile),
+        na.rm = TRUE
       )
     else
-      min(rd$outcome_variable) - 1
+      min(rd$outcome_variable, na.rm = TRUE) - 100
 
 
   # Plot --------------------------------------------------------------
@@ -107,6 +120,7 @@ plot_describe <- function(
   # Histogram or dotplot
   if (type == "histogram") {
     myplot <- myplot + ggplot2::geom_histogram(
+      bins = histogram_bins,
       color = color
     )
 
@@ -306,18 +320,33 @@ plot_describe <- function(
 
   myplot <- myplot + ggplot2::xlab(myx)
 
-  if (type == "histogram") {
-    myplot <- myplot + ggplot2::ylab("Frequency")
+  myplot <- myplot + ggplot2::ylab("Frequency")
+  if (is.null(ybreaks)) {
     myplot <- myplot + ggplot2::scale_y_continuous(
       expand = c(0, NA)
     )
   } else {
     myplot <- myplot + ggplot2::scale_y_continuous(
-      NULL, breaks = NULL,
+      n.breaks = ybreaks,
       expand = c(0, NA)
     )
+  }
+
+  if (!is.null(xbreaks)) {
+    myplot <- myplot + ggplot2::scale_x_continuous(
+      n.breaks = xbreaks
+    )
+  }
+
+
+  if (type == "dotplot") {
+
     myplot <- myplot + ggplot2::theme(
-      axis.line.y = ggplot2::element_blank()
+      axis.line.y.left = ggplot2::element_line(color="NA"),
+      axis.title.y = ggplot2::element_text(colour = "NA"),
+      axis.text.y = ggplot2::element_text(colour = "NA"),
+      axis.ticks.y = ggplot2::element_line(colour = "NA")
+
     )
 
   }
@@ -337,7 +366,7 @@ plot_describe <- function(
   # )
   myplot <- myplot + ggplot2::theme(
     legend.position="none",
-    plot.margin = ggplot2::margin(30, 30, 30, 45, "pt")
+    plot.margin = ggplot2::margin(40, 30, 30, 45, "pt")
   )
 
 

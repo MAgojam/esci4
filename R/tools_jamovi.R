@@ -307,6 +307,11 @@ jamovi_arg_builder <- function(
   # If conversion didn't succeed, don't send the value back
   if (is.na(fvalue)) {
     if(na_ok) {
+      reason <- glue::glue(
+        "{my_value_name} conversion to number yielded Na/Missing;
+        replaced with: {return_value}"
+      )
+      args$warnings <- c(args$warnings, reason)
       args[[arg_name]] <- NA
       return(args)
     } else {

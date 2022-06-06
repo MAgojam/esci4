@@ -20,35 +20,390 @@ options:
       default: false
 
     - name: mark_mean
-      title: Mark mean
+      title: Mean
       type: Bool
       default: false
 
     - name: mark_median
-      title: Mark median
+      title: Median
       type: Bool
       default: false
 
     - name: mark_sd
-      title: Mark standard deviation
+      title: Standard deviation
       type: Bool
       default: false
 
     - name: mark_quartiles
-      title: Mark quartiles
+      title: Quartiles
       type: Bool
       default: false
 
     - name: mark_z_lines
-      title: Mark z lines
+      title: z lines
       type: Bool
       default: false
 
     - name: mark_percentile
-      title: Mark percentile
+      title: Highlight bottom
       type: String
-      default: ' '
+      default: '0'
 
+    - name: histogram_bins
+      title: No. bins
+      type: String
+      default: '12'
 
+    - name: es_plot_width
+      title: Width
+      type: String
+      default: '500'
+
+    - name: es_plot_height
+      title: Height
+      type: String
+      default: '400'
+
+    - name: ymin
+      title: Min
+      type: String
+      default: auto
+
+    - name: ymax
+      title: Max
+      type: String
+      default: auto
+
+    - name: breaks
+      title: 'Num. tick marks'
+      type: String
+      default: auto
+
+    - name: xmin
+      title: Min
+      type: String
+      default: auto
+
+    - name: xmax
+      title: Max
+      type: String
+      default: auto
+
+    - name: xbreaks
+      title: 'Num. tick marks'
+      type: String
+      default: auto
+
+    - name: ylab
+      title: Label
+      type: String
+      default: auto
+
+    - name: xlab
+      title: Label
+      type: String
+      default: auto
+
+    - name: axis.text.y
+      title: 'Tick font size'
+      type: String
+      default: '14'
+
+    - name: axis.title.y
+      title: 'Label font size'
+      type: String
+      default: '15'
+
+    - name: axis.text.x
+      title: 'Tick font size'
+      type: String
+      default: '14'
+
+    - name: axis.title.x
+      title: 'Label font size'
+      type: String
+      default: '15'
+
+    - name: fill_regular
+      type: List
+      title: 'Fill'
+      default: '#008DF9'
+      options:
+         - name: 'black'
+           title: 'black'
+         - name: '#00C2F9'
+           title: 'blue'
+         - name: '#008DF9'
+           title: 'dark blue'
+         - name: '#009F81'
+           title: 'dark greenish'
+         - name: '#FF5AAF'
+           title: 'dark pink'
+         - name: '#9F0162'
+           title: 'dark purplish'
+         - name: '#A40122'
+           title: 'dark red'
+         - name: '#00FCCF'
+           title: 'greenish'
+         - name: '#FF6E3A'
+           title: 'orange'
+         - name: '#FFB2FD'
+           title: 'pink'
+         - name: '#8400CD'
+           title: 'purple'
+         - name: '#E20134'
+           title: 'red'
+         - name: '#FFC33B'
+           title: 'yellow'
+         - name: 'white'
+           title: 'white'
+         - name: 'NA'
+           title: 'None'
+         - name: 'NA'
+           title: '-------'
+         - name: 'gray0'
+           title: 'gray0'
+         - name: 'gray5'
+           title: 'gray5'
+         - name: 'gray10'
+           title: 'gray10'
+         - name: 'gray15'
+           title: 'gray15'
+         - name: 'gray20'
+           title: 'gray20'
+         - name: 'gray25'
+           title: 'gray25'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray40'
+           title: 'gray40'
+         - name: 'gray45'
+           title: 'gray45'
+         - name: 'gray50'
+           title: 'gray50'
+         - name: 'gray55'
+           title: 'gray55'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray60'
+           title: 'gray60'
+         - name: 'gray65'
+           title: 'gray65'
+         - name: 'gray70'
+           title: 'gray70'
+         - name: 'gray75'
+           title: 'gray75'
+         - name: 'gray80'
+           title: 'gray80'
+         - name: 'gray85'
+           title: 'gray85'
+         - name: 'gray90'
+           title: 'gray90'
+         - name: 'gray95'
+           title: 'gray95'
+         - name: 'gray100'
+           title: 'gray100'
+
+    - name: fill_highlighted
+      type: List
+      title: 'Fill'
+      default: '#E20134'
+      options:
+         - name: 'black'
+           title: 'black'
+         - name: '#00C2F9'
+           title: 'blue'
+         - name: '#008DF9'
+           title: 'dark blue'
+         - name: '#009F81'
+           title: 'dark greenish'
+         - name: '#FF5AAF'
+           title: 'dark pink'
+         - name: '#9F0162'
+           title: 'dark purplish'
+         - name: '#A40122'
+           title: 'dark red'
+         - name: '#00FCCF'
+           title: 'greenish'
+         - name: '#FF6E3A'
+           title: 'orange'
+         - name: '#FFB2FD'
+           title: 'pink'
+         - name: '#8400CD'
+           title: 'purple'
+         - name: '#E20134'
+           title: 'red'
+         - name: '#FFC33B'
+           title: 'yellow'
+         - name: 'white'
+           title: 'white'
+         - name: 'NA'
+           title: 'None'
+         - name: 'NA'
+           title: '-------'
+         - name: 'gray0'
+           title: 'gray0'
+         - name: 'gray5'
+           title: 'gray5'
+         - name: 'gray10'
+           title: 'gray10'
+         - name: 'gray15'
+           title: 'gray15'
+         - name: 'gray20'
+           title: 'gray20'
+         - name: 'gray25'
+           title: 'gray25'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray40'
+           title: 'gray40'
+         - name: 'gray45'
+           title: 'gray45'
+         - name: 'gray50'
+           title: 'gray50'
+         - name: 'gray55'
+           title: 'gray55'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray60'
+           title: 'gray60'
+         - name: 'gray65'
+           title: 'gray65'
+         - name: 'gray70'
+           title: 'gray70'
+         - name: 'gray75'
+           title: 'gray75'
+         - name: 'gray80'
+           title: 'gray80'
+         - name: 'gray85'
+           title: 'gray85'
+         - name: 'gray90'
+           title: 'gray90'
+         - name: 'gray95'
+           title: 'gray95'
+         - name: 'gray100'
+           title: 'gray100'
+
+    - name: color
+      type: List
+      title: 'Outline'
+      default: 'black'
+      options:
+         - name: 'black'
+           title: 'black'
+         - name: '#00C2F9'
+           title: 'blue'
+         - name: '#008DF9'
+           title: 'dark blue'
+         - name: '#009F81'
+           title: 'dark greenish'
+         - name: '#FF5AAF'
+           title: 'dark pink'
+         - name: '#9F0162'
+           title: 'dark purplish'
+         - name: '#A40122'
+           title: 'dark red'
+         - name: '#00FCCF'
+           title: 'greenish'
+         - name: '#FF6E3A'
+           title: 'orange'
+         - name: '#FFB2FD'
+           title: 'pink'
+         - name: '#8400CD'
+           title: 'purple'
+         - name: '#E20134'
+           title: 'red'
+         - name: '#FFC33B'
+           title: 'yellow'
+         - name: 'white'
+           title: 'white'
+         - name: 'NA'
+           title: 'None'
+         - name: 'NA'
+           title: '-------'
+         - name: 'gray0'
+           title: 'gray0'
+         - name: 'gray5'
+           title: 'gray5'
+         - name: 'gray10'
+           title: 'gray10'
+         - name: 'gray15'
+           title: 'gray15'
+         - name: 'gray20'
+           title: 'gray20'
+         - name: 'gray25'
+           title: 'gray25'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray40'
+           title: 'gray40'
+         - name: 'gray45'
+           title: 'gray45'
+         - name: 'gray50'
+           title: 'gray50'
+         - name: 'gray55'
+           title: 'gray55'
+         - name: 'gray30'
+           title: 'gray30'
+         - name: 'gray35'
+           title: 'gray35'
+         - name: 'gray60'
+           title: 'gray60'
+         - name: 'gray65'
+           title: 'gray65'
+         - name: 'gray70'
+           title: 'gray70'
+         - name: 'gray75'
+           title: 'gray75'
+         - name: 'gray80'
+           title: 'gray80'
+         - name: 'gray85'
+           title: 'gray85'
+         - name: 'gray90'
+           title: 'gray90'
+         - name: 'gray95'
+           title: 'gray95'
+         - name: 'gray100'
+           title: 'gray100'
+
+    - name: marker_size
+      type: List
+      title: 'Size'
+      default: '4'
+      options:
+        - name: '1'
+          title: '1'
+        - name: '2'
+          title: '2'
+        - name: '3'
+          title: '3'
+        - name: '4'
+          title: '4'
+        - name: '5'
+          title: '5'
+        - name: '6'
+          title: '6'
 
 ...

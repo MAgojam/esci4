@@ -76,12 +76,24 @@ items:
           type: number
           visible: (show_details)
 
+    - name: describe_plot_warnings
+      title: Figure warnings
+      type: Html
+      visible: true
+
     - name: describe_plot
-      title: Describe
+      title: Histogram
       type: Image
       requiresData: true
       width:  400
       height: 300
       renderFun: .describe_plot
 
+    - name: describe_dotplot
+      title: Dotplot
+      type: Image
+      requiresData: true
+      width:  400
+      height: 300
+      renderFun: .describe_plot
 ...

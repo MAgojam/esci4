@@ -13,7 +13,26 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             mark_sd = FALSE,
             mark_quartiles = FALSE,
             mark_z_lines = FALSE,
-            mark_percentile = " ", ...) {
+            mark_percentile = "0",
+            histogram_bins = "12",
+            es_plot_width = "500",
+            es_plot_height = "400",
+            ymin = "auto",
+            ymax = "auto",
+            breaks = "auto",
+            xmin = "auto",
+            xmax = "auto",
+            xbreaks = "auto",
+            ylab = "auto",
+            xlab = "auto",
+            axis.text.y = "14",
+            axis.title.y = "15",
+            axis.text.x = "14",
+            axis.title.x = "15",
+            fill_regular = "#008DF9",
+            fill_highlighted = "#E20134",
+            color = "black",
+            marker_size = "4", ...) {
 
             super$initialize(
                 package="esci4",
@@ -53,7 +72,216 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..mark_percentile <- jmvcore::OptionString$new(
                 "mark_percentile",
                 mark_percentile,
-                default=" ")
+                default="0")
+            private$..histogram_bins <- jmvcore::OptionString$new(
+                "histogram_bins",
+                histogram_bins,
+                default="12")
+            private$..es_plot_width <- jmvcore::OptionString$new(
+                "es_plot_width",
+                es_plot_width,
+                default="500")
+            private$..es_plot_height <- jmvcore::OptionString$new(
+                "es_plot_height",
+                es_plot_height,
+                default="400")
+            private$..ymin <- jmvcore::OptionString$new(
+                "ymin",
+                ymin,
+                default="auto")
+            private$..ymax <- jmvcore::OptionString$new(
+                "ymax",
+                ymax,
+                default="auto")
+            private$..breaks <- jmvcore::OptionString$new(
+                "breaks",
+                breaks,
+                default="auto")
+            private$..xmin <- jmvcore::OptionString$new(
+                "xmin",
+                xmin,
+                default="auto")
+            private$..xmax <- jmvcore::OptionString$new(
+                "xmax",
+                xmax,
+                default="auto")
+            private$..xbreaks <- jmvcore::OptionString$new(
+                "xbreaks",
+                xbreaks,
+                default="auto")
+            private$..ylab <- jmvcore::OptionString$new(
+                "ylab",
+                ylab,
+                default="auto")
+            private$..xlab <- jmvcore::OptionString$new(
+                "xlab",
+                xlab,
+                default="auto")
+            private$..axis.text.y <- jmvcore::OptionString$new(
+                "axis.text.y",
+                axis.text.y,
+                default="14")
+            private$..axis.title.y <- jmvcore::OptionString$new(
+                "axis.title.y",
+                axis.title.y,
+                default="15")
+            private$..axis.text.x <- jmvcore::OptionString$new(
+                "axis.text.x",
+                axis.text.x,
+                default="14")
+            private$..axis.title.x <- jmvcore::OptionString$new(
+                "axis.title.x",
+                axis.title.x,
+                default="15")
+            private$..fill_regular <- jmvcore::OptionList$new(
+                "fill_regular",
+                fill_regular,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray30",
+                    "gray35",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_highlighted <- jmvcore::OptionList$new(
+                "fill_highlighted",
+                fill_highlighted,
+                default="#E20134",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray30",
+                    "gray35",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color <- jmvcore::OptionList$new(
+                "color",
+                color,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray30",
+                    "gray35",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..marker_size <- jmvcore::OptionList$new(
+                "marker_size",
+                marker_size,
+                default="4",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
 
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..show_details)
@@ -63,6 +291,25 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..mark_quartiles)
             self$.addOption(private$..mark_z_lines)
             self$.addOption(private$..mark_percentile)
+            self$.addOption(private$..histogram_bins)
+            self$.addOption(private$..es_plot_width)
+            self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..ymin)
+            self$.addOption(private$..ymax)
+            self$.addOption(private$..breaks)
+            self$.addOption(private$..xmin)
+            self$.addOption(private$..xmax)
+            self$.addOption(private$..xbreaks)
+            self$.addOption(private$..ylab)
+            self$.addOption(private$..xlab)
+            self$.addOption(private$..axis.text.y)
+            self$.addOption(private$..axis.title.y)
+            self$.addOption(private$..axis.text.x)
+            self$.addOption(private$..axis.title.x)
+            self$.addOption(private$..fill_regular)
+            self$.addOption(private$..fill_highlighted)
+            self$.addOption(private$..color)
+            self$.addOption(private$..marker_size)
         }),
     active = list(
         outcome_variable = function() private$..outcome_variable$value,
@@ -72,7 +319,26 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         mark_sd = function() private$..mark_sd$value,
         mark_quartiles = function() private$..mark_quartiles$value,
         mark_z_lines = function() private$..mark_z_lines$value,
-        mark_percentile = function() private$..mark_percentile$value),
+        mark_percentile = function() private$..mark_percentile$value,
+        histogram_bins = function() private$..histogram_bins$value,
+        es_plot_width = function() private$..es_plot_width$value,
+        es_plot_height = function() private$..es_plot_height$value,
+        ymin = function() private$..ymin$value,
+        ymax = function() private$..ymax$value,
+        breaks = function() private$..breaks$value,
+        xmin = function() private$..xmin$value,
+        xmax = function() private$..xmax$value,
+        xbreaks = function() private$..xbreaks$value,
+        ylab = function() private$..ylab$value,
+        xlab = function() private$..xlab$value,
+        axis.text.y = function() private$..axis.text.y$value,
+        axis.title.y = function() private$..axis.title.y$value,
+        axis.text.x = function() private$..axis.text.x$value,
+        axis.title.x = function() private$..axis.title.x$value,
+        fill_regular = function() private$..fill_regular$value,
+        fill_highlighted = function() private$..fill_highlighted$value,
+        color = function() private$..color$value,
+        marker_size = function() private$..marker_size$value),
     private = list(
         ..outcome_variable = NA,
         ..show_details = NA,
@@ -81,7 +347,26 @@ jamovidescribeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..mark_sd = NA,
         ..mark_quartiles = NA,
         ..mark_z_lines = NA,
-        ..mark_percentile = NA)
+        ..mark_percentile = NA,
+        ..histogram_bins = NA,
+        ..es_plot_width = NA,
+        ..es_plot_height = NA,
+        ..ymin = NA,
+        ..ymax = NA,
+        ..breaks = NA,
+        ..xmin = NA,
+        ..xmax = NA,
+        ..xbreaks = NA,
+        ..ylab = NA,
+        ..xlab = NA,
+        ..axis.text.y = NA,
+        ..axis.title.y = NA,
+        ..axis.text.x = NA,
+        ..axis.title.x = NA,
+        ..fill_regular = NA,
+        ..fill_highlighted = NA,
+        ..color = NA,
+        ..marker_size = NA)
 )
 
 jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -91,7 +376,9 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
-        describe_plot = function() private$.items[["describe_plot"]]),
+        describe_plot_warnings = function() private$.items[["describe_plot_warnings"]],
+        describe_plot = function() private$.items[["describe_plot"]],
+        describe_dotplot = function() private$.items[["describe_dotplot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -187,10 +474,23 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="<i>SEM</i>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="describe_plot_warnings",
+                title="Figure warnings",
+                visible=TRUE))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="describe_plot",
-                title="Describe",
+                title="Histogram",
+                requiresData=TRUE,
+                width=400,
+                height=300,
+                renderFun=".describe_plot"))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="describe_dotplot",
+                title="Dotplot",
                 requiresData=TRUE,
                 width=400,
                 height=300,
@@ -228,12 +528,33 @@ jamovidescribeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param mark_quartiles .
 #' @param mark_z_lines .
 #' @param mark_percentile .
+#' @param histogram_bins .
+#' @param es_plot_width .
+#' @param es_plot_height .
+#' @param ymin .
+#' @param ymax .
+#' @param breaks .
+#' @param xmin .
+#' @param xmax .
+#' @param xbreaks .
+#' @param ylab .
+#' @param xlab .
+#' @param axis.text.y .
+#' @param axis.title.y .
+#' @param axis.text.x .
+#' @param axis.title.x .
+#' @param fill_regular .
+#' @param fill_highlighted .
+#' @param color .
+#' @param marker_size .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$describe_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$describe_plot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$describe_dotplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -252,7 +573,26 @@ jamovidescribe <- function(
     mark_sd = FALSE,
     mark_quartiles = FALSE,
     mark_z_lines = FALSE,
-    mark_percentile = " ") {
+    mark_percentile = "0",
+    histogram_bins = "12",
+    es_plot_width = "500",
+    es_plot_height = "400",
+    ymin = "auto",
+    ymax = "auto",
+    breaks = "auto",
+    xmin = "auto",
+    xmax = "auto",
+    xbreaks = "auto",
+    ylab = "auto",
+    xlab = "auto",
+    axis.text.y = "14",
+    axis.title.y = "15",
+    axis.text.x = "14",
+    axis.title.x = "15",
+    fill_regular = "#008DF9",
+    fill_highlighted = "#E20134",
+    color = "black",
+    marker_size = "4") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovidescribe requires jmvcore to be installed (restart may be required)")
@@ -272,7 +612,26 @@ jamovidescribe <- function(
         mark_sd = mark_sd,
         mark_quartiles = mark_quartiles,
         mark_z_lines = mark_z_lines,
-        mark_percentile = mark_percentile)
+        mark_percentile = mark_percentile,
+        histogram_bins = histogram_bins,
+        es_plot_width = es_plot_width,
+        es_plot_height = es_plot_height,
+        ymin = ymin,
+        ymax = ymax,
+        breaks = breaks,
+        xmin = xmin,
+        xmax = xmax,
+        xbreaks = xbreaks,
+        ylab = ylab,
+        xlab = xlab,
+        axis.text.y = axis.text.y,
+        axis.title.y = axis.title.y,
+        axis.text.x = axis.text.x,
+        axis.title.x = axis.title.x,
+        fill_regular = fill_regular,
+        fill_highlighted = fill_highlighted,
+        color = color,
+        marker_size = marker_size)
 
     analysis <- jamovidescribeClass$new(
         options = options,
