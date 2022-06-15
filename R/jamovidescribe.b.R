@@ -40,6 +40,7 @@ jamovidescribeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
             # Yes, we're doing the analysis
             args <- list()
+
             args$data <- self$data
             args$outcome_variable <- self$options$outcome_variable
             call <- esci4::estimate_magnitude
@@ -66,6 +67,8 @@ jamovidescribeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           # Yes, we're doing the analysis
           args <- list()
+
+
           args$data <- self$data
           args$outcome_variable <- self$options$outcome_variable
           call <- esci4::estimate_magnitude
@@ -295,12 +298,34 @@ jamovidescribeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             myplot <- myplot + ggplot2::ylab(ylab)
           }
 
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 500,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 2000,
+            upper_inclusive = TRUE
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 400,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE
+          )
+
         notes <- c(
           notes,
           names(axis.text.y),
           names(axis.title.y),
           names(axis.text.x),
-          names(axis.title.x)
+          names(axis.title.x),
+          names(width),
+          names(height)
         )
         self$results$describe_plot_warnings$setState(notes)
         jamovi_set_notes(self$results$describe_plot_warnings)

@@ -24,19 +24,18 @@ items:
         - name: mean
           type: number
           title: <i>M</i>
-        - name: mean_LL
-          title: LL
-          type: number
-          visible: (show_details)
         - name: mean_UL
           title: UL
           type: number
           visible: (show_details)
-        - name: median
-          title: Median
+        - name: median_LL
+          title: LL
           type: number
           visible: (show_details)
-        - name: median_LL
+        - name: median
+          title: <i>Mdn</i>
+          type: number
+        - name: mean_LL
           title: LL
           type: number
           visible: (show_details)
@@ -62,7 +61,7 @@ items:
           type: number
           superTitle: Percentile
         - name: n
-          title: <i>n</i>
+          title: <i>N</i>
           type: integer
         - name: missing
           type: integer
@@ -72,7 +71,7 @@ items:
           type: integer
           visible: (show_details)
         - name: mean_SE
-          title: <i>SEM</i>
+          title: <i>SE<sub>Mean</sub></i>
           type: number
           visible: (show_details)
 

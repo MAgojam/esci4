@@ -410,22 +410,21 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number", 
                         `title`="<i>M</i>"),
                     list(
-                        `name`="mean_LL", 
-                        `title`="LL", 
-                        `type`="number", 
-                        `visible`="(show_details)"),
-                    list(
                         `name`="mean_UL", 
                         `title`="UL", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
-                        `name`="median", 
-                        `title`="Median", 
+                        `name`="median_LL", 
+                        `title`="LL", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
-                        `name`="median_LL", 
+                        `name`="median", 
+                        `title`="<i>Mdn</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="mean_LL", 
                         `title`="LL", 
                         `type`="number", 
                         `visible`="(show_details)"),
@@ -458,7 +457,7 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `superTitle`="Percentile"),
                     list(
                         `name`="n", 
-                        `title`="<i>n</i>", 
+                        `title`="<i>N</i>", 
                         `type`="integer"),
                     list(
                         `name`="missing", 
@@ -471,7 +470,7 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details)"),
                     list(
                         `name`="mean_SE", 
-                        `title`="<i>SEM</i>", 
+                        `title`="<i>SE<sub>Mean</sub></i>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Html$new(

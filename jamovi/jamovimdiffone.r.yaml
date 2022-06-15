@@ -31,7 +31,7 @@ items:
           title: UL
           type: number
         - name: median
-          title: Median
+          title: <i>Mdn</i>
           type: number
           visible: (show_details & switch == 'from_raw')
         - name: median_LL

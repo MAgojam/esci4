@@ -33,7 +33,7 @@ items:
           type: number
           visible: (effect_size == 'mean_difference')
         - name: median
-          title: Mdn
+          title: <i>Mdn</i>
           type: number
           visible: (switch == 'from_raw')
         - name: median_LL

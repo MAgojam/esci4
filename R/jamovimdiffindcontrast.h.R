@@ -2015,7 +2015,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="median", 
-                        `title`="Mdn", 
+                        `title`="<i>Mdn</i>", 
                         `type`="number", 
                         `visible`="(switch == 'from_raw')"),
                     list(

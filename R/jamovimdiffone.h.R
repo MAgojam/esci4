@@ -1347,7 +1347,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number"),
                     list(
                         `name`="median", 
-                        `title`="Median", 
+                        `title`="<i>Mdn</i>", 
                         `type`="number", 
                         `visible`="(show_details & switch == 'from_raw')"),
                     list(
