@@ -14,6 +14,7 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   tbl_es_median_difference <- NULL
   tbl_es_median_ratio <- NULL
   tbl_es_odds_ratio <- NULL
+  assume_equal_variance <- NULL
   try(tbl_overview <- self$results$overview)
   try(tbl_es_mean_difference <- self$results$es_mean_difference)
   try(tbl_es_mean_ratio <- self$results$es_mean_ratio)
@@ -21,7 +22,41 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   try(tbl_es_median_difference <- self$results$es_median_difference)
   try(tbl_es_median_ratio <- self$results$es_median_ratio)
   try(tbl_es_odds_ratio <- self$results$es_odds_ratio)
+  try(assume_equal_variance <- self$options$assume_equal_variance)
 
+  if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
+    if (assume_equal_variance) {
+      tbl_overview$setNote(
+        key = "overview_table",
+        note = "Variances are assumed equal, so <i>s</i><sub>p</sub> was used to calculate each CI.",
+        init = FALSE
+      )
+    } else {
+      tbl_overview$setNote(
+        key = "overview_table",
+        note = "Variances are not assumed equal, and so the CI was calculated separately for each mean.",
+        init = FALSE
+      )
+
+    }
+  }
+
+  if (!is.null(tbl_es_mean_difference) & !is.null(assume_equal_variance)) {
+    if (assume_equal_variance) {
+      tbl_es_mean_difference$setNote(
+        key = "overview_table",
+        note = "Variances are assumed equal, so <i>s</i><sub>p</sub> was used to calculate each CI.",
+        init = FALSE
+      )
+    } else {
+      tbl_es_mean_difference$setNote(
+        key = "overview_table",
+        note = "Variances are not assumed equal, so the Welch method was used to calculate each CI on a difference.",
+        init = FALSE
+      )
+
+    }
+  }
 
   # Prep output -------------------------------------------
   # Set CI and MoE columns to reflect confidence level
