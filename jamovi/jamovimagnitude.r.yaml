@@ -77,12 +77,12 @@ items:
           type: integer
           visible: (show_details & effect_size == 'mean')
         - name: mean_SE
-          title: <i>SE<sub>Mean</sub></i>
+          title: <i>SE</i><sub>Mean</sub>
           type: number
           visible: (show_details & effect_size == 'mean')
         - name: median_SE
           type: number
-          title: <i>SE<sub>Median</sub></i>
+          title: <i>SE</i><sub>Median</sub>
           visible: (show_details & effect_size == 'median' & switch == 'from_raw')
         - name: t_multiplier
           type: number

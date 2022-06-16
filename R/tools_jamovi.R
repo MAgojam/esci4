@@ -83,7 +83,7 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
 
   if (!is.null(result_table$grouping_variable_name) & !is.null(result_table$effect)) {
     jmv_table$getColumn("effect")$setTitle(
-      result_table$grouping_variable_name[[1]]
+      paste(result_table$grouping_variable_name[[1]], "<br>Effect")
     )
   }
 

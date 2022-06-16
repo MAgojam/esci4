@@ -71,7 +71,7 @@ items:
           type: integer
           visible: (show_details)
         - name: mean_SE
-          title: <i>SE<sub>Mean</sub></i>
+          title: <i>SE</i><sub>Mean</sub>
           type: number
           visible: (show_details)
 
