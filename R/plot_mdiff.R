@@ -522,6 +522,7 @@ plot_mdiff_base <- function(
     switch(
       effect_size,
       mean = {ylim[[1]] <- lowest*.85},
+      median = {ylim[[1]] <- lowest*.85},
       rdiff = {ylim[[1]] <- min(c(-1, saxisBreaks+reference_es))},
       P = {ylim[[1]] <- min(c(0, saxisBreaks+reference_es))}
     )
@@ -530,6 +531,7 @@ plot_mdiff_base <- function(
     switch(
       effect_size,
       mean = {ylim[[2]] <- highest*1.1},
+      median = {ylim[[2]] <- highest*1.1},
       rdiff = {ylim[[2]] <- max(c(1, saxisBreaks+reference_es))},
       P = {ylim[[2]] <- max(c(1, saxisBreaks+reference_es))}
     )
