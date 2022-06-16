@@ -185,7 +185,7 @@ options:
       default: '0.25'
 
     - name: error_nudge
-      title: 'Offset from data'
+      title: 'Offset from CI'
       type: String
       default: '0.5'
 

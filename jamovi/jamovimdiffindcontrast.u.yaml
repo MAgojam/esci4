@@ -258,8 +258,8 @@ children:
             format: string
             enable: '(switch:from_raw)'
             cell:
-              column: 2
-              row: 11
+              column: 1
+              row: 14
           - type: ComboBox
             name: error_layout
             enable: '(effect_size:mean_difference)'
