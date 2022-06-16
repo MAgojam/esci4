@@ -1659,13 +1659,13 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
                         `name`="mean_SE", 
-                        `title`="<i>SE<sub>Mean</sub></i>", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
                         `type`="number", 
                         `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
                         `name`="median_SE", 
                         `type`="number", 
-                        `title`="<i>SE<sub>Median</sub></i>", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
                         `visible`="(show_details & effect_size == 'median_difference' & switch == 'from_raw')"))))
             self$add(jmvcore::Table$new(
                 options=options,

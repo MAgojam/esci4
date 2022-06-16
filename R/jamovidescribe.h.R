@@ -470,7 +470,7 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details)"),
                     list(
                         `name`="mean_SE", 
-                        `title`="<i>SE<sub>Mean</sub></i>", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Html$new(

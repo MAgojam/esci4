@@ -791,13 +791,13 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(show_details & effect_size == 'mean')"),
                     list(
                         `name`="mean_SE", 
-                        `title`="<i>SE<sub>Mean</sub></i>", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
                         `type`="number", 
                         `visible`="(show_details & effect_size == 'mean')"),
                     list(
                         `name`="median_SE", 
                         `type`="number", 
-                        `title`="<i>SE<sub>Median</sub></i>", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
                         `visible`="(show_details & effect_size == 'median' & switch == 'from_raw')"),
                     list(
                         `name`="t_multiplier", 

@@ -221,7 +221,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: 'y-axis: '
+            label: 'Y-axis: '
             cell:
               column: 0
               row: 2
@@ -263,7 +263,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: 'x-axis: '
+            label: 'X-axis: '
             cell:
               column: 0
               row: 6
@@ -292,7 +292,7 @@ children:
               column: 1
               row: 8
           - type: Label
-            label: 'difference-axis: '
+            label: 'Difference axis: '
             cell:
               column: 0
               row: 9
