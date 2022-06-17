@@ -131,6 +131,7 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
 
     # Now fill the named list with the column/values from the data frame
     for(mycol in names(result_table)) {
+
       row_list[mycol] = result_table[x, mycol]
     }
 

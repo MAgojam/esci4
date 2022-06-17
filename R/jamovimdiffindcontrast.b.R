@@ -21,7 +21,6 @@ jamovimdiffindcontrastClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6
             save_raw_data = FALSE
         )
 
-
         # Print any notes that emerged from running the analysis
         jamovi_set_notes(self$results$help)
 
@@ -30,6 +29,10 @@ jamovimdiffindcontrastClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6
         #  If error, return the error
         if(is.null(estimate)) return(TRUE)
         if(is(estimate, "try-error")) stop(estimate[1])
+
+        # Add in MoE
+        estimate$es_mean_difference$moe <- (estimate$es_mean_difference$UL - estimate$es_mean_difference$LL)/2
+        estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
 
         # Fill tables
         jamovi_estimate_filler(self, estimate, TRUE)
@@ -277,6 +280,8 @@ in {self$options$grouping_variable_levels}.  Rows with empty group labels have b
       estimate <- esci_estimate_consolidate(estimate_list)
     }
   }
+
+
 
   return(estimate)
 }

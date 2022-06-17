@@ -30,6 +30,10 @@ items:
         - name: mean_UL
           title: UL
           type: number
+        - name: moe
+          type: number
+          title: MoE
+          visible: (show_details)
         - name: median
           title: <i>Mdn</i>
           type: number
@@ -104,6 +108,10 @@ items:
         - name: UL
           title: UL
           type: number
+        - name: moe
+          type: number
+          title: MoE
+          visible: (show_details | show_calculations)
         - name: SE
           title: <i>SE</i>
           type: number
@@ -112,6 +120,21 @@ items:
           title: <i>df</i>
           type: integer
           visible: (show_details)
+        - name: t_multiplier
+          type: number
+          title: <i>t</i>
+          superTitle: Calculation component
+          visible: (show_calculations)
+        - name: s_component
+          type: number
+          title: Variability
+          superTitle: Calculation component
+          visible: (show_calculations)
+        - name: n_component
+          type: number
+          title: Sample size
+          superTitle: Calculation component
+          visible: (show_calculations)
 
     - name:  es_smd
       title: Standardized mean difference

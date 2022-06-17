@@ -29,6 +29,17 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         if(is.null(estimate)) return(TRUE)
         if(is(estimate, "try-error")) stop(estimate[1])
 
+        # Add in MoE
+        estimate$es_mean_difference$moe <- (estimate$es_mean_difference$UL - estimate$es_mean_difference$LL)/2
+        estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
+
+        # Add calculation details
+        alpha <- 1 - self$options$conf_level/100
+        estimate$es_mean_difference$t_multiplier <- stats::qt(1-alpha/2, estimate$es_mean_difference$df)
+        estimate$es_mean_difference$s_component <- estimate$es_smd$denominator[[1]]
+        estimate$es_mean_difference$n_component <- estimate$es_mean_difference$moe / estimate$es_mean_difference$t_multiplier / estimate$es_mean_difference$s_component
+
+
         # Fill tables
         jamovi_estimate_filler(self, estimate, TRUE)
 

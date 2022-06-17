@@ -194,6 +194,9 @@ children:
         enable: '(switch:from_raw)'
       - type: CheckBox
         name: show_details
+      - type: CheckBox
+        enable: '(assume_equal_variance)'
+        name: show_calculations
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

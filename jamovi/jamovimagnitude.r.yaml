@@ -32,6 +32,10 @@ items:
           title: UL
           type: number
           visible: (effect_size == 'mean')
+        - name: moe
+          type: number
+          title: MoE
+          visible: (show_details & effect_size == 'mean')
         - name: median
           title: <i>Mdn</i>
           type: number
@@ -86,19 +90,18 @@ items:
           visible: (show_details & effect_size == 'median' & switch == 'from_raw')
         - name: t_multiplier
           type: number
-          title: <i>t</i> component
+          title: <i>t</i>
+          superTitle: Calculation component
           visible: (show_calculations & effect_size == 'mean')
         - name: s_component
           type: number
-          title: Variability component
+          title: Variability
+          superTitle: Percentile
           visible: (show_calculations & effect_size == 'mean')
         - name: n_component
           type: number
-          title: Sample size component
-          visible: (show_calculations & effect_size == 'mean')
-        - name: moe
-          type: number
-          title: MoE
+          title: Sample size
+          superTitle: Calculation component
           visible: (show_calculations & effect_size == 'mean')
 
     - name: magnitude_plot_warnings

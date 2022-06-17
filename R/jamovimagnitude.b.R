@@ -67,11 +67,14 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is(estimate, "try-error")) stop(estimate[1])
 
             # Fill tables
-            alpha <- 1 - self$options$conf_level/100
+            alpha <- 1 - as.numeric(self$options$conf_level)/100
             estimate$overview$t_multiplier <- stats::qt(1-alpha/2, estimate$overview$df)
             estimate$overview$s_component <- estimate$overview$sd
             estimate$overview$n_component <- 1/sqrt(estimate$overview$n)
-            estimate$overview$moe <- estimate$overview$t_multiplier * estimate$overview$s_component * estimate$overview$n_component
+
+            # Add in MoE
+            estimate$es_mean_difference$moe <- (estimate$es_mean_difference$UL - estimate$es_mean_difference$LL)/2
+            estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
 
 
             jamovi_estimate_filler(self, estimate, TRUE)

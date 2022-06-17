@@ -107,6 +107,11 @@ options:
       type: Bool
       default: false
 
+    - name: show_calculations
+      title: Show calculation components
+      type: Bool
+      default: false
+
     - name: es_plot_width
       title: Width
       type: String

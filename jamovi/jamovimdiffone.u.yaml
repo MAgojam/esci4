@@ -74,6 +74,8 @@ children:
         suffix: '%'
       - type: CheckBox
         name: show_details
+      - type: CheckBox
+        name: show_calculations
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

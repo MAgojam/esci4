@@ -25,6 +25,7 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             show_ratio = FALSE,
             switch_comparison_order = FALSE,
             show_details = FALSE,
+            show_calculations = FALSE,
             es_plot_width = "600",
             es_plot_height = "400",
             ymin = "auto",
@@ -179,6 +180,10 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
+                default=FALSE)
+            private$..show_calculations <- jmvcore::OptionBool$new(
+                "show_calculations",
+                show_calculations,
                 default=FALSE)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
@@ -1296,6 +1301,7 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..show_ratio)
             self$.addOption(private$..switch_comparison_order)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..show_calculations)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -1379,6 +1385,7 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         show_ratio = function() private$..show_ratio$value,
         switch_comparison_order = function() private$..switch_comparison_order$value,
         show_details = function() private$..show_details$value,
+        show_calculations = function() private$..show_calculations$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -1461,6 +1468,7 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..show_ratio = NA,
         ..switch_comparison_order = NA,
         ..show_details = NA,
+        ..show_calculations = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -1603,6 +1611,11 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number", 
                         `visible`="(effect_size == 'mean_difference')"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -1715,6 +1728,11 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details | show_calculations)"),
+                    list(
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
@@ -1728,7 +1746,25 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details & assume_equal_variance)"))))
+                        `visible`="(show_details & assume_equal_variance)"),
+                    list(
+                        `name`="t_multiplier", 
+                        `type`="number", 
+                        `title`="<i>t</i>", 
+                        `superTitle`="Calculation component", 
+                        `visible`="(show_calculations & assume_equal_variance)"),
+                    list(
+                        `name`="s_component", 
+                        `type`="number", 
+                        `title`="Variability", 
+                        `superTitle`="Calculation component", 
+                        `visible`="(show_calculations & assume_equal_variance)"),
+                    list(
+                        `name`="n_component", 
+                        `type`="number", 
+                        `title`="Sample size", 
+                        `superTitle`="Calculation component", 
+                        `visible`="(show_calculations & assume_equal_variance)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_smd",
@@ -2025,6 +2061,7 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param show_ratio .
 #' @param switch_comparison_order .
 #' @param show_details .
+#' @param show_calculations .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -2129,6 +2166,7 @@ jamovimdifftwo <- function(
     show_ratio = FALSE,
     switch_comparison_order = FALSE,
     show_details = FALSE,
+    show_calculations = FALSE,
     es_plot_width = "600",
     es_plot_height = "400",
     ymin = "auto",
@@ -2225,6 +2263,7 @@ jamovimdifftwo <- function(
         show_ratio = show_ratio,
         switch_comparison_order = switch_comparison_order,
         show_details = show_details,
+        show_calculations = show_calculations,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,

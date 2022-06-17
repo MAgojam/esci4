@@ -735,6 +735,11 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="number", 
                         `visible`="(effect_size == 'mean')"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details & effect_size == 'mean')"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -802,22 +807,20 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="t_multiplier", 
                         `type`="number", 
-                        `title`="<i>t</i> component", 
+                        `title`="<i>t</i>", 
+                        `superTitle`="Calculation component", 
                         `visible`="(show_calculations & effect_size == 'mean')"),
                     list(
                         `name`="s_component", 
                         `type`="number", 
-                        `title`="Variability component", 
+                        `title`="Variability", 
+                        `superTitle`="Percentile", 
                         `visible`="(show_calculations & effect_size == 'mean')"),
                     list(
                         `name`="n_component", 
                         `type`="number", 
-                        `title`="Sample size component", 
-                        `visible`="(show_calculations & effect_size == 'mean')"),
-                    list(
-                        `name`="moe", 
-                        `type`="number", 
-                        `title`="MoE", 
+                        `title`="Sample size", 
+                        `superTitle`="Calculation component", 
                         `visible`="(show_calculations & effect_size == 'mean')"))))
             self$add(jmvcore::Html$new(
                 options=options,

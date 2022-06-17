@@ -2014,6 +2014,11 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `type`="number", 
                         `visible`="(effect_size == 'mean_difference')"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -2177,6 +2182,11 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `name`="UL", 
                         `title`="UL", 
                         `type`="number"),
+                    list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details)"),
                     list(
                         `name`="SE", 
                         `title`="<i>SE</i>", 

@@ -15,6 +15,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             outcome_variable_name = "Outcome variable",
             conf_level = 95,
             show_details = FALSE,
+            show_calculations = FALSE,
             es_plot_width = "550",
             es_plot_height = "450",
             ymin = "auto",
@@ -118,6 +119,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
+                default=FALSE)
+            private$..show_calculations <- jmvcore::OptionBool$new(
+                "show_calculations",
+                show_calculations,
                 default=FALSE)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
@@ -1102,6 +1107,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..show_calculations)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -1170,6 +1176,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         outcome_variable_name = function() private$..outcome_variable_name$value,
         conf_level = function() private$..conf_level$value,
         show_details = function() private$..show_details$value,
+        show_calculations = function() private$..show_calculations$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -1237,6 +1244,7 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..outcome_variable_name = NA,
         ..conf_level = NA,
         ..show_details = NA,
+        ..show_calculations = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -1346,6 +1354,11 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -1438,6 +1451,11 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="MoE", 
+                        `visible`="(show_details | show_calculations)"),
+                    list(
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
@@ -1446,7 +1464,25 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="df", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"))))
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="t_multiplier", 
+                        `type`="number", 
+                        `title`="<i>t</i>", 
+                        `superTitle`="Calculation component", 
+                        `visible`="(show_calculations)"),
+                    list(
+                        `name`="s_component", 
+                        `type`="number", 
+                        `title`="Variability", 
+                        `superTitle`="Calculation component", 
+                        `visible`="(show_calculations)"),
+                    list(
+                        `name`="n_component", 
+                        `type`="number", 
+                        `title`="Sample size", 
+                        `superTitle`="Calculation component", 
+                        `visible`="(show_calculations)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_smd",
@@ -1546,6 +1582,7 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param outcome_variable_name .
 #' @param conf_level .
 #' @param show_details .
+#' @param show_calculations .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -1632,6 +1669,7 @@ jamovimdiffone <- function(
     outcome_variable_name = "Outcome variable",
     conf_level = 95,
     show_details = FALSE,
+    show_calculations = FALSE,
     es_plot_width = "550",
     es_plot_height = "450",
     ymin = "auto",
@@ -1710,6 +1748,7 @@ jamovimdiffone <- function(
         outcome_variable_name = outcome_variable_name,
         conf_level = conf_level,
         show_details = show_details,
+        show_calculations = show_calculations,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,
