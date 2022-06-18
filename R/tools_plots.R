@@ -38,7 +38,7 @@ esci_plot_data_layouts <- function(data_layout = "none", data_spread){
   )
 
   extra_options <- list(
-    swarm = paste(", cex = ", data_spread * 4, sep = ""),
+    swarm = paste(", cex = ", data_spread * 10, sep = ""),
     random = paste(", varwidth = TRUE, width = ", data_spread, sep = ""),
     none = NULL
   )

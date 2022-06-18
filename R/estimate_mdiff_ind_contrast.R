@@ -998,7 +998,7 @@ esci_tool_contrast_labels <- function(contrast) {
   if (length(which(contrast < 0)) > 1) {
     reference_label <- paste("(", reference_label, ")", sep = "")
   }
-  contrast_label <- paste(comparison_label, " - ", reference_label, sep = "")
+  contrast_label <- paste(comparison_label, " \U2012 ", reference_label, sep = "")
 
   return(c(comparison_label, reference_label, contrast_label))
 
