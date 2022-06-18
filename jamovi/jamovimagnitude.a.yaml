@@ -719,7 +719,7 @@ options:
     - name: size_interval
       type: List
       title: 'Thickness'
-      default: '1'
+      default: '3'
       options:
         - name: '1'
           title: '1'
@@ -733,6 +733,10 @@ options:
           title: '5'
         - name: '6'
           title: '6'
+        - name: '7'
+          title: '7'
+        - name: '8'
+          title: '8'
 
     - name: alpha_interval
       type: List

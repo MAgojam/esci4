@@ -76,9 +76,9 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             color_interval_reference = "black",
             color_interval_comparison = "black",
             color_interval_difference = "black",
-            size_interval_reference = "1",
-            size_interval_comparison = "1",
-            size_interval_difference = "1",
+            size_interval_reference = "3",
+            size_interval_comparison = "3",
+            size_interval_difference = "3",
             alpha_interval_reference = "1",
             alpha_interval_comparison = "1",
             alpha_interval_difference = "1",
@@ -1053,36 +1053,42 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..size_interval_reference <- jmvcore::OptionList$new(
                 "size_interval_reference",
                 size_interval_reference,
-                default="1",
+                default="3",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6"))
+                    "6",
+                    "7",
+                    "8"))
             private$..size_interval_comparison <- jmvcore::OptionList$new(
                 "size_interval_comparison",
                 size_interval_comparison,
-                default="1",
+                default="3",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6"))
+                    "6",
+                    "7",
+                    "8"))
             private$..size_interval_difference <- jmvcore::OptionList$new(
                 "size_interval_difference",
                 size_interval_difference,
-                default="1",
+                default="3",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6"))
+                    "6",
+                    "7",
+                    "8"))
             private$..alpha_interval_reference <- jmvcore::OptionList$new(
                 "alpha_interval_reference",
                 alpha_interval_reference,
@@ -2217,9 +2223,9 @@ jamovimdifftwo <- function(
     color_interval_reference = "black",
     color_interval_comparison = "black",
     color_interval_difference = "black",
-    size_interval_reference = "1",
-    size_interval_comparison = "1",
-    size_interval_difference = "1",
+    size_interval_reference = "3",
+    size_interval_comparison = "3",
+    size_interval_difference = "3",
     alpha_interval_reference = "1",
     alpha_interval_comparison = "1",
     alpha_interval_difference = "1",

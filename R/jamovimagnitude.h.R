@@ -44,7 +44,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             alpha_summary = "1",
             linetype_summary = "solid",
             color_interval = "black",
-            size_interval = "1",
+            size_interval = "3",
             alpha_interval = "1",
             alpha_error = "1",
             fill_error = "gray75", ...) {
@@ -479,14 +479,16 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..size_interval <- jmvcore::OptionList$new(
                 "size_interval",
                 size_interval,
-                default="1",
+                default="3",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6"))
+                    "6",
+                    "7",
+                    "8"))
             private$..alpha_interval <- jmvcore::OptionList$new(
                 "alpha_interval",
                 alpha_interval,
@@ -958,7 +960,7 @@ jamovimagnitude <- function(
     alpha_summary = "1",
     linetype_summary = "solid",
     color_interval = "black",
-    size_interval = "1",
+    size_interval = "3",
     alpha_interval = "1",
     alpha_error = "1",
     fill_error = "gray75") {
