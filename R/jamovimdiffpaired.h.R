@@ -1701,7 +1701,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     list(
                         `name`="moe", 
                         `type`="number", 
-                        `title`="MoE", 
+                        `title`="<i>MoE</i>", 
                         `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
                         `name`="median", 
@@ -1854,7 +1854,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     list(
                         `name`="moe", 
                         `type`="number", 
-                        `title`="MoE", 
+                        `title`="<i>MoE</i>", 
                         `visible`="(show_details | show_calculations)"),
                     list(
                         `name`="SE", 

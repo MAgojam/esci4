@@ -34,7 +34,7 @@ items:
           visible: (effect_size == 'mean')
         - name: moe
           type: number
-          title: MoE
+          title: <i>MoE</i>
           visible: (show_details & effect_size == 'mean')
         - name: median
           title: <i>Mdn</i>

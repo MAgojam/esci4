@@ -1356,7 +1356,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="moe", 
                         `type`="number", 
-                        `title`="MoE", 
+                        `title`="<i>MoE</i>", 
                         `visible`="(show_details)"),
                     list(
                         `name`="median", 
@@ -1453,7 +1453,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="moe", 
                         `type`="number", 
-                        `title`="MoE", 
+                        `title`="<i>MoE</i>", 
                         `visible`="(show_details | show_calculations)"),
                     list(
                         `name`="SE", 
