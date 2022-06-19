@@ -33,7 +33,7 @@ options:
       default: ' '
 
     - name: comparison_n
-      title: Comparison group sample size (<i>n<sub>comparison</sub></i>)
+      title: Comparison group sample size (<i>N<sub>comparison</sub></i>)
       type: String
       default: ' '
 
