@@ -135,28 +135,35 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       is.null(self$options$reference_measure)
     ) return(NULL)
   } else {
-    args$comparison_mean <- jamovi_required_numeric(
-      self$options$comparison_mean
-    )
-    args$comparison_sd <- jamovi_required_numeric(
-      self$options$comparison_sd,
-      lower = 0,
-      lower_inclusive = FALSE
-    )
-
     args$reference_mean <- jamovi_required_numeric(
-      self$options$reference_mean
+      self$options$reference_mean,
+      my_value_name = "Reference <i>M</i>"
     )
     args$reference_sd <- jamovi_required_numeric(
       self$options$reference_sd,
       lower = 0,
-      lower_inclusive = FALSE
+      lower_inclusive = FALSE,
+      my_value_name = "Reference <i>s</i>"
     )
+
+    args$comparison_mean <- jamovi_required_numeric(
+      self$options$comparison_mean,
+      my_value_name = "Comparison <i>M</i>"
+    )
+    args$comparison_sd <- jamovi_required_numeric(
+      self$options$comparison_sd,
+      lower = 0,
+      lower_inclusive = FALSE,
+      my_value_name = "Reference <i>s</i>"
+    )
+
+
     args$n <- jamovi_required_numeric(
       self$options$n,
       integer_required = TRUE,
       lower = 0,
-      lower_inclusive = FALSE
+      lower_inclusive = FALSE,
+      my_value_name = "<i>N</i>"
     )
 
     args$correlation <- jamovi_required_numeric(
@@ -165,11 +172,15 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       lower = -1,
       lower_inclusive = TRUE,
       upper = 1,
-      upper_inclusive = TRUE
+      upper_inclusive = TRUE,
+      my_value_name = "Correlation between measures (<i>r</i>)"
     )
 
 
-    unfilled <- names(args[which(is.na(args))])
+    unfilled <- NULL
+    for (element in args[which(is.na(args))]) {
+      unfilled <- c(unfilled, names(element))
+    }
 
     for (element in args) {
       if (is.character(element)) {

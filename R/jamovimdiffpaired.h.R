@@ -7,8 +7,8 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
     public = list(
         initialize = function(
             switch = "from_raw",
-            comparison_measure = NULL,
             reference_measure = NULL,
+            comparison_measure = NULL,
             comparison_mean = " ",
             comparison_sd = " ",
             reference_mean = " ",
@@ -103,14 +103,14 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 options=list(
                     "from_raw",
                     "from_summary"))
-            private$..comparison_measure <- jmvcore::OptionVariable$new(
-                "comparison_measure",
-                comparison_measure,
-                permitted=list(
-                    "numeric"))
             private$..reference_measure <- jmvcore::OptionVariable$new(
                 "reference_measure",
                 reference_measure,
+                permitted=list(
+                    "numeric"))
+            private$..comparison_measure <- jmvcore::OptionVariable$new(
+                "comparison_measure",
+                comparison_measure,
                 permitted=list(
                     "numeric"))
             private$..comparison_mean <- jmvcore::OptionString$new(
@@ -1396,8 +1396,8 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "gray100"))
 
             self$.addOption(private$..switch)
-            self$.addOption(private$..comparison_measure)
             self$.addOption(private$..reference_measure)
+            self$.addOption(private$..comparison_measure)
             self$.addOption(private$..comparison_mean)
             self$.addOption(private$..comparison_sd)
             self$.addOption(private$..reference_mean)
@@ -1481,8 +1481,8 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         }),
     active = list(
         switch = function() private$..switch$value,
-        comparison_measure = function() private$..comparison_measure$value,
         reference_measure = function() private$..reference_measure$value,
+        comparison_measure = function() private$..comparison_measure$value,
         comparison_mean = function() private$..comparison_mean$value,
         comparison_sd = function() private$..comparison_sd$value,
         reference_mean = function() private$..reference_mean$value,
@@ -1565,8 +1565,8 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         fill_error_difference = function() private$..fill_error_difference$value),
     private = list(
         ..switch = NA,
-        ..comparison_measure = NA,
         ..reference_measure = NA,
+        ..comparison_measure = NA,
         ..comparison_mean = NA,
         ..comparison_sd = NA,
         ..reference_mean = NA,
@@ -2112,8 +2112,8 @@ jamovimdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' 
 #' @param switch .
 #' @param data .
-#' @param comparison_measure .
 #' @param reference_measure .
+#' @param comparison_measure .
 #' @param comparison_mean .
 #' @param comparison_sd .
 #' @param reference_mean .
@@ -2219,8 +2219,8 @@ jamovimdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 jamovimdiffpaired <- function(
     switch = "from_raw",
     data,
-    comparison_measure,
     reference_measure,
+    comparison_measure,
     comparison_mean = " ",
     comparison_sd = " ",
     reference_mean = " ",
@@ -2305,19 +2305,19 @@ jamovimdiffpaired <- function(
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimdiffpaired requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(comparison_measure)) comparison_measure <- jmvcore::resolveQuo(jmvcore::enquo(comparison_measure))
     if ( ! missing(reference_measure)) reference_measure <- jmvcore::resolveQuo(jmvcore::enquo(reference_measure))
+    if ( ! missing(comparison_measure)) comparison_measure <- jmvcore::resolveQuo(jmvcore::enquo(comparison_measure))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(comparison_measure), comparison_measure, NULL),
-            `if`( ! missing(reference_measure), reference_measure, NULL))
+            `if`( ! missing(reference_measure), reference_measure, NULL),
+            `if`( ! missing(comparison_measure), comparison_measure, NULL))
 
 
     options <- jamovimdiffpairedOptions$new(
         switch = switch,
-        comparison_measure = comparison_measure,
         reference_measure = reference_measure,
+        comparison_measure = comparison_measure,
         comparison_mean = comparison_mean,
         comparison_sd = comparison_sd,
         reference_mean = reference_mean,

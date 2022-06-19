@@ -105,11 +105,11 @@ children:
       - type: Label
         label: Define contrast
       - type: TextBox
-        name: comparison_labels
+        name: reference_labels
         format: string
         stretchFactor: 1
       - type: TextBox
-        name: reference_labels
+        name: comparison_labels
         format: string
         stretchFactor: 1
   - type: Label

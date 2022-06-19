@@ -210,25 +210,32 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
 
   } else {
     args$comparison_mean <- jamovi_required_numeric(
-      self$options$comparison_mean
+      self$options$comparison_mean,
+      my_value_name = "Comparison <i>M</i>"
     )
     args$comparison_sd <- jamovi_required_numeric(
       self$options$comparison_sd,
       lower = 0,
-      lower_inclusive = FALSE
+      lower_inclusive = FALSE,
+      my_value_name = "Comparison <i>s</i>"
     )
     args$comparison_n <- jamovi_required_numeric(
       self$options$comparison_n,
       integer_required = TRUE,
       lower = 0,
-      lower_inclusive = FALSE
+      lower_inclusive = FALSE,
+      my_value_name = "Comparison <i>n</i>"
     )
 
     args$reference_mean <- jamovi_required_numeric(
-      self$options$reference_mean
+      self$options$reference_mean,
+      my_value_name = "Reference <i>M</i>"
     )
 
-    unfilled <- names(args[which(is.na(args))])
+    unfilled <- NULL
+    for (element in args[which(is.na(args))]) {
+      unfilled <- c(unfilled, names(element))
+    }
 
     for (element in args) {
       if (is.character(element)) {

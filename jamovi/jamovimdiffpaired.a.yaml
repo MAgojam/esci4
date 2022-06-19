@@ -18,13 +18,13 @@ options:
     - name: data
       type: Data
 
-    - name: comparison_measure
-      title: Comparison variable
+    - name: reference_measure
+      title: Reference variable
       type: Variable
       permitted: [numeric]
 
-    - name: reference_measure
-      title: Reference variable
+    - name: comparison_measure
+      title: Comparison variable
       type: Variable
       permitted: [numeric]
 
