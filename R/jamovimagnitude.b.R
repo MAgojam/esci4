@@ -366,21 +366,27 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
         ) return(NULL)
     } else {
         args$mean <- jamovi_required_numeric(
-            self$options$mean
+            self$options$mean,
+            my_value_name = "Mean (<i>M</i>)"
         )
         args$sd <- jamovi_required_numeric(
             self$options$sd,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "Standard deviation (<i>s</i>)"
         )
         args$n <- jamovi_required_numeric(
             self$options$n,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "Sample size (<i>N</i>)"
         )
 
-        unfilled <- names(args[which(is.na(args))])
+        unfilled <- NULL
+        for (element in args[which(is.na(args))]) {
+          unfilled <- c(unfilled, names(element))
+        }
 
         for (element in args) {
             if (is.character(element)) {
