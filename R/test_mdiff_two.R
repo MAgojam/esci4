@@ -8,7 +8,7 @@ test_mdiff_two <- function() {
     reference_mean = 6.88,
     reference_sd = 4.22,
     reference_n = 48,
-    grouping_variable_levels = c("Laptop", "Pen"),
+    grouping_variable_levels = c("Ref-Laptop", "Comp-Pen"),
     outcome_variable_name = "% Transcription",
     grouping_variable_name = "Note-taking type",
     assume_equal_variance = TRUE

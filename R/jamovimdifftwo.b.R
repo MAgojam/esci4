@@ -133,37 +133,49 @@ jamovi_mdiff_two <- function(
       is.null(self$options$grouping_variable)
     ) return(NULL)
   } else {
-    args$comparison_mean <- jamovi_required_numeric(
-      self$options$comparison_mean
-    )
-    args$comparison_sd <- jamovi_required_numeric(
-      self$options$comparison_sd,
-      lower = 0,
-      lower_inclusive = FALSE
-    )
-    args$comparison_n <- jamovi_required_numeric(
-      self$options$comparison_n,
-      integer_required = TRUE,
-      lower = 0,
-      lower_inclusive = FALSE
-    )
 
     args$reference_mean <- jamovi_required_numeric(
-      self$options$reference_mean
+      self$options$reference_mean,
+      my_value_name = "Reference <i>M</i>"
     )
     args$reference_sd <- jamovi_required_numeric(
       self$options$reference_sd,
       lower = 0,
-      lower_inclusive = FALSE
+      lower_inclusive = FALSE,
+      my_value_name = "Reference <i>s</i>"
     )
     args$reference_n <- jamovi_required_numeric(
       self$options$reference_n,
       integer_required = TRUE,
       lower = 0,
-      lower_inclusive = FALSE
+      lower_inclusive = FALSE,
+      my_value_name = "Reference <i>n</i>"
     )
 
-    unfilled <- names(args[which(is.na(args))])
+    args$comparison_mean <- jamovi_required_numeric(
+      self$options$comparison_mean,
+      my_value_name = "Comparison <i>M</i>"
+    )
+    args$comparison_sd <- jamovi_required_numeric(
+      self$options$comparison_sd,
+      lower = 0,
+      lower_inclusive = FALSE,
+      my_value_name = "Comparison <i>s</i>"
+    )
+    args$comparison_n <- jamovi_required_numeric(
+      self$options$comparison_n,
+      integer_required = TRUE,
+      lower = 0,
+      lower_inclusive = FALSE,
+      my_value_name = "Comparison <i>n</i>"
+    )
+
+    unfilled <- NULL
+    for (element in args[which(is.na(args))]) {
+      unfilled <- c(unfilled, names(element))
+    }
+
+    #unfilled <- names(args[which(is.na(args))])
 
     for (element in args) {
       if (is.character(element)) {
@@ -205,7 +217,6 @@ jamovi_mdiff_two <- function(
     my_value_name = "Confidence level"
   )/100
   args$assume_equal_variance <- self$options$assume_equal_variance
-  args$switch_comparison_order <- self$options$switch_comparison_order
 
 
   if(from_raw) {
@@ -217,6 +228,7 @@ jamovi_mdiff_two <- function(
       args$outcome_variable_name <- outcome_variable
     }
     args$grouping_variable <- unname(self$options$grouping_variable)
+    args$switch_comparison_order <- self$options$switch_comparison_order
   } else {
     args$outcome_variable_name <- jamovi_sanitize(
       self$options$outcome_variable_name,
@@ -239,8 +251,8 @@ jamovi_mdiff_two <- function(
       na_ok = FALSE
     )
     args$grouping_variable_levels <- c(
-      comparison_level_name,
-      reference_level_name
+      reference_level_name,
+      comparison_level_name
     )
 
     for (element in args) {

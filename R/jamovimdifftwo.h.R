@@ -9,14 +9,14 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             switch = "from_raw",
             outcome_variable = NULL,
             grouping_variable = NULL,
-            comparison_mean = " ",
-            comparison_sd = " ",
-            comparison_n = " ",
+            reference_level_name = "Reference group",
             reference_mean = " ",
             reference_sd = " ",
             reference_n = " ",
             comparison_level_name = "Comparison group",
-            reference_level_name = "Reference group",
+            comparison_mean = " ",
+            comparison_sd = " ",
+            comparison_n = " ",
             outcome_variable_name = "Outcome variable",
             grouping_variable_name = "Grouping variable",
             conf_level = 95,
@@ -112,18 +112,10 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 grouping_variable,
                 permitted=list(
                     "factor"))
-            private$..comparison_mean <- jmvcore::OptionString$new(
-                "comparison_mean",
-                comparison_mean,
-                default=" ")
-            private$..comparison_sd <- jmvcore::OptionString$new(
-                "comparison_sd",
-                comparison_sd,
-                default=" ")
-            private$..comparison_n <- jmvcore::OptionString$new(
-                "comparison_n",
-                comparison_n,
-                default=" ")
+            private$..reference_level_name <- jmvcore::OptionString$new(
+                "reference_level_name",
+                reference_level_name,
+                default="Reference group")
             private$..reference_mean <- jmvcore::OptionString$new(
                 "reference_mean",
                 reference_mean,
@@ -140,10 +132,18 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "comparison_level_name",
                 comparison_level_name,
                 default="Comparison group")
-            private$..reference_level_name <- jmvcore::OptionString$new(
-                "reference_level_name",
-                reference_level_name,
-                default="Reference group")
+            private$..comparison_mean <- jmvcore::OptionString$new(
+                "comparison_mean",
+                comparison_mean,
+                default=" ")
+            private$..comparison_sd <- jmvcore::OptionString$new(
+                "comparison_sd",
+                comparison_sd,
+                default=" ")
+            private$..comparison_n <- jmvcore::OptionString$new(
+                "comparison_n",
+                comparison_n,
+                default=" ")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -1291,14 +1291,14 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..grouping_variable)
-            self$.addOption(private$..comparison_mean)
-            self$.addOption(private$..comparison_sd)
-            self$.addOption(private$..comparison_n)
+            self$.addOption(private$..reference_level_name)
             self$.addOption(private$..reference_mean)
             self$.addOption(private$..reference_sd)
             self$.addOption(private$..reference_n)
             self$.addOption(private$..comparison_level_name)
-            self$.addOption(private$..reference_level_name)
+            self$.addOption(private$..comparison_mean)
+            self$.addOption(private$..comparison_sd)
+            self$.addOption(private$..comparison_n)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..grouping_variable_name)
             self$.addOption(private$..conf_level)
@@ -1375,14 +1375,14 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         switch = function() private$..switch$value,
         outcome_variable = function() private$..outcome_variable$value,
         grouping_variable = function() private$..grouping_variable$value,
-        comparison_mean = function() private$..comparison_mean$value,
-        comparison_sd = function() private$..comparison_sd$value,
-        comparison_n = function() private$..comparison_n$value,
+        reference_level_name = function() private$..reference_level_name$value,
         reference_mean = function() private$..reference_mean$value,
         reference_sd = function() private$..reference_sd$value,
         reference_n = function() private$..reference_n$value,
         comparison_level_name = function() private$..comparison_level_name$value,
-        reference_level_name = function() private$..reference_level_name$value,
+        comparison_mean = function() private$..comparison_mean$value,
+        comparison_sd = function() private$..comparison_sd$value,
+        comparison_n = function() private$..comparison_n$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         grouping_variable_name = function() private$..grouping_variable_name$value,
         conf_level = function() private$..conf_level$value,
@@ -1458,14 +1458,14 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..switch = NA,
         ..outcome_variable = NA,
         ..grouping_variable = NA,
-        ..comparison_mean = NA,
-        ..comparison_sd = NA,
-        ..comparison_n = NA,
+        ..reference_level_name = NA,
         ..reference_mean = NA,
         ..reference_sd = NA,
         ..reference_n = NA,
         ..comparison_level_name = NA,
-        ..reference_level_name = NA,
+        ..comparison_mean = NA,
+        ..comparison_sd = NA,
+        ..comparison_n = NA,
         ..outcome_variable_name = NA,
         ..grouping_variable_name = NA,
         ..conf_level = NA,
@@ -2051,14 +2051,14 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param data .
 #' @param outcome_variable .
 #' @param grouping_variable .
-#' @param comparison_mean .
-#' @param comparison_sd .
-#' @param comparison_n .
+#' @param reference_level_name .
 #' @param reference_mean .
 #' @param reference_sd .
 #' @param reference_n .
 #' @param comparison_level_name .
-#' @param reference_level_name .
+#' @param comparison_mean .
+#' @param comparison_sd .
+#' @param comparison_n .
 #' @param outcome_variable_name .
 #' @param grouping_variable_name .
 #' @param conf_level .
@@ -2156,14 +2156,14 @@ jamovimdifftwo <- function(
     data,
     outcome_variable,
     grouping_variable,
-    comparison_mean = " ",
-    comparison_sd = " ",
-    comparison_n = " ",
+    reference_level_name = "Reference group",
     reference_mean = " ",
     reference_sd = " ",
     reference_n = " ",
     comparison_level_name = "Comparison group",
-    reference_level_name = "Reference group",
+    comparison_mean = " ",
+    comparison_sd = " ",
+    comparison_n = " ",
     outcome_variable_name = "Outcome variable",
     grouping_variable_name = "Grouping variable",
     conf_level = 95,
@@ -2253,14 +2253,14 @@ jamovimdifftwo <- function(
         switch = switch,
         outcome_variable = outcome_variable,
         grouping_variable = grouping_variable,
-        comparison_mean = comparison_mean,
-        comparison_sd = comparison_sd,
-        comparison_n = comparison_n,
+        reference_level_name = reference_level_name,
         reference_mean = reference_mean,
         reference_sd = reference_sd,
         reference_n = reference_n,
         comparison_level_name = comparison_level_name,
-        reference_level_name = reference_level_name,
+        comparison_mean = comparison_mean,
+        comparison_sd = comparison_sd,
+        comparison_n = comparison_n,
         outcome_variable_name = outcome_variable_name,
         grouping_variable_name = grouping_variable_name,
         conf_level = conf_level,

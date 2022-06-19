@@ -95,9 +95,9 @@ estimate_mdiff_two <- function(
 
     return(
       estimate_mdiff_ind_contrast(
-        means = c(comparison_mean, reference_mean),
-        sds = c(comparison_sd, reference_sd),
-        ns = c(comparison_n, reference_n),
+        means = c(reference_mean, comparison_mean),
+        sds = c(reference_sd, comparison_sd),
+        ns = c(reference_n, comparison_n),
         grouping_variable_levels = grouping_variable_levels,
         grouping_variable_name = grouping_variable_name,
         outcome_variable_name = outcome_variable_name,

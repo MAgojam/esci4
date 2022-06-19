@@ -500,12 +500,15 @@ jamovi_required_numeric <- function(
   lower = NULL,
   upper = NULL,
   lower_inclusive = FALSE,
-  upper_inclusive = FALSE
+  upper_inclusive = FALSE,
+  my_value_name = NULL
 ) {
 
-  my_value_name <- deparse(substitute(my_value))
-  my_value_name <- gsub("self\\$options\\$", "", my_value_name)
-  my_value_name <- gsub("_", " ", my_value_name)
+  if(is.null(my_value_name)) {
+    my_value_name <- deparse(substitute(my_value))
+    my_value_name <- gsub("self\\$options\\$", "", my_value_name)
+    my_value_name <- gsub("_", " ", my_value_name)
+  }
 
   return_value <- NA
   names(return_value) <- my_value_name

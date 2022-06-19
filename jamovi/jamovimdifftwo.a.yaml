@@ -28,17 +28,9 @@ options:
       type: Variable
       permitted: [factor]
 
-    - name: comparison_mean
+    - name: reference_level_name
       type: String
-      default: ' '
-
-    - name: comparison_sd
-      type: String
-      default: ' '
-
-    - name: comparison_n
-      type: String
-      default: ' '
+      default: Reference group
 
     - name: reference_mean
       type: String
@@ -56,9 +48,17 @@ options:
       type: String
       default: Comparison group
 
-    - name: reference_level_name
+    - name: comparison_mean
       type: String
-      default: Reference group
+      default: ' '
+
+    - name: comparison_sd
+      type: String
+      default: ' '
+
+    - name: comparison_n
+      type: String
+      default: ' '
 
     - name: outcome_variable_name
       title: Outcome variable name
