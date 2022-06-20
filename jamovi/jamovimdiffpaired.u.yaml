@@ -62,13 +62,13 @@ children:
           row: 1
       - type: Label
         label: Reference group
-        stretchFactor: 2
+        stretchFactor: 1
         cell:
           column: 1
           row: 1
       - type: Label
         label: Comparison group
-        stretchFactor: 2
+        stretchFactor: 1
         cell:
           column: 2
           row: 1
@@ -80,7 +80,7 @@ children:
           row: 2
       - type: TextBox
         name: reference_measure_name
-        stretchFactor: 2
+        stretchFactor: 1
         format: string
         enable: '(switch:from_summary)'
         cell:
@@ -89,7 +89,7 @@ children:
       - type: TextBox
         name: comparison_measure_name
         format: string
-        stretchFactor: 2
+        stretchFactor: 1
         enable: '(switch:from_summary)'
         cell:
           column: 2
@@ -146,10 +146,28 @@ children:
             name: 'n'
             format: string
             enable: '(switch:from_summary)'
+          - type: LayoutBox
+            margin: small
+            style: inline
+            children:
+              - type: RadioButton
+                name: enter_r_button
+                optionName: enter_r_or_sdiff
+                optionPart: enter_r
+                enable: '(switch:from_summary)'
+              - type: RadioButton
+                name: enter_sdiff_button
+                optionName: enter_r_or_sdiff
+                optionPart: enter_sdiff
+                enable: '(switch:from_summary)'
           - type: TextBox
             name: correlation
             format: string
-            enable: '(switch:from_summary)'
+            enable: '(switch:from_summary && enter_r_or_sdiff:enter_r)'
+          - type: TextBox
+            name: sdiff
+            format: string
+            enable: '(switch:from_summary && enter_r_or_sdiff:enter_sdiff)'
   - type: Label
     label: '<hr>Analysis options'
     stretchFactor: 1

@@ -49,8 +49,23 @@ options:
       type: String
       default: ' '
 
+    - name: enter_r_or_sdiff
+      type: List
+      title: Enter r or sdiff
+      default: enter_r
+      options:
+          - name: enter_r
+            title: Enter r
+          - name: enter_sdiff
+            title: Enter standard deviation of difference scores (<i>s</i><sub>diff</diff>)
+
     - name: correlation
       title: Correlation (<i>r</i>)
+      type: String
+      default: ' '
+
+    - name: sdiff
+      title: Standard deviation of difference scores (<i>s</i><sub>diff</sub>)
       type: String
       default: ' '
 

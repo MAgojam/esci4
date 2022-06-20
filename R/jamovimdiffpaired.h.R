@@ -14,7 +14,9 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             reference_mean = " ",
             reference_sd = " ",
             n = " ",
+            enter_r_or_sdiff = "enter_r",
             correlation = " ",
+            sdiff = " ",
             comparison_measure_name = "Comparison measure",
             reference_measure_name = "Reference measure",
             conf_level = 95,
@@ -133,9 +135,20 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 "n",
                 n,
                 default=" ")
+            private$..enter_r_or_sdiff <- jmvcore::OptionList$new(
+                "enter_r_or_sdiff",
+                enter_r_or_sdiff,
+                default="enter_r",
+                options=list(
+                    "enter_r",
+                    "enter_sdiff"))
             private$..correlation <- jmvcore::OptionString$new(
                 "correlation",
                 correlation,
+                default=" ")
+            private$..sdiff <- jmvcore::OptionString$new(
+                "sdiff",
+                sdiff,
                 default=" ")
             private$..comparison_measure_name <- jmvcore::OptionString$new(
                 "comparison_measure_name",
@@ -1331,7 +1344,9 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..reference_mean)
             self$.addOption(private$..reference_sd)
             self$.addOption(private$..n)
+            self$.addOption(private$..enter_r_or_sdiff)
             self$.addOption(private$..correlation)
+            self$.addOption(private$..sdiff)
             self$.addOption(private$..comparison_measure_name)
             self$.addOption(private$..reference_measure_name)
             self$.addOption(private$..conf_level)
@@ -1416,7 +1431,9 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         reference_mean = function() private$..reference_mean$value,
         reference_sd = function() private$..reference_sd$value,
         n = function() private$..n$value,
+        enter_r_or_sdiff = function() private$..enter_r_or_sdiff$value,
         correlation = function() private$..correlation$value,
+        sdiff = function() private$..sdiff$value,
         comparison_measure_name = function() private$..comparison_measure_name$value,
         reference_measure_name = function() private$..reference_measure_name$value,
         conf_level = function() private$..conf_level$value,
@@ -1500,7 +1517,9 @@ jamovimdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..reference_mean = NA,
         ..reference_sd = NA,
         ..n = NA,
+        ..enter_r_or_sdiff = NA,
         ..correlation = NA,
+        ..sdiff = NA,
         ..comparison_measure_name = NA,
         ..reference_measure_name = NA,
         ..conf_level = NA,
@@ -2047,7 +2066,9 @@ jamovimdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param reference_mean .
 #' @param reference_sd .
 #' @param n .
+#' @param enter_r_or_sdiff .
 #' @param correlation .
+#' @param sdiff .
 #' @param comparison_measure_name .
 #' @param reference_measure_name .
 #' @param conf_level .
@@ -2154,7 +2175,9 @@ jamovimdiffpaired <- function(
     reference_mean = " ",
     reference_sd = " ",
     n = " ",
+    enter_r_or_sdiff = "enter_r",
     correlation = " ",
+    sdiff = " ",
     comparison_measure_name = "Comparison measure",
     reference_measure_name = "Reference measure",
     conf_level = 95,
@@ -2251,7 +2274,9 @@ jamovimdiffpaired <- function(
         reference_mean = reference_mean,
         reference_sd = reference_sd,
         n = n,
+        enter_r_or_sdiff = enter_r_or_sdiff,
         correlation = correlation,
+        sdiff = sdiff,
         comparison_measure_name = comparison_measure_name,
         reference_measure_name = reference_measure_name,
         conf_level = conf_level,
