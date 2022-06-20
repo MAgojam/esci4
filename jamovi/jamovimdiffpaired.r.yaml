@@ -70,7 +70,7 @@ items:
           superTitle: Percentile
           visible: (show_details & switch == 'from_raw')
         - name: n
-          title: <i>n</i>
+          title: <i>N</i>
           type: integer
         - name: missing
           type: integer
@@ -94,18 +94,18 @@ items:
       type: Table
       rows:  1
       columns:
-        - name: x_variable_name
-          title: 'Comparison variable name'
-          type: text
-          visible: false
-          combineBelow: true
         - name: y_variable_name
           title: 'Reference measure name'
           visible: false
           type: text
           combineBelow: true
+        - name: x_variable_name
+          title: 'Comparison variable name'
+          type: text
+          visible: false
+          combineBelow: true
         - name: effect
-          title: 'Effect'
+          title: 'Measures'
           type: text
         - name: effect_size
           type: number

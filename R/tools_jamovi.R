@@ -131,8 +131,11 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
 
     # Now fill the named list with the column/values from the data frame
     for(mycol in names(result_table)) {
+      if (is.na(result_table[x, mycol])) {
 
-      row_list[mycol] = result_table[x, mycol]
+      } else {
+        row_list[mycol] = result_table[x, mycol]
+      }
     }
 
     # Save this data to the jamovi table
@@ -277,7 +280,7 @@ jamovi_arg_builder <- function(
     return(args)
   }
 
-  if(trimws(as.character(my_value)) %in% c("auto")) {
+  if(trimws(as.character(my_value)) %in% c("auto", "Auto", "AUTO")) {
     args[[arg_name]] <- return_value
     return(args)
   }
@@ -419,7 +422,7 @@ jamovi_sanitize <- function(
     return(return_value)
   }
 
-  if(trimws(as.character(my_value)) %in% c("auto")) {
+  if(trimws(as.character(my_value)) %in% c("auto", "Auto", "AUTO")) {
     return(return_value)
   }
 

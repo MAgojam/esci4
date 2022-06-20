@@ -1680,7 +1680,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="n", 
-                        `title`="<i>n</i>", 
+                        `title`="<i>N</i>", 
                         `type`="integer"),
                     list(
                         `name`="missing", 
@@ -1709,20 +1709,20 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 rows=1,
                 columns=list(
                     list(
-                        `name`="x_variable_name", 
-                        `title`="Comparison variable name", 
-                        `type`="text", 
-                        `visible`=FALSE, 
-                        `combineBelow`=TRUE),
-                    list(
                         `name`="y_variable_name", 
                         `title`="Reference measure name", 
                         `visible`=FALSE, 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="x_variable_name", 
+                        `title`="Comparison variable name", 
+                        `type`="text", 
+                        `visible`=FALSE, 
+                        `combineBelow`=TRUE),
+                    list(
                         `name`="effect", 
-                        `title`="Effect", 
+                        `title`="Measures", 
                         `type`="text"),
                     list(
                         `name`="effect_size", 

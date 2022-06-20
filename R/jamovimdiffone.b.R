@@ -111,7 +111,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           # Add calculation details
           alpha <- 1 - self$options$conf_level/100
           estimate$es_mean_difference$t_multiplier <- stats::qt(1-alpha/2, estimate$es_mean_difference$df)
-          estimate$es_mean_difference$s_component <- estimate$es_smd$denominator[[1]]
+          estimate$es_mean_difference$s_component[c(1, 3)] <- estimate$es_smd$denominator[[1]]
           estimate$es_mean_difference$n_component <- estimate$es_mean_difference$moe / estimate$es_mean_difference$t_multiplier / estimate$es_mean_difference$s_component
 
 
@@ -194,7 +194,7 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
 
     if (!is.numeric(args$reference_mean)) {
       notes <- c(
-        "For this analysis, please specify a Reference Mean (<i>M</i><sub>Referenece</sub>)"
+        "For this analysis, please specify a Reference mean (<i>M</i><sub>Referenece</sub>)"
       )
       self$results$help$setState(notes)
       return(NULL)

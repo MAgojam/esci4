@@ -476,7 +476,7 @@ wrapper_ci.cor <- function(
     y_variable_name = y_variable_name,
     effect = paste(
       x_variable_name,
-      " vs. ",
+      " and ",
       y_variable_name,
       sep = ""
     ),

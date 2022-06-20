@@ -1431,45 +1431,45 @@ options:
       default: 'solid'
       options:
         - name: 'solid'
-          title: 'solid'
+          title: 'Solid'
         - name: 'dotted'
-          title: 'dotted'
+          title: 'Dotted'
         - name: 'dotdash'
-          title: 'dotdash'
+          title: 'Dotdash'
         - name: 'dashed'
-          title: 'dashed'
+          title: 'Dashed'
         - name: 'blank'
-          title: 'blank'
+          title: 'Blank'
 
     - name: linetype_summary_comparison
       type: List
       default: 'solid'
       options:
         - name: 'solid'
-          title: 'solid'
+          title: 'Solid'
         - name: 'dotted'
-          title: 'dotted'
+          title: 'Dotted'
         - name: 'dotdash'
-          title: 'dotdash'
+          title: 'Dotdash'
         - name: 'dashed'
-          title: 'dashed'
+          title: 'Dashed'
         - name: 'blank'
-          title: 'blank'
+          title: 'Blank'
 
     - name: linetype_summary_difference
       type: List
       default: 'solid'
       options:
         - name: 'solid'
-          title: 'solid'
+          title: 'Solid'
         - name: 'dotted'
-          title: 'dotted'
+          title: 'Dotted'
         - name: 'dotdash'
-          title: 'dotdash'
+          title: 'Dotdash'
         - name: 'dashed'
-          title: 'dashed'
+          title: 'Dashed'
         - name: 'blank'
-          title: 'blank'
+          title: 'Blank'
 
     - name: color_interval_reference
       type: List

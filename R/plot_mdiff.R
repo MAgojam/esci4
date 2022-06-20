@@ -512,8 +512,8 @@ plot_mdiff_base <- function(
 
   # Now define the y-axis
   p <- ggplot2::ggplot_build(myplot)
-  lowest <- min(c(gdata$y_value, ylim[[1]]), na.rm = TRUE)
-  highest <- max(c(gdata$y_value, ylim[[2]]), na.rm = TRUE)
+  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd), na.rm = TRUE)
+  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart), na.rm = TRUE)
   for (x in 1:length(p$data)) {
     lowest <- min(c(lowest, p$data[[x]]$y), na.rm = TRUE)
     highest <- max(c(highest, p$data[[x]]$y), na.rm = TRUE)
@@ -521,8 +521,8 @@ plot_mdiff_base <- function(
   if (is.na(ylim[[1]])) {
     switch(
       effect_size,
-      mean = {ylim[[1]] <- lowest*.85},
-      median = {ylim[[1]] <- lowest*.85},
+      mean = {ylim[[1]] <- lowest - (abs(lowest)*.15)},
+      median = {ylim[[1]] <- lowest - (abs(lowest) *.15)},
       rdiff = {ylim[[1]] <- min(c(-1, saxisBreaks+reference_es))},
       P = {ylim[[1]] <- min(c(0, saxisBreaks+reference_es))}
     )
@@ -530,8 +530,8 @@ plot_mdiff_base <- function(
   if (is.na(ylim[[2]])) {
     switch(
       effect_size,
-      mean = {ylim[[2]] <- highest*1.1},
-      median = {ylim[[2]] <- highest*1.1},
+      mean = {ylim[[2]] <- highest + (abs(highest)*.1)},
+      median = {ylim[[2]] <- highest + (abs(highest) * .1)},
       rdiff = {ylim[[2]] <- max(c(1, saxisBreaks+reference_es))},
       P = {ylim[[2]] <- max(c(1, saxisBreaks+reference_es))}
     )

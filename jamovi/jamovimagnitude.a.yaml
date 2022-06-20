@@ -586,15 +586,15 @@ options:
       default: 'solid'
       options:
         - name: 'solid'
-          title: 'solid'
+          title: 'Solid'
         - name: 'dotted'
-          title: 'dotted'
+          title: 'Dotted'
         - name: 'dotdash'
-          title: 'dotdash'
+          title: 'Dotdash'
         - name: 'dashed'
-          title: 'dashed'
+          title: 'Dashed'
         - name: 'blank'
-          title: 'blank'
+          title: 'Blank'
 
     - name: color_interval
       type: List

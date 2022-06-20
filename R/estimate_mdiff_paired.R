@@ -308,8 +308,8 @@ estimate_mdiff_paired.summary <- function(
     r = correlation,
     n = n,
     conf_level = conf_level,
-    x_variable_name = grouping_variable_levels[1],
-    y_variable_name = grouping_variable_levels[2]
+    x_variable_name = grouping_variable_levels[2],
+    y_variable_name = grouping_variable_levels[1]
   )
 
   # output prep -----------------------------------------
