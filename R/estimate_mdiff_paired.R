@@ -450,6 +450,10 @@ estimate_mdiff_paired.data.frame <- function(
     conf_level = conf_level
   )$overview
 
+  # Deal wtih NA
+  data <- data[!is.na(data[[reference_measure]]), ]
+  data <- data[!is.na(data[[comparison_measure]]), ]
+
   # dispatch to .summary to obtain es_mean_difference and es_smd
   estimate <- estimate_mdiff_paired.summary(
     comparison_mean = overview$mean[2],
