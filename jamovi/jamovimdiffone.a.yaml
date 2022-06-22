@@ -37,11 +37,6 @@ options:
       type: String
       default: ' '
 
-    - name: reference_mean
-      title: Reference mean (<i>M<sub>reference</sub></i>)
-      type: String
-      default: ' '
-
     - name: outcome_variable_name
       title: Outcome variable name
       type: String
@@ -54,6 +49,16 @@ options:
       max: 99.999999
       default: 95
 
+    - name: effect_size
+      title: Effect size of interest
+      type: List
+      default: mean_difference
+      options:
+          - name: mean_difference
+            title: Mean difference
+          - name: median_difference
+            title: Median difference
+
     - name: show_details
       title: Show details
       type: Bool
@@ -63,6 +68,16 @@ options:
       title: Show calculation components
       type: Bool
       default: false
+
+    - name: as_difference
+      title: Estimate as a difference to a reference value
+      type: Bool
+      default: false
+
+    - name: reference_mean
+      title: Reference value
+      type: String
+      default: ' '
 
     - name: es_plot_width
       title: Width

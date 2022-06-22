@@ -11,11 +11,13 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             comparison_mean = " ",
             comparison_sd = " ",
             comparison_n = " ",
-            reference_mean = " ",
             outcome_variable_name = "Outcome variable",
             conf_level = 95,
+            effect_size = "mean_difference",
             show_details = FALSE,
             show_calculations = FALSE,
+            as_difference = FALSE,
+            reference_mean = " ",
             es_plot_width = "550",
             es_plot_height = "450",
             ymin = "auto",
@@ -102,10 +104,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "comparison_n",
                 comparison_n,
                 default=" ")
-            private$..reference_mean <- jmvcore::OptionString$new(
-                "reference_mean",
-                reference_mean,
-                default=" ")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -116,6 +114,13 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 min=1,
                 max=99.999999,
                 default=95)
+            private$..effect_size <- jmvcore::OptionList$new(
+                "effect_size",
+                effect_size,
+                default="mean_difference",
+                options=list(
+                    "mean_difference",
+                    "median_difference"))
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
@@ -124,6 +129,14 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "show_calculations",
                 show_calculations,
                 default=FALSE)
+            private$..as_difference <- jmvcore::OptionBool$new(
+                "as_difference",
+                as_difference,
+                default=FALSE)
+            private$..reference_mean <- jmvcore::OptionString$new(
+                "reference_mean",
+                reference_mean,
+                default=" ")
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
@@ -1053,11 +1066,13 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..comparison_mean)
             self$.addOption(private$..comparison_sd)
             self$.addOption(private$..comparison_n)
-            self$.addOption(private$..reference_mean)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
+            self$.addOption(private$..effect_size)
             self$.addOption(private$..show_details)
             self$.addOption(private$..show_calculations)
+            self$.addOption(private$..as_difference)
+            self$.addOption(private$..reference_mean)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -1122,11 +1137,13 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         comparison_mean = function() private$..comparison_mean$value,
         comparison_sd = function() private$..comparison_sd$value,
         comparison_n = function() private$..comparison_n$value,
-        reference_mean = function() private$..reference_mean$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         conf_level = function() private$..conf_level$value,
+        effect_size = function() private$..effect_size$value,
         show_details = function() private$..show_details$value,
         show_calculations = function() private$..show_calculations$value,
+        as_difference = function() private$..as_difference$value,
+        reference_mean = function() private$..reference_mean$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -1190,11 +1207,13 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..comparison_mean = NA,
         ..comparison_sd = NA,
         ..comparison_n = NA,
-        ..reference_mean = NA,
         ..outcome_variable_name = NA,
         ..conf_level = NA,
+        ..effect_size = NA,
         ..show_details = NA,
         ..show_calculations = NA,
+        ..as_difference = NA,
+        ..reference_mean = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -1263,8 +1282,11 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         overview = function() private$.items[["overview"]],
         es_mean_difference = function() private$.items[["es_mean_difference"]],
         es_smd = function() private$.items[["es_smd"]],
+        es_median_difference = function() private$.items[["es_median_difference"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]]),
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
+        magnitude_plot = function() private$.items[["magnitude_plot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1298,11 +1320,13 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="mean_LL", 
                         `title`="LL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="mean_UL", 
                         `title`="UL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="moe", 
                         `type`="number", 
@@ -1312,17 +1336,17 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
-                        `visible`="(show_details & switch == 'from_raw')"),
+                        `visible`="(switch == 'from_raw')"),
                     list(
                         `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(show_details & switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="median_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(show_details & switch == 'from_raw')"),
+                        `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -1378,6 +1402,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 name="es_mean_difference",
                 title="Mean difference",
                 rows="(outcome_variable)",
+                visible="(as_difference & effect_size == 'mean_difference')",
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -1438,6 +1463,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 name="es_smd",
                 title="Standardized mean difference",
                 rows=1,
+                visible="(as_difference & effect_size == 'mean_difference')",
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -1482,10 +1508,63 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="d_biased", 
                         `title`="<i>d</i><sub>biased</sub>", 
                         `type`="number"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_median_difference",
+                title="Median difference",
+                rows=3,
+                visible="(as_difference & effect_size == 'median_difference')",
+                clearWith=list(
+                    "switch",
+                    "grouping_variable_levels",
+                    "means",
+                    "sds",
+                    "ns",
+                    "outcome_variable_name",
+                    "outcome_variable",
+                    "grouping_variable",
+                    "reference_levels",
+                    "comparison_levels",
+                    "conf_level",
+                    "assume_equal_variance"),
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>Mdn</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",
                 title="Estimation Figure",
+                visible="(as_difference)",
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",
@@ -1497,7 +1576,21 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="estimation_plot_warnings",
                 title="Estimation figure warnings",
-                visible=TRUE))}))
+                visible=TRUE))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="magnitude_plot_warnings",
+                title="Figure warnings",
+                visible=FALSE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="magnitude_plot",
+                title="Magnitude",
+                visible="(!as_difference)",
+                requiresData=TRUE,
+                width=400,
+                height=300,
+                renderFun=".magnitude_plot"))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -1528,11 +1621,13 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param comparison_mean .
 #' @param comparison_sd .
 #' @param comparison_n .
-#' @param reference_mean .
 #' @param outcome_variable_name .
 #' @param conf_level .
+#' @param effect_size .
 #' @param show_details .
 #' @param show_calculations .
+#' @param as_difference .
+#' @param reference_mean .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -1597,8 +1692,11 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -1615,11 +1713,13 @@ jamovimdiffone <- function(
     comparison_mean = " ",
     comparison_sd = " ",
     comparison_n = " ",
-    reference_mean = " ",
     outcome_variable_name = "Outcome variable",
     conf_level = 95,
+    effect_size = "mean_difference",
     show_details = FALSE,
     show_calculations = FALSE,
+    as_difference = FALSE,
+    reference_mean = " ",
     es_plot_width = "550",
     es_plot_height = "450",
     ymin = "auto",
@@ -1694,11 +1794,13 @@ jamovimdiffone <- function(
         comparison_mean = comparison_mean,
         comparison_sd = comparison_sd,
         comparison_n = comparison_n,
-        reference_mean = reference_mean,
         outcome_variable_name = outcome_variable_name,
         conf_level = conf_level,
+        effect_size = effect_size,
         show_details = show_details,
         show_calculations = show_calculations,
+        as_difference = as_difference,
+        reference_mean = reference_mean,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,

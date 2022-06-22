@@ -27,9 +27,11 @@ items:
         - name: mean_LL
           title: LL
           type: number
+          visible: (effect_size == 'mean_difference')
         - name: mean_UL
           title: UL
           type: number
+          visible: (effect_size == 'mean_difference')
         - name: moe
           type: number
           title: <i>MoE</i>
@@ -37,15 +39,15 @@ items:
         - name: median
           title: <i>Mdn</i>
           type: number
-          visible: (show_details & switch == 'from_raw')
+          visible: (switch == 'from_raw')
         - name: median_LL
           title: LL
           type: number
-          visible: (show_details & switch == 'from_raw')
+          visible: (effect_size == 'median_difference' & switch == 'from_raw')
         - name: median_UL
           title: UL
           type: number
-          visible: (show_details & switch == 'from_raw')
+          visible: (effect_size == 'median_difference' & switch == 'from_raw')
         - name: sd
           type: number
           title: <i>s</i>
@@ -91,6 +93,7 @@ items:
       title: Mean difference
       type: Table
       rows:  (outcome_variable)
+      visible: (as_difference & effect_size == 'mean_difference')
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -140,6 +143,7 @@ items:
       title: Standardized mean difference
       type: Table
       rows:  1
+      visible: (as_difference & effect_size == 'mean_difference')
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -175,8 +179,54 @@ items:
           title: "<i>d</i><sub>biased</sub>"
           type: number
 
+    - name:  es_median_difference
+      title: Median difference
+      type: Table
+      rows:  3
+      visible: (as_difference & effect_size == 'median_difference')
+      clearWith:
+        - switch
+        - grouping_variable_levels
+        - means
+        - sds
+        - ns
+        - outcome_variable_name
+        - outcome_variable
+        - grouping_variable
+        - reference_levels
+        - comparison_levels
+        - conf_level
+        - assume_equal_variance
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>Mdn</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+
     - name: estimation_plots
       title: Estimation Figure
+      visible: (as_difference)
       type: Array
       template:
           title: $key
@@ -190,5 +240,19 @@ items:
       title: Estimation figure warnings
       type: Html
       visible: true
+
+    - name: magnitude_plot_warnings
+      title: Figure warnings
+      type: Html
+      visible: false
+
+    - name: magnitude_plot
+      title: Magnitude
+      type: Image
+      visible: (!as_difference)
+      requiresData: true
+      width:  400
+      height: 300
+      renderFun: .magnitude_plot
 
 ...
