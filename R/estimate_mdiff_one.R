@@ -141,6 +141,7 @@ estimate_mdiff_one <- function(
       conf_level = conf_level,
       save_raw_data = save_raw_data
     )
+
   } else if (analysis_type == "data.frame") {
     estimate <- estimate_magnitude(
       data = data,
@@ -193,14 +194,23 @@ estimate_mdiff_one <- function(
     estimate$es_mean_difference[3, c("effect_size", "LL", "UL")] <-
       estimate$es_mean_difference[3, c("effect_size", "LL", "UL")] - reference_mean
 
-    estimate$es_mean <- NULL
-    estimate$es_mean_properties <- NULL
+    # estimate$es_mean <- NULL
+    # estimate$es_mean_properties <- NULL
 
 
     # es_median_difference_table
-    estimate$es_median <- NULL
-    estimate$es_median_properties <- NULL
-
+    if (!is.null(estimate$es_median)) {
+      estimate$es_median_difference <- estimate$es_mean_difference
+      estimate$es_median_difference$effect_size[1] <- estimate$es_median$effect_size[[1]]
+      estimate$es_median_difference$effect_size[3] <- estimate$es_median$effect_size[[1]] - reference_mean
+      estimate$es_median_difference$LL[1] <- estimate$es_median$LL[[1]]
+      estimate$es_median_difference$LL[3] <- estimate$es_median$LL[[1]] - reference_mean
+      estimate$es_median_difference$UL[1] <- estimate$es_median$UL[[1]]
+      estimate$es_median_difference$UL[3] <- estimate$es_median$UL[[1]] - reference_mean
+      estimate$es_median_difference$LL[1] <- estimate$es_median$LL[[1]]
+      estimate$es_median_difference$SE[c(1, 3)] <- estimate$es_median$SE[[1]]
+      estimate$es_median_difference$df[c(1, 3)] <- estimate$es_median$df[[1]]
+    }
 
     # SMD --------------------
     smd_one <- CI_smd_one(
