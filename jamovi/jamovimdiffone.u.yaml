@@ -73,6 +73,7 @@ children:
         name: show_details
       - type: CheckBox
         name: show_calculations
+        enable: '(switch:from_raw)'
   - type: LayoutBox
     margin: large
     children:
@@ -81,6 +82,7 @@ children:
       - type: TextBox
         name: reference_mean
         format: string
+        enable: (as_difference)
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1
@@ -175,6 +177,7 @@ children:
               row: 7
           - type: CheckBox
             name: simple_contrast_labels
+            enable: (as_difference)
             cell:
               column: 1
               row: 8
@@ -185,11 +188,13 @@ children:
               row: 9
           - type: ComboBox
             name: difference_axis_units
+            enable: (as_difference)
             cell:
               column: 1
               row: 9
           - type: TextBox
             name: difference_axis_breaks
+            enable: (as_difference)
             format: string
             cell:
               column: 1
@@ -363,6 +368,7 @@ children:
                   row: 17
               - type: ComboBox
                 name: shape_summary_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 3
@@ -373,6 +379,7 @@ children:
                   row: 3
               - type: ComboBox
                 name: shape_summary_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 3
@@ -384,6 +391,7 @@ children:
                   row: 19
               - type: ComboBox
                 name: color_summary_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 5
@@ -394,6 +402,7 @@ children:
                   row: 5
               - type: ComboBox
                 name: color_summary_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 5
@@ -405,6 +414,7 @@ children:
                   row: 20
               - type: ComboBox
                 name: fill_summary_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 6
@@ -415,6 +425,7 @@ children:
                   row: 6
               - type: ComboBox
                 name: fill_summary_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 6
@@ -426,6 +437,7 @@ children:
                   row: 18
               - type: ComboBox
                 name: size_summary_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 4
@@ -436,6 +448,7 @@ children:
                   row: 4
               - type: ComboBox
                 name: size_summary_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 4
@@ -447,6 +460,7 @@ children:
                   row: 21
               - type: ComboBox
                 name: alpha_summary_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 7
@@ -457,11 +471,13 @@ children:
                   row: 7
               - type: ComboBox
                 name: alpha_summary_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 7
               - type: ComboBox
                 name: linetype_summary_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 9
@@ -472,11 +488,13 @@ children:
                   row: 9
               - type: ComboBox
                 name: linetype_summary_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 9
               - type: ComboBox
                 name: color_interval_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 11
@@ -487,11 +505,13 @@ children:
                   row: 11
               - type: ComboBox
                 name: color_interval_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 11
               - type: ComboBox
                 name: size_interval_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 10
@@ -502,11 +522,13 @@ children:
                   row: 10
               - type: ComboBox
                 name: size_interval_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 10
               - type: ComboBox
                 name: alpha_interval_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 12
@@ -517,11 +539,13 @@ children:
                   row: 12
               - type: ComboBox
                 name: alpha_interval_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 12
               - type: ComboBox
                 name: alpha_error_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 15
@@ -532,11 +556,13 @@ children:
                   row: 15
               - type: ComboBox
                 name: alpha_error_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 15
               - type: ComboBox
                 name: fill_error_reference
+                enable: (as_difference)
                 cell:
                   column: 1
                   row: 14
@@ -547,6 +573,7 @@ children:
                   row: 14
               - type: ComboBox
                 name: fill_error_difference
+                enable: (as_difference)
                 cell:
                   column: 3
                   row: 14

@@ -55,7 +55,20 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           #
           if (self$options$as_difference) {
             self$results$magnitude_plot$setVisible(FALSE)
+
+            reference_mean <- jamovi_required_numeric(
+              self$options$reference_mean
+            )
+            if (is.null(reference_mean) | !is.numeric(reference_mean) | is.na(reference_mean))  {
+              tbl_es_mean_difference$setVisible(FALSE)
+              tbl_es_median_difference$setVisibe(FALSE)
+
+            }
+
           }
+
+
+
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
@@ -196,7 +209,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         },
         .magnitude_plot = function(image, ggtheme, theme, ...) {
 
-          if (self$options$as_difference) return(FALSE)
+          if (self$options$as_difference) return(TRUE)
 
           # Redo analysis
           estimate <- jamovi_mdiff_one(
@@ -558,9 +571,6 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
         ),
         notes
       )
-    }
-
-    if (length(notes) > 0) {
       self$results$help$setState(notes)
       return(NULL)
     }
