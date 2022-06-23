@@ -81,7 +81,6 @@ children:
       - type: TextBox
         name: reference_mean
         format: string
-        enable: ('as_difference')
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

@@ -51,6 +51,12 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           jamovi_init_table(tbl_es_smd, smd_rows)
           jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
 
+
+          #
+          if (self$options$as_difference) {
+            self$results$magnitude_plot$setVisible(FALSE)
+          }
+
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
             return_value = 200,
@@ -155,6 +161,14 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
           if (!self$options$as_difference) return(FALSE)
+
+          reference_mean <- jamovi_required_numeric(
+            self$options$reference_mean
+          )
+          if (is.null(reference_mean)) return(TRUE)
+          if (!is.numeric(reference_mean)) return(TRUE)
+          if (is.na(reference_mean)) return(TRUE)
+
           if (is.null(image$state))
             return(FALSE)
 
@@ -474,21 +488,22 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
   args <- list()
 
 
-  if(from_raw) {
-    if (as_difference) {
-      args$reference_mean <- jamovi_required_numeric(
-        self$options$reference_mean
+  if (as_difference) {
+    args$reference_mean <- jamovi_required_numeric(
+      self$options$reference_mean
+    )
+    if (!is.numeric(args$reference_mean)) {
+      notes <- c(
+        "For this analysis, please specify a Reference mean (<i>M</i><sub>Referenece</sub>)"
       )
-      if (!is.numeric(args$reference_mean)) {
-          notes <- c(
-            "For this analysis, please specify a Reference mean (<i>M</i><sub>Referenece</sub>)"
-          )
-          self$results$help$setState(notes)
-          return(NULL)
-      }
-
+      self$results$help$setState(notes)
+      args$reference_mean <- NULL
+      # return(NULL)
     }
 
+  }
+
+  if(from_raw) {
 
     if (is.null(outcome_variable)) {
       if (
@@ -496,7 +511,6 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
         length(self$options$outcome_variable) == 0
       ) return(NULL)
     }
-
 
   } else {
     args$comparison_mean <- jamovi_required_numeric(
@@ -517,13 +531,13 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
       my_value_name = "Comparison <i>n</i>"
     )
 
-    if (as_difference) {
-      args$reference_mean <- jamovi_required_numeric(
-        self$options$reference_mean,
-        my_value_name = "Reference <i>M</i>"
-      )
-
-    }
+    # if (as_difference) {
+    #   args$reference_mean <- jamovi_required_numeric(
+    #     self$options$reference_mean,
+    #     my_value_name = "Reference <i>M</i>"
+    #   )
+    #
+    # }
 
     unfilled <- NULL
     for (element in args[which(is.na(args))]) {

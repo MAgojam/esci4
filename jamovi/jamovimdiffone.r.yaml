@@ -6,7 +6,7 @@ jrs:   '1.1'
 items:
     - name: debug
       type: Preformatted
-      visible: true
+      visible: false
 
     - name: help
       type: Html
@@ -249,7 +249,6 @@ items:
     - name: magnitude_plot
       title: Magnitude
       type: Image
-      visible: (!as_difference)
       requiresData: true
       width:  400
       height: 300

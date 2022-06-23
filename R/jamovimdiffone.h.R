@@ -1586,7 +1586,6 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="magnitude_plot",
                 title="Magnitude",
-                visible="(!as_difference)",
                 requiresData=TRUE,
                 width=400,
                 height=300,
