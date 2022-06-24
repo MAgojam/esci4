@@ -14,6 +14,8 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           tbl_es_mean_difference <- self$results$es_mean_difference
           tbl_es_smd <- self$results$es_smd
           tbl_es_median_difference <- self$results$es_median_difference
+          tbl_es_mean <- self$results$es_mean
+          tbl_es_median <- self$results$es_median
 
           # Prep output -------------------------------------------
           # Set CI and MoE columns to reflect confidence level
@@ -28,6 +30,8 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           jamovi_set_confidence(tbl_es_mean_difference, conf_level)
           jamovi_set_confidence(tbl_es_smd, conf_level)
           jamovi_set_confidence(tbl_es_median_difference, conf_level)
+          jamovi_set_confidence(tbl_es_median, conf_level)
+          jamovi_set_confidence(tbl_es_mean, conf_level)
 
           # Outcomes: 1 if from summary, length of outcome_variables if raw
           outcome_count <- if(from_raw) {
@@ -50,25 +54,27 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           jamovi_init_table(tbl_es_mean_difference, mdiff_rows, breaks = 3)
           jamovi_init_table(tbl_es_smd, smd_rows)
           jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
-
+          jamovi_init_table(tbl_es_mean, smd_rows)
+          jamovi_init_table(tbl_es_median, smd_rows)
 
           #
+          tbl_es_mean_difference$setVisible(self$options$as_difference & self$options$effect_size == "mean_difference")
+          tbl_es_median_difference$setVisible(self$options$as_difference & self$options$effect_size == "median_difference")
+          tbl_es_smd$setVisible(self$options$as_difference & self$options$effect_size == "mean_difference")
+          tbl_es_mean$setVisible(!self$options$as_difference & self$options$effect_size == "mean_difference")
+          tbl_es_median$setVisible(!self$options$as_difference & self$options$effect_size == "median_difference")
+
           if (self$options$as_difference) {
             self$results$magnitude_plot$setVisible(FALSE)
-
             reference_mean <- jamovi_required_numeric(
               self$options$reference_mean
             )
             if (is.null(reference_mean) | !is.numeric(reference_mean) | is.na(reference_mean))  {
               tbl_es_mean_difference$setVisible(FALSE)
-              tbl_es_median_difference$setVisibe(FALSE)
-
+              tbl_es_median_difference$setVisible(FALSE)
+              tbl_es_smd$setVisible(FALSE)
             }
-
           }
-
-
-
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
@@ -104,6 +110,9 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             image$setSize(width , height)
           }
 
+          image <- self$results$magnitude_plot
+          image$setSize(width, height)
+
         },
         .run = function() {
 
@@ -126,6 +135,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           # Add in MoE
           estimate$es_mean_difference$moe <- (estimate$es_mean_difference$UL - estimate$es_mean_difference$LL)/2
+          estimate$es_mean$moe <- (estimate$es_mean$UL - estimate$es_mean$LL)/2
           estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
 
           # Add calculation details
@@ -136,9 +146,12 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           # Fill tables
           alpha <- 1 - as.numeric(self$options$conf_level)/100
-          estimate$overview$t_multiplier <- stats::qt(1-alpha/2, estimate$overview$df)
-          estimate$overview$s_component <- estimate$overview$sd
-          estimate$overview$n_component <- 1/sqrt(estimate$overview$n)
+          estimate$es_mean$t_multiplier <- stats::qt(1-alpha/2, estimate$es_mean$df)
+          estimate$es_mean$n_component <- 1/sqrt(estimate$es_mean$df+1)
+          estimate$es_mean$s_component <- estimate$es_mean$moe/estimate$es_mean$t_multiplier/estimate$es_mean$n_component
+          #
+          # estimate$es_mean$s_component <- estimate$overview$sd
+          # estimate$es_mean$n_component <- 1/sqrt(estimate$overview$n)
 
 
           # Fill tables
@@ -357,15 +370,15 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           # Axis breaks
           ymin <- jamovi_sanitize(
             my_value = self$options$ymin,
-            return_value = NULL,
-            na_ok = FALSE,
+            return_value = NA,
+            na_ok = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Y axis: Axis minimum"
           )
           ymax <- jamovi_sanitize(
             my_value = self$options$ymax,
-            return_value = NULL,
-            na_ok = FALSE,
+            return_value = NA,
+            na_ok = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Y axis: Axis maximum"
           )

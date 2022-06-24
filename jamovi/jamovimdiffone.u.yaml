@@ -73,7 +73,7 @@ children:
         name: show_details
       - type: CheckBox
         name: show_calculations
-        enable: '(switch:from_raw)'
+        enable: '(effect_size:mean_difference)'
   - type: LayoutBox
     margin: large
     children:
@@ -207,18 +207,19 @@ children:
           - type: TextBox
             name: error_scale
             format: string
+            enable: '(effect_size:mean_difference)'
             cell:
               column: 1
               row: 11
           - type: TextBox
             name: error_nudge
             format: string
-            enable: '(switch:from_raw)'
             cell:
               column: 1
               row: 14
           - type: ComboBox
             name: error_layout
+            enable: '(effect_size:mean_difference)'
             cell:
               column: 1
               row: 12
@@ -494,86 +495,91 @@ children:
                   row: 9
               - type: ComboBox
                 name: color_interval_reference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 1
                   row: 11
               - type: ComboBox
                 name: color_interval_comparison
+                enable: (effect_size:mean_difference)
                 cell:
                   column: 2
                   row: 11
               - type: ComboBox
                 name: color_interval_difference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 3
                   row: 11
               - type: ComboBox
                 name: size_interval_reference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 1
                   row: 10
               - type: ComboBox
                 name: size_interval_comparison
+                enable: (effect_size:mean_difference)
                 cell:
                   column: 2
                   row: 10
               - type: ComboBox
                 name: size_interval_difference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 3
                   row: 10
               - type: ComboBox
                 name: alpha_interval_reference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 1
                   row: 12
               - type: ComboBox
                 name: alpha_interval_comparison
+                enable: (effect_size:mean_difference)
                 cell:
                   column: 2
                   row: 12
               - type: ComboBox
                 name: alpha_interval_difference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 3
                   row: 12
               - type: ComboBox
                 name: alpha_error_reference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 1
                   row: 15
               - type: ComboBox
                 name: alpha_error_comparison
+                enable: (effect_size:mean_difference)
                 cell:
                   column: 2
                   row: 15
               - type: ComboBox
                 name: alpha_error_difference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 3
                   row: 15
               - type: ComboBox
                 name: fill_error_reference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 1
                   row: 14
               - type: ComboBox
                 name: fill_error_comparison
+                enable: (effect_size:mean_difference)
                 cell:
                   column: 2
                   row: 14
               - type: ComboBox
                 name: fill_error_difference
-                enable: (as_difference)
+                enable: (as_difference && effect_size:mean_difference)
                 cell:
                   column: 3
                   row: 14

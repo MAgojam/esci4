@@ -76,10 +76,6 @@ items:
           type: integer
           title: Missing
           visible: (switch == 'from_raw')
-        - name: df
-          title: <i>df</i>
-          type: integer
-          visible: (show_details)
         - name: mean_SE
           title: <i>SE</i><sub>Mean</sub>
           type: number
@@ -88,6 +84,86 @@ items:
           type: number
           title: <i>SE</i><sub>Median</sub>
           visible: (show_details & switch == 'from_raw')
+        - name: df
+          title: <i>df</i>
+          type: integer
+          visible: (show_details)
+
+    - name:  es_mean
+      title: Mean
+      type: Table
+      rows:  1
+      visible: (!as_difference & effect_size == 'mean_difference')
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: effect_size
+          type: number
+          title: <i>M</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: moe
+          type: number
+          title: <i>MoE</i>
+          visible: (show_details | show_calculations)
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details | show_calculations)
+        - name: df
+          title: <i>df</i>
+          type: integer
+          visible: (show_details | show_calculations)
+        - name: t_multiplier
+          type: number
+          title: <i>t</i>
+          superTitle: Calculation component
+          visible: (show_calculations)
+        - name: s_component
+          type: number
+          title: Variability
+          superTitle: Calculation component
+          visible: (show_calculations)
+        - name: n_component
+          type: number
+          title: Sample size
+          superTitle: Calculation component
+          visible: (show_calculations)
+
+
+    - name:  es_median
+      title: Median
+      type: Table
+      rows:  1
+      visible: (!as_difference & effect_size == 'median_difference')
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: effect_size
+          type: number
+          title: <i>Mdn</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: integer
+          visible: (show_details)
 
     - name:  es_mean_difference
       title: Mean difference
@@ -122,7 +198,7 @@ items:
         - name: df
           title: <i>df</i>
           type: integer
-          visible: (show_details)
+          visible: (show_details | show_calculations)
         - name: t_multiplier
           type: number
           title: <i>t</i>
@@ -222,6 +298,10 @@ items:
         - name: SE
           title: <i>SE</i>
           type: number
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: integer
           visible: (show_details)
 
     - name: estimation_plots
