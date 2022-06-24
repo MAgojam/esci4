@@ -271,7 +271,7 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' Linear Correlation
+#' Correlation
 #'
 #' 
 #' @param switch .

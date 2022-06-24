@@ -35,42 +35,30 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuTitle: Describe
-  - title: Estimate Magnitude
-    name: jamovimagnitude
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Magnitude
-    menuTitle: Estimate Magnitude
   - title: Single group
     name: jamovimdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Magnitude
+    menuSubgroup: 'Estimate mean, median'
     menuTitle: Single group
   - title: Two groups
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Magnitude
+    menuSubgroup: 'Estimate mean, median'
     menuTitle: Two groups
   - title: Paired
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Magnitude
+    menuSubgroup: 'Estimate mean, median'
     menuTitle: Paired
-  - title: Magnitudes - Independent Groups Contrast
+  - title: Independent Groups Contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Magnitude
-    menuTitle: Magnitudes - Independent Groups Contrast
-  - title: Proportion
-    name: jamoviproportion
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Proportion
-    menuTitle: Proportion
+    menuSubgroup: 'Estimate mean, median'
+    menuTitle: Independent Groups Contrast
   - title: Single group
     name: jamovipdiffone
     ns: esci4
@@ -95,23 +83,23 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Proportion
     menuTitle: Independent groups contrast
-  - title: Linear Correlation
+  - title: Correlation
     name: jamovicorrelation
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Association
-    menuTitle: Linear Correlation
+    menuSubgroup: Correlation
+    menuTitle: Correlation
   - title: Two groups
     name: jamovirdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Association
+    menuSubgroup: Correlation
     menuTitle: Two groups
   - title: Paired
     name: jamovirdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Association
+    menuSubgroup: Correlation
     menuTitle: Paired
   - title: Means
     name: jamovirmetamean
@@ -143,6 +131,18 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Meta-analysis
     menuTitle: Correlations
+  - title: Estimate Magnitude
+    name: jamovimagnitude
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: zTo_Delete
+    menuTitle: Estimate Magnitude
+  - title: Proportion
+    name: jamoviproportion
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: zTo_Delete
+    menuTitle: Proportion
 usesNative: true
 minApp: 1.0.8
 
