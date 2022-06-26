@@ -154,7 +154,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       self$options$comparison_sd,
       lower = 0,
       lower_inclusive = FALSE,
-      my_value_name = "Reference <i>s</i>"
+      my_value_name = "Comparison <i>s</i>"
     )
 
 
