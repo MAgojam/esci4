@@ -152,7 +152,7 @@ items:
           type: number
         - name: moe
           type: number
-          title: MoE
+          title: <i>MoE</i>
           visible: (show_details | show_calculations)
         - name: SE
           title: <i>SE</i>

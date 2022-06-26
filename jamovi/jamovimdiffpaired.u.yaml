@@ -186,6 +186,7 @@ children:
         name: show_details
       - type: CheckBox
         name: show_calculations
+        enable: '(effect_size:mean_difference)'
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

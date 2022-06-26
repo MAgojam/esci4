@@ -195,7 +195,7 @@ children:
       - type: CheckBox
         name: show_details
       - type: CheckBox
-        enable: '(assume_equal_variance)'
+        enable: '(assume_equal_variance && effect_size:mean_difference)'
         name: show_calculations
   - type: CollapseBox
     label: Figure options
