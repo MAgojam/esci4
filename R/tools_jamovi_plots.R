@@ -181,10 +181,10 @@ jamovi_plot_mdiff <- function(
     my_value_name = "Y axis: Title"
   )
 
-  if (self$options$xlab != "auto") {
+  if (!(self$options$xlab %in% c("auto", "Auto", "AUTO"))) {
     myplot <- myplot + ggplot2::xlab(xlab)
   }
-  if (self$options$ylab != "auto") {
+  if (!(self$options$ylab %in% c("auto", "Auto", "AUTO"))) {
     myplot <- myplot + ggplot2::ylab(ylab)
   }
 

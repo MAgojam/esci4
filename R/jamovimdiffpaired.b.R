@@ -166,6 +166,9 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       my_value_name = "<i>N</i>"
     )
 
+    my_value_name <- "Correlation between measures (<i>r</i>)"
+    if (self$options$enter_r_or_sdiff == "enter_sdiff") my_value_name <- "Standard deviation of difference scores (<i>s</i><sub>diff</sub>)"
+
     args$correlation <- jamovi_required_numeric(
       self$options$correlation,
       integer_required = FALSE,
@@ -173,7 +176,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       lower_inclusive = TRUE,
       upper = 1,
       upper_inclusive = TRUE,
-      my_value_name = "Correlation between measures (<i>r</i>)"
+      my_value_name = my_value_name
     )
 
 
