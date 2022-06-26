@@ -190,7 +190,7 @@ wrapper_ci.mean.ps <- function(
 
   effect_label <- paste(
     grouping_variable_levels[1],
-    "-",
+    "\U2012",
     grouping_variable_levels[2],
     sep = " "
   )
@@ -420,7 +420,7 @@ wrapper_ci.median.ps <- function(
       grouping_variable_levels,
       paste(
         grouping_variable_levels[1],
-        "-",
+        "\U2012",
         grouping_variable_levels[2],
         sep = " "
       )

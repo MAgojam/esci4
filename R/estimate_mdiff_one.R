@@ -168,7 +168,7 @@ estimate_mdiff_one <- function(
     comparison_n = estimate$overview$n
     effect_label = paste(
       outcome_variable_name,
-      "- Reference Mean",
+      "\U2012 Reference Mean",
       sep = " "
     )
 
