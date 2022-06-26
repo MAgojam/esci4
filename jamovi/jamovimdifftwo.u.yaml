@@ -224,7 +224,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: 'Y-axis: '
+            label: '<i>Y</i> axis:'
             cell:
               column: 0
               row: 2
@@ -266,7 +266,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: 'X-axis: '
+            label: '<i>X</i> axis:'
             cell:
               column: 0
               row: 6
