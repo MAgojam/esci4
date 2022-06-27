@@ -123,7 +123,6 @@ items:
         - name: n
           title: <i>N</i>
           type: integer
-          visible: (show_details)
         - name: df
           title: <i>df</i>
           type: integer
