@@ -1280,15 +1280,11 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
-        es_mean = function() private$.items[["es_mean"]],
-        es_median = function() private$.items[["es_median"]],
         es_mean_difference = function() private$.items[["es_mean_difference"]],
         es_smd = function() private$.items[["es_smd"]],
         es_median_difference = function() private$.items[["es_median_difference"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
-        magnitude_plot = function() private$.items[["magnitude_plot"]]),
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1401,101 +1397,10 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details & effect_size == 'mean_difference')"))))
             self$add(jmvcore::Table$new(
                 options=options,
-                name="es_mean",
-                title="Mean",
-                rows=1,
-                visible="(!as_difference & effect_size == 'mean_difference')",
-                columns=list(
-                    list(
-                        `name`="outcome_variable_name", 
-                        `title`="Outcome variable", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="effect_size", 
-                        `type`="number", 
-                        `title`="<i>M</i>"),
-                    list(
-                        `name`="LL", 
-                        `title`="LL", 
-                        `type`="number"),
-                    list(
-                        `name`="UL", 
-                        `title`="UL", 
-                        `type`="number"),
-                    list(
-                        `name`="moe", 
-                        `type`="number", 
-                        `title`="<i>MoE</i>", 
-                        `visible`="(show_details | show_calculations)"),
-                    list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
-                        `type`="number", 
-                        `visible`="(show_details | show_calculations)"),
-                    list(
-                        `name`="df", 
-                        `title`="<i>df</i>", 
-                        `type`="integer", 
-                        `visible`="(show_details | show_calculations)"),
-                    list(
-                        `name`="t_multiplier", 
-                        `type`="number", 
-                        `title`="<i>t</i>", 
-                        `superTitle`="Calculation component", 
-                        `visible`="(show_calculations)"),
-                    list(
-                        `name`="s_component", 
-                        `type`="number", 
-                        `title`="Variability", 
-                        `superTitle`="Calculation component", 
-                        `visible`="(show_calculations)"),
-                    list(
-                        `name`="n_component", 
-                        `type`="number", 
-                        `title`="Sample size", 
-                        `superTitle`="Calculation component", 
-                        `visible`="(show_calculations)"))))
-            self$add(jmvcore::Table$new(
-                options=options,
-                name="es_median",
-                title="Median",
-                rows=1,
-                visible="(!as_difference & effect_size == 'median_difference')",
-                columns=list(
-                    list(
-                        `name`="outcome_variable_name", 
-                        `title`="Outcome variable", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="effect_size", 
-                        `type`="number", 
-                        `title`="<i>Mdn</i>"),
-                    list(
-                        `name`="LL", 
-                        `title`="LL", 
-                        `type`="number"),
-                    list(
-                        `name`="UL", 
-                        `title`="UL", 
-                        `type`="number"),
-                    list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
-                        `type`="number", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="df", 
-                        `title`="<i>df</i>", 
-                        `type`="integer", 
-                        `visible`="(show_details)"))))
-            self$add(jmvcore::Table$new(
-                options=options,
                 name="es_mean_difference",
                 title="Mean Difference",
                 rows="(outcome_variable)",
-                visible="(as_difference & effect_size == 'mean_difference')",
+                visible="(effect_size == 'mean_difference')",
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -1556,7 +1461,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 name="es_smd",
                 title="Standardized Mean Difference",
                 rows=1,
-                visible="(as_difference & effect_size == 'mean_difference')",
+                visible="(effect_size == 'mean_difference')",
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -1606,7 +1511,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 name="es_median_difference",
                 title="Median Difference",
                 rows=3,
-                visible="(as_difference & effect_size == 'median_difference')",
+                visible="(effect_size == 'median_difference')",
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -1662,7 +1567,6 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="estimation_plots",
                 title="Estimation Figure",
-                visible="(as_difference)",
                 template=jmvcore::Image$new(
                     options=options,
                     title="$key",
@@ -1674,20 +1578,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="estimation_plot_warnings",
                 title="Estimation Figure Warnings",
-                visible=TRUE))
-            self$add(jmvcore::Html$new(
-                options=options,
-                name="magnitude_plot_warnings",
-                title="Figure Warnings",
-                visible=FALSE))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="magnitude_plot",
-                title="Magnitude",
-                requiresData=TRUE,
-                width=400,
-                height=300,
-                renderFun=".magnitude_plot"))}))
+                visible=TRUE))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -1787,15 +1678,11 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$es_mean} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$es_median} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
