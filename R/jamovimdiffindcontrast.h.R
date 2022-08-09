@@ -1876,7 +1876,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             super$initialize(
                 options=options,
                 name="",
-                title="Magnitudes - Independent Groups Contrast")
+                title="Means and Medians: Independent Groups Contrast")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",

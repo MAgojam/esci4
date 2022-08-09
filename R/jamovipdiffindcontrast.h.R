@@ -132,7 +132,7 @@ jamovipdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             super$initialize(
                 options=options,
                 name="",
-                title="Pdiff - Independent Groups Contrast")
+                title="Proportions: Independent Groups Contrast")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",
@@ -158,7 +158,7 @@ jamovipdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
                 requiresMissings = FALSE)
         }))
 
-#' Independent groups contrast
+#' Independent Groups Contrast
 #'
 #' 
 #' @param data .

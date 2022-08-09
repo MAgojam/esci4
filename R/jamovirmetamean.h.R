@@ -128,7 +128,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Magnitude/Quantity - Meta-analysis")
+                title="Meta-Analysis: Means")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",

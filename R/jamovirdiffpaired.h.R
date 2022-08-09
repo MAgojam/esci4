@@ -64,7 +64,7 @@ jamovirdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             super$initialize(
                 options=options,
                 name="",
-                title="rdiff - Paired")
+                title="Correlations: Paired")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",

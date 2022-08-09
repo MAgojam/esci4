@@ -125,7 +125,7 @@ jamovipdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Pdiff - Single Group")
+                title="Proportions: Single Group, Reference Value")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -237,7 +237,7 @@ jamovipdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Single group
+#' Single Group, Reference Value
 #'
 #' 
 #' @param switch .

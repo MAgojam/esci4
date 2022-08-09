@@ -1495,7 +1495,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Mdiff - Two Groups")
+                title="Means and Medians: Two Groups")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -1980,7 +1980,7 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Two groups
+#' Two Groups
 #'
 #' 
 #' @param switch .

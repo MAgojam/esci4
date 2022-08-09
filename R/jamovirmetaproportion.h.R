@@ -100,7 +100,7 @@ jamovirmetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             super$initialize(
                 options=options,
                 name="",
-                title="Count/Proportion - Meta-analysis")
+                title="Meta-Analysis: Proportions")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",

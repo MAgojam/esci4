@@ -165,7 +165,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Pdiff - Two Groups")
+                title="Proportions: Two Groups")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -314,7 +314,7 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Two groups
+#' Two Groups
 #'
 #' 
 #' @param switch .

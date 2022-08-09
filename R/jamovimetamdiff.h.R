@@ -147,7 +147,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Mdiff - Meta-analysis")
+                title="Meta-Analysis: Difference in Means")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
@@ -383,7 +383,7 @@ jamovimetamdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Difference in means
+#' Difference in Means
 #'
 #' 
 #' @param data .

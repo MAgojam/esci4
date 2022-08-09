@@ -64,7 +64,7 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Pdiff - Meta-analysis")
+                title="Meta-Analysis: Difference in Proportions")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",
@@ -90,7 +90,7 @@ jamovimetapdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Difference in proportions
+#' Difference in Proportions
 #'
 #' 
 #' @param data .

@@ -1617,7 +1617,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             super$initialize(
                 options=options,
                 name="",
-                title="Mdiff - Paired")
+                title="Means and Medians: Paired")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",

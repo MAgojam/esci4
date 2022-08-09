@@ -141,7 +141,7 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             super$initialize(
                 options=options,
                 name="",
-                title="Pdiff - Paired")
+                title="Proportions: Paired")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",

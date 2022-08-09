@@ -100,7 +100,7 @@ jamovirmetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             super$initialize(
                 options=options,
                 name="",
-                title="Linear Correlation - Meta-analysis")
+                title="Meta-Analysis: Correlations")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
