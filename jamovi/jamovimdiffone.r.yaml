@@ -79,15 +79,15 @@ items:
         - name: mean_SE
           title: <i>SE</i><sub>Mean</sub>
           type: number
-          visible: (show_details)
+          visible: (show_details & effect_size == 'mean_difference')
         - name: median_SE
           type: number
           title: <i>SE</i><sub>Median</sub>
-          visible: (show_details & switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw' & effect_size == 'median_difference')
         - name: df
           title: <i>df</i>
           type: integer
-          visible: (show_details)
+          visible: (show_details & effect_size == 'mean_difference')
 
     - name:  es_mean
       title: Mean
