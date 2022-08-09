@@ -2006,7 +2006,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_median_difference",
-                title="Median difference",
+                title="Median Difference",
                 visible="(effect_size == 'median_difference')",
                 rows=3,
                 clearWith=list(
@@ -2058,7 +2058,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_mean_difference",
-                title="Mean difference",
+                title="Mean Difference",
                 rows=3,
                 visible="(effect_size == 'mean_difference')",
                 clearWith=list(
@@ -2125,7 +2125,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_smd",
-                title="Standardized mean difference",
+                title="Standardized Mean Difference",
                 rows=1,
                 visible="(effect_size == 'mean_difference')",
                 clearWith=list(
@@ -2213,7 +2213,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$add(jmvcore::Html$new(
                 options=options,
                 name="estimation_plot_warnings",
-                title="Estimation figure warnings",
+                title="Estimation Figure Warnings",
                 visible=TRUE))}))
 
 jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(

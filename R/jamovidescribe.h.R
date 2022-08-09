@@ -464,7 +464,7 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Html$new(
                 options=options,
                 name="describe_plot_warnings",
-                title="Figure warnings",
+                title="Figure Warnings",
                 visible=TRUE))
             self$add(jmvcore::Image$new(
                 options=options,

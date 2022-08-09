@@ -194,7 +194,7 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_proportion_difference",
-                title="Proportion difference",
+                title="Proportion Difference",
                 rows=3,
                 columns=list(
                     list(

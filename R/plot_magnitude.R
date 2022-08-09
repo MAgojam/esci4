@@ -120,7 +120,8 @@ plot_magnitude <- function(
 
   # Labels -----------------------------
   vnames <- paste(estimate$es_mean$outcome_variable_name, collapse = ", ")
-  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{effect_size} and {conf_level*100}% confidence interval")
+  esize <- paste(toupper(substr(effect_size, 1, 1)), substr(effect_size, 2, nchar(effect_size)), sep = "")
+  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{esize} and {conf_level*100}% Confidence Interval")
   xlab <- NULL
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
@@ -199,7 +200,7 @@ plot_correlation <- function(
   )
 
   #Labels
-  ylab <- glue::glue("Pearson's r and {conf_level*100}% confidence interval")
+  ylab <- glue::glue("Pearson's r and {conf_level*100}% Confidence Interval")
   xlab <- NULL
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
@@ -283,7 +284,7 @@ plot_proportion <- function(
 
 
   # Labels
-  ylab <- glue::glue("Proportion and {conf_level*100}% confidence interval")
+  ylab <- glue::glue("Proportion and {conf_level*100}% Confidence Interval")
   xlab <- gdata$outcome_variable_name[[1]]
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 

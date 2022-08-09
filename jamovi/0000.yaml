@@ -16,19 +16,16 @@ description: >-
 
   All analyses are frequentist, returning confidence intervals.</br></br>
 
-  This is a beta release.  Please submit feedback, bug reports, and feature
-  requests via the links provided <a href =
-  "https://thenewstatistics.com/itns/esci/jesci/" target="_blank">here</a>: <a
-  href = "https://thenewstatistics.com/itns/esci/jesci/"
+  This is a complete rewrite from the previous release, breaking previous
+  analyses.
+
+  Please submit feedback, bug reports, and feature requests via the links
+  provided <a href = "https://thenewstatistics.com/itns/esci/jesci/"
+  target="_blank">here</a>: <a href =
+  "https://thenewstatistics.com/itns/esci/jesci/"
   target="_blank">https://thenewstatistics.com/itns/esci/jesci/.</a></br></br>
-  0.9.4 ----</br>
-    * Updating analyses to build graphs from data directly; should eliminate problems occuring on OSx and some Chromebooks</br>
-  0.9.3 ----</br>
-    * Additional update to try to fix estimate correlation of OSx.  Hopefully fixed this time.</br>
-  0.9.2 ----</br>
-    * Updated estimate correlation to hopefully prevent crashes on OSx - Thanks to JLove's suggested code</br>
-    * Split estimate means into descriptives and estimate means</br>
-    * Fixed a bug for Mdiff where cohen's d didn't take the conf.level argument</br>
+  1.0.1 ----</br>
+    * In progress
 analyses:
   - title: Describe
     name: jamovidescribe
@@ -39,26 +36,44 @@ analyses:
     name: jamovimdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate mean, median'
+    menuSubgroup: 'Estimate Mean, Median'
     menuTitle: Single group
   - title: Two groups
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate mean, median'
+    menuSubgroup: 'Estimate Mean, Median'
     menuTitle: Two groups
   - title: Paired
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate mean, median'
+    menuSubgroup: 'Estimate Mean, Median'
     menuTitle: Paired
   - title: Independent Groups Contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate mean, median'
+    menuSubgroup: 'Estimate Mean, Median'
     menuTitle: Independent Groups Contrast
+  - title: Correlation
+    name: jamovicorrelation
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Correlation
+    menuTitle: Correlation
+  - title: Two groups
+    name: jamovirdifftwo
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Correlation
+    menuTitle: Two groups
+  - title: Paired
+    name: jamovirdiffpaired
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Correlation
+    menuTitle: Paired
   - title: Single group
     name: jamovipdiffone
     ns: esci4
@@ -83,24 +98,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Proportion
     menuTitle: Independent groups contrast
-  - title: Correlation
-    name: jamovicorrelation
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Correlation
-    menuTitle: Correlation
-  - title: Two groups
-    name: jamovirdifftwo
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Correlation
-    menuTitle: Two groups
-  - title: Paired
-    name: jamovirdiffpaired
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Correlation
-    menuTitle: Paired
   - title: Means
     name: jamovirmetamean
     ns: esci4

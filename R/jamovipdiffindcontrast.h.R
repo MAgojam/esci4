@@ -136,7 +136,7 @@ jamovipdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",
-                title="Pdiff - Independent Groups Contrast"))}))
+                title="Proportion Difference - Independent Groups Contrast"))}))
 
 jamovipdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovipdiffindcontrastBase",

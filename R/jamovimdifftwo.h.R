@@ -1625,7 +1625,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_mean_difference",
-                title="Mean difference",
+                title="Mean Difference",
                 rows=3,
                 visible="(effect_size == 'mean_difference')",
                 clearWith=list(
@@ -1710,7 +1710,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_smd",
-                title="Standardized mean difference",
+                title="Standardized Mean Difference",
                 rows=1,
                 visible="(effect_size == 'mean_difference')",
                 clearWith=list(
@@ -1784,7 +1784,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_mean_ratio",
-                title="Ratio of means",
+                title="Ratio of Means",
                 visible="(show_ratio & effect_size == 'mean_difference')",
                 rows="(outcome_variable)",
                 clearWith=list(
@@ -1839,7 +1839,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_median_difference",
-                title="Median difference",
+                title="Median Difference",
                 visible="(effect_size == 'median_difference')",
                 rows=3,
                 clearWith=list(
@@ -1891,7 +1891,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_median_ratio",
-                title="Ratio of medians",
+                title="Ratio of Medians",
                 visible="(show_ratio & effect_size == 'median_difference')",
                 rows="(outcome_variable)",
                 clearWith=list(
@@ -1957,7 +1957,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Html$new(
                 options=options,
                 name="estimation_plot_warnings",
-                title="Estimation figure warnings",
+                title="Estimation Figure Warnings",
                 visible=TRUE))}))
 
 jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(

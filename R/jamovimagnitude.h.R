@@ -803,7 +803,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Html$new(
                 options=options,
                 name="magnitude_plot_warnings",
-                title="Figure warnings",
+                title="Figure Warnings",
                 visible=TRUE))
             self$add(jmvcore::Image$new(
                 options=options,

@@ -242,7 +242,7 @@ jamovirmetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta_difference",
-                title="Moderator analysis",
+                title="Moderator Analysis",
                 rows=3,
                 columns=list(
                     list(

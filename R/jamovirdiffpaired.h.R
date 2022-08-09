@@ -68,7 +68,7 @@ jamovirdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",
-                title="rdiff - Paired"))}))
+                title="Correlation Difference - Paired"))}))
 
 jamovirdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovirdiffpairedBase",
