@@ -70,6 +70,7 @@ children:
         suffix: '%'
       - type: ComboBox
         name: effect_size
+        enable: '(switch:from_raw)'
       - type: LayoutBox
         margin: small
         style: inline

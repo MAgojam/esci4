@@ -21,7 +21,9 @@
             this.setPanels(ui, event);
         },
 
-
+        effect_size_changed: function(ui, event) {
+            ui.show_calculations.setValue(false);
+        },
 
         // this is an example of an auxiliary function
         setPanels: function(ui, event) {

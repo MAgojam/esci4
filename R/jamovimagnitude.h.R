@@ -740,24 +740,24 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="min", 
                         `title`="Minimum", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(switch == 'from_raw' & show_details)"),
                     list(
                         `name`="max", 
                         `title`="Maximum", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(switch == 'from_raw' & show_details)"),
                     list(
                         `name`="q1", 
                         `title`="25th", 
                         `type`="number", 
                         `superTitle`="Percentile", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(switch == 'from_raw' & show_details)"),
                     list(
                         `name`="q3", 
                         `title`="75th", 
                         `type`="number", 
                         `superTitle`="Percentile", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(switch == 'from_raw' & show_details)"),
                     list(
                         `name`="n", 
                         `title`="<i>n</i>", 
