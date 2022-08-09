@@ -32,29 +32,35 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuTitle: Describe
+  - title: 'Means and Medians: Single Group'
+    name: jamovimagnitude
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Means and Medians
+    menuTitle: 'Means and Medians: Single Group'
   - title: Single group
     name: jamovimdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Mean, Median'
+    menuSubgroup: Means and Medians
     menuTitle: Single group
   - title: Two groups
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Mean, Median'
+    menuSubgroup: Means and Medians
     menuTitle: Two groups
   - title: Paired
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Mean, Median'
+    menuSubgroup: Means and Medians
     menuTitle: Paired
   - title: Independent Groups Contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Mean, Median'
+    menuSubgroup: Means and Medians
     menuTitle: Independent Groups Contrast
   - title: Correlation
     name: jamovicorrelation
@@ -74,29 +80,35 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Correlation
     menuTitle: Paired
+  - title: Proportion
+    name: jamoviproportion
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Proportions
+    menuTitle: Proportion
   - title: Single group
     name: jamovipdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Proportion
+    menuSubgroup: Proportions
     menuTitle: Single group
   - title: Two groups
     name: jamovipdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Proportion
+    menuSubgroup: Proportions
     menuTitle: Two groups
   - title: Paired
     name: jamovipdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Proportion
+    menuSubgroup: Proportions
     menuTitle: Paired
   - title: Independent groups contrast
     name: jamovipdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Proportion
+    menuSubgroup: Proportions
     menuTitle: Independent groups contrast
   - title: Means
     name: jamovirmetamean
@@ -128,18 +140,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Meta-analysis
     menuTitle: Correlations
-  - title: Estimate Magnitude
-    name: jamovimagnitude
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: zTo_Delete
-    menuTitle: Estimate Magnitude
-  - title: Proportion
-    name: jamoviproportion
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: zTo_Delete
-    menuTitle: Proportion
 usesNative: true
 minApp: 1.0.8
 

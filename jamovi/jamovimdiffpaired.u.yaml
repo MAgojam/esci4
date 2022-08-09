@@ -80,6 +80,7 @@ children:
           row: 2
       - type: TextBox
         name: reference_measure_name
+        horizontalAlignment: left
         stretchFactor: 1
         format: string
         enable: '(switch:from_summary)'
@@ -88,6 +89,7 @@ children:
           row: 2
       - type: TextBox
         name: comparison_measure_name
+        horizontalAlignment: left
         format: string
         stretchFactor: 1
         enable: '(switch:from_summary)'
@@ -102,6 +104,7 @@ children:
           row: 3
       - type: TextBox
         name: reference_mean
+        horizontalAlignment: left
         stretchFactor: 2
         format: string
         enable: '(switch:from_summary)'
@@ -110,6 +113,7 @@ children:
           row: 3
       - type: TextBox
         name: comparison_mean
+        horizontalAlignment: left
         stretchFactor: 2
         enable: '(switch:from_summary)'
         format: string
@@ -124,6 +128,7 @@ children:
           row: 4
       - type: TextBox
         name: reference_sd
+        horizontalAlignment: left
         format: string
         stretchFactor: 2
         enable: '(switch:from_summary)'
@@ -132,6 +137,7 @@ children:
           row: 4
       - type: TextBox
         name: comparison_sd
+        horizontalAlignment: left
         format: string
         stretchFactor: 2
         enable: '(switch:from_summary)'

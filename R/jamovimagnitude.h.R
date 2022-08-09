@@ -678,7 +678,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Estimate Magnitude")
+                title="Means and Medians: Single Group")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -834,7 +834,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Estimate Magnitude
+#' Means and Medians: Single Group
 #'
 #' 
 #' @param switch .

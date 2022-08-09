@@ -1,4 +1,4 @@
-title: "Mean, Median: Two Groups"
+title: "Means and Medians: Two Groups"
 name: jamovimdifftwo
 jus: '3.0'
 stage: 0
@@ -63,13 +63,13 @@ children:
           row: 1
       - type: Label
         label: Reference group
-        stretchFactor: 2
+        stretchFactor: 1
         cell:
           column: 1
           row: 1
       - type: Label
         label: Comparison group
-        stretchFactor: 2
+        stretchFactor: 1
         cell:
           column: 2
           row: 1
