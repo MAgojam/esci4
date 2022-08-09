@@ -76,7 +76,7 @@ items:
           visible: (show_details)
 
     - name: describe_plot_warnings
-      title: Figure warnings
+      title: Figure Warnings
       type: Html
       visible: true
 

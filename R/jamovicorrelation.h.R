@@ -207,7 +207,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_r",
-                title="Linear Correlation",
+                title="<i>Linear Correlation</i>",
                 rows=1,
                 columns=list(
                     list(

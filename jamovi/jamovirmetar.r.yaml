@@ -115,7 +115,7 @@ items:
           visible: (show_details)
 
     - name:  es_meta_difference
-      title: Moderator analysis
+      title: Moderator Analysis
       type: Table
       rows:  3
       columns:

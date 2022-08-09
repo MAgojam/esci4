@@ -46,7 +46,7 @@ items:
           visible: (show_details)
 
     - name:  es_proportion_difference
-      title: Proportion difference
+      title: Proportion Difference
       type: Table
       rows:  3
       columns:

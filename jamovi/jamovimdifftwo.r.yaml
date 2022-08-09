@@ -111,7 +111,7 @@ items:
           visible: (show_details & effect_size == 'median_difference' & switch == 'from_raw')
 
     - name:  es_mean_difference
-      title: Mean difference
+      title: Mean Difference
       type: Table
       rows:  3
       visible: (effect_size == 'mean_difference')
@@ -183,7 +183,7 @@ items:
           visible: (show_calculations & assume_equal_variance)
 
     - name:  es_smd
-      title: Standardized mean difference
+      title: Standardized Mean Difference
       type: Table
       rows:  1
       visible: (effect_size == 'mean_difference')
@@ -245,7 +245,7 @@ items:
           type: number
 
     - name:  es_mean_ratio
-      title: Ratio of means
+      title: Ratio of Means
       type: Table
       visible: (show_ratio & effect_size == 'mean_difference')
       rows:  (outcome_variable)
@@ -292,7 +292,7 @@ items:
           type: number
 
     - name:  es_median_difference
-      title: Median difference
+      title: Median Difference
       type: Table
       visible: (effect_size == 'median_difference')
       rows:  3
@@ -338,7 +338,7 @@ items:
 
 
     - name:  es_median_ratio
-      title: Ratio of medians
+      title: Ratio of Medians
       type: Table
       visible: (show_ratio & effect_size == 'median_difference')
       rows:  (outcome_variable)
@@ -396,7 +396,7 @@ items:
           renderFun: .estimation_plots
 
     - name: estimation_plot_warnings
-      title: Estimation figure warnings
+      title: Estimation Figure Warnings
       type: Html
       visible: true
 ...

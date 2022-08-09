@@ -111,7 +111,7 @@ items:
           visible: (show_details & effect_size == 'median_difference' & switch == 'from_raw')
 
     - name:  es_median_difference
-      title: Median difference
+      title: Median Difference
       type: Table
       visible: (effect_size == 'median_difference')
       rows:  3
@@ -156,7 +156,7 @@ items:
           visible: (show_details)
 
     - name:  es_mean_difference
-      title: Mean difference
+      title: Mean Difference
       type: Table
       rows:  3
       visible: (effect_size == 'mean_difference')
@@ -213,7 +213,7 @@ items:
           visible: (show_details & assume_equal_variance)
 
     - name:  es_smd
-      title: Standardized mean difference
+      title: Standardized Mean Difference
       type: Table
       rows:  1
       visible: (effect_size == 'mean_difference')
@@ -289,7 +289,7 @@ items:
           renderFun: .estimation_plots
 
     - name: estimation_plot_warnings
-      title: Estimation figure warnings
+      title: Estimation Figure Warnings
       type: Html
       visible: true
 ...

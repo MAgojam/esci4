@@ -105,7 +105,7 @@ items:
           visible: (show_calculations & effect_size == 'mean')
 
     - name: magnitude_plot_warnings
-      title: Figure warnings
+      title: Figure Warnings
       type: Html
       visible: true
 
