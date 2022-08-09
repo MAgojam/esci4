@@ -36,25 +36,25 @@ analyses:
     name: jamovimdiffone
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate Mean, Median'
+    menuSubgroup: 'Mean, Median'
     menuTitle: Single group
   - title: Two groups
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate Mean, Median'
+    menuSubgroup: 'Mean, Median'
     menuTitle: Two groups
   - title: Paired
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate Mean, Median'
+    menuSubgroup: 'Mean, Median'
     menuTitle: Paired
   - title: Independent Groups Contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: 'Estimate Mean, Median'
+    menuSubgroup: 'Mean, Median'
     menuTitle: Independent Groups Contrast
   - title: Correlation
     name: jamovicorrelation

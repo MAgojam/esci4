@@ -1,4 +1,4 @@
-title: "Estimate Mean, Median: Two groups"
+title: "Mean, Median: Two Groups"
 name: jamovimdifftwo
 jus: '3.0'
 stage: 0
@@ -82,7 +82,8 @@ children:
       - type: TextBox
         name: reference_level_name
         format: string
-        stretchFactor: 2
+        stretchFactor: 1
+        horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
           column: 1
@@ -90,7 +91,8 @@ children:
       - type: TextBox
         name: comparison_level_name
         format: string
-        stretchFactor: 2
+        stretchFactor: 1
+        horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
           column: 2

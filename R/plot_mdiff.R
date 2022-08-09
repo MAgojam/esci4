@@ -176,7 +176,8 @@ plot_mdiff <- function(
     paste(estimate$overview$outcome_variable_name, collapse = " and ", sep = "")
   else
     estimate$es_mean_difference$outcome_variable_name[[1]]
-  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{effect_size} and {conf_level*100}% confidence interval")
+  esize <- paste(toupper(substr(effect_size, 1, 1)), substr(effect_size, 2, nchar(effect_size)), sep = "")
+  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{esize} and {conf_level*100}% Confidence Interval")
   xlab <- estimate$es_mean_difference$grouping_variable_name[[1]]
 
 
@@ -718,7 +719,7 @@ plot_pdiff <- function(
     vname <- estimate$es_proportion_difference$outcome_variable_name[[1]]
     xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
   }
-  ylab <- glue::glue("{vname}\nProportion {clevel} and {conf_level*100}% confidence interval")
+  ylab <- glue::glue("{vname}\nProportion {clevel} and {conf_level*100}% Confidence Interval")
 
 
 
@@ -829,7 +830,7 @@ plot_rdiff <- function(
 
   # Labels -----------------------------
   vname <- paste(estimate$es_r$x_variable_name[[1]], estimate$es_r$y_variable_name[[1]], sep = " and ")
-  ylab <- glue::glue("Correlation between {vname}\nr and {conf_level*100}% confidence interval")
+  ylab <- glue::glue("Correlation between {vname}\nr and {conf_level*100}% Confidence Interval")
   xlab <- estimate$es_r$grouping_variable[[1]]
 
 
