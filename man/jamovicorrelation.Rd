@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovicorrelation.h.R
 \name{jamovicorrelation}
 \alias{jamovicorrelation}
-\title{Linear Correlation}
+\title{Correlation}
 \usage{
 jamovicorrelation(
   switch = "from_raw",
@@ -54,5 +54,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Linear Correlation
+Correlation
 }

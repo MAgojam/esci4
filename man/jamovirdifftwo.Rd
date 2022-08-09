@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovirdifftwo.h.R
 \name{jamovirdifftwo}
 \alias{jamovirdifftwo}
-\title{Two groups}
+\title{Two Groups}
 \usage{
 jamovirdifftwo(
   switch = "from_raw",
@@ -72,5 +72,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Two groups
+Two Groups
 }

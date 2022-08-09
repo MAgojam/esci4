@@ -14,11 +14,13 @@ plot_describe(
   mark_z_lines = FALSE,
   mark_percentile = NULL,
   histogram_bins = 12,
-  ylim = c(NA, NA),
+  ylim = c(0, NA),
+  ybreaks = NULL,
   xlim = c(NA, NA),
-  fill_regular = "gray45",
-  fill_highlighted = "red",
-  color = "blue",
+  xbreaks = NULL,
+  fill_regular = "#008DF9",
+  fill_highlighted = "#E20134",
+  color = "black",
   marker_size = 5,
   ggtheme = NULL
 )
@@ -44,13 +46,19 @@ plot_describe(
 
 \item{ylim}{2-length numeric vector}
 
+\item{ybreaks}{numeric >= 1}
+
 \item{xlim}{2-length numeric vector}
+
+\item{xbreaks}{numeric >= 1}
 
 \item{fill_regular}{color for}
 
 \item{fill_highlighted}{color for}
 
 \item{color}{outline color}
+
+\item{marker_size}{Size of markers}
 
 \item{ggtheme}{theme to apply, if any}
 }

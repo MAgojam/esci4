@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimetapdiff.h.R
 \name{jamovimetapdiff}
 \alias{jamovimetapdiff}
-\title{Difference in proportions}
+\title{Difference in Proportions}
 \usage{
 jamovimetapdiff(data, dep, group, alt = "notequal", varEq = TRUE)
 }
@@ -24,5 +24,5 @@ A results object containing:
 }
 }
 \description{
-Difference in proportions
+Difference in Proportions
 }

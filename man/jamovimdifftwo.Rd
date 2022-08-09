@@ -2,21 +2,21 @@
 % Please edit documentation in R/jamovimdifftwo.h.R
 \name{jamovimdifftwo}
 \alias{jamovimdifftwo}
-\title{Two groups}
+\title{Two Groups}
 \usage{
 jamovimdifftwo(
   switch = "from_raw",
   data,
   outcome_variable,
   grouping_variable,
-  comparison_mean = " ",
-  comparison_sd = " ",
-  comparison_n = " ",
+  reference_level_name = "Reference group",
   reference_mean = " ",
   reference_sd = " ",
   reference_n = " ",
   comparison_level_name = "Comparison group",
-  reference_level_name = "Reference group",
+  comparison_mean = " ",
+  comparison_sd = " ",
+  comparison_n = " ",
   outcome_variable_name = "Outcome variable",
   grouping_variable_name = "Grouping variable",
   conf_level = 95,
@@ -25,6 +25,7 @@ jamovimdifftwo(
   show_ratio = FALSE,
   switch_comparison_order = FALSE,
   show_details = FALSE,
+  show_calculations = FALSE,
   es_plot_width = "600",
   es_plot_height = "400",
   ymin = "auto",
@@ -75,9 +76,9 @@ jamovimdifftwo(
   color_interval_reference = "black",
   color_interval_comparison = "black",
   color_interval_difference = "black",
-  size_interval_reference = "1",
-  size_interval_comparison = "1",
-  size_interval_difference = "1",
+  size_interval_reference = "3",
+  size_interval_comparison = "3",
+  size_interval_difference = "3",
   alpha_interval_reference = "1",
   alpha_interval_comparison = "1",
   alpha_interval_difference = "1",
@@ -98,11 +99,7 @@ jamovimdifftwo(
 
 \item{grouping_variable}{.}
 
-\item{comparison_mean}{.}
-
-\item{comparison_sd}{.}
-
-\item{comparison_n}{.}
+\item{reference_level_name}{.}
 
 \item{reference_mean}{.}
 
@@ -112,7 +109,11 @@ jamovimdifftwo(
 
 \item{comparison_level_name}{.}
 
-\item{reference_level_name}{.}
+\item{comparison_mean}{.}
+
+\item{comparison_sd}{.}
+
+\item{comparison_n}{.}
 
 \item{outcome_variable_name}{.}
 
@@ -129,6 +130,8 @@ jamovimdifftwo(
 \item{switch_comparison_order}{.}
 
 \item{show_details}{.}
+
+\item{show_calculations}{.}
 
 \item{es_plot_width}{.}
 
@@ -276,5 +279,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Two groups
+Two Groups
 }

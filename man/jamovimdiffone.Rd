@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiffone.h.R
 \name{jamovimdiffone}
 \alias{jamovimdiffone}
-\title{Single group}
+\title{Single Group, Reference Value}
 \usage{
 jamovimdiffone(
   switch = "from_raw",
@@ -11,10 +11,13 @@ jamovimdiffone(
   comparison_mean = " ",
   comparison_sd = " ",
   comparison_n = " ",
-  reference_mean = " ",
   outcome_variable_name = "Outcome variable",
   conf_level = 95,
+  effect_size = "mean_difference",
   show_details = FALSE,
+  show_calculations = FALSE,
+  as_difference = FALSE,
+  reference_mean = " ",
   es_plot_width = "550",
   es_plot_height = "450",
   ymin = "auto",
@@ -60,9 +63,9 @@ jamovimdiffone(
   color_interval_reference,
   color_interval_comparison = "black",
   color_interval_difference = "black",
-  size_interval_reference = "1",
-  size_interval_comparison = "1",
-  size_interval_difference = "1",
+  size_interval_reference = "3",
+  size_interval_comparison = "3",
+  size_interval_difference = "3",
   alpha_interval_reference = "1",
   alpha_interval_comparison = "1",
   alpha_interval_difference = "1",
@@ -87,13 +90,19 @@ jamovimdiffone(
 
 \item{comparison_n}{.}
 
-\item{reference_mean}{.}
-
 \item{outcome_variable_name}{.}
 
 \item{conf_level}{.}
 
+\item{effect_size}{.}
+
 \item{show_details}{.}
+
+\item{show_calculations}{.}
+
+\item{as_difference}{.}
+
+\item{reference_mean}{.}
 
 \item{es_plot_width}{.}
 
@@ -217,6 +226,7 @@ A results object containing:
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
+\code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 }
@@ -228,5 +238,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Single group
+Single Group, Reference Value
 }

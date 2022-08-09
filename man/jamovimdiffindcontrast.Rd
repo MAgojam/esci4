@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiffindcontrast.h.R
 \name{jamovimdiffindcontrast}
 \alias{jamovimdiffindcontrast}
-\title{Magnitudes - Independent Groups Contrast}
+\title{Independent Groups Contrast}
 \usage{
 jamovimdiffindcontrast(
   switch = "from_raw",
@@ -83,10 +83,10 @@ jamovimdiffindcontrast(
   color_interval_comparison = "black",
   color_interval_unused = "gray65",
   color_interval_difference = "black",
-  size_interval_reference = "1",
-  size_interval_comparison = "1",
-  size_interval_unused = "1",
-  size_interval_difference = "1",
+  size_interval_reference = "3",
+  size_interval_comparison = "3",
+  size_interval_unused = "3",
+  size_interval_difference = "3",
   alpha_interval_reference = "1",
   alpha_interval_comparison = "1",
   alpha_interval_unused = "1",
@@ -310,5 +310,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Magnitudes - Independent Groups Contrast
+Independent Groups Contrast
 }

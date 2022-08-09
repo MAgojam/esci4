@@ -7,20 +7,23 @@
 jamovimdiffpaired(
   switch = "from_raw",
   data,
-  comparison_measure,
   reference_measure,
+  comparison_measure,
   comparison_mean = " ",
   comparison_sd = " ",
   reference_mean = " ",
   reference_sd = " ",
   n = " ",
+  enter_r_or_sdiff = "enter_r",
   correlation = " ",
+  sdiff = " ",
   comparison_measure_name = "Comparison measure",
   reference_measure_name = "Reference measure",
   conf_level = 95,
   effect_size = "mean_difference",
   show_ratio = FALSE,
   show_details = FALSE,
+  show_calculations = FALSE,
   es_plot_width = "600",
   es_plot_height = "400",
   ymin = "auto",
@@ -76,9 +79,9 @@ jamovimdiffpaired(
   color_interval_reference = "black",
   color_interval_comparison = "black",
   color_interval_difference = "black",
-  size_interval_reference = "1",
-  size_interval_comparison = "1",
-  size_interval_difference = "1",
+  size_interval_reference = "3",
+  size_interval_comparison = "3",
+  size_interval_difference = "3",
   alpha_interval_reference = "1",
   alpha_interval_comparison = "1",
   alpha_interval_difference = "1",
@@ -95,9 +98,9 @@ jamovimdiffpaired(
 
 \item{data}{.}
 
-\item{comparison_measure}{.}
-
 \item{reference_measure}{.}
+
+\item{comparison_measure}{.}
 
 \item{comparison_mean}{.}
 
@@ -109,7 +112,11 @@ jamovimdiffpaired(
 
 \item{n}{.}
 
+\item{enter_r_or_sdiff}{.}
+
 \item{correlation}{.}
+
+\item{sdiff}{.}
 
 \item{comparison_measure_name}{.}
 
@@ -122,6 +129,8 @@ jamovimdiffpaired(
 \item{show_ratio}{.}
 
 \item{show_details}{.}
+
+\item{show_calculations}{.}
 
 \item{es_plot_width}{.}
 

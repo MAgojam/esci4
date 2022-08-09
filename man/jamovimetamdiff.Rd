@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimetamdiff.h.R
 \name{jamovimetamdiff}
 \alias{jamovimetamdiff}
-\title{Difference in means}
+\title{Difference in Means}
 \usage{
 jamovimetamdiff(
   data,
@@ -67,5 +67,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$raw_data)}
 }
 \description{
-Difference in means
+Difference in Means
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimagnitude.h.R
 \name{jamovimagnitude}
 \alias{jamovimagnitude}
-\title{Estimate Magnitude}
+\title{Single Group}
 \usage{
 jamovimagnitude(
   switch = "from_raw",
@@ -44,7 +44,7 @@ jamovimagnitude(
   alpha_summary = "1",
   linetype_summary = "solid",
   color_interval = "black",
-  size_interval = "1",
+  size_interval = "3",
   alpha_interval = "1",
   alpha_error = "1",
   fill_error = "gray75"
@@ -154,5 +154,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Estimate Magnitude
+Single Group
 }
