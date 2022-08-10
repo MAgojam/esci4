@@ -104,7 +104,7 @@ items:
           type: text
         - name: effect_size
           type: number
-          title: <i>M</i>
+          title: <i>M</i>-Reference
         - name: LL
           title: LL
           type: number
@@ -153,10 +153,12 @@ items:
           title: 'Effect'
           type: text
         - name: numerator
-          title: <i>M</i>
+          title: <i>M</i> - Reference
+          superTitle: Numerator
           type: number
         - name: denominator
           title: Standardizer
+          superTitle: Standardizer
           type: number
         - name: effect_size
           type: number

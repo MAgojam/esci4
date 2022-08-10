@@ -1744,11 +1744,13 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text"),
                     list(
                         `name`="numerator", 
-                        `title`="<i>M</i>", 
+                        `title`="<i>M</i><sub>diff</sub>", 
+                        `superTitle`="Numerator", 
                         `type`="number"),
                     list(
                         `name`="denominator", 
                         `title`="Standardizer", 
+                        `superTitle`="Standardizer", 
                         `type`="number"),
                     list(
                         `name`="effect_size", 

@@ -1414,7 +1414,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="effect_size", 
                         `type`="number", 
-                        `title`="<i>M</i>"),
+                        `title`="<i>M</i>-Reference"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -1474,11 +1474,13 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text"),
                     list(
                         `name`="numerator", 
-                        `title`="<i>M</i>", 
+                        `title`="<i>M</i> - Reference", 
+                        `superTitle`="Numerator", 
                         `type`="number"),
                     list(
                         `name`="denominator", 
                         `title`="Standardizer", 
+                        `superTitle`="Standardizer", 
                         `type`="number"),
                     list(
                         `name`="effect_size", 

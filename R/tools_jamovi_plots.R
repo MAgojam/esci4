@@ -289,6 +289,9 @@ jamovi_plot_mdiff <- function(
     aesthetics = c("fill", "point_fill")
   )
 
+  divider <- 1
+  if (effect_size == "median") divider <- 4
+
   myplot <- myplot + ggplot2::discrete_scale(
     c("size", "point_size"),
     "point_size_d",
@@ -297,10 +300,10 @@ jamovi_plot_mdiff <- function(
       "Comparison_raw" = as.integer(self$options$size_raw_comparison),
       "Difference_raw" = size_raw_difference,
       "Unused_raw" = size_raw_unused,
-      "Reference_summary" = as.integer(self$options$size_summary_reference),
-      "Comparison_summary" = as.integer(self$options$size_summary_comparison),
-      "Difference_summary" = as.integer(self$options$size_summary_difference),
-      "Unused_summary" = size_summary_unused
+      "Reference_summary" = as.integer(self$options$size_summary_reference)/divider,
+      "Comparison_summary" = as.integer(self$options$size_summary_comparison)/divider,
+      "Difference_summary" = as.integer(self$options$size_summary_difference)/divider,
+      "Unused_summary" = size_summary_unused/divider
     ))
   )
 
