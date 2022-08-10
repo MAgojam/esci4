@@ -1,4 +1,4 @@
-#' Estimate magnitudes of difference from a single measure compared to a know reference.
+#' Estimate magnitudes of difference from a single measure compared to a known reference.
 #'
 #' @description
 #' Returns effect sizes appropriate for designs with one quantitative variable
@@ -10,7 +10,7 @@
 #' @param comparison_mean For summary data, a numeric
 #' @param comparison_sd For summary data, numeric > 0
 #' @param comparison_n For summary data, a numeric integer > 0
-#' @param reference_mean Reference mean, defaults to 0
+#' @param reference_mean Reference value, defaults to 0
 #' @param outcome_variable_name Optional friendly name for the outcome variable.
 #'   Defaults to 'My outcome variable' or the outcome variable column name if a
 #'   data frame is passed.
@@ -168,7 +168,7 @@ estimate_mdiff_one <- function(
     comparison_n = estimate$overview$n
     effect_label = paste(
       outcome_variable_name,
-      "\U2012 Reference Mean",
+      "\U2012 Reference value",
       sep = " "
     )
 
@@ -186,7 +186,7 @@ estimate_mdiff_one <- function(
     )
     estimate$es_mean_difference$effect <- c(
       outcome_variable_name,
-      "Reference Mean",
+      "Reference value",
       effect_label
     )
     estimate$es_mean_difference[2, c("effect_size", "LL", "UL", "SE", "df")] <-
@@ -249,7 +249,7 @@ estimate_mdiff_one <- function(
     estimate$properties$contrast <- c(1, -1)
     names(estimate$properties$contrast) <- c(
       outcome_variable_name,
-      "Reference Mean"
+      "Reference value"
     )
     estimate$es_mean_difference_properties <- list(
       effect_size_name = "M_Diff",

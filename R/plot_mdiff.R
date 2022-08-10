@@ -551,6 +551,12 @@ plot_mdiff_base <- function(
     )
   )
 
+  if (inherits(try(ggplot_build(myplot)), "try-error"))
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      limits = ylim,
+      n.breaks = ybreaks
+    )
+
 
   # Set x axis labels
   mybreaks <- gdata$x_value + gdata$nudge

@@ -760,7 +760,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(switch == 'from_raw' & show_details)"),
                     list(
                         `name`="n", 
-                        `title`="<i>n</i>", 
+                        `title`="<i>N</i>", 
                         `type`="integer"),
                     list(
                         `name`="missing", 

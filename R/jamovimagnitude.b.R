@@ -223,16 +223,18 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             # Axis breaks
             ymin <- jamovi_sanitize(
                 my_value = self$options$ymin,
-                return_value = NULL,
+                return_value = NA,
                 na_ok = FALSE,
                 convert_to_number = TRUE,
                 my_value_name = "Y axis: Axis minimum"
             )
             ymax <- jamovi_sanitize(
                 my_value = self$options$ymax,
-                return_value = NULL,
+                return_value = NA,
                 na_ok = FALSE,
                 convert_to_number = TRUE,
+                lower = if(is.na(ymin)) NULL else ymin,
+                lower_inclusive = FALSE,
                 my_value_name = "Y axis: Axis maximum"
             )
             breaks <- jamovi_sanitize(

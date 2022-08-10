@@ -16,7 +16,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             effect_size = "mean_difference",
             show_details = FALSE,
             show_calculations = FALSE,
-            as_difference = FALSE,
             reference_mean = " ",
             es_plot_width = "550",
             es_plot_height = "450",
@@ -57,22 +56,16 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             alpha_summary_reference = "1",
             alpha_summary_comparison = "1",
             alpha_summary_difference = "1",
-            linetype_summary_reference = "solid",
             linetype_summary_comparison = "solid",
             linetype_summary_difference = "solid",
-            color_interval_reference = NULL,
             color_interval_comparison = "black",
             color_interval_difference = "black",
-            size_interval_reference = "3",
             size_interval_comparison = "3",
             size_interval_difference = "3",
-            alpha_interval_reference = "1",
             alpha_interval_comparison = "1",
             alpha_interval_difference = "1",
-            alpha_error_reference = "1",
             alpha_error_comparison = "1",
             alpha_error_difference = "1",
-            fill_error_reference = "gray75",
             fill_error_comparison = "gray75",
             fill_error_difference = "gray75", ...) {
 
@@ -130,10 +123,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..show_calculations <- jmvcore::OptionBool$new(
                 "show_calculations",
                 show_calculations,
-                default=FALSE)
-            private$..as_difference <- jmvcore::OptionBool$new(
-                "as_difference",
-                as_difference,
                 default=FALSE)
             private$..reference_mean <- jmvcore::OptionString$new(
                 "reference_mean",
@@ -682,16 +671,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".5",
                     ".25",
                     "0"))
-            private$..linetype_summary_reference <- jmvcore::OptionList$new(
-                "linetype_summary_reference",
-                linetype_summary_reference,
-                default="solid",
-                options=list(
-                    "solid",
-                    "dotted",
-                    "dotdash",
-                    "dashed",
-                    "blank"))
             private$..linetype_summary_comparison <- jmvcore::OptionList$new(
                 "linetype_summary_comparison",
                 linetype_summary_comparison,
@@ -712,47 +691,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "dotdash",
                     "dashed",
                     "blank"))
-            private$..color_interval_reference <- jmvcore::OptionList$new(
-                "color_interval_reference",
-                color_interval_reference,
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
             private$..color_interval_comparison <- jmvcore::OptionList$new(
                 "color_interval_comparison",
                 color_interval_comparison,
@@ -837,19 +775,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..size_interval_reference <- jmvcore::OptionList$new(
-                "size_interval_reference",
-                size_interval_reference,
-                default="3",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                    "8"))
             private$..size_interval_comparison <- jmvcore::OptionList$new(
                 "size_interval_comparison",
                 size_interval_comparison,
@@ -876,16 +801,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "6",
                     "7",
                     "8"))
-            private$..alpha_interval_reference <- jmvcore::OptionList$new(
-                "alpha_interval_reference",
-                alpha_interval_reference,
-                default="1",
-                options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
             private$..alpha_interval_comparison <- jmvcore::OptionList$new(
                 "alpha_interval_comparison",
                 alpha_interval_comparison,
@@ -899,16 +814,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..alpha_interval_difference <- jmvcore::OptionList$new(
                 "alpha_interval_difference",
                 alpha_interval_difference,
-                default="1",
-                options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
-            private$..alpha_error_reference <- jmvcore::OptionList$new(
-                "alpha_error_reference",
-                alpha_error_reference,
                 default="1",
                 options=list(
                     "1",
@@ -936,48 +841,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".5",
                     ".25",
                     "0"))
-            private$..fill_error_reference <- jmvcore::OptionList$new(
-                "fill_error_reference",
-                fill_error_reference,
-                default="gray75",
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
             private$..fill_error_comparison <- jmvcore::OptionList$new(
                 "fill_error_comparison",
                 fill_error_comparison,
@@ -1073,7 +936,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..effect_size)
             self$.addOption(private$..show_details)
             self$.addOption(private$..show_calculations)
-            self$.addOption(private$..as_difference)
             self$.addOption(private$..reference_mean)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
@@ -1114,22 +976,16 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..alpha_summary_reference)
             self$.addOption(private$..alpha_summary_comparison)
             self$.addOption(private$..alpha_summary_difference)
-            self$.addOption(private$..linetype_summary_reference)
             self$.addOption(private$..linetype_summary_comparison)
             self$.addOption(private$..linetype_summary_difference)
-            self$.addOption(private$..color_interval_reference)
             self$.addOption(private$..color_interval_comparison)
             self$.addOption(private$..color_interval_difference)
-            self$.addOption(private$..size_interval_reference)
             self$.addOption(private$..size_interval_comparison)
             self$.addOption(private$..size_interval_difference)
-            self$.addOption(private$..alpha_interval_reference)
             self$.addOption(private$..alpha_interval_comparison)
             self$.addOption(private$..alpha_interval_difference)
-            self$.addOption(private$..alpha_error_reference)
             self$.addOption(private$..alpha_error_comparison)
             self$.addOption(private$..alpha_error_difference)
-            self$.addOption(private$..fill_error_reference)
             self$.addOption(private$..fill_error_comparison)
             self$.addOption(private$..fill_error_difference)
         }),
@@ -1144,7 +1000,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         effect_size = function() private$..effect_size$value,
         show_details = function() private$..show_details$value,
         show_calculations = function() private$..show_calculations$value,
-        as_difference = function() private$..as_difference$value,
         reference_mean = function() private$..reference_mean$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
@@ -1185,22 +1040,16 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         alpha_summary_reference = function() private$..alpha_summary_reference$value,
         alpha_summary_comparison = function() private$..alpha_summary_comparison$value,
         alpha_summary_difference = function() private$..alpha_summary_difference$value,
-        linetype_summary_reference = function() private$..linetype_summary_reference$value,
         linetype_summary_comparison = function() private$..linetype_summary_comparison$value,
         linetype_summary_difference = function() private$..linetype_summary_difference$value,
-        color_interval_reference = function() private$..color_interval_reference$value,
         color_interval_comparison = function() private$..color_interval_comparison$value,
         color_interval_difference = function() private$..color_interval_difference$value,
-        size_interval_reference = function() private$..size_interval_reference$value,
         size_interval_comparison = function() private$..size_interval_comparison$value,
         size_interval_difference = function() private$..size_interval_difference$value,
-        alpha_interval_reference = function() private$..alpha_interval_reference$value,
         alpha_interval_comparison = function() private$..alpha_interval_comparison$value,
         alpha_interval_difference = function() private$..alpha_interval_difference$value,
-        alpha_error_reference = function() private$..alpha_error_reference$value,
         alpha_error_comparison = function() private$..alpha_error_comparison$value,
         alpha_error_difference = function() private$..alpha_error_difference$value,
-        fill_error_reference = function() private$..fill_error_reference$value,
         fill_error_comparison = function() private$..fill_error_comparison$value,
         fill_error_difference = function() private$..fill_error_difference$value),
     private = list(
@@ -1214,7 +1063,6 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..effect_size = NA,
         ..show_details = NA,
         ..show_calculations = NA,
-        ..as_difference = NA,
         ..reference_mean = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
@@ -1255,22 +1103,16 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..alpha_summary_reference = NA,
         ..alpha_summary_comparison = NA,
         ..alpha_summary_difference = NA,
-        ..linetype_summary_reference = NA,
         ..linetype_summary_comparison = NA,
         ..linetype_summary_difference = NA,
-        ..color_interval_reference = NA,
         ..color_interval_comparison = NA,
         ..color_interval_difference = NA,
-        ..size_interval_reference = NA,
         ..size_interval_comparison = NA,
         ..size_interval_difference = NA,
-        ..alpha_interval_reference = NA,
         ..alpha_interval_comparison = NA,
         ..alpha_interval_difference = NA,
-        ..alpha_error_reference = NA,
         ..alpha_error_comparison = NA,
         ..alpha_error_difference = NA,
-        ..fill_error_reference = NA,
         ..fill_error_comparison = NA,
         ..fill_error_difference = NA)
 )
@@ -1375,7 +1217,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="n", 
-                        `title`="<i>n</i>", 
+                        `title`="<i>N</i>", 
                         `type`="integer"),
                     list(
                         `name`="missing", 
@@ -1618,7 +1460,6 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param effect_size .
 #' @param show_details .
 #' @param show_calculations .
-#' @param as_difference .
 #' @param reference_mean .
 #' @param es_plot_width .
 #' @param es_plot_height .
@@ -1659,22 +1500,16 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param alpha_summary_reference .
 #' @param alpha_summary_comparison .
 #' @param alpha_summary_difference .
-#' @param linetype_summary_reference .
 #' @param linetype_summary_comparison .
 #' @param linetype_summary_difference .
-#' @param color_interval_reference .
 #' @param color_interval_comparison .
 #' @param color_interval_difference .
-#' @param size_interval_reference .
 #' @param size_interval_comparison .
 #' @param size_interval_difference .
-#' @param alpha_interval_reference .
 #' @param alpha_interval_comparison .
 #' @param alpha_interval_difference .
-#' @param alpha_error_reference .
 #' @param alpha_error_comparison .
 #' @param alpha_error_difference .
-#' @param fill_error_reference .
 #' @param fill_error_comparison .
 #' @param fill_error_difference .
 #' @return A results object containing:
@@ -1708,7 +1543,6 @@ jamovimdiffone <- function(
     effect_size = "mean_difference",
     show_details = FALSE,
     show_calculations = FALSE,
-    as_difference = FALSE,
     reference_mean = " ",
     es_plot_width = "550",
     es_plot_height = "450",
@@ -1749,22 +1583,16 @@ jamovimdiffone <- function(
     alpha_summary_reference = "1",
     alpha_summary_comparison = "1",
     alpha_summary_difference = "1",
-    linetype_summary_reference = "solid",
     linetype_summary_comparison = "solid",
     linetype_summary_difference = "solid",
-    color_interval_reference,
     color_interval_comparison = "black",
     color_interval_difference = "black",
-    size_interval_reference = "3",
     size_interval_comparison = "3",
     size_interval_difference = "3",
-    alpha_interval_reference = "1",
     alpha_interval_comparison = "1",
     alpha_interval_difference = "1",
-    alpha_error_reference = "1",
     alpha_error_comparison = "1",
     alpha_error_difference = "1",
-    fill_error_reference = "gray75",
     fill_error_comparison = "gray75",
     fill_error_difference = "gray75") {
 
@@ -1789,7 +1617,6 @@ jamovimdiffone <- function(
         effect_size = effect_size,
         show_details = show_details,
         show_calculations = show_calculations,
-        as_difference = as_difference,
         reference_mean = reference_mean,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
@@ -1830,22 +1657,16 @@ jamovimdiffone <- function(
         alpha_summary_reference = alpha_summary_reference,
         alpha_summary_comparison = alpha_summary_comparison,
         alpha_summary_difference = alpha_summary_difference,
-        linetype_summary_reference = linetype_summary_reference,
         linetype_summary_comparison = linetype_summary_comparison,
         linetype_summary_difference = linetype_summary_difference,
-        color_interval_reference = color_interval_reference,
         color_interval_comparison = color_interval_comparison,
         color_interval_difference = color_interval_difference,
-        size_interval_reference = size_interval_reference,
         size_interval_comparison = size_interval_comparison,
         size_interval_difference = size_interval_difference,
-        alpha_interval_reference = alpha_interval_reference,
         alpha_interval_comparison = alpha_interval_comparison,
         alpha_interval_difference = alpha_interval_difference,
-        alpha_error_reference = alpha_error_reference,
         alpha_error_comparison = alpha_error_comparison,
         alpha_error_difference = alpha_error_difference,
-        fill_error_reference = fill_error_reference,
         fill_error_comparison = fill_error_comparison,
         fill_error_difference = fill_error_difference)
 

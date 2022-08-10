@@ -70,7 +70,7 @@ items:
           superTitle: Percentile
           visible: (switch == 'from_raw' & show_details)
         - name: n
-          title: <i>n</i>
+          title: <i>N</i>
           type: integer
         - name: missing
           type: integer

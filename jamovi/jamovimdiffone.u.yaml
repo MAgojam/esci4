@@ -458,11 +458,6 @@ children:
                   column: 3
                   row: 7
               - type: ComboBox
-                name: linetype_summary_reference
-                cell:
-                  column: 1
-                  row: 9
-              - type: ComboBox
                 name: linetype_summary_comparison
                 cell:
                   column: 2
@@ -472,12 +467,6 @@ children:
                 cell:
                   column: 3
                   row: 9
-              - type: ComboBox
-                name: color_interval_reference
-                enable: '(effect_size:mean_difference)'
-                cell:
-                  column: 1
-                  row: 11
               - type: ComboBox
                 name: color_interval_comparison
                 enable: '(effect_size:mean_difference)'
@@ -491,12 +480,6 @@ children:
                   column: 3
                   row: 11
               - type: ComboBox
-                name: size_interval_reference
-                enable: '(effect_size:mean_difference)'
-                cell:
-                  column: 1
-                  row: 10
-              - type: ComboBox
                 name: size_interval_comparison
                 enable: '(effect_size:mean_difference)'
                 cell:
@@ -508,12 +491,6 @@ children:
                 cell:
                   column: 3
                   row: 10
-              - type: ComboBox
-                name: alpha_interval_reference
-                enable: '(effect_size:mean_difference)'
-                cell:
-                  column: 1
-                  row: 12
               - type: ComboBox
                 name: alpha_interval_comparison
                 enable: '(effect_size:mean_difference)'
@@ -527,12 +504,6 @@ children:
                   column: 3
                   row: 12
               - type: ComboBox
-                name: alpha_error_reference
-                enable: '(effect_size:mean_difference)'
-                cell:
-                  column: 1
-                  row: 15
-              - type: ComboBox
                 name: alpha_error_comparison
                 enable: '(effect_size:mean_difference)'
                 cell:
@@ -545,12 +516,6 @@ children:
                   column: 3
                   row: 15
               - type: ComboBox
-                name: fill_error_reference
-                enable: '(effect_size:mean_difference)'
-                cell:
-                  column: 1
-                  row: 14
-              - type: ComboBox
                 name: fill_error_comparison
                 enable: '(effect_size:mean_difference)'
                 cell:
@@ -562,8 +527,3 @@ children:
                 cell:
                   column: 3
                   row: 14
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: CheckBox
-        name: as_difference

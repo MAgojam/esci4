@@ -237,20 +237,20 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
   } else {
     args$comparison_mean <- jamovi_required_numeric(
       self$options$comparison_mean,
-      my_value_name = "Comparison <i>M</i>"
+      my_value_name = "Mean (<i>M</i>)"
     )
     args$comparison_sd <- jamovi_required_numeric(
       self$options$comparison_sd,
       lower = 0,
       lower_inclusive = FALSE,
-      my_value_name = "Comparison <i>s</i>"
+      my_value_name = "Standard deviation (<i>s</i>)"
     )
     args$comparison_n <- jamovi_required_numeric(
       self$options$comparison_n,
       integer_required = TRUE,
       lower = 0,
       lower_inclusive = FALSE,
-      my_value_name = "Comparison <i>n</i>"
+      my_value_name = "Sample size (<i>N</i>)"
     )
 
     unfilled <- NULL

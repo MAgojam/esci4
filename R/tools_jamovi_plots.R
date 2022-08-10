@@ -72,21 +72,31 @@ jamovi_plot_mdiff <- function(
   )
   args$difference_axis_space <- 0.5
   args$simple_contrast_labels <- self$options$simple_contrast_labels
+
   # Axis breaks
-  ymin <- jamovi_sanitize(
+  args <- jamovi_arg_builder(
+    args,
+    "ylim",
     my_value = self$options$ymin,
     return_value = NA,
     na_ok = TRUE,
     convert_to_number = TRUE,
     my_value_name = "Y axis: Axis minimum"
   )
-  ymax <- jamovi_sanitize(
+  args <- jamovi_arg_builder(
+    args,
+    "ylim2",
     my_value = self$options$ymax,
     return_value = NA,
     na_ok = TRUE,
+    lower = if(is.na(args$ylim)) NULL else args$ylim,
+    lower_inclusive = FALSE,
     convert_to_number = TRUE,
     my_value_name = "Y axis: Axis maximum"
   )
+
+  args$ylim <- c(args$ylim, args$ylim2)
+  args$ylim2 <- NULL
 
   args <- jamovi_arg_builder(
     args,
@@ -105,12 +115,10 @@ jamovi_plot_mdiff <- function(
   # Store notes from basic plot
   notes <- c(
     notes,
-    args$warnings,
-    names(ymax), names(ymin)
+    args$warnings
   )
   args$warnings <- NULL
 
-  args$ylim <- c(ymin, ymax)
 
   # Do basic plot
   myplot <- do.call(
@@ -214,11 +222,17 @@ jamovi_plot_mdiff <- function(
   size_summary_unused <- 1
   alpha_raw_unused <- 1
   alpha_summary_unused <- 1
+  alpha_error_reference <- 1
   linetype_summary_unused <- "solid"
+  linetype_summary_reference <- "solid"
   color_interval_unused <- "black"
-  alpha_interval_reference_unused <- 1
+  color_interval_reference <- "black"
+  alpha_interval_unused <- 1
+  alpha_interval_reference <- 1
   size_interval_unused <- 1
+  size_interval_reference <- 1
   fill_error_unused <- "black"
+  fill_error_reference <- "black"
   alpha_error_unused <- 1
 
   try(shape_raw_difference <- self$options$shape_raw_difference)
@@ -244,10 +258,16 @@ jamovi_plot_mdiff <- function(
   try(alpha_raw_unused <- as.numeric(self$options$alpha_raw_unused))
   try(alpha_summary_unused <- as.numeric(self$options$alpha_summary_unused))
   try(linetype_summary_unused <- self$options$linetype_summary_unused)
+  try(linetype_summary_reference <- self$options$linetype_summary_reference)
   try(color_interval_unused <- self$options$color_interval_unused)
-  try(alpha_interval_reference_unused <- as.numeric(self$options$alpha_interval_reference_unused))
+  try(color_interval_reference <- self$options$color_interval_reference)
+  try(alpha_interval_unusued <- as.numeric(self$options$alpha_interval_unused))
+  try(alpha_interval_reference <- as.numeric(self$options$alpha_interval_reference))
   try(size_interval_unused <- as.integer(self$options$size_interval_unused))
+  try(size_interval_reference <- as.integer(self$options$size_interval_reference))
   try(fill_error_unused <- self$options$fill_error_unused)
+  try(fill_error_reference <- self$options$fill_error_reference)
+  try(alpha_error_reference <- self$options$alpha_error_reference)
   try(alpha_error_unused <- as.numeric(self$options$alpha_error_unused))
 
 
@@ -329,7 +349,7 @@ jamovi_plot_mdiff <- function(
   # Error bars
   myplot <- myplot + ggplot2::scale_linetype_manual(
     values = c(
-      "Reference_summary" = self$options$linetype_summary_reference,
+      "Reference_summary" = linetype_summary_reference,
       "Comparison_summary" = self$options$linetype_summary_comparison,
       "Difference_summary" = self$options$linetype_summary_difference,
       "Unused_summary" = linetype_summary_unused
@@ -337,7 +357,7 @@ jamovi_plot_mdiff <- function(
   )
   myplot <- myplot + ggplot2::scale_color_manual(
     values = c(
-      "Reference_summary" = self$options$color_interval_reference,
+      "Reference_summary" = color_interval_reference,
       "Comparison_summary" = self$options$color_interval_comparison,
       "Difference_summary" = self$options$color_interval_difference,
       "Unused_summary" = color_interval_unused
@@ -348,17 +368,17 @@ jamovi_plot_mdiff <- function(
     "interval_alpha",
     "interval_alpha_d",
     function(n) return(c(
-      "Reference_summary" = as.numeric(self$options$alpha_interval_reference),
+      "Reference_summary" = as.numeric(alpha_interval_reference),
       "Comparison_summary" = as.numeric(self$options$alpha_interval_comparison),
       "Difference_summary" = as.numeric(self$options$alpha_interval_difference),
-      "Unused_summary" = alpha_interval_reference_unused
+      "Unused_summary" = alpha_interval_unused
     ))
   )
   myplot <- myplot + ggplot2::discrete_scale(
     "interval_size",
     "interval_size_d",
     function(n) return(c(
-      "Reference_summary" = as.integer(self$options$size_interval_reference),
+      "Reference_summary" = as.integer(size_interval_reference),
       "Comparison_summary" = as.integer(self$options$size_interval_comparison),
       "Difference_summary" = as.integer(self$options$size_interval_difference),
       "Unused_summary" = size_interval_unused
@@ -368,7 +388,7 @@ jamovi_plot_mdiff <- function(
   # Slab
   myplot <- myplot + ggplot2::scale_fill_manual(
     values = c(
-      "Reference_summary" = self$options$fill_error_reference,
+      "Reference_summary" = fill_error_reference,
       "Comparison_summary" = self$options$fill_error_comparison,
       "Difference_summary" = self$options$fill_error_difference,
       "Unused_summary" = fill_error_unused
@@ -379,7 +399,7 @@ jamovi_plot_mdiff <- function(
     "slab_alpha",
     "slab_alpha_d",
     function(n) return(c(
-      "Reference_summary" = as.numeric(self$options$alpha_error_reference),
+      "Reference_summary" = as.numeric(alpha_error_reference),
       "Comparison_summary" = as.numeric(self$options$alpha_error_comparison),
       "Difference_summary" = as.numeric(self$options$alpha_error_difference),
       "Unused_summary" = alpha_error_unused

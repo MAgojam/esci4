@@ -246,7 +246,7 @@ jamovi_arg_builder <- function(
   #   text strings that shouldn't be passed on
   if(is.null(my_value)) {
     reason <- glue::glue(
-      "{my_value_name} was null; replaced with: {return_value}"
+      "{my_value_name} was null; replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     args$warnings <- c(args$warnings, reason)
     args[[arg_name]] <- return_value
@@ -255,7 +255,7 @@ jamovi_arg_builder <- function(
 
   if(!na_ok & is.na(my_value)) {
     reason <- glue::glue(
-      "{my_value_name} was NA/missing; replaced with: {return_value}"
+      "{my_value_name} was NA/missing; replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     args$warnings <- c(args$warnings, reason)
     args[[arg_name]] <- return_value
@@ -264,7 +264,7 @@ jamovi_arg_builder <- function(
 
   if(length(trimws(as.character(my_value))) == 0) {
     reason <- glue::glue(
-      "{my_value_name} was empty string (''); replaced with: {return_value}"
+      "{my_value_name} was empty string (''); replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     args$warnings <- c(args$warnings, reason)
     args[[arg_name]] <- return_value
@@ -273,7 +273,7 @@ jamovi_arg_builder <- function(
 
   if(trimws(as.character(my_value)) %in% c("")) {
     reason <- glue::glue(
-      "{my_value_name} was empty string (''); replaced with: {return_value}"
+      "{my_value_name} was empty string (''); replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     args$warnings <- c(args$warnings, reason)
     args[[arg_name]] <- return_value
@@ -293,7 +293,7 @@ jamovi_arg_builder <- function(
       return(NA)
     } else {
       reason <- glue::glue(
-        "{my_value_name} was NaN/Na/NA/None; replaced with: {return_value}"
+        "{my_value_name} was NaN/Na/NA/None; replaced with: {if(is.na(return_value)) 'auto' else return_value}"
       )
       args$warnings <- c(args$warnings, reason)
       args[[arg_name]] <- return_value
@@ -313,7 +313,7 @@ jamovi_arg_builder <- function(
     if(na_ok) {
       reason <- glue::glue(
         "{my_value_name} conversion to number yielded Na/Missing;
-        replaced with: {return_value}"
+        replaced with: {if(is.na(return_value)) 'auto' else return_value}"
       )
       args$warnings <- c(args$warnings, reason)
       args[[arg_name]] <- NA
@@ -321,7 +321,7 @@ jamovi_arg_builder <- function(
     } else {
       reason <- glue::glue(
         "{my_value_name} conversion to number yielded Na/Missing;
-        replaced with: {return_value}"
+        replaced with: {if(is.na(return_value)) 'auto' else return_value}"
       )
       args$warnings <- c(args$warnings, reason)
       args[[arg_name]] <- return_value
@@ -353,7 +353,7 @@ jamovi_arg_builder <- function(
   if(!is.null(out_of_range)) {
     reason <- glue::glue(
       "{my_value_name} is {fvalue} but must be {out_of_range};
-        replaced with: {return_value}"
+        replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     args$warnings <- c(args$warnings, reason)
     args[[arg_name]] <- return_value
@@ -392,7 +392,7 @@ jamovi_sanitize <- function(
   #   text strings that shouldn't be passed on
   if(is.null(my_value)) {
     reason <- glue::glue(
-      "{my_value_name} was null; replaced with: {return_value}"
+      "{my_value_name} was null; replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     if(!is.null(return_value)) names(return_value) <- reason
     return(return_value)
@@ -400,7 +400,7 @@ jamovi_sanitize <- function(
 
   if(!na_ok & is.na(my_value)) {
     reason <- glue::glue(
-      "{my_value_name} was NA/missing; replaced with: {return_value}"
+      "{my_value_name} was NA/missing; replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     if(!is.null(return_value)) names(return_value) <- reason
     return(return_value)
@@ -408,7 +408,7 @@ jamovi_sanitize <- function(
 
   if(length(trimws(as.character(my_value))) == 0) {
     reason <- glue::glue(
-      "{my_value_name} was empty string (''); replaced with: {return_value}"
+      "{my_value_name} was empty string (''); replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     if(!is.null(return_value)) names(return_value) <- reason
     return(return_value)
@@ -416,7 +416,7 @@ jamovi_sanitize <- function(
 
   if(trimws(as.character(my_value)) %in% c("")) {
     reason <- glue::glue(
-      "{my_value_name} was empty string (''); replaced with: {return_value}"
+      "{my_value_name} was empty string (''); replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     if(!is.null(return_value)) names(return_value) <- reason
     return(return_value)
@@ -434,7 +434,7 @@ jamovi_sanitize <- function(
       return(NA)
     } else {
       reason <- glue::glue(
-        "{my_value_name} was NaN/Na/NA/None; replaced with: {return_value}"
+        "{my_value_name} was NaN/Na/NA/None; replaced with: {if(is.na(return_value)) 'auto' else return_value}"
       )
       if(!is.null(return_value)) names(return_value) <- reason
       return(return_value)
@@ -455,7 +455,7 @@ jamovi_sanitize <- function(
     } else {
       reason <- glue::glue(
         "{my_value_name} conversion to number yielded Na/Missing;
-        replaced with: {return_value}"
+        replaced with: {if(is.na(return_value)) 'auto' else return_value}"
       )
       if(!is.null(return_value)) names(return_value) <- reason
       return(return_value)
@@ -486,7 +486,7 @@ jamovi_sanitize <- function(
   if(!is.null(out_of_range)) {
     reason <- glue::glue(
       "{my_value_name} is {fvalue} but must be {out_of_range};
-        replaced with: {return_value}"
+        replaced with: {if(is.na(return_value)) 'auto' else return_value}"
     )
     if(!is.null(return_value)) names(return_value) <- reason
     return(return_value)
