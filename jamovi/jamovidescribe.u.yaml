@@ -204,7 +204,7 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: 'Dots and bars:'
+                label: 'Bars and dots:'
                 cell:
                   column: 0
                   row: 1

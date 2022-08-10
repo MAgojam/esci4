@@ -168,7 +168,7 @@ plot_describe <- function(
   spacing <- if (type == "histogram")
     top * .05
   else
-    .05
+    .07
 
   bottom <- min(
     c(
@@ -316,7 +316,8 @@ plot_describe <- function(
   myx <- estimate$overview$outcome_variable_name[1]
 
   if (mark_mean) {
-    myx <- paste("\n", myx)
+     # myx <- paste("\n", myx)
+    ylim[1] <- bottom
   }
 
   myplot <- myplot + ggplot2::xlab(myx)
