@@ -107,7 +107,7 @@ plot_describe <- function(
     data = rd,
     ggplot2::aes(
       x = outcome_variable,
-      fill = stat(x < q_value)
+      fill = stat(x <= q_value)
     )
   )
 
@@ -141,7 +141,7 @@ plot_describe <- function(
       z = z,
       x = rd_mean + (rd_sd * z),
       y = 0,
-      label = paste("<i>z</i>=", z)
+      label = paste("italic('z')==", z, sep = "")
     )
 
     myplot <- myplot + ggplot2::geom_vline(
@@ -304,7 +304,8 @@ plot_describe <- function(
         x=x,
         y=y,
         label=label
-      )
+      ),
+      parse = TRUE
     )
 
   }
