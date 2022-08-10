@@ -50,6 +50,8 @@ jamovidescribeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
+
             jamovi_estimate_filler(self, estimate, TRUE)
 
             image <- self$results$describe_plot
