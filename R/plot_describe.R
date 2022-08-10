@@ -141,7 +141,7 @@ plot_describe <- function(
       z = z,
       x = rd_mean + (rd_sd * z),
       y = 0,
-      label = paste("z = ", z)
+      label = paste("<i>z</i>=", z)
     )
 
     myplot <- myplot + ggplot2::geom_vline(
@@ -184,7 +184,7 @@ plot_describe <- function(
     myplot <- myplot + ggplot2::geom_vline(
       xintercept = rd_mean,
       linetype = "solid",
-      color = "#00FCCF",
+      color = "#009F81",
       size = 1.5
     )
     myplot <- myplot + ggplot2::geom_point(
@@ -198,7 +198,7 @@ plot_describe <- function(
       ),
       shape = 24,
       size = marker_size,
-      fill = "#00FCCF",
+      fill = "#009F81",
       color = "black"
     )
   }
