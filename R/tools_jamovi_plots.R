@@ -387,6 +387,28 @@ jamovi_plot_mdiff <- function(
   )
 
 
+  width <- jamovi_sanitize(
+    my_value = self$options$es_plot_width,
+    return_value = 600,
+    convert_to_number = TRUE,
+    lower = 10,
+    lower_inclusive = TRUE,
+    upper = 3000,
+    upper_inclusive = TRUE,
+    my_value_name = "Plot width"
+  )
+  height <- jamovi_sanitize(
+    my_value = self$options$es_plot_height,
+    return_value = 400,
+    convert_to_number = TRUE,
+    lower = 10,
+    lower_inclusive = TRUE,
+    upper = 5000,
+    upper_inclusive = TRUE,
+    my_value_name = "Plot height"
+  )
+
+
   self$results$estimation_plot_warnings$setState(
     c(
       notes,
@@ -395,7 +417,9 @@ jamovi_plot_mdiff <- function(
       names(axis.text.y),
       names(axis.title.y),
       names(axis.text.x),
-      names(axis.title.x)
+      names(axis.title.x),
+      names(width),
+      names(height)
     )
   )
   jamovi_set_notes(self$results$estimation_plot_warnings)

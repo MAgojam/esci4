@@ -118,7 +118,7 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
 
   width <- jamovi_sanitize(
     my_value = self$options$es_plot_width,
-    return_value = 200,
+    return_value = 600,
     convert_to_number = TRUE,
     lower = 10,
     lower_inclusive = TRUE,
@@ -127,7 +127,7 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   )
   height <- jamovi_sanitize(
     my_value = self$options$es_plot_height,
-    return_value = 550,
+    return_value = 400,
     convert_to_number = TRUE,
     lower = 10,
     lower_inclusive = TRUE,
