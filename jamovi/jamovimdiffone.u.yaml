@@ -54,10 +54,16 @@ children:
         name: comparison_n
         format: string
         enable: '(switch:from_summary)'
-      - type: TextBox
-        name: outcome_variable_name
-        format: string
-        enable: '(switch:from_summary)'
+      - type: LayoutBox
+        margin: small
+        style: inline
+        stretchFactor: 2
+        children:
+          - type: TextBox
+            name: outcome_variable_name
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
   - type: Label
     label: <hr>Analysis options
     stretchFactor: 1
