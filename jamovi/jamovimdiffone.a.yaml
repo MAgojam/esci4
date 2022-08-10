@@ -19,8 +19,9 @@ options:
       type: Data
 
     - name: outcome_variable
-      title: Outcome variable
+      title: Outcome variable(s)
       type: Variables
+      permitted: [numeric]
 
     - name: comparison_mean
       title: Comparison mean (<i>M<sub>comparison</sub></i>)

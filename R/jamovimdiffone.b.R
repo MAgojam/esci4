@@ -304,6 +304,9 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
       args$outcome_variable <- unname(outcome_variable)
       args$outcome_variable_name <- outcome_variable
     }
+    for (x in 1:length(args$outcome_variable)) {
+      args$data[[args$outcome_variable[[x]]]] <- as.numeric(args$data[[args$outcome_variable[[x]]]])
+    }
   } else {
     args$outcome_variable_name <- jamovi_sanitize(
       self$options$outcome_variable_name,

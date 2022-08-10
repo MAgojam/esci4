@@ -432,6 +432,9 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
     if(from_raw) {
         args$data <- self$data
         args$outcome_variable <- unname(self$options$outcome_variable)
+        for (x in 1:length(self$options$outcome_variable)) {
+          args$data[[args$outcome_variable[[x]]]] <- as.numeric(args$data[[args$outcome_variable[[x]]]])
+        }
     } else {
         args$outcome_variable_name <- jamovi_sanitize(
             self$options$outcome_variable_name,

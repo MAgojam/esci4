@@ -227,6 +227,9 @@ jamovi_mdiff_two <- function(
       args$outcome_variable <- unname(outcome_variable)
       args$outcome_variable_name <- outcome_variable
     }
+    for (x in 1:length(args$outcome_variable)) {
+      args$data[[args$outcome_variable[[x]]]] <- as.numeric(args$data[[args$outcome_variable[[x]]]])
+    }
     args$grouping_variable <- unname(self$options$grouping_variable)
     args$switch_comparison_order <- self$options$switch_comparison_order
   } else {

@@ -230,6 +230,8 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
     args$data <- self$data
     args$comparison_measure <- self$options$comparison_measure
     args$reference_measure <- self$options$reference_measure
+    args$data[[args$comparison_measure]] <- as.numeric(args$data[[args$comparison_measure]])
+    args$data[[args$reference_measure]] <- as.numeric(args$data[[args$reference_measure]])
   } else {
     args$comparison_measure_name <- jamovi_sanitize(
       self$options$comparison_measure_name,

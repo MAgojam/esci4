@@ -240,6 +240,9 @@ jamovi_mdiff_contrastindependent <- function(
     args$data <- self$data
     args$grouping_variable <- self$options$grouping_variable
     args$outcome_variable <- outcome_variables
+    for (x in 1:length(args$outcome_variable)) {
+      args$data[[args$outcome_variable[[x]]]] <- as.numeric(args$data[[args$outcome_variable[[x]]]])
+    }
     call <- esci4::estimate_mdiff_ind_contrast
   } else {
     # Analysis from summary data

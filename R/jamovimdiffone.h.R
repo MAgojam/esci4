@@ -91,7 +91,9 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "from_summary"))
             private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
-                outcome_variable)
+                outcome_variable,
+                permitted=list(
+                    "numeric"))
             private$..comparison_mean <- jmvcore::OptionString$new(
                 "comparison_mean",
                 comparison_mean,
