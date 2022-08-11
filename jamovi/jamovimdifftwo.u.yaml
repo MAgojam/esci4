@@ -36,7 +36,7 @@ children:
                 isTarget: true
                 enable: '(switch:from_raw)'
           - type: TargetLayoutBox
-            label: Outcome variable
+            label: Outcome variable(s)
             children:
               - type: VariablesListBox
                 name: outcome_variable

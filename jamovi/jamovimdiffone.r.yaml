@@ -35,7 +35,7 @@ items:
         - name: moe
           type: number
           title: <i>MoE</i>
-          visible: (show_details)
+          visible: (show_details & effect_size == 'mean_difference')
         - name: median
           title: <i>Mdn</i>
           type: number

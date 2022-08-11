@@ -1173,7 +1173,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="moe", 
                         `type`="number", 
                         `title`="<i>MoE</i>", 
-                        `visible`="(show_details)"),
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 

@@ -28,7 +28,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Outcome variable
+            label: Outcome variable(s)
             children:
               - type: VariablesListBox
                 name: outcome_variable
