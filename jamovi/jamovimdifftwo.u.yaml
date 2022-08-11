@@ -47,29 +47,35 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 1
+    style: inline
+    stretchFactor: 7
     collapsed: true
     children:
       - type: Label
         label: Summary data
+        stretchFactor: 1
+        horizontalAlignment: center
         cell:
           column: 0
           row: 0
       - type: Label
         label: ' '
         stretchFactor: 1
+        horizontalAlignment: center
         cell:
           column: 0
           row: 1
       - type: Label
         label: Reference group
-        stretchFactor: 1
+        stretchFactor: 3
+        horizontalAlignment: right
         cell:
           column: 1
           row: 1
       - type: Label
         label: Comparison group
-        stretchFactor: 1
+        horizontalAlignment: right
+        stretchFactor: 3
         cell:
           column: 2
           row: 1
@@ -82,7 +88,7 @@ children:
       - type: TextBox
         name: reference_level_name
         format: string
-        stretchFactor: 1
+        stretchFactor: 3
         horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
@@ -91,7 +97,7 @@ children:
       - type: TextBox
         name: comparison_level_name
         format: string
-        stretchFactor: 1
+        stretchFactor: 3
         horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
@@ -105,15 +111,17 @@ children:
           row: 3
       - type: TextBox
         name: reference_mean
-        stretchFactor: 2
+        stretchFactor: 3
         format: string
+        horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
           column: 1
           row: 3
       - type: TextBox
         name: comparison_mean
-        stretchFactor: 2
+        stretchFactor: 3
+        horizontalAlignment: left
         enable: '(switch:from_summary)'
         format: string
         cell:
@@ -128,7 +136,8 @@ children:
       - type: TextBox
         name: reference_sd
         format: string
-        stretchFactor: 2
+        horizontalAlignment: left
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 1
@@ -136,7 +145,8 @@ children:
       - type: TextBox
         name: comparison_sd
         format: string
-        stretchFactor: 2
+        horizontalAlignment: left
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 2
@@ -150,7 +160,8 @@ children:
       - type: TextBox
         name: reference_n
         format: string
-        stretchFactor: 2
+        horizontalAlignment: left
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 1
@@ -158,25 +169,26 @@ children:
       - type: TextBox
         name: comparison_n
         format: string
-        stretchFactor: 2
+        horizontalAlignment: left
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 2
           row: 5
-      - type: LayoutBox
+  - type: LayoutBox
+    stretchFactor: 2
+    margin: none
+    children:
+      - type: TextBox
+        name: outcome_variable_name
+        format: string
         stretchFactor: 2
-        margin: none
-        children:
-        - type: TextBox
-          name: outcome_variable_name
-          format: string
-          stretchFactor: 2
-          enable: '(switch:from_summary)'
-        - type: TextBox
-          name: grouping_variable_name
-          format: string
-          stretchFactor: 2
-          enable: '(switch:from_summary)'
+        enable: '(switch:from_summary)'
+      - type: TextBox
+        name: grouping_variable_name
+        format: string
+        stretchFactor: 2
+        enable: '(switch:from_summary)'
   - type: Label
     label: '<hr>Analysis options'
     stretchFactor: 1

@@ -24,22 +24,18 @@ options:
       permitted: [numeric]
 
     - name: comparison_mean
-      title: Comparison mean (<i>M<sub>comparison</sub></i>)
       type: String
       default: ' '
 
     - name: comparison_sd
-      title: Comparison standard deviation (<i>s<sub>comparison</sub></i>)
       type: String
       default: ' '
 
     - name: comparison_n
-      title: Comparison group sample size (<i>N<sub>comparison</sub></i>)
       type: String
       default: ' '
 
     - name: outcome_variable_name
-      title: Outcome variable name
       type: String
       default: Outcome variable
 

@@ -678,7 +678,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Means and Medians: Single Group")
+                title="Single Group")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",

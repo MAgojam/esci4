@@ -44,11 +44,6 @@ children:
         label: Summary data
         enable: '(switch:from_summary)'
       - type: TextBox
-        name: outcome_variable_name
-        format: string
-        enable: '(switch:from_summary)'
-        stretchFactor: 2
-      - type: TextBox
         name: mean
         format: string
         enable: '(switch:from_summary)'
@@ -60,6 +55,11 @@ children:
         name: 'n'
         format: string
         enable: '(switch:from_summary)'
+      - type: TextBox
+        name: outcome_variable_name
+        format: string
+        enable: '(switch:from_summary)'
+        stretchFactor: 2
   - type: Label
     label: '<hr>Analysis options'
     stretchFactor: 1

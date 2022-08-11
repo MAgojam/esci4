@@ -1135,7 +1135,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Means and Medians: Single Group, Reference Value")
+                title="Single Group, Reference Value")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",

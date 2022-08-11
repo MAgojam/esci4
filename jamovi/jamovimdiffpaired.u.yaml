@@ -46,29 +46,34 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 1
+    style: inline
+    stretchFactor: 7
     collapsed: true
     children:
       - type: Label
         label: Summary data
+        stretchFactor: 1
         cell:
           column: 0
           row: 0
       - type: Label
         label: ' '
         stretchFactor: 1
+        horizontalAlignment: center
         cell:
           column: 0
           row: 1
       - type: Label
         label: Reference group
-        stretchFactor: 1
+        horizontalAlignment: center
+        stretchFactor: 3
         cell:
           column: 1
           row: 1
       - type: Label
         label: Comparison group
-        stretchFactor: 1
+        horizontalAlignment: center
+        stretchFactor: 3
         cell:
           column: 2
           row: 1
@@ -81,7 +86,7 @@ children:
       - type: TextBox
         name: reference_measure_name
         horizontalAlignment: left
-        stretchFactor: 1
+        stretchFactor: 3
         format: string
         enable: '(switch:from_summary)'
         cell:
@@ -91,7 +96,7 @@ children:
         name: comparison_measure_name
         horizontalAlignment: left
         format: string
-        stretchFactor: 1
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 2
@@ -105,7 +110,7 @@ children:
       - type: TextBox
         name: reference_mean
         horizontalAlignment: left
-        stretchFactor: 2
+        stretchFactor: 3
         format: string
         enable: '(switch:from_summary)'
         cell:
@@ -114,7 +119,7 @@ children:
       - type: TextBox
         name: comparison_mean
         horizontalAlignment: left
-        stretchFactor: 2
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         format: string
         cell:
@@ -130,7 +135,7 @@ children:
         name: reference_sd
         horizontalAlignment: left
         format: string
-        stretchFactor: 2
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 1
@@ -139,41 +144,41 @@ children:
         name: comparison_sd
         horizontalAlignment: left
         format: string
-        stretchFactor: 2
+        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 2
           row: 4
+  - type: LayoutBox
+    stretchFactor: 2
+    margin: none
+    children:
+      - type: TextBox
+        name: 'n'
+        format: string
+        enable: '(switch:from_summary)'
       - type: LayoutBox
-        stretchFactor: 2
-        margin: none
+        margin: small
+        style: inline
         children:
-          - type: TextBox
-            name: 'n'
-            format: string
+          - type: RadioButton
+            name: enter_r_button
+            optionName: enter_r_or_sdiff
+            optionPart: enter_r
             enable: '(switch:from_summary)'
-          - type: LayoutBox
-            margin: small
-            style: inline
-            children:
-              - type: RadioButton
-                name: enter_r_button
-                optionName: enter_r_or_sdiff
-                optionPart: enter_r
-                enable: '(switch:from_summary)'
-              - type: RadioButton
-                name: enter_sdiff_button
-                optionName: enter_r_or_sdiff
-                optionPart: enter_sdiff
-                enable: '(switch:from_summary)'
-          - type: TextBox
-            name: correlation
-            format: string
-            enable: '(switch:from_summary && enter_r_or_sdiff:enter_r)'
-          - type: TextBox
-            name: sdiff
-            format: string
-            enable: '(switch:from_summary && enter_r_or_sdiff:enter_sdiff)'
+          - type: RadioButton
+            name: enter_sdiff_button
+            optionName: enter_r_or_sdiff
+            optionPart: enter_sdiff
+            enable: '(switch:from_summary)'
+      - type: TextBox
+        name: correlation
+        format: string
+        enable: '(switch:from_summary && enter_r_or_sdiff:enter_r)'
+      - type: TextBox
+        name: sdiff
+        format: string
+        enable: '(switch:from_summary && enter_r_or_sdiff:enter_sdiff)'
   - type: Label
     label: '<hr>Analysis options'
     stretchFactor: 1

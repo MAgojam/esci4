@@ -37,33 +37,70 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 1
+    stretchFactor: 3
     collapsed: true
     children:
       - type: Label
         label: Summary data
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 0
+      - type: Label
+        label: '<span style="font-weight:normal">Comparison mean (<i>M<sub>comparison</sub></i>)</span>'
+        cell:
+          column: 0
+          row: 1
       - type: TextBox
         name: comparison_mean
+        stretchFactor: 2
+        alignText: right
         format: string
         enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 1
+      - type: Label
+        label: '<span style="font-weight:normal">Comparison standard deviation (<i>s<sub>comparison</sub></i>)</span>'
+        cell:
+          column: 0
+          row: 2
       - type: TextBox
         name: comparison_sd
+        alignText: right
+        stretchFactor: 2
         format: string
         enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 2
+      - type: Label
+        label: '<span style="font-weight:normal">Comparison group sample size (<i>N<sub>comparison</sub></i>)</span>'
+        cell:
+          column: 0
+          row: 3
       - type: TextBox
         name: comparison_n
+        alignText: right
+        stretchFactor: 2
         format: string
         enable: '(switch:from_summary)'
-      - type: LayoutBox
-        margin: small
-        style: inline
+        cell:
+          column: 1
+          row: 3
+      - type: Label
+        label: '<span style="font-weight:normal">Outcome variable name</span>'
+        cell:
+          column: 0
+          row: 4
+      - type: TextBox
+        name: outcome_variable_name
+        format: string
         stretchFactor: 2
-        children:
-          - type: TextBox
-            name: outcome_variable_name
-            format: string
-            stretchFactor: 2
-            enable: '(switch:from_summary)'
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 4
   - type: Label
     label: <hr>Analysis options
     stretchFactor: 1
