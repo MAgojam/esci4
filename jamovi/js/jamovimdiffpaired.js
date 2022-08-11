@@ -51,10 +51,15 @@
 
         set_sdiff: function(ui, event) {
           var s1, s2, r, sdiff;
+
+          if (ui.reference_sd.value().length === 0) return;
+          if (ui.comparison_sd.value().length === 0) return;
+
           s1 = Number(ui.reference_sd.value());
           s2 = Number(ui.comparison_sd.value());
 
           if (ui.enter_r_or_sdiff.getValue() == "enter_r") {
+            if (ui.correlation.value().length === 0) return;
             r = Number(ui.correlation.value());
             if (isNaN(s1) | isNaN(s2) | isNaN(r)) return;
             if (r < -1) return;
