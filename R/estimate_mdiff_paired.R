@@ -444,7 +444,7 @@ estimate_mdiff_paired.data.frame <- function(
 
   # Analysis ----------------------------
   # Overview
-  overview <- estimate_magnitude.jamovi(
+  missing <- estimate_magnitude.jamovi(
     data = data,
     outcome_variables = c(reference_measure, comparison_measure),
     conf_level = conf_level
@@ -456,11 +456,11 @@ estimate_mdiff_paired.data.frame <- function(
 
   # dispatch to .summary to obtain es_mean_difference and es_smd
   estimate <- estimate_mdiff_paired.summary(
-    comparison_mean = overview$mean[2],
-    comparison_sd = overview$sd[2],
-    reference_mean = overview$mean[1],
-    reference_sd = overview$sd[1],
-    n = overview$n[1],
+    comparison_mean = mean(data[[comparison_measure]]),
+    comparison_sd = sd(data[[comparison_measure]]),
+    reference_mean = mean(data[[reference_measure]]),
+    reference_sd = sd(data[[reference_measure]]),
+    n = nrow(data),
     correlation = cor(data[[comparison_measure]], data[[reference_measure]], use = "complete.obs"),
     grouping_variable_levels = grouping_variable_levels,
     conf_level = conf_level
@@ -502,7 +502,27 @@ estimate_mdiff_paired.data.frame <- function(
           For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
   )
 
-  estimate$overview <- overview
+  estimate$overview <- estimate_magnitude.jamovi(
+    data = data,
+    outcome_variables = c(reference_measure, comparison_measure),
+    conf_level = conf_level
+  )$overview
+
+  estimate$overview$missing <- missing$missing
+  estimate$overview$n <- missing$n
+
+  if (sum(missing$missing) > 0) {
+    estimate$overview_propertes <- list()
+    nvalid <- min(missing$n)
+    estimate$overview_properties$message <-
+      paste(
+        "Statistics in this table based only on the ",
+        nvalid,
+        " rows that had data for both variables"
+      )
+    estimate$overview_properties$message_html <-
+      estimate$overview_properties$message
+  }
 
   # Prep output --------------------------------------
 

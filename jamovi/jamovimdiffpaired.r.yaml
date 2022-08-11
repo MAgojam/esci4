@@ -121,7 +121,7 @@ items:
           type: number
           visible: (show_details)
         - name: n
-          title: <i>N</i>
+          title: <i>N</i><sub>pairs</sub>
           type: integer
         - name: df
           title: <i>df</i>

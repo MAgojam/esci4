@@ -1762,7 +1762,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `visible`="(show_details)"),
                     list(
                         `name`="n", 
-                        `title`="<i>N</i>", 
+                        `title`="<i>N</i><sub>pairs</sub>", 
                         `type`="integer"),
                     list(
                         `name`="df", 
