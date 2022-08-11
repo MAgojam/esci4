@@ -312,7 +312,7 @@ plot_mdiff_base <- function(
     if (nrow(rlines) > 1) {
       rlines$xend <- rlines$xend - 0.5
       rlines <- rbind(
-        clines,
+        rlines,
         data.frame(
           y_value = c(min(rlines$yend), gdata$y_value[[1]]),
           x_value = c(ref_x - 0.5, ref_x - 0.5),

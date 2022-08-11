@@ -1657,6 +1657,11 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `title`="<i>MoE</i>", 
                         `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -1671,6 +1676,11 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `title`="UL", 
                         `type`="number", 
                         `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
+                        `visible`="(show_details & effect_size == 'median_difference' & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -1710,17 +1720,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details & effect_size == 'mean_difference')"),
-                    list(
-                        `name`="mean_SE", 
-                        `title`="<i>SE</i><sub>Mean</sub>", 
-                        `type`="number", 
-                        `visible`="(show_details & effect_size == 'mean_difference')"),
-                    list(
-                        `name`="median_SE", 
-                        `type`="number", 
-                        `title`="<i>SE</i><sub>Median</sub>", 
-                        `visible`="(show_details & effect_size == 'median_difference' & switch == 'from_raw')"))))
+                        `visible`="(show_details & effect_size == 'mean_difference')"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_r",

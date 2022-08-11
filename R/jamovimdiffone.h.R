@@ -1175,6 +1175,11 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="<i>MoE</i>", 
                         `visible`="(show_details & effect_size == 'mean_difference')"),
                     list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -1189,6 +1194,11 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="UL", 
                         `type`="number", 
                         `visible`="(effect_size == 'median_difference' & switch == 'from_raw')"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
+                        `visible`="(show_details & switch == 'from_raw' & effect_size == 'median_difference')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -1224,16 +1234,6 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="integer", 
                         `title`="Missing", 
                         `visible`="(switch == 'from_raw')"),
-                    list(
-                        `name`="mean_SE", 
-                        `title`="<i>SE</i><sub>Mean</sub>", 
-                        `type`="number", 
-                        `visible`="(show_details & effect_size == 'mean_difference')"),
-                    list(
-                        `name`="median_SE", 
-                        `type`="number", 
-                        `title`="<i>SE</i><sub>Median</sub>", 
-                        `visible`="(show_details & switch == 'from_raw' & effect_size == 'median_difference')"),
                     list(
                         `name`="df", 
                         `title`="<i>df</i>", 

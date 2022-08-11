@@ -92,6 +92,63 @@ test_overview <- function() {
     2
   )
 
+  rattan_score <- c(
+    73,
+    88,
+    97,
+    65,
+    67,
+    87,
+    94,
+    45,
+    88,
+    77,
+    68,
+    98,
+    99,
+    78,
+    69,
+    35,
+    54,
+    53,
+    89,
+    78,
+    99,
+    86,
+    79,
+    85,
+    69,
+    87,
+    98,
+    97,
+    96,
+    95,
+    76,
+    79,
+    78,
+    65,
+    57,
+    85,
+    48,
+    34,
+    65,
+    43,
+    55,
+    47,
+    86,
+    43,
+    26,
+    54,
+    53,
+    38,
+    43,
+    26,
+    45,
+    23,
+    44,
+    55
+  )
+
   rattan_condition <- as.factor(
     c(
       rep("Comfort", 18),
@@ -102,11 +159,12 @@ test_overview <- function() {
 
   rattan <- data.frame(
     motivation = rattan_motivation,
+    score = rattan_score,
     condition = rattan_condition,
     other_outcome = rnorm(n = 18+17+19, mean = 100, sd = 15)
   )
 
-  contrast <- c("Comfort" = 1/2, "Chaling" = 1/2, "Control" = -1)
+  contrast <- c("Comfort" = -1/2, "Chaling" = 1, "Control" = -1/2)
 
   # Check - works with vector
   estimate_mdiff_ind_contrast(

@@ -57,6 +57,10 @@ items:
           type: number
           title: <i>MoE</i>
           visible: (show_details & effect_size == 'mean_difference')
+        - name: mean_SE
+          title: <i>SE</i><sub>Mean</sub>
+          type: number
+          visible: (show_details & effect_size == 'mean_difference')
         - name: median
           title: <i>Mdn</i>
           type: number
@@ -69,6 +73,10 @@ items:
           title: UL
           type: number
           visible: (effect_size == 'median_difference' & switch == 'from_raw')
+        - name: median_SE
+          type: number
+          title: <i>SE</i><sub>Median</sub>
+          visible: (show_details & effect_size == 'median_difference' & switch == 'from_raw')
         - name: sd
           type: number
           title: <i>s</i>
@@ -101,14 +109,6 @@ items:
           title: <i>df</i>
           type: integer
           visible: (show_details & effect_size == 'mean_difference')
-        - name: mean_SE
-          title: <i>SE</i><sub>Mean</sub>
-          type: number
-          visible: (show_details & effect_size == 'mean_difference')
-        - name: median_SE
-          type: number
-          title: <i>SE</i><sub>Median</sub>
-          visible: (show_details & effect_size == 'median_difference' & switch == 'from_raw')
 
     - name:  es_median_difference
       title: Median Difference

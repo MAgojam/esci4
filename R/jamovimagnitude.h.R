@@ -718,6 +718,11 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="<i>MoE</i>", 
                         `visible`="(show_details & effect_size == 'mean')"),
                     list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details & effect_size == 'mean')"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -732,6 +737,11 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="UL", 
                         `type`="number", 
                         `visible`="(effect_size == 'median' & switch == 'from_raw')"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
+                        `visible`="(show_details & effect_size == 'median' & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -772,16 +782,6 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="<i>df</i>", 
                         `type`="integer", 
                         `visible`="(show_details & effect_size == 'mean')"),
-                    list(
-                        `name`="mean_SE", 
-                        `title`="<i>SE</i><sub>Mean</sub>", 
-                        `type`="number", 
-                        `visible`="(show_details & effect_size == 'mean')"),
-                    list(
-                        `name`="median_SE", 
-                        `type`="number", 
-                        `title`="<i>SE</i><sub>Median</sub>", 
-                        `visible`="(show_details & effect_size == 'median' & switch == 'from_raw')"),
                     list(
                         `name`="t_multiplier", 
                         `type`="number", 

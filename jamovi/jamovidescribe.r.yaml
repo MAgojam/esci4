@@ -36,6 +36,10 @@ items:
           type: number
           title: <i>MoE</i>
           visible: (show_details)
+        - name: mean_SE
+          title: <i>SE</i><sub>Mean</sub>
+          type: number
+          visible: (show_details)
         - name: median
           title: <i>Mdn</i>
           type: number
@@ -73,10 +77,6 @@ items:
         - name: df
           title: <i>df</i>
           type: integer
-          visible: (show_details)
-        - name: mean_SE
-          title: <i>SE</i><sub>Mean</sub>
-          type: number
           visible: (show_details)
 
     - name: describe_plot_warnings

@@ -413,6 +413,11 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="<i>MoE</i>", 
                         `visible`="(show_details)"),
                     list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number"),
@@ -460,11 +465,6 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="df", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="mean_SE", 
-                        `title`="<i>SE</i><sub>Mean</sub>", 
-                        `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Html$new(
                 options=options,
