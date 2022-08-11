@@ -83,9 +83,9 @@ plot_mdiff <- function(
     estimate$es_smd_properties$effect_size_name_html
   else
     if (effect_size == "mean")
-      "<i>Mean</i><sub>diff</sub>"
+      "<i>M</i><sub>diff</sub>"
     else
-      "<i>Median</i><sub>diff</sub>"
+      "<i>Mdn</i><sub>diff</sub>"
 
   # Raw data
   if (plot_raw) {
