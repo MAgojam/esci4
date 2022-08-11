@@ -276,7 +276,7 @@ options:
 
     - name: shape_summary_unused
       type: List
-      default: 'square filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle

@@ -45,7 +45,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             shape_raw_unused = "square filled",
             shape_summary_reference = "circle filled",
             shape_summary_comparison = "circle filled",
-            shape_summary_unused = "square filled",
+            shape_summary_unused = "circle filled",
             shape_summary_difference = "triangle filled",
             color_raw_reference = "#008DF9",
             color_raw_comparison = "#009F81",
@@ -315,7 +315,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..shape_summary_unused <- jmvcore::OptionList$new(
                 "shape_summary_unused",
                 shape_summary_unused,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -2393,7 +2393,7 @@ jamovimdiffindcontrast <- function(
     shape_raw_unused = "square filled",
     shape_summary_reference = "circle filled",
     shape_summary_comparison = "circle filled",
-    shape_summary_unused = "square filled",
+    shape_summary_unused = "circle filled",
     shape_summary_difference = "triangle filled",
     color_raw_reference = "#008DF9",
     color_raw_comparison = "#009F81",
