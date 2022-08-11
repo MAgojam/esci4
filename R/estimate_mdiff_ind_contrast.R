@@ -680,6 +680,24 @@ The outcome_variable length is {length(outcome_variable)}.
     )
     estimate$overview <- all_overview
     class(estimate) <- "esci_estimate"
+
+    # Store raw data -----------------------------------------------
+    if (save_raw_data) {
+      # Revise all NAs
+      if (row.names(overview)[nrow(overview)] == "missing") {
+        # na_level was generated in overview to be unique
+        na_level <- overview[nrow(overview), "group"]
+        levels(grouping_variable) <- c(levels(grouping_variable), na_level)
+        grouping_variable[which(is.na(grouping_variable))] <- na_level
+      }
+
+      estimate$raw_data <- data.frame(
+        grouping_variable = grouping_variable,
+        outcome_variable = outcome_variable
+      )
+    }
+
+
     return(estimate)
   }
 

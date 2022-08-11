@@ -116,6 +116,15 @@ test_overview <- function() {
     assume_equal_variance = TRUE
   )
 
+
+  # Check - works with dataframe
+  mdiff_contrast <- estimate_mdiff_ind_contrast(
+    data = rattan,
+    outcome_variable = motivation,
+    grouping_variable = condition,
+    contrast = NULL
+  )
+
   # Check - works with dataframe
   mdiff_contrast <- estimate_mdiff_ind_contrast(
     data = rattan,

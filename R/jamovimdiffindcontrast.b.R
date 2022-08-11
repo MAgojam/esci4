@@ -81,9 +81,9 @@ jamovimdiffindcontrastClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
 
-          if (is.null(estimate$properties$contrast)) {
-            return(TRUE)
-          }
+          # if (is.null(estimate$properties$contrast)) {
+          #   return(TRUE)
+          # }
 
           myplot <- jamovi_plot_mdiff(
             self,

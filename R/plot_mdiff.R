@@ -23,7 +23,7 @@ plot_mdiff <- function(
 
   esci_assert_type(estimate, "is.estimate")
   effect_size <- match.arg(effect_size)
-  if (effect_size == "median" & is.null(estimate$es_median_difference)) {
+  if (effect_size == "median" & is.null(estimate$es_median_difference) & !is.null(estimate$properties$contrast)) {
     stop("effect_size parameter is 'median' but no median-based effect size available to plot")
   }
   data_layout <- match.arg(data_layout)
@@ -71,6 +71,7 @@ plot_mdiff <- function(
 
   # Data prep --------------------------------------
   # Initialization
+  no_contrast <- is.null(estimate$es_mean_difference)
   conf_level <- estimate$properties$conf_level
   contrast <- estimate$properties$contrast
   reference_groups <- names(contrast[which(contrast < 0)])
@@ -92,6 +93,25 @@ plot_mdiff <- function(
     rdata <- estimate$raw_data
   } else {
     rdata <- NULL
+  }
+
+  if (no_contrast) {
+    return(
+      plot_nocontrast(
+        estimate = estimate,
+        effect_size = effect_size,
+        data_layout = data_layout,
+        data_spread = data_spread,
+        error_layout = error_layout,
+        error_scale = error_scale,
+        error_nudge = error_nudge,
+        error_normalize = error_normalize,
+        difference_axis_space = difference_axis_space,
+        ylim = ylim,
+        ybreaks = ybreaks,
+        ggtheme = ggtheme
+      )
+    )
   }
 
   # Group data
@@ -845,6 +865,123 @@ plot_rdiff <- function(
 
   # Attach warnings and return    -------------------
   myplot$warnings <- c(myplot$warnings, warnings)
+
+  return(myplot)
+
+}
+
+
+plot_nocontrast <- function(
+    estimate,
+    effect_size = c("mean", "median"),
+    data_layout = c("random", "swarm", "none"),
+    data_spread = 0.15,
+    error_layout = c("halfeye", "eye", "gradient", "none"),
+    error_scale = 0.3,
+    error_nudge = 0.4,
+    error_normalize = c("groups", "all", "panels"),
+    difference_axis_space = 1,
+    ylim = c(NA, NA),
+    ybreaks = 5,
+    ggtheme = NULL
+) {
+
+
+  # Initialization
+  conf_level <- estimate$properties$conf_level
+  plot_raw <- !is.null(estimate$raw_data) & data_layout != "none"
+  plot_paired <- !is.null(estimate$es_r)
+  nudge <- if (plot_raw) error_nudge/2 else 0
+
+
+
+  # Overview
+  overview <- data.frame(
+    type = "Unused",
+    outcome_variable_name = estimate$overview$outcome_variable_name,
+    grouping_variable_name = estimate$overview$grouping_variable_name,
+    effect = estimate$overview$grouping_variable_level,
+    effect_size = if (effect_size == "mean") estimate$overview$mean else estimate$overview$median,
+    LL = if (effect_size == "mean") estimate$overview$mean_LL else estimate$overview$median_LL,
+    UL = if (effect_size == "mean") estimate$overview$mean_UL else estimate$overview$median_UL,
+    SE = if (effect_size == "mean") estimate$overview$mean_SE else estimate$overview$median_SE,
+    df = estimate$overview$df,
+    x_label = estimate$overview$grouping_variable_level,
+    y_value = if (effect_size == "mean") estimate$overview$mean else estimate$overview$median
+  )
+
+  overview$type <- "Unused"
+  orows <- nrow(overview)
+  overview$x_value <- seq(from = 1, to = orows, by = 1)
+  overview$nudge <- nudge
+
+  gdata <- overview
+  gdata$type <- paste(gdata$type, "_summary", sep = "")
+
+  # Raw data
+  if (plot_raw) {
+    rdata <- estimate$raw_data
+    rdata$type <- "Unused_raw"
+    rdata$x_value <- overview[match(rdata$grouping_variable, overview$effect), "x_value"]
+    rdata$y_value <- rdata$outcome_variable
+  } else {
+    rdata <- NULL
+  }
+
+  # Base plot
+  myplot <- ggplot2::ggplot() + ggtheme
+
+  error_glue <-esci_plot_group_data(effect_size)
+  error_call <- esci_plot_error_layouts(error_layout)
+  error_expression <- parse(text = glue::glue(error_glue))
+  myplot <- try(eval(error_expression))
+
+  if (plot_raw) {
+    raw_expression <- esci_plot_raw_data(myplot, data_layout, data_spread)
+    myplot <- try(eval(raw_expression))
+  }
+
+  myplot <- esci_plot_mdiff_aesthetics(
+    myplot,
+    use_ggdist = (effect_size == "mean"),
+    plot_paired = plot_paired
+  )
+
+  # Labels -----------------------------
+  # Set x axis labels
+  mybreaks <- gdata$x_value + gdata$nudge
+  if (plot_paired) mybreaks[[1]] <- mybreaks[[1]] + nudge
+
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    breaks = mybreaks,
+    labels = gdata$x_label
+  )
+
+  vnames <- if (plot_paired)
+    paste(estimate$overview$outcome_variable_name, collapse = " and ", sep = "")
+  else
+    estimate$overview$outcome_variable_name[[1]]
+  esize <- paste(toupper(substr(effect_size, 1, 1)), substr(effect_size, 2, nchar(effect_size)), sep = "")
+  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{esize} and {conf_level*100}% Confidence Interval")
+  xlab <- estimate$es_mean_difference$grouping_variable_name[[1]]
+
+  # And finally, adjust coordinates
+  # Set boundaries
+  xmin <- min(gdata$x_value)
+  xdeduct <- if (plot_paired) 2*nudge else nudge
+  xmin <- xmin - xdeduct - 0.25
+  daxis_x <- max(gdata$x_value) + difference_axis_space
+  bonus <- 3
+  if (nrow(overview) == 2) bonus <- 1
+
+  myplot <- myplot + ggplot2::coord_cartesian(
+    xlim = c(
+      xmin,
+      daxis_x+3
+    )
+  )
+
+  myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
   return(myplot)
 
