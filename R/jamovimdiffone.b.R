@@ -14,6 +14,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           tbl_es_mean_difference <- self$results$es_mean_difference
           tbl_es_smd <- self$results$es_smd
           tbl_es_median_difference <- self$results$es_median_difference
+          tbl_eval <- self$results$evaluate_summary
 
           # Prep output -------------------------------------------
           # Set CI and MoE columns to reflect confidence level
@@ -41,15 +42,28 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           level_count <- 1
 
+          eval_base <- if(self$options$null_boundary != 0) {
+            3
+          } else {
+            1
+          }
+
+
           # Rows needed for each table -------------------------------
           overview_rows <- level_count * outcome_count
           mdiff_rows <- contrast_count * outcome_count * 3
           smd_rows <- contrast_count * outcome_count
+          eval_rows <- eval_base * contrast_count * outcome_count
 
           jamovi_init_table(tbl_overview, overview_rows)
           jamovi_init_table(tbl_es_mean_difference, mdiff_rows, breaks = 3)
           jamovi_init_table(tbl_es_smd, smd_rows)
           jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
+          jamovi_init_table(
+            tbl_eval,
+            eval_rows,
+            breaks = if(eval_base == 1) NULL else eval_base
+          )
 
           #
           reference_mean <- jamovi_required_numeric(
@@ -104,6 +118,8 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         .run = function() {
 
           from_raw <- (self$options$switch == "from_raw")
+          evaluate_h <- self$options$evaluate_hypotheses
+          tbl_eval <- self$results$evaluate_summary
 
           estimate <- jamovi_mdiff_one(
             self,
@@ -132,6 +148,40 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           # Fill tables
           jamovi_estimate_filler(self, estimate, TRUE)
+
+
+          if(evaluate_h) {
+            # Test results
+            effect_size <- if (self$options$effect_size == "mean_difference")
+              "mean"
+            else
+              "median"
+
+            test_results <- test_mdiff(
+                estimate,
+                effect_size = effect_size,
+                rope_lower = self$options$null_boundary*-1,
+                rope_upper = self$options$null_boundary,
+                rope_units = self$options$rope_units,
+                alpha = jamovi_sanitize(
+                  my_value = self$options$alpha,
+                  return_value = .05,
+                  na_ok = FALSE,
+                  convert_to_number = TRUE,
+                  lower = 0,
+                  lower_inclusive = FALSE,
+                  upper = 1,
+                  upper_inclusive = FALSE
+                )
+              )
+
+            # Fill table
+            jamovi_table_filler(
+              tbl_eval,
+              test_results$hypothesis_evaluations
+            )
+          }
+
 
           # Deal with plots ----------------------------------------
           # Set up array of estimation plots

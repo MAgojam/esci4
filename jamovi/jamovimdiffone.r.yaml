@@ -246,4 +246,39 @@ items:
       type: Html
       visible: true
 
+    - name:  evaluate_summary
+      title: Evaluate Hypotheses
+      type: Table
+      rows:  1
+      visible: (evaluate_hypotheses)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: effect_size_label
+          title: 'Contrast'
+          type: text
+          combineBelow: true
+        - name: null_hypothesis
+          title: "Null Hypothesis"
+          type: text
+        - name: t
+          title: 't'
+          type: number
+        - name: df
+          title: 'df'
+          type: integer
+        - name: p
+          title: 'p value'
+          type: number
+          format: zto,pvalue
+        - name: alpha
+          title: "\u03B1"
+          type: number
+          format: zto,pvalue
+        - name: conclusion
+          title: 'Conclusion'
+          type: text
+
 ...

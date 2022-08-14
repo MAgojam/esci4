@@ -118,7 +118,7 @@ test_mdiff_two <- function() {
     assume_equal_variance = TRUE
   )
 
-  estimate_mdiff_two(pen_laptop, transcription_scores_c, note_taking_c)
+  estimate <- estimate_mdiff_two(pen_laptop, transcription_scores_c, note_taking_c)
 
   estimate_mdiff_two(
     data = pen_laptop,

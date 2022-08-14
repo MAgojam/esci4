@@ -16,7 +16,6 @@ jamovimdiffone(
   effect_size = "mean_difference",
   show_details = FALSE,
   show_calculations = FALSE,
-  as_difference = FALSE,
   reference_mean = " ",
   es_plot_width = "550",
   es_plot_height = "450",
@@ -57,22 +56,16 @@ jamovimdiffone(
   alpha_summary_reference = "1",
   alpha_summary_comparison = "1",
   alpha_summary_difference = "1",
-  linetype_summary_reference = "solid",
   linetype_summary_comparison = "solid",
   linetype_summary_difference = "solid",
-  color_interval_reference,
   color_interval_comparison = "black",
   color_interval_difference = "black",
-  size_interval_reference = "3",
   size_interval_comparison = "3",
   size_interval_difference = "3",
-  alpha_interval_reference = "1",
   alpha_interval_comparison = "1",
   alpha_interval_difference = "1",
-  alpha_error_reference = "1",
   alpha_error_comparison = "1",
   alpha_error_difference = "1",
-  fill_error_reference = "gray75",
   fill_error_comparison = "gray75",
   fill_error_difference = "gray75"
 )
@@ -99,8 +92,6 @@ jamovimdiffone(
 \item{show_details}{.}
 
 \item{show_calculations}{.}
-
-\item{as_difference}{.}
 
 \item{reference_mean}{.}
 
@@ -182,37 +173,25 @@ jamovimdiffone(
 
 \item{alpha_summary_difference}{.}
 
-\item{linetype_summary_reference}{.}
-
 \item{linetype_summary_comparison}{.}
 
 \item{linetype_summary_difference}{.}
-
-\item{color_interval_reference}{.}
 
 \item{color_interval_comparison}{.}
 
 \item{color_interval_difference}{.}
 
-\item{size_interval_reference}{.}
-
 \item{size_interval_comparison}{.}
 
 \item{size_interval_difference}{.}
-
-\item{alpha_interval_reference}{.}
 
 \item{alpha_interval_comparison}{.}
 
 \item{alpha_interval_difference}{.}
 
-\item{alpha_error_reference}{.}
-
 \item{alpha_error_comparison}{.}
 
 \item{alpha_error_difference}{.}
-
-\item{fill_error_reference}{.}
 
 \item{fill_error_comparison}{.}
 

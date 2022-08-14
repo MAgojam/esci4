@@ -1,7 +1,7 @@
 test_mdiff_one <- function() {
 
   # Check - pen group from pen/latop in esci in excel, summary two
-  estimate_mdiff_one(
+  estimate <- estimate_mdiff_one(
     comparison_mean = 6.88,
     comparison_sd = 4.22,
     comparison_n = 48,

@@ -17,6 +17,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             show_details = FALSE,
             show_calculations = FALSE,
             reference_mean = " ",
+            evaluate_hypotheses = FALSE,
+            null_boundary = 0.2,
+            rope_units = "sd",
+            alpha = 0.05,
             es_plot_width = "550",
             es_plot_height = "450",
             ymin = "auto",
@@ -128,6 +132,28 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "reference_mean",
                 reference_mean,
                 default=" ")
+            private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
+                "evaluate_hypotheses",
+                evaluate_hypotheses,
+                default=FALSE)
+            private$..null_boundary <- jmvcore::OptionNumber$new(
+                "null_boundary",
+                null_boundary,
+                min=0,
+                default=0.2)
+            private$..rope_units <- jmvcore::OptionList$new(
+                "rope_units",
+                rope_units,
+                default="sd",
+                options=list(
+                    "sd",
+                    "raw"))
+            private$..alpha <- jmvcore::OptionNumber$new(
+                "alpha",
+                alpha,
+                default=0.05,
+                min=0,
+                max=1)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
@@ -937,6 +963,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..show_details)
             self$.addOption(private$..show_calculations)
             self$.addOption(private$..reference_mean)
+            self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_boundary)
+            self$.addOption(private$..rope_units)
+            self$.addOption(private$..alpha)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -1001,6 +1031,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         show_details = function() private$..show_details$value,
         show_calculations = function() private$..show_calculations$value,
         reference_mean = function() private$..reference_mean$value,
+        evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_boundary = function() private$..null_boundary$value,
+        rope_units = function() private$..rope_units$value,
+        alpha = function() private$..alpha$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -1064,6 +1098,10 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..show_details = NA,
         ..show_calculations = NA,
         ..reference_mean = NA,
+        ..evaluate_hypotheses = NA,
+        ..null_boundary = NA,
+        ..rope_units = NA,
+        ..alpha = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -1128,7 +1166,8 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_smd = function() private$.items[["es_smd"]],
         es_median_difference = function() private$.items[["es_median_difference"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]]),
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        evaluate_summary = function() private$.items[["evaluate_summary"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1424,7 +1463,50 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="estimation_plot_warnings",
                 title="Estimation Figure Warnings",
-                visible=TRUE))}))
+                visible=TRUE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="evaluate_summary",
+                title="Evaluate Hypotheses",
+                rows=1,
+                visible="(evaluate_hypotheses)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect_size_label", 
+                        `title`="Contrast", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="null_hypothesis", 
+                        `title`="Null Hypothesis", 
+                        `type`="text"),
+                    list(
+                        `name`="t", 
+                        `title`="t", 
+                        `type`="number"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer"),
+                    list(
+                        `name`="p", 
+                        `title`="p value", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
+                    list(
+                        `name`="alpha", 
+                        `title`="\u03B1", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -1461,6 +1543,10 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param show_details .
 #' @param show_calculations .
 #' @param reference_mean .
+#' @param evaluate_hypotheses .
+#' @param null_boundary .
+#' @param rope_units .
+#' @param alpha .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -1522,6 +1608,7 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$evaluate_summary} \tab \tab \tab \tab \tab a table \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -1544,6 +1631,10 @@ jamovimdiffone <- function(
     show_details = FALSE,
     show_calculations = FALSE,
     reference_mean = " ",
+    evaluate_hypotheses = FALSE,
+    null_boundary = 0.2,
+    rope_units = "sd",
+    alpha = 0.05,
     es_plot_width = "550",
     es_plot_height = "450",
     ymin = "auto",
@@ -1618,6 +1709,10 @@ jamovimdiffone <- function(
         show_details = show_details,
         show_calculations = show_calculations,
         reference_mean = reference_mean,
+        evaluate_hypotheses = evaluate_hypotheses,
+        null_boundary = null_boundary,
+        rope_units = rope_units,
+        alpha = alpha,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,

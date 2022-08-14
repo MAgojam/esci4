@@ -71,6 +71,33 @@ options:
       type: String
       default: ' '
 
+    - name: evaluate_hypotheses
+      title: 'Evaluate hypotheses?'
+      type: Bool
+      default: false
+
+    - name: null_boundary
+      title: 'Evaluate against null of +/-'
+      type: Number
+      min: 0
+      default: 0.2
+
+    - name: rope_units
+      type: List
+      default: sd
+      options:
+        - name: sd
+          title: Standard deviations
+        - name: raw
+          title: Original units
+
+    - name: alpha
+      title: 'at \u03B1'
+      type: Number
+      default: 0.05
+      min: 0
+      max: 1
+
     - name: es_plot_width
       title: Width
       type: String

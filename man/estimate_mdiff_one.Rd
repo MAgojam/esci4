@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_mdiff_one.R
 \name{estimate_mdiff_one}
 \alias{estimate_mdiff_one}
-\title{Estimate magnitudes of difference from a single measure compared to a know reference.}
+\title{Estimate magnitudes of difference from a single measure compared to a known reference.}
 \usage{
 estimate_mdiff_one(
   data = NULL,
@@ -28,7 +28,7 @@ variable, or a vector of numeric data}
 
 \item{comparison_n}{For summary data, a numeric integer > 0}
 
-\item{reference_mean}{Reference mean, defaults to 0}
+\item{reference_mean}{Reference value, defaults to 0}
 
 \item{outcome_variable_name}{Optional friendly name for the outcome variable.
 Defaults to 'My outcome variable' or the outcome variable column name if a
