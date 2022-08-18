@@ -109,6 +109,9 @@ estimate_mdiff_one <- function(
     } else if (class(outcome_variable) == "character") {
       # Ok, must have been string column names
       if (length(outcome_variable) == 1) {
+        if (outcome_variable_name == "My outcome variable") {
+          outcome_variable_name <- outcome_variable
+        }
         analysis_type <- "data.frame"
       } else {
         analysis_type <- "jamovi"
