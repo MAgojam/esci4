@@ -508,20 +508,48 @@ estimate_mdiff_paired.data.frame <- function(
     conf_level = conf_level
   )$overview
 
-  estimate$overview$missing <- missing$missing
-  estimate$overview$n <- missing$n
 
   if (sum(missing$missing) > 0) {
     estimate$overview_propertes <- list()
-    nvalid <- min(missing$n)
+    invalid <- max(missing$n) - min(estimate$overview$n)
     estimate$overview_properties$message <-
       paste(
-        "Statistics in this table based only on the ",
-        nvalid,
-        " rows that had data for both variables"
+        "N_pairs = ",
+        max(estimate$overview$n),
+        ".  There were ",
+        invalid,
+        " rows with incomplete data.  All analyses are based only on the ",
+        max(estimate$overview$n),
+        " rows with complete data.",
+        sep = ""
       )
     estimate$overview_properties$message_html <-
-      estimate$overview_properties$message
+      paste(
+        "<i>N</i><sub>pairs</sub> = ",
+        max(estimate$overview$n),
+        "<br>There were ",
+        invalid,
+        " rows with incomplete data.<br>All analyses are based only on the ",
+        max(estimate$overview$n),
+        " rows with complete data.",
+        sep = ""
+      )
+  } else {
+    estimate$overview_properties$message <-
+      paste(
+        "N_pairs = ",
+        max(estimate$overview$n),
+        ".",
+        sep = ""
+      )
+
+    estimate$overview_properties$message_html <-
+      paste(
+        "<i>N</i><sub>pairs</sub> = ",
+        max(estimate$overview$n),
+        ".",
+        sep = ""
+      )
   }
 
   # Prep output --------------------------------------

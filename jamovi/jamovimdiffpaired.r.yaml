@@ -80,10 +80,11 @@ items:
         - name: n
           title: <i>N</i>
           type: integer
+          visible: false
         - name: missing
           type: integer
           title: Missing
-          visible: (switch == 'from_raw')
+          visible: false
         - name: df_i
           title: <i>df</i>
           type: integer

@@ -12,7 +12,7 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           try(tbl_overview <- self$results$overview)
           try(tbl_es_mean_difference <- self$results$es_mean_difference)
           try(tbl_es_mean_ratio <- self$results$es_mean_ratio)
-          try(tbl_es_r <- self$results$es_smd)
+          try(tbl_es_r <- self$results$es_r)
           try(tbl_es_smd <- self$results$es_smd)
           try(tbl_es_median_difference <- self$results$es_median_difference)
           try(tbl_es_median_ratio <- self$results$es_median_ratio)

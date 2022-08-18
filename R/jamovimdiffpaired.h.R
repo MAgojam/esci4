@@ -1710,12 +1710,13 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     list(
                         `name`="n", 
                         `title`="<i>N</i>", 
-                        `type`="integer"),
+                        `type`="integer", 
+                        `visible`=FALSE),
                     list(
                         `name`="missing", 
                         `type`="integer", 
                         `title`="Missing", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`=FALSE),
                     list(
                         `name`="df_i", 
                         `title`="<i>df</i>", 
