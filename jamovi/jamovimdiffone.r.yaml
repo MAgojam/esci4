@@ -246,7 +246,7 @@ items:
       type: Html
       visible: true
 
-    - name:  evaluate_summary
+    - name:  htest
       title: Evaluate Hypotheses
       type: Table
       rows:  1
@@ -260,25 +260,43 @@ items:
           title: 'Contrast'
           type: text
           combineBelow: true
+        - name: test_type
+          title: 'Test Type'
+          type: text
         - name: null_hypothesis
           title: "Null Hypothesis"
+          type: text
+        - name: null_words
+          title: "Null in Words"
+          type: text
+        - name: CI
+          title: "CI"
+          type: text
+        - name: CI_compare
+          title: "Compare Null to CI"
           type: text
         - name: t
           title: 't'
           type: number
-        - name: df
-          title: 'df'
-          type: integer
         - name: p
           title: 'p value'
           type: number
           format: zto,pvalue
-        - name: alpha
-          title: "\u03B1"
-          type: number
-          format: zto,pvalue
+        - name: p_result
+          title: "<i>p</i>"
+          type: text
         - name: conclusion
           title: 'Conclusion'
           type: text
+        - name: significant
+          title: 'Statistical Significant'
+          type: text
 
+
+    - name: hplot
+      title: Hypothesis Test Plots
+      type: Image
+      width:  400
+      height: 300
+      renderFun: .plot_hplot
 ...

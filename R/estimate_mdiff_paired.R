@@ -473,6 +473,17 @@ estimate_mdiff_paired.data.frame <- function(
     grouping_variable_levels = grouping_variable_levels,
     conf_level = conf_level
   )
+
+  es_mdn_ta <- wrapper_ci.median.ps(
+    comparison_measure = data[[comparison_measure]],
+    reference_measure = data[[reference_measure]],
+    grouping_variable_levels = grouping_variable_levels,
+    conf_level = 1 - ((1 - conf_level)*2)
+  )
+
+  es_mdn$es_median_difference$ta_LL <- es_mdn$es_median_difference$LL
+  es_mdn$es_median_difference$ta_UL <- es_mdn$es_median_difference$UL
+
   estimate$es_median_difference <- es_mdn$es_median_difference
   estimate$es_median_difference_properties <- es_mdn$es_median_difference_properties
 

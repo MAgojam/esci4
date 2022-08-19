@@ -51,7 +51,6 @@ test_mdiff <- function(
   # Prep ------------------------------------------
   etable <- if(effect_size == "mean") "es_mean_difference" else "es_median_difference"
 
-
   if (output_html) {
     statistic <- if(effect_size == "mean") "<i>M</i><sub>diff</sub>" else "<i>Mdn</i><sub>diff</sub>"
     parameter <- if(effect_size == "mean") "<i>&mu;</i><sub>diff</sub>" else "<i>&eta;</i><sub>diff</sub>"
@@ -72,6 +71,13 @@ test_mdiff <- function(
   effect_sizes <- estimate[[etable]][
     estimate[[etable]]$type == "Difference",
   ]
+
+
+  if (effect_size == "mean") {
+    effect_sizes$tcrit <- qt(p = alpha, df = effect_sizes$df, lower.tail = FALSE)
+    effect_sizes$ta_LL <- effect_sizes$effect_size - (effect_sizes$SE * effect_sizes$tcrit)
+    effect_sizes$ta_UL <- effect_sizes$effect_size + (effect_sizes$SE * effect_sizes$tcrit)
+  }
 
   res <- list()
   res$properties <- list(
@@ -105,8 +111,8 @@ test_mdiff <- function(
       effect_size_name = effect_size,
       LL = es$LL,
       UL = es$UL,
-      LL_2A = es$LL + (es$UL - es$LL)*.2,
-      UL_2A = es$UL - (es$UL - es$LL)*.2,
+      ta_LL = es$ta_LL,
+      ta_UL = es$ta_UL,
       rope_lower = rope_lower,
       rope_upper = rope_upper
     )
@@ -232,13 +238,13 @@ test_mdiff <- function(
       t <- NA
       p <- NA
 
-      significant <- (es$LL > rope_lower & es$UL < rope_upper)
+      significant <- (es$ta_LL > rope_lower & es$ta_UL < rope_upper)
       eq_significant <- significant
 
       null_hypothesis <- glue::glue("{parameter} < {rope_lower} or {parameter} > {rope_upper}")
       null_words <- glue::glue("{parameter} is substantive, outside the range of {rope_lower} to {rope_upper}")
 
-      CI <- glue::glue("{confidence}% CI [{format(es$LL)}, {format(es$UL)}])")
+      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL)}, {format(es$ta_UL)}])")
 
       CI_compare <- if (significant)
         "No overlap between null range and CI"
@@ -276,27 +282,28 @@ test_mdiff <- function(
         as.data.frame(eq_result)
       )
 
+
+      # Finalize overall interpretation
+      if (me_significant) {
+        test_plot$note <- glue::glue(
+          "At \U03B1 = {alpha}, this is a substantive (non-negligible) effect."
+        )
+      }
+
+      if (eq_significant) {
+        test_plot$note <- glue::glue(
+          "At \U03B1 = {alpha}, this is negligible effect."
+        )
+      }
+
+      if (!me_significant & !eq_significant) {
+        test_plot$note <- glue::glue(
+          "At \U03B1 = {alpha}, there is not enough data to discern if this is a neglgible or substantive effect."
+        )
+      }
+
     }  # Finish with interval null tests
 
-
-    # Finalize overall interpretation
-    if (me_significant) {
-      test_plot$note <- glue::glue(
-        "At \U03B1 = {alpha}, this is a substantive (non-negligible) effect."
-      )
-    }
-
-    if (eq_significant) {
-      test_plot$note <- glue::glue(
-        "At \U03B1 = {alpha}, this is negligible effect."
-      )
-    }
-
-    if (!me_significant & !eq_significant) {
-      test_plot$note <- glue::glue(
-        "At \U03B1 = {alpha}, there is not enough data to discern if this is a neglgible or substantive effect."
-      )
-    }
 
     # Add row that will plot test results
     res$test_plot <- rbind(
@@ -312,6 +319,7 @@ test_mdiff <- function(
 }
 
 
+#' @export
 plot_htest <- function(
     test_result
 ) {
@@ -352,8 +360,8 @@ plot_htest <- function(
 
   myplot <- myplot + ggplot2::geom_errorbar(
     ggplot2::aes(
-      xmin = LL_2A,
-      xmax = UL_2A
+      xmin = ta_LL,
+      xmax = ta_UL
     ),
     width = 0,
     size = 3

@@ -377,7 +377,18 @@ The contrast passed was: {passed_contrast}.
             v = mycontrast
       )
 
+      mdn_2a <- statpsych::ci.lc.median.bs(
+        alpha = (1 - conf_level)*2,
+        m = overview_table$median,
+        se = overview_table$median_SE,
+        v = mycontrast
+      )
+
       mdn_df <- as.data.frame(mdn_res)
+
+      mdn_df$ta_LL <- mdn_2a[1, "LL"]
+      mdn_df$ta_UL <- mdn_2a[1, "UL"]
+
 
       es_median_difference <- rbind(
         es_median_difference,
@@ -405,8 +416,8 @@ The contrast passed was: {passed_contrast}.
   # Median difference
   if (!is.null(es_median_difference)) {
     estimate$es_median_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
-    estimate$es_median_difference[ , c("effect_size", "LL", "UL", "SE")] <-
-      es_median_difference[ , c("Estimate", "LL", "UL", "SE")]
+    estimate$es_median_difference[ , c("effect_size", "LL", "UL", "SE", "ta_LL", "ta_UL")] <-
+      es_median_difference[ , c("Estimate", "LL", "UL", "SE", "ta_LL", "ta_UL")]
 
     estimate$es_median_difference <- cbind(
       type = c("Comparison", "Reference", "Difference"),

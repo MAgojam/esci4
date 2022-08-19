@@ -14,7 +14,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           tbl_es_mean_difference <- self$results$es_mean_difference
           tbl_es_smd <- self$results$es_smd
           tbl_es_median_difference <- self$results$es_median_difference
-          tbl_eval <- self$results$evaluate_summary
+          tbl_eval <- self$results$htest
 
           # Prep output -------------------------------------------
           # Set CI and MoE columns to reflect confidence level
@@ -119,7 +119,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           from_raw <- (self$options$switch == "from_raw")
           evaluate_h <- self$options$evaluate_hypotheses
-          tbl_eval <- self$results$evaluate_summary
+          tbl_eval <- self$results$htest
 
           estimate <- jamovi_mdiff_one(
             self,
@@ -163,17 +163,11 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
                 rope_lower = self$options$null_boundary*-1,
                 rope_upper = self$options$null_boundary,
                 rope_units = self$options$rope_units,
-                alpha = jamovi_sanitize(
-                  my_value = self$options$alpha,
-                  return_value = .05,
-                  na_ok = FALSE,
-                  convert_to_number = TRUE,
-                  lower = 0,
-                  lower_inclusive = FALSE,
-                  upper = 1,
-                  upper_inclusive = FALSE
-                )
+                output_html = TRUE
               )
+
+            image <- self$results$hplot
+            image$setState(test_results)
 
             # Fill table
             jamovi_table_filler(
@@ -242,6 +236,17 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
 
           print(myplot)
+          TRUE
+
+        },
+        .plot_hplot=function(image, ...) {  # <-- the plot function
+          if (is.null(image$state))
+            return(FALSE)
+
+          test_data <- image$state
+
+          plot <- plot_htest(test_data)
+          print(plot)
           TRUE
 
         }

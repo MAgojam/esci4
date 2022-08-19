@@ -145,6 +145,13 @@ estimate_mdiff_one <- function(
       save_raw_data = save_raw_data
     )
 
+    estimate_ta <- estimate_magnitude(
+      outcome_variable = outcome_variable,
+      outcome_variable_name = outcome_variable_name,
+      conf_level = 1 - ((1-conf_level)*2),
+      save_raw_data = save_raw_data
+    )
+
   } else if (analysis_type == "data.frame") {
     estimate <- estimate_magnitude(
       data = data,
@@ -153,6 +160,15 @@ estimate_mdiff_one <- function(
       conf_level = conf_level,
       save_raw_data = save_raw_data
     )
+
+    estimate_ta <- estimate_magnitude(
+      data = data,
+      outcome_variable = outcome_variable,
+      outcome_variable_name = outcome_variable_name,
+      conf_level = 1 - ((1-conf_level)*2),
+      save_raw_data = save_raw_data
+    )
+
   } else if (analysis_type == "jamovi") {
     estimate <- estimate_mdiff_one.jamovi(
       data = data,
@@ -161,6 +177,15 @@ estimate_mdiff_one <- function(
       conf_level = conf_level,
       save_raw_data = save_raw_data
     )
+
+    estimate_ta  <- estimate_mdiff_one.jamovi(
+      data = data,
+      outcome_variables = outcome_variable,
+      reference_mean = reference_mean,
+      conf_level = 1 - ((1-conf_level)*2),
+      save_raw_data = save_raw_data
+    )
+
     return(estimate)
   }
 
@@ -210,9 +235,14 @@ estimate_mdiff_one <- function(
       estimate$es_median_difference$LL[3] <- estimate$es_median$LL[[1]] - reference_mean
       estimate$es_median_difference$UL[1] <- estimate$es_median$UL[[1]]
       estimate$es_median_difference$UL[3] <- estimate$es_median$UL[[1]] - reference_mean
-      estimate$es_median_difference$LL[1] <- estimate$es_median$LL[[1]]
       estimate$es_median_difference$SE[c(1, 3)] <- estimate$es_median$SE[[1]]
       estimate$es_median_difference$df[c(1, 3)] <- estimate$es_median$df[[1]]
+      estimate$es_median_difference$ta_LL[1] <- estimate_ta$es_median$LL[[1]]
+      estimate$es_median_difference$ta_LL[3] <- estimate_ta$es_median$LL[[1]] - reference_mean
+      estimate$es_median_difference$ta_UL[1] <- estimate_ta$es_median$UL[[1]]
+      estimate$es_median_difference$ta_UL[3] <- estimate_ta$es_median$UL[[1]] - reference_mean
+      estimate$es_median_difference$ta_LL[2] <- NA
+      estimate$es_median_difference$ta_UL[2] <- NA
     }
 
     # SMD --------------------

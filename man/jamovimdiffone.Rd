@@ -17,6 +17,10 @@ jamovimdiffone(
   show_details = FALSE,
   show_calculations = FALSE,
   reference_mean = " ",
+  evaluate_hypotheses = FALSE,
+  null_boundary = 0.2,
+  rope_units = "sd",
+  alpha = 0.05,
   es_plot_width = "550",
   es_plot_height = "450",
   ymin = "auto",
@@ -94,6 +98,14 @@ jamovimdiffone(
 \item{show_calculations}{.}
 
 \item{reference_mean}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_boundary}{.}
+
+\item{rope_units}{.}
+
+\item{alpha}{.}
 
 \item{es_plot_width}{.}
 
@@ -208,6 +220,7 @@ A results object containing:
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$evaluate_summary} \tab \tab \tab \tab \tab a table \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

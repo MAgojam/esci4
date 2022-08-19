@@ -1167,7 +1167,8 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_median_difference = function() private$.items[["es_median_difference"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        evaluate_summary = function() private$.items[["evaluate_summary"]]),
+        htest = function() private$.items[["htest"]],
+        hplot = function() private$.items[["hplot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1466,7 +1467,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 visible=TRUE))
             self$add(jmvcore::Table$new(
                 options=options,
-                name="evaluate_summary",
+                name="htest",
                 title="Evaluate Hypotheses",
                 rows=1,
                 visible="(evaluate_hypotheses)",
@@ -1482,31 +1483,53 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="test_type", 
+                        `title`="Test Type", 
+                        `type`="text"),
+                    list(
                         `name`="null_hypothesis", 
                         `title`="Null Hypothesis", 
+                        `type`="text"),
+                    list(
+                        `name`="null_words", 
+                        `title`="Null in Words", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="CI_compare", 
+                        `title`="Compare Null to CI", 
                         `type`="text"),
                     list(
                         `name`="t", 
                         `title`="t", 
                         `type`="number"),
                     list(
-                        `name`="df", 
-                        `title`="df", 
-                        `type`="integer"),
-                    list(
                         `name`="p", 
                         `title`="p value", 
                         `type`="number", 
                         `format`="zto,pvalue"),
                     list(
-                        `name`="alpha", 
-                        `title`="\u03B1", 
-                        `type`="number", 
-                        `format`="zto,pvalue"),
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
+                        `type`="text"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
-                        `type`="text"))))}))
+                        `type`="text"),
+                    list(
+                        `name`="significant", 
+                        `title`="Statistical Significant", 
+                        `type`="text"))))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="hplot",
+                title="Hypothesis Test Plots",
+                width=400,
+                height=300,
+                renderFun=".plot_hplot"))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -1608,7 +1631,8 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$evaluate_summary} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$hplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
