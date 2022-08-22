@@ -112,6 +112,33 @@ options:
       type: Bool
       default: false
 
+    - name: evaluate_hypotheses
+      title: 'Evaluate hypotheses?'
+      type: Bool
+      default: false
+
+    - name: null_boundary
+      title: 'Evaluate against null of +/-'
+      type: Number
+      min: 0
+      default: 0
+
+    - name: rope_units
+      type: List
+      default: raw
+      options:
+        - name: sd
+          title: Standard deviations
+        - name: raw
+          title: Original units
+
+    - name: alpha
+      title: '&alpha;'
+      type: Number
+      default: 0.05
+      min: 0
+      max: 1
+
     - name: es_plot_width
       title: Width
       type: String

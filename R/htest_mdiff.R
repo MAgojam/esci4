@@ -113,8 +113,8 @@ test_mdiff <- function(
       UL = es$UL,
       ta_LL = es$ta_LL,
       ta_UL = es$ta_UL,
-      rope_lower = rope_lower,
-      rope_upper = rope_upper
+      rope_lower = this_rope_lower,
+      rope_upper = this_rope_upper
     )
 
 
@@ -138,7 +138,7 @@ test_mdiff <- function(
     null_hypothesis <- glue::glue("{parameter} = 0")
     null_words <- glue::glue("{parameter} is exactly 0")
 
-    CI <- glue::glue("{confidence}% CI [{format(es$LL)}, {format(es$UL)}])")
+    CI <- glue::glue("{confidence}% CI [{format(es$LL, digits = 2)}, {format(es$UL, digits = 2)}])")
 
     CI_compare <- if (significant)
       "Null is not in the CI"
@@ -184,19 +184,19 @@ test_mdiff <- function(
       as.data.frame(nil_result)
     )
 
-    if (!(rope_lower == 0 & rope_upper == 0)) {
+    if (!(this_rope_lower == 0 & this_rope_upper == 0)) {
       # Maximal effect test
       df <- NA
       t <- NA
       p <- NA
 
-      significant <- (es$LL >= rope_upper| es$UL <= rope_lower)
+      significant <- (es$LL >= this_rope_upper| es$UL <= this_rope_lower)
       me_significant <- significant
 
-      null_hypothesis <- glue::glue("{rope_lower} < {parameter} < {rope_upper}")
-      null_words <- glue::glue("{parameter} is negligible, between {rope_lower} and {rope_upper}")
+      null_hypothesis <- glue::glue("{this_rope_lower} < {parameter} < {this_rope_upper}")
+      null_words <- glue::glue("{parameter} is negligible, between {this_rope_lower} and {this_rope_upper}")
 
-      CI <- glue::glue("{confidence}% CI [{format(es$LL)}, {format(es$UL)}]")
+      CI <- glue::glue("{confidence}% CI [{format(es$LL, digits = 2)}, {format(es$UL, digits = 2)}]")
 
       CI_compare <- if (significant)
         "No overlap between null range and CI"
@@ -239,13 +239,13 @@ test_mdiff <- function(
       t <- NA
       p <- NA
 
-      significant <- (es$ta_LL > rope_lower & es$ta_UL < rope_upper)
+      significant <- (es$ta_LL > this_rope_lower & es$ta_UL < this_rope_upper)
       eq_significant <- significant
 
-      null_hypothesis <- glue::glue("{parameter} < {rope_lower} or {parameter} > {rope_upper}")
-      null_words <- glue::glue("{parameter} is substantive, outside the range of {rope_lower} to {rope_upper}")
+      null_hypothesis <- glue::glue("{parameter} < {this_rope_lower} or {parameter} > {this_rope_upper}")
+      null_words <- glue::glue("{parameter} is substantive, outside the range of {this_rope_lower} to {this_rope_upper}")
 
-      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL)}, {format(es$ta_UL)}]")
+      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL, digits = 2)}, {format(es$ta_UL, digits = 2)}]")
 
       CI_compare <- if (significant)
         "No overlap between null range and CI"
@@ -329,46 +329,28 @@ plot_htest <- function(
   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
 
 
-  test_result$test_plot$effect <- factor(
-    test_result$test_plot$effect,
-    levels = test_result$test_plot$effect
+  myplot <- ggplot2::ggplot(
+    data = test_result$test_plot,
+    ggplot2::aes(
+      y = 1,
+      x = effect_size
+    )
   )
-
-  if (test_result$properties$rope_units == "sd" & nrow(test_result$test_plot) > 1) {
-    # If sd units and multiple variables, we need a different panel for each
-    myplot <- ggplot2::ggplot(
-      data = test_result$test_plot,
-      ggplot2::aes(
-        y = 1,
-        x = effect_size
-      )
-    )
-
-    myplot <- myplot + ggplot2::theme(
-          axis.text.x = ggplot2::element_blank(), #remove x axis labels
-          axis.ticks.x = ggplot2::element_blank(), #remove x axis ticks
-          axis.text.y = ggplot2::element_blank(),  #remove y axis labels
-          axis.ticks.y = ggplot2::element_blank()  #remove y axis ticks
-    )
-
-    myplot <- myplot + ggplot2::facet_grid(
-      rows = ggplot2::vars(outcome_variable_name)
-    )
-
-  } else {
-    # For raw units and/or 1 variable, no need for faceting
-    myplot <- ggplot2::ggplot(
-      data = test_result$test_plot,
-      ggplot2::aes(
-        x = effect_size,
-        y = outcome_variable_name
-      )
-    )
-
-  }
 
   # Apply theme
   myplot <- myplot + ggtheme
+
+  myplot <- myplot + ggplot2::theme(
+    axis.text.x = ggplot2::element_blank(), #remove x axis labels
+    axis.ticks.x = ggplot2::element_blank(), #remove x axis ticks
+    axis.text.y = ggplot2::element_blank(),  #remove y axis labels
+    axis.ticks.y = ggplot2::element_blank()  #remove y axis ticks
+  )
+
+  myplot <- myplot + ggplot2::facet_grid(
+    rows = ggplot2::vars(outcome_variable_name)
+  )
+
 
   # Apply 2-alpha error bar
   myplot <- myplot + ggplot2::geom_errorbar(

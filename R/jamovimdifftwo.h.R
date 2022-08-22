@@ -26,6 +26,10 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             switch_comparison_order = FALSE,
             show_details = FALSE,
             show_calculations = FALSE,
+            evaluate_hypotheses = FALSE,
+            null_boundary = 0,
+            rope_units = "raw",
+            alpha = 0.05,
             es_plot_width = "600",
             es_plot_height = "400",
             ymin = "auto",
@@ -185,6 +189,28 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "show_calculations",
                 show_calculations,
                 default=FALSE)
+            private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
+                "evaluate_hypotheses",
+                evaluate_hypotheses,
+                default=FALSE)
+            private$..null_boundary <- jmvcore::OptionNumber$new(
+                "null_boundary",
+                null_boundary,
+                min=0,
+                default=0)
+            private$..rope_units <- jmvcore::OptionList$new(
+                "rope_units",
+                rope_units,
+                default="raw",
+                options=list(
+                    "sd",
+                    "raw"))
+            private$..alpha <- jmvcore::OptionNumber$new(
+                "alpha",
+                alpha,
+                default=0.05,
+                min=0,
+                max=1)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
@@ -1244,6 +1270,10 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..switch_comparison_order)
             self$.addOption(private$..show_details)
             self$.addOption(private$..show_calculations)
+            self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_boundary)
+            self$.addOption(private$..rope_units)
+            self$.addOption(private$..alpha)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -1328,6 +1358,10 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         switch_comparison_order = function() private$..switch_comparison_order$value,
         show_details = function() private$..show_details$value,
         show_calculations = function() private$..show_calculations$value,
+        evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_boundary = function() private$..null_boundary$value,
+        rope_units = function() private$..rope_units$value,
+        alpha = function() private$..alpha$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -1411,6 +1445,10 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..switch_comparison_order = NA,
         ..show_details = NA,
         ..show_calculations = NA,
+        ..evaluate_hypotheses = NA,
+        ..null_boundary = NA,
+        ..rope_units = NA,
+        ..alpha = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -1488,7 +1526,10 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_median_difference = function() private$.items[["es_median_difference"]],
         es_median_ratio = function() private$.items[["es_median_ratio"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]]),
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        htest = function() private$.items[["htest"]],
+        htest_summary = function() private$.items[["htest_summary"]],
+        hplot = function() private$.items[["hplot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1960,7 +2001,101 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="estimation_plot_warnings",
                 title="Estimation Figure Warnings",
-                visible=TRUE))}))
+                visible=TRUE))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="htest",
+                title="Evaluate Hypotheses",
+                rows=1,
+                visible="(evaluate_hypotheses)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `visible`=TRUE, 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="test_type", 
+                        `title`="Test Type", 
+                        `type`="text", 
+                        `visible`="(null_boundary != 0)"),
+                    list(
+                        `name`="null_hypothesis", 
+                        `title`="Null Hypothesis", 
+                        `type`="text"),
+                    list(
+                        `name`="null_words", 
+                        `title`="Null in Words", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="CI_compare", 
+                        `title`="Compare Null to CI", 
+                        `type`="text"),
+                    list(
+                        `name`="t", 
+                        `title`="t", 
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference' & null_boundary == 0)"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer", 
+                        `visible`="(effect_size == 'mean_difference' & null_boundary == 0)"),
+                    list(
+                        `name`="p", 
+                        `title`="<i>p</i>", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(effect_size == 'mean_difference' & null_boundary == 0)"),
+                    list(
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
+                        `type`="text", 
+                        `visible`="(effect_size == 'median_difference' | null_boundary != 0)"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"),
+                    list(
+                        `name`="significant", 
+                        `title`="Statistical Significant", 
+                        `type`="text", 
+                        `visible`=FALSE))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="htest_summary",
+                title="Hypothesis Testing Summary",
+                rows=1,
+                visible="(evaluate_hypotheses)",
+                columns=list(
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="note", 
+                        `title`="Conclusion", 
+                        `type`="text", 
+                        `combineBelow`=FALSE))))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="hplot",
+                title="Hypothesis Test Plots",
+                width=550,
+                height=250,
+                visible="(evaluate_hypotheses)",
+                renderFun=".plot_hplot"))}))
 
 jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdifftwoBase",
@@ -2006,6 +2141,10 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param switch_comparison_order .
 #' @param show_details .
 #' @param show_calculations .
+#' @param evaluate_hypotheses .
+#' @param null_boundary .
+#' @param rope_units .
+#' @param alpha .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -2080,6 +2219,9 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$hplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -2111,6 +2253,10 @@ jamovimdifftwo <- function(
     switch_comparison_order = FALSE,
     show_details = FALSE,
     show_calculations = FALSE,
+    evaluate_hypotheses = FALSE,
+    null_boundary = 0,
+    rope_units = "raw",
+    alpha = 0.05,
     es_plot_width = "600",
     es_plot_height = "400",
     ymin = "auto",
@@ -2208,6 +2354,10 @@ jamovimdifftwo <- function(
         switch_comparison_order = switch_comparison_order,
         show_details = show_details,
         show_calculations = show_calculations,
+        evaluate_hypotheses = evaluate_hypotheses,
+        null_boundary = null_boundary,
+        rope_units = rope_units,
+        alpha = alpha,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,

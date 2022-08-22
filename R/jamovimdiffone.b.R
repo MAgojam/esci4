@@ -171,7 +171,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
                 output_html = TRUE
               )
 
-            self$results$debug$setContent(test_results)
+            #self$results$debug$setContent(test_results)
 
             image <- self$results$hplot
             image$setState(test_results)

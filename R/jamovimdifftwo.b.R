@@ -14,6 +14,10 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
         from_raw <- (self$options$switch == "from_raw")
 
+        evaluate_h <- self$options$evaluate_hypotheses
+        tbl_eval <- self$results$htest
+        tbl_htest_summary <- self$results$htest_summary
+
         estimate <- jamovi_mdiff_two(
           self,
           outcome_variable = NULL,
@@ -39,9 +43,40 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         estimate$es_mean_difference$s_component <- estimate$es_smd$denominator[[1]]
         estimate$es_mean_difference$n_component <- estimate$es_mean_difference$moe / estimate$es_mean_difference$t_multiplier / estimate$es_mean_difference$s_component
 
-
         # Fill tables
         jamovi_estimate_filler(self, estimate, TRUE)
+
+
+        if(evaluate_h) {
+          # Test results
+          effect_size <- if (self$options$effect_size == "mean_difference")
+            "mean"
+          else
+            "median"
+
+          test_results <- test_mdiff(
+            estimate,
+            effect_size = effect_size,
+            rope_lower = self$options$null_boundary*-1,
+            rope_upper = self$options$null_boundary,
+            rope_units = self$options$rope_units,
+            output_html = TRUE
+          )
+
+          image <- self$results$hplot
+          image$setState(test_results)
+
+          # Fill table
+          jamovi_table_filler(
+            tbl_eval,
+            test_results$hypothesis_evaluations
+          )
+          jamovi_table_filler(
+            tbl_htest_summary,
+            test_results$test_plot
+          )
+
+        }
 
         # Deal with plots ----------------------------------------
         # Set up array of estimation plots
@@ -99,6 +134,23 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
 
           print(myplot)
+          TRUE
+
+        },
+        .plot_hplot=function(image, ggtheme, theme, ...) {  # <-- the plot function
+          if (is.null(image$state))
+            return(FALSE)
+
+          test_data <- image$state
+
+          plot <- jamovi_plot_hdiff(
+            self,
+            image,
+            ggtheme,
+            theme
+          )
+
+          print(plot)
           TRUE
 
         })

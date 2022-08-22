@@ -14,6 +14,8 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   tbl_es_median_difference <- NULL
   tbl_es_median_ratio <- NULL
   tbl_es_odds_ratio <- NULL
+  tbl_eval <- NULL
+  tbl_htest_summary <- NULL
   assume_equal_variance <- NULL
   try(tbl_overview <- self$results$overview)
   try(tbl_es_mean_difference <- self$results$es_mean_difference)
@@ -23,6 +25,9 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   try(tbl_es_median_ratio <- self$results$es_median_ratio)
   try(tbl_es_odds_ratio <- self$results$es_odds_ratio)
   try(assume_equal_variance <- self$options$assume_equal_variance)
+  try(tbl_eval <- self$results$htest)
+  try(tbl_htest_summary <- self$results$htest_summary)
+
 
   if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
     if (assume_equal_variance) {
@@ -104,6 +109,8 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
     level_count <- 1
   }
 
+
+
   # Rows needed for each table -------------------------------
   overview_rows <- level_count * outcome_count
   mdiff_rows <- contrast_count * outcome_count * 3
@@ -115,6 +122,26 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   jamovi_init_table(tbl_es_mean_ratio, smd_rows)
   jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
   jamovi_init_table(tbl_es_median_ratio, smd_rows, breaks = 3)
+
+  if (!is.null(tbl_eval)) {
+    eval_base <- if(self$options$null_boundary != 0) {
+      3
+    } else {
+      1
+    }
+
+    eval_rows <- eval_base * contrast_count * outcome_count
+
+    jamovi_init_table(
+      tbl_eval,
+      eval_rows,
+      breaks = if(eval_base == 1) NULL else eval_base
+    )
+    jamovi_init_table(tbl_htest_summary, outcome_count)
+
+
+  }
+
 
   width <- jamovi_sanitize(
     my_value = self$options$es_plot_width,
@@ -134,6 +161,12 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
     upper = 4000,
     upper_inclusive = TRUE
   )
+
+  if (!is.null(tbl_eval)) {
+    try(self$results$hplot$setSize(width, height))
+
+  }
+
 
   keys <- if (from_raw)
     self$options$outcome_variable

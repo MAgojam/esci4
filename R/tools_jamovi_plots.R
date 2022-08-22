@@ -485,6 +485,7 @@ jamovi_plot_hdiff <- function(
 
   # Basic graph options --------------------
   # Axis font sizes
+
   axis.text.y <- jamovi_sanitize(
     my_value = self$options$axis.text.y,
     return_value = 14,
@@ -528,11 +529,15 @@ jamovi_plot_hdiff <- function(
 
 
   myplot <- myplot + ggplot2::theme(
-    axis.text.y = element_text(size = axis.text.y),
     axis.title.y = element_text(size = axis.title.y),
     axis.text.x = element_text(size = axis.text.x),
     axis.title.x = element_text(size = axis.title.x)
   )
+
+
+  # myplot <- myplot + ggplot2::theme(
+  #   axis.text.y = element_text(size = axis.text.y)
+  # )
 
 
   return(myplot)
