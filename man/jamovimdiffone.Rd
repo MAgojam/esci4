@@ -220,7 +220,8 @@ A results object containing:
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-\code{results$evaluate_summary} \tab \tab \tab \tab \tab a table \cr
+\code{results$htest} \tab \tab \tab \tab \tab a table \cr
+\code{results$hplot} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

@@ -18,8 +18,8 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             show_calculations = FALSE,
             reference_mean = " ",
             evaluate_hypotheses = FALSE,
-            null_boundary = 0.2,
-            rope_units = "sd",
+            null_boundary = 0,
+            rope_units = "raw",
             alpha = 0.05,
             es_plot_width = "550",
             es_plot_height = "450",
@@ -140,11 +140,11 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "null_boundary",
                 null_boundary,
                 min=0,
-                default=0.2)
+                default=0)
             private$..rope_units <- jmvcore::OptionList$new(
                 "rope_units",
                 rope_units,
-                default="sd",
+                default="raw",
                 options=list(
                     "sd",
                     "raw"))
@@ -1168,6 +1168,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         estimation_plots = function() private$.items[["estimation_plots"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         htest = function() private$.items[["htest"]],
+        htest_summary = function() private$.items[["htest_summary"]],
         hplot = function() private$.items[["hplot"]]),
     private = list(),
     public=list(
@@ -1475,17 +1476,19 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="outcome_variable_name", 
                         `title`="Outcome variable", 
+                        `visible`=FALSE, 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="effect_size_label", 
-                        `title`="Contrast", 
+                        `name`="effect", 
+                        `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="test_type", 
                         `title`="Test Type", 
-                        `type`="text"),
+                        `type`="text", 
+                        `visible`="(null_boundary != 0)"),
                     list(
                         `name`="null_hypothesis", 
                         `title`="Null Hypothesis", 
@@ -1505,16 +1508,24 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="t", 
                         `title`="t", 
-                        `type`="number"),
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference' & null_boundary == 0)"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer", 
+                        `visible`="(effect_size == 'mean_difference' & null_boundary == 0)"),
                     list(
                         `name`="p", 
-                        `title`="p value", 
+                        `title`="<i>p</i>", 
                         `type`="number", 
-                        `format`="zto,pvalue"),
+                        `format`="zto,pvalue", 
+                        `visible`="(effect_size == 'mean_difference' & null_boundary == 0)"),
                     list(
                         `name`="p_result", 
                         `title`="<i>p</i>", 
-                        `type`="text"),
+                        `type`="text", 
+                        `visible`="(effect_size == 'median_difference' | null_boundary != 0)"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
@@ -1522,13 +1533,31 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="significant", 
                         `title`="Statistical Significant", 
-                        `type`="text"))))
+                        `type`="text", 
+                        `visible`=FALSE))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="htest_summary",
+                title="Hypothesis Testing Summary",
+                rows=1,
+                visible="(evaluate_hypotheses)",
+                columns=list(
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="note", 
+                        `title`="Conclusion", 
+                        `type`="text", 
+                        `combineBelow`=FALSE))))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="hplot",
                 title="Hypothesis Test Plots",
-                width=400,
-                height=300,
+                width=550,
+                height=250,
                 renderFun=".plot_hplot"))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -1632,6 +1661,7 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$hplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
@@ -1656,8 +1686,8 @@ jamovimdiffone <- function(
     show_calculations = FALSE,
     reference_mean = " ",
     evaluate_hypotheses = FALSE,
-    null_boundary = 0.2,
-    rope_units = "sd",
+    null_boundary = 0,
+    rope_units = "raw",
     alpha = 0.05,
     es_plot_width = "550",
     es_plot_height = "450",

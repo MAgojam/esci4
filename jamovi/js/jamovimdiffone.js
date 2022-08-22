@@ -41,6 +41,7 @@
               ui.spanel.collapse();
               ui.rpanel.expand();
             }
+            //ui.alpha.setValue(1 - Number(ui.conf_level.value())/100);
 
         }
 

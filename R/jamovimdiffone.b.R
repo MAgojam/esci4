@@ -15,6 +15,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           tbl_es_smd <- self$results$es_smd
           tbl_es_median_difference <- self$results$es_median_difference
           tbl_eval <- self$results$htest
+          tbl_htest_summary <- self$results$htest_summary
 
           # Prep output -------------------------------------------
           # Set CI and MoE columns to reflect confidence level
@@ -64,6 +65,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             eval_rows,
             breaks = if(eval_base == 1) NULL else eval_base
           )
+          jamovi_init_table(tbl_htest_summary, outcome_count)
 
           #
           reference_mean <- jamovi_required_numeric(
@@ -99,6 +101,8 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             upper_inclusive = TRUE
           )
 
+          self$results$hplot$setSize(width, height)
+
           keys <- if (from_raw)
             self$options$outcome_variable
           else
@@ -120,6 +124,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           from_raw <- (self$options$switch == "from_raw")
           evaluate_h <- self$options$evaluate_hypotheses
           tbl_eval <- self$results$htest
+          tbl_htest_summary <- self$results$htest_summary
 
           estimate <- jamovi_mdiff_one(
             self,
@@ -166,13 +171,19 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
                 output_html = TRUE
               )
 
+            self$results$debug$setContent(test_results)
+
             image <- self$results$hplot
             image$setState(test_results)
 
             # Fill table
             jamovi_table_filler(
-              tbl_eval,
-              test_results$hypothesis_evaluations
+             tbl_eval,
+             test_results$hypothesis_evaluations
+            )
+            jamovi_table_filler(
+              tbl_htest_summary,
+              test_results$test_plot
             )
           }
 
@@ -239,13 +250,19 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           TRUE
 
         },
-        .plot_hplot=function(image, ...) {  # <-- the plot function
+        .plot_hplot=function(image, ggtheme, theme, ...) {  # <-- the plot function
           if (is.null(image$state))
             return(FALSE)
 
           test_data <- image$state
 
-          plot <- plot_htest(test_data)
+          plot <- jamovi_plot_hdiff(
+            self,
+            image,
+            ggtheme,
+            theme
+          )
+
           print(plot)
           TRUE
 

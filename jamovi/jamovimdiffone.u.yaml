@@ -595,4 +595,4 @@ children:
           - type: TextBox
             name: alpha
             format: number
-            enable: (evaluate_hypotheses)
+            enable: '(FALSE)'

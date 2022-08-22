@@ -80,11 +80,11 @@ options:
       title: 'Evaluate against null of +/-'
       type: Number
       min: 0
-      default: 0.2
+      default: 0
 
     - name: rope_units
       type: List
-      default: sd
+      default: raw
       options:
         - name: sd
           title: Standard deviations
@@ -92,7 +92,7 @@ options:
           title: Original units
 
     - name: alpha
-      title: 'at \u03B1'
+      title: '&alpha;'
       type: Number
       default: 0.05
       min: 0

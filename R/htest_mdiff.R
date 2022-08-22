@@ -171,6 +171,7 @@ test_mdiff <- function(
       CI = CI,
       CI_compare = CI_compare,
       t = t,
+      df = df,
       p = p,
       p_result = p_result,
       conclusion = conclusion,
@@ -195,7 +196,7 @@ test_mdiff <- function(
       null_hypothesis <- glue::glue("{rope_lower} < {parameter} < {rope_upper}")
       null_words <- glue::glue("{parameter} is negligible, between {rope_lower} and {rope_upper}")
 
-      CI <- glue::glue("{confidence}% CI [{format(es$LL)}, {format(es$UL)}])")
+      CI <- glue::glue("{confidence}% CI [{format(es$LL)}, {format(es$UL)}]")
 
       CI_compare <- if (significant)
         "No overlap between null range and CI"
@@ -221,6 +222,7 @@ test_mdiff <- function(
         CI = CI,
         CI_compare = CI_compare,
         t = t,
+        df = df,
         p = p,
         p_result = p_result,
         conclusion = conclusion,
@@ -231,7 +233,6 @@ test_mdiff <- function(
         res$hypothesis_evaluations,
         as.data.frame(me_result)
       )
-
 
       # Equiv effect test
       df <- NA
@@ -244,7 +245,7 @@ test_mdiff <- function(
       null_hypothesis <- glue::glue("{parameter} < {rope_lower} or {parameter} > {rope_upper}")
       null_words <- glue::glue("{parameter} is substantive, outside the range of {rope_lower} to {rope_upper}")
 
-      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL)}, {format(es$ta_UL)}])")
+      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL)}, {format(es$ta_UL)}]")
 
       CI_compare <- if (significant)
         "No overlap between null range and CI"
@@ -271,6 +272,7 @@ test_mdiff <- function(
         CI = CI,
         CI_compare = CI_compare,
         t = t,
+        df = df,
         p = p,
         p_result = p_result,
         conclusion = conclusion,
@@ -281,7 +283,6 @@ test_mdiff <- function(
         res$hypothesis_evaluations,
         as.data.frame(eq_result)
       )
-
 
       # Finalize overall interpretation
       if (me_significant) {
@@ -321,11 +322,20 @@ test_mdiff <- function(
 
 #' @export
 plot_htest <- function(
-    test_result
+    test_result,
+    ggtheme = NULL
 ) {
 
+  if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
 
-  if (test_result$properties$rope_units == "sd") {
+
+  test_result$test_plot$effect <- factor(
+    test_result$test_plot$effect,
+    levels = test_result$test_plot$effect
+  )
+
+  if (test_result$properties$rope_units == "sd" & nrow(test_result$test_plot) > 1) {
+    # If sd units and multiple variables, we need a different panel for each
     myplot <- ggplot2::ggplot(
       data = test_result$test_plot,
       ggplot2::aes(
@@ -346,7 +356,7 @@ plot_htest <- function(
     )
 
   } else {
-
+    # For raw units and/or 1 variable, no need for faceting
     myplot <- ggplot2::ggplot(
       data = test_result$test_plot,
       ggplot2::aes(
@@ -357,7 +367,10 @@ plot_htest <- function(
 
   }
 
+  # Apply theme
+  myplot <- myplot + ggtheme
 
+  # Apply 2-alpha error bar
   myplot <- myplot + ggplot2::geom_errorbar(
     ggplot2::aes(
       xmin = ta_LL,
@@ -367,6 +380,7 @@ plot_htest <- function(
     size = 3
   )
 
+  # Apply 1-alpha error bar
   myplot <- myplot + ggplot2::geom_errorbar(
     ggplot2::aes(
       xmin = LL,
@@ -376,17 +390,20 @@ plot_htest <- function(
     size = 1
   )
 
+  # Mark the effect_size
   myplot <- myplot + ggplot2::geom_point(
     shape = "triangle filled",
     size = 4,
     fill = "white"
   )
 
+  # Mark 0 effect
   myplot <- myplot + ggplot2::geom_vline(
     xintercept = 0,
     linetype = "dotted"
   )
 
+  # If testing an interval null, mark the interval
   if (test_result$properties$interval_null) {
       myplot <- myplot + ggplot2::geom_rect(
         ggplot2::aes(
@@ -400,6 +417,31 @@ plot_htest <- function(
       )
   }
 
+  myplot <- myplot + ggplot2::ylab(NULL)
+
+  if (test_result$properties$effect_size_name == "mean") {
+    ename <- "Mean difference"
+  } else {
+    ename <- "Median difference"
+  }
+
+  confidence <- 1 - test_result$properties$alpha
+  confidence_ta <- 1 - 2*test_result$properties$alpha
+  xlab <- glue::glue(
+    "{ename} with {confidence*100}% (thin bar) and {confidence_ta*100}% (thick bar) CIs."
+  )
+
+  if (test_result$properties$interval_null) {
+    xlab <- paste(
+      xlab,
+      "\n",
+      "The gray shaded area represents the null interval."
+    )
+  }
+
+  myplot <- myplot + ggplot2::xlab(
+    xlab
+  )
 
   return(myplot)
 

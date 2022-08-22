@@ -254,15 +254,17 @@ items:
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
+          visible: false
           type: text
           combineBelow: true
-        - name: effect_size_label
-          title: 'Contrast'
+        - name: effect
+          title: 'Effect'
           type: text
           combineBelow: true
         - name: test_type
           title: 'Test Type'
           type: text
+          visible: (null_boundary != 0)
         - name: null_hypothesis
           title: "Null Hypothesis"
           type: text
@@ -278,25 +280,49 @@ items:
         - name: t
           title: 't'
           type: number
+          visible: (effect_size == 'mean_difference' & null_boundary == 0)
+        - name: df
+          title: 'df'
+          type: integer
+          visible: (effect_size == 'mean_difference' & null_boundary == 0)
         - name: p
-          title: 'p value'
+          title: "<i>p</i>"
           type: number
           format: zto,pvalue
+          visible: (effect_size == 'mean_difference' & null_boundary == 0)
         - name: p_result
           title: "<i>p</i>"
           type: text
+          visible: (effect_size == 'median_difference' | null_boundary != 0)
         - name: conclusion
           title: 'Conclusion'
           type: text
         - name: significant
           title: 'Statistical Significant'
           type: text
+          visible: false
+
+
+    - name:  htest_summary
+      title: Hypothesis Testing Summary
+      type: Table
+      rows:  1
+      visible: (evaluate_hypotheses)
+      columns:
+        - name: effect
+          title: 'Effect'
+          type: text
+          combineBelow: true
+        - name: note
+          title: 'Conclusion'
+          type: text
+          combineBelow: false
 
 
     - name: hplot
       title: Hypothesis Test Plots
       type: Image
-      width:  400
-      height: 300
+      width:  550
+      height: 250
       renderFun: .plot_hplot
 ...

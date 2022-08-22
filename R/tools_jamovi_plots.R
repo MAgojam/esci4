@@ -446,3 +446,79 @@ jamovi_plot_mdiff <- function(
 
   return(myplot)
 }
+
+
+
+jamovi_plot_hdiff <- function(
+    self,
+    image,
+    ggtheme,
+    theme
+) {
+
+
+  test_data <- image$state
+
+  myplot <- plot_htest(
+    test_data,
+    ggtheme = ggtheme
+  )
+
+  # Basic plot
+  notes <- NULL
+
+
+  # Basic graph options --------------------
+  # Axis font sizes
+  axis.text.y <- jamovi_sanitize(
+    my_value = self$options$axis.text.y,
+    return_value = 14,
+    na_ok = FALSE,
+    convert_to_number = TRUE,
+    lower = 1,
+    lower_inclusive = TRUE,
+    upper = 97,
+    my_value_name = "Y axis: Tick font size"
+  )
+  axis.title.y <- jamovi_sanitize(
+    my_value = self$options$axis.title.y,
+    return_value = 15,
+    na_ok = FALSE,
+    convert_to_number = TRUE,
+    lower = 1,
+    lower_inclusive = TRUE,
+    upper = 97,
+    my_value_name = "Y axis: Label font size"
+  )
+  axis.text.x <- jamovi_sanitize(
+    my_value = self$options$axis.text.x,
+    return_value = 14,
+    na_ok = FALSE,
+    convert_to_number = TRUE,
+    lower = 1,
+    lower_inclusive = TRUE,
+    upper = 97,
+    my_value_name = "X axis: Tick font size"
+  )
+  axis.title.x <- jamovi_sanitize(
+    my_value = self$options$axis.title.x,
+    return_value = 15,
+    na_ok = FALSE,
+    convert_to_number = TRUE,
+    lower = 1,
+    lower_inclusive = TRUE,
+    upper = 97,
+    my_value_name = "X axis: Label font size"
+  )
+
+
+  myplot <- myplot + ggplot2::theme(
+    axis.text.y = element_text(size = axis.text.y),
+    axis.title.y = element_text(size = axis.title.y),
+    axis.text.x = element_text(size = axis.text.x),
+    axis.title.x = element_text(size = axis.title.x)
+  )
+
+
+  return(myplot)
+}
