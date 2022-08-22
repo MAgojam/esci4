@@ -16,6 +16,9 @@
             this.setPanels(ui, event);
         },
 
+        conf_level_changed: function(ui, event) {
+            ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
+        },
 
         raw_button_changed: function(ui, event) {
             this.setPanels(ui, event);
@@ -41,7 +44,7 @@
               ui.spanel.collapse();
               ui.rpanel.expand();
             }
-            //ui.alpha.setValue(1 - Number(ui.conf_level.value())/100);
+            ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
 
         }
 

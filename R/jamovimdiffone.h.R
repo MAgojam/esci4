@@ -1558,6 +1558,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 title="Hypothesis Test Plots",
                 width=550,
                 height=250,
+                visible="(evaluate_hypotheses)",
                 renderFun=".plot_hplot"))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(

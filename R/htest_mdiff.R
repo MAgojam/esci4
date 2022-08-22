@@ -141,7 +141,7 @@ test_mdiff <- function(
     CI <- glue::glue("{confidence}% CI [{format(es$LL)}, {format(es$UL)}])")
 
     CI_compare <- if (significant)
-      "Null is not in CI"
+      "Null is not in the CI"
     else
       "Null is in the CI"
 

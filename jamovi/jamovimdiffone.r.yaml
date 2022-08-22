@@ -324,5 +324,6 @@ items:
       type: Image
       width:  550
       height: 250
+      visible: (evaluate_hypotheses)
       renderFun: .plot_hplot
 ...
