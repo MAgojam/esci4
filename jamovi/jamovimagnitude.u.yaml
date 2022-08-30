@@ -137,7 +137,7 @@ children:
               column: 2
               row: 11
           - type: Label
-            label: 'Base dimensions:'
+            label: 'Dimensions:'
             cell:
               column: 0
               row: 1

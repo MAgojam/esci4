@@ -792,7 +792,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="s_component", 
                         `type`="number", 
                         `title`="Variability", 
-                        `superTitle`="Percentile", 
+                        `superTitle`="Calculation component", 
                         `visible`="(show_calculations & effect_size == 'mean')"),
                     list(
                         `name`="n_component", 
@@ -808,7 +808,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Image$new(
                 options=options,
                 name="magnitude_plot",
-                title="Magnitude",
+                title="Estimation Figure",
                 requiresData=TRUE,
                 width=400,
                 height=300,

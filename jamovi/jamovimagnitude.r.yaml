@@ -96,7 +96,7 @@ items:
         - name: s_component
           type: number
           title: Variability
-          superTitle: Percentile
+          superTitle: Calculation component
           visible: (show_calculations & effect_size == 'mean')
         - name: n_component
           type: number
@@ -110,7 +110,7 @@ items:
       visible: true
 
     - name: magnitude_plot
-      title: Magnitude
+      title: Estimation Figure
       type: Image
       requiresData: true
       width:  400

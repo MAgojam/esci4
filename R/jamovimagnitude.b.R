@@ -21,7 +21,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
             width <- jamovi_sanitize(
                 my_value = self$options$es_plot_width,
-                return_value = 200,
+                return_value = 300,
                 convert_to_number = TRUE,
                 lower = 10,
                 lower_inclusive = TRUE,
@@ -30,7 +30,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
             height <- jamovi_sanitize(
                 my_value = self$options$es_plot_height,
-                return_value = 550,
+                return_value = 400,
                 convert_to_number = TRUE,
                 lower = 10,
                 lower_inclusive = TRUE,
@@ -87,6 +87,9 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            divider <- 1
+            if (self$options$effect_size == "median") divider <- 4
+
             # Basic plot
             notes <- NULL
             args <- list()
@@ -132,10 +135,32 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
             args$ggtheme <- ggtheme[[1]]
 
+            width <- jamovi_sanitize(
+              my_value = self$options$es_plot_width,
+              return_value = 300,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 2000,
+              upper_inclusive = TRUE
+            )
+            height <- jamovi_sanitize(
+              my_value = self$options$es_plot_height,
+              return_value = 400,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 4000,
+              upper_inclusive = TRUE
+            )
+
+
             # Store notes from basic plot
             notes <- c(
                 notes,
-                args$warnings
+                args$warnings,
+                names(width),
+                names(height)
             )
             args$warnings <- NULL
 
@@ -280,7 +305,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 "point_size_d",
                 function(n) return(c(
                     "raw" = as.numeric(self$options$size_raw),
-                    "summary" = as.numeric(self$options$size_summary)
+                    "summary" = as.numeric(self$options$size_summary)/divider
                 ))
             )
 
@@ -316,7 +341,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 "interval_size",
                 "interval_size_d",
                 function(n) return(c(
-                    "summary" = as.numeric(self$options$size_interval)
+                    "summary" = as.numeric(self$options$size_interval)/divider
                 ))
             )
 
