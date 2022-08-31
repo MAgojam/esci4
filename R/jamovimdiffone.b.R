@@ -84,7 +84,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
-            return_value = 200,
+            return_value = 600,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -93,7 +93,7 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
           height <- jamovi_sanitize(
             my_value = self$options$es_plot_height,
-            return_value = 550,
+            return_value = 400,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -148,8 +148,11 @@ jamovimdiffoneClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           # Add calculation details
           alpha <- 1 - self$options$conf_level/100
           estimate$es_mean_difference$t_multiplier <- stats::qt(1-alpha/2, estimate$es_mean_difference$df)
-          estimate$es_mean_difference$s_component[c(1, 3)] <- estimate$es_smd$denominator[[1]]
-          estimate$es_mean_difference$n_component <- estimate$es_mean_difference$moe / estimate$es_mean_difference$t_multiplier / estimate$es_mean_difference$s_component
+          # estimate$es_mean_difference$s_component[c(1, 3)] <- estimate$es_smd$denominator[[1]]
+          estimate$es_mean_difference$n_component <- 1 / sqrt(estimate$es_mean_difference$df + 1)
+          estimate$es_mean_difference$s_component <- estimate$es_mean_difference$moe / estimate$es_mean_difference$t_multiplier / estimate$es_mean_difference$n_component
+
+          estimate$es_median_difference$df <- NULL
 
           # Fill tables
           jamovi_estimate_filler(self, estimate, TRUE)
@@ -283,20 +286,6 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
 
 
 
-  args$reference_mean <- jamovi_required_numeric(
-    self$options$reference_mean
-  )
-  if (!is.numeric(args$reference_mean)) {
-    notes <- c(
-      "For this analysis, please specify a Reference mean (<i>M</i><sub>Referenece</sub>)"
-    )
-    self$results$help$setState(notes)
-    args$reference_mean <- NULL
-
-  }
-
-
-
   if(from_raw) {
 
     if (is.null(outcome_variable)) {
@@ -320,9 +309,9 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
     args$comparison_n <- jamovi_required_numeric(
       self$options$comparison_n,
       integer_required = TRUE,
-      lower = 0,
-      lower_inclusive = FALSE,
-      my_value_name = "Sample size (<i>N</i>)"
+      lower = 2,
+      lower_inclusive = TRUE,
+      my_value_name = "Comparison group sample size (<i>N</i>)"
     )
 
     unfilled <- NULL
@@ -348,8 +337,25 @@ jamovi_mdiff_one <- function(self, outcome_variable = NULL, save_raw_data = FALS
       return(NULL)
     }
 
+    if (length(notes) > 0) {
+      self$results$help$setState(notes)
+      return(NULL)
+    }
+
   }
 
+
+  args$reference_mean <- jamovi_required_numeric(
+    self$options$reference_mean
+  )
+  if (!is.numeric(args$reference_mean)) {
+    notes <- c(
+      "For this analysis, please specify a Reference value"
+    )
+    self$results$help$setState(notes)
+    args$reference_mean <- NULL
+
+  }
 
   # Step 2: Get analysis properties-----------------------------
   call <- esci4::estimate_mdiff_one

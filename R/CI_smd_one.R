@@ -90,8 +90,8 @@ CI_smd_one <- function(
         "<i>d</i><sub>1</sub>"
       else
         "<i>d</i><sub>1.biased</sub>",
-    denominator_name = "s_sample",
-    denominator_name_html = "<i>s</i><sub>sample</sub>",
+    denominator_name = "s",
+    denominator_name_html = "<i>s</i>",
     bias_corrected = correct_bias
   )
 

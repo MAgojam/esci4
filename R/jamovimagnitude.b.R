@@ -409,8 +409,8 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
         args$n <- jamovi_required_numeric(
             self$options$n,
             integer_required = TRUE,
-            lower = 0,
-            lower_inclusive = FALSE,
+            lower = 2,
+            lower_inclusive = TRUE,
             my_value_name = "Sample size (<i>N</i>)"
         )
 

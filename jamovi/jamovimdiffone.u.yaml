@@ -47,7 +47,7 @@ children:
           column: 0
           row: 0
       - type: Label
-        label: '<span style="font-weight:normal">Comparison mean (<i>M<sub>comparison</sub></i>)</span>'
+        label: '<span style="font-weight:normal">Comparison mean (<i>M</i>)</span>'
         cell:
           column: 0
           row: 1
@@ -61,7 +61,7 @@ children:
           column: 1
           row: 1
       - type: Label
-        label: '<span style="font-weight:normal">Comparison standard deviation (<i>s<sub>comparison</sub></i>)</span>'
+        label: '<span style="font-weight:normal">Comparison standard deviation (<i>s</i>)</span>'
         cell:
           column: 0
           row: 2
@@ -75,7 +75,7 @@ children:
           column: 1
           row: 2
       - type: Label
-        label: '<span style="font-weight:normal">Comparison group sample size (<i>N<sub>comparison</sub></i>)</span>'
+        label: '<span style="font-weight:normal">Comparison group sample size (<i>N</i>)</span>'
         cell:
           column: 0
           row: 3

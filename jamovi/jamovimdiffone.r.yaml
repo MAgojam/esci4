@@ -104,7 +104,7 @@ items:
           type: text
         - name: effect_size
           type: number
-          title: <i>M</i>-Reference
+          title: <i>M</i> &ndash; Reference
         - name: LL
           title: LL
           type: number
@@ -153,7 +153,7 @@ items:
           title: 'Effect'
           type: text
         - name: numerator
-          title: <i>M</i> - Reference
+          title: <i>M</i> &ndash; Reference
           superTitle: Numerator
           type: number
         - name: denominator
@@ -225,10 +225,11 @@ items:
           title: <i>SE</i>
           type: number
           visible: (show_details)
-        - name: df
-          title: <i>df</i>
-          type: integer
-          visible: (show_details)
+
+    - name: estimation_plot_warnings
+      title: Estimation Figure Warnings
+      type: Html
+      visible: true
 
     - name: estimation_plots
       title: Estimation Figure
@@ -240,11 +241,6 @@ items:
           height: 450
           requiresData: true
           renderFun: .estimation_plots
-
-    - name: estimation_plot_warnings
-      title: Estimation Figure Warnings
-      type: Html
-      visible: true
 
     - name:  htest
       title: Evaluate Hypotheses
