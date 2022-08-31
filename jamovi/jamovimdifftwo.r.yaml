@@ -109,6 +109,10 @@ items:
           title: <i>df</i>
           type: integer
           visible: (show_details & effect_size == 'mean_difference')
+        - name: s_pooled
+          type: number
+          title: <i>s</i><sub>p</sub>
+          visible: (effect_size == 'mean_difference' & assume_equal_variance)
 
     - name:  es_mean_difference
       title: Mean Difference

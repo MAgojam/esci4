@@ -175,20 +175,23 @@ children:
         cell:
           column: 2
           row: 5
-  - type: LayoutBox
-    stretchFactor: 2
-    margin: none
-    children:
-      - type: TextBox
-        name: outcome_variable_name
-        format: string
+      - type: LayoutBox
         stretchFactor: 2
-        enable: '(switch:from_summary)'
-      - type: TextBox
-        name: grouping_variable_name
-        format: string
-        stretchFactor: 2
-        enable: '(switch:from_summary)'
+        margin: none
+        cell:
+          column: 0
+          row: 6
+        children:
+          - type: TextBox
+            name: outcome_variable_name
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
+          - type: TextBox
+            name: grouping_variable_name
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
   - type: Label
     label: '<hr>Analysis options'
     stretchFactor: 1

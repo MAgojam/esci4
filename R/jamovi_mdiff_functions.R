@@ -27,23 +27,33 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   try(assume_equal_variance <- self$options$assume_equal_variance)
   try(tbl_eval <- self$results$htest)
   try(tbl_htest_summary <- self$results$htest_summary)
+  try(effect_size <- self$options$effect_size)
 
 
-  if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
-    if (assume_equal_variance) {
-      tbl_overview$setNote(
-        key = "overview_table",
-        note = "Variances are assumed equal, so <i>s</i><sub>p</sub> was used to calculate each CI.",
-        init = FALSE
-      )
-    } else {
-      tbl_overview$setNote(
-        key = "overview_table",
-        note = "Variances are not assumed equal, and so the CI was calculated separately for each mean.",
-        init = FALSE
-      )
+  if (effect_size == "mean_difference") {
 
+    if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
+      if (assume_equal_variance) {
+        tbl_overview$setNote(
+          key = "overview_table",
+          note = "Variances are assumed equal, so <i>s</i><sub>p</sub> was used to calculate each CI.",
+          init = TRUE
+        )
+      } else {
+        tbl_overview$setNote(
+          key = "overview_table",
+          note = "Variances are not assumed equal, and so the CI was calculated separately for each mean.",
+          init = TRUE
+        )
+
+      }
     }
+  } else {
+    tbl_overview$setNote(
+      key = "overview_table",
+      note = NULL,
+      init = TRUE
+    )
   }
 
   if (!is.null(tbl_es_mean_difference) & !is.null(assume_equal_variance)) {

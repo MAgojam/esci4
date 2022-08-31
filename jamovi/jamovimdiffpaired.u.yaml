@@ -149,36 +149,39 @@ children:
         cell:
           column: 2
           row: 4
-  - type: LayoutBox
-    stretchFactor: 2
-    margin: none
-    children:
-      - type: TextBox
-        name: 'n'
-        format: string
-        enable: '(switch:from_summary)'
       - type: LayoutBox
-        margin: small
-        style: inline
+        stretchFactor: 2
+        margin: none
+        cell:
+          column: 0
+          row: 5
         children:
-          - type: RadioButton
-            name: enter_r_button
-            optionName: enter_r_or_sdiff
-            optionPart: enter_r
+          - type: TextBox
+            name: 'n'
+            format: string
             enable: '(switch:from_summary)'
-          - type: RadioButton
-            name: enter_sdiff_button
-            optionName: enter_r_or_sdiff
-            optionPart: enter_sdiff
-            enable: '(switch:from_summary)'
-      - type: TextBox
-        name: correlation
-        format: string
-        enable: '(switch:from_summary && enter_r_or_sdiff:enter_r)'
-      - type: TextBox
-        name: sdiff
-        format: string
-        enable: '(switch:from_summary && enter_r_or_sdiff:enter_sdiff)'
+          - type: LayoutBox
+            margin: small
+            style: inline
+            children:
+              - type: RadioButton
+                name: enter_r_button
+                optionName: enter_r_or_sdiff
+                optionPart: enter_r
+                enable: '(switch:from_summary)'
+              - type: RadioButton
+                name: enter_sdiff_button
+                optionName: enter_r_or_sdiff
+                optionPart: enter_sdiff
+                enable: '(switch:from_summary)'
+          - type: TextBox
+            name: correlation
+            format: string
+            enable: '(switch:from_summary && enter_r_or_sdiff:enter_r)'
+          - type: TextBox
+            name: sdiff
+            format: string
+            enable: '(switch:from_summary && enter_r_or_sdiff:enter_sdiff)'
   - type: Label
     label: '<hr>Analysis options'
     stretchFactor: 1

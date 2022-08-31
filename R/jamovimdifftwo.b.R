@@ -40,10 +40,10 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         # Add calculation details
         alpha <- 1 - self$options$conf_level/100
         estimate$es_mean_difference$t_multiplier <- stats::qt(1-alpha/2, estimate$es_mean_difference$df)
-        # estimate$es_mean_difference$s_component <- estimate$es_smd$denominator[[1]]
 
         for (x in 1:nrow(estimate$es_smd)) {
           estimate$es_mean_difference$s_component[c(x*3-2, x*3-1, x*3-0)] <- estimate$es_smd$denominator[[x]]
+          estimate$overview$s_pooled[c(x*2-1, x*2-0)] <- estimate$es_smd$denominator[[x]]
         }
         estimate$es_mean_difference$n_component <- estimate$es_mean_difference$SE / estimate$es_mean_difference$s_component
 

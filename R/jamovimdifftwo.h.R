@@ -1525,8 +1525,8 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_mean_ratio = function() private$.items[["es_mean_ratio"]],
         es_median_difference = function() private$.items[["es_median_difference"]],
         es_median_ratio = function() private$.items[["es_median_ratio"]],
-        estimation_plots = function() private$.items[["estimation_plots"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        estimation_plots = function() private$.items[["estimation_plots"]],
         htest = function() private$.items[["htest"]],
         htest_summary = function() private$.items[["htest_summary"]],
         hplot = function() private$.items[["hplot"]]),
@@ -1662,7 +1662,12 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details & effect_size == 'mean_difference')"))))
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
+                    list(
+                        `name`="s_pooled", 
+                        `type`="number", 
+                        `title`="<i>s</i><sub>p</sub>", 
+                        `visible`="(effect_size == 'mean_difference' & assume_equal_variance)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_mean_difference",
@@ -1986,6 +1991,11 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="UL", 
                         `title`="UL", 
                         `type`="number"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Estimation Figure Warnings",
+                visible=TRUE))
             self$add(jmvcore::Array$new(
                 options=options,
                 name="estimation_plots",
@@ -1997,11 +2007,6 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     height=450,
                     requiresData=TRUE,
                     renderFun=".estimation_plots")))
-            self$add(jmvcore::Html$new(
-                options=options,
-                name="estimation_plot_warnings",
-                title="Estimation Figure Warnings",
-                visible=TRUE))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="htest",
@@ -2217,8 +2222,8 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_mean_ratio} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$hplot} \tab \tab \tab \tab \tab an image \cr

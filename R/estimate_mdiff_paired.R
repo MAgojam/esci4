@@ -521,8 +521,9 @@ estimate_mdiff_paired.data.frame <- function(
 
 
   if (sum(missing$missing) > 0) {
+    estimate$overview$missing <- missing$missing
     estimate$overview_propertes <- list()
-    invalid <- max(missing$n) - min(estimate$overview$n)
+    invalid <- max(missing$n + missing$missing) - min(estimate$overview$n)
     estimate$overview_properties$message <-
       paste(
         "N_pairs = ",

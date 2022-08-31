@@ -55,9 +55,9 @@ options:
       default: enter_r
       options:
           - name: enter_r
-            title: Enter r
+            title: Enter <i>r</i>
           - name: enter_sdiff
-            title: Enter standard deviation of difference scores (<i>s</i><sub>diff</diff>)
+            title: Enter standard deviation of difference scores (<i>s</i><sub>diff</sub>)
 
     - name: correlation
       title: Correlation (<i>r</i>)

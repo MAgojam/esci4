@@ -35,20 +35,20 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
-            return_value = 200,
+            return_value = 600,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
-            upper = 2000,
+            upper = 3000,
             upper_inclusive = TRUE
           )
           height <- jamovi_sanitize(
             my_value = self$options$es_plot_height,
-            return_value = 550,
+            return_value = 400,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
-            upper = 4000,
+            upper = 5000,
             upper_inclusive = TRUE
           )
 
@@ -166,18 +166,40 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       my_value_name = "<i>N</i>"
     )
 
-    my_value_name <- "correlation between measures (<i>r</i>)"
-    if (self$options$enter_r_or_sdiff == "enter_sdiff") my_value_name <- "Standard deviation of difference scores (<i>s</i><sub>diff</sub>) produced an invalid <i>r</i> value of "
 
-    args$correlation <- jamovi_required_numeric(
-      self$options$correlation,
-      integer_required = FALSE,
-      lower = -1,
-      lower_inclusive = TRUE,
-      upper = 1,
-      upper_inclusive = TRUE,
-      my_value_name = my_value_name
-    )
+    if (self$options$enter_r_or_sdiff == "enter_sdiff") {
+        args$sdiff <- jamovi_required_numeric(
+          self$options$sdiff,
+          integer_required = FALSE,
+          lower = 0,
+          lower_inclusive = TRUE,
+          my_value_name = "Standard deviation of difference scores (<i>s</i><sub>diff</sub>)"
+        )
+
+        if (!is.na(args$sdiff)) {
+          args$correlation <- jamovi_required_numeric(
+            self$options$correlation,
+            integer_required = FALSE,
+            lower = -1,
+            lower_inclusive = TRUE,
+            upper = 1,
+            upper_inclusive = TRUE,
+            my_value_name = "Standard deviation of difference scores (<i>s</i><sub>diff</sub>) produced an erroneous value of <i>r</i>.  With your input, <i>r</i> = "
+          )
+          args$sdiff <- NULL
+        }
+
+    } else {
+      args$correlation <- jamovi_required_numeric(
+        self$options$correlation,
+        integer_required = FALSE,
+        lower = -1,
+        lower_inclusive = TRUE,
+        upper = 1,
+        upper_inclusive = TRUE,
+        my_value_name = "correlation between measures (<i>r</i>)"
+      )
+    }
 
 
     unfilled <- NULL
@@ -206,6 +228,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
       return(NULL)
     }
 
+
   }
 
 
@@ -232,6 +255,10 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
     args$reference_measure <- self$options$reference_measure
     args$data[[args$comparison_measure]] <- as.numeric(args$data[[args$comparison_measure]])
     args$data[[args$reference_measure]] <- as.numeric(args$data[[args$reference_measure]])
+
+    # self$results$debug$setContent(args$data)
+    # self$results$debug$setVisible(TRUE)
+
   } else {
     args$comparison_measure_name <- jamovi_sanitize(
       self$options$comparison_measure_name,
@@ -255,13 +282,6 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
     classes <- paste(classes, class(e))
   }
 
-  self$results$debug$setContent(
-    paste(
-      paste(names(args), collapse = ", "),
-      paste(args, collapse = ", "),
-      paste(classes, collapse = ", ")
-    )
-  )
 
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))

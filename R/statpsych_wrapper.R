@@ -137,9 +137,9 @@ wrapper_ci.stdmean.ps <- function(
   # Properties ------------------------------
   properties <- list(
     effect_size_name = "d_average",
-    effect_size_name_html = "<i>d</i><sub>average</sub>",
+    effect_size_name_html = "<i>d</i><sub>avg</sub>",
     denominator_name = "s_average",
-    denominator_name_html = "<i>s</i><sub>average</sub>",
+    denominator_name_html = "<i>s</i><sub>avg</sub>",
     bias_corrected = TRUE
   )
 
