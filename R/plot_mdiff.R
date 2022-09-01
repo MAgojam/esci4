@@ -120,6 +120,8 @@ plot_mdiff <- function(
   } else {
     gdata <- estimate$es_median_difference
     gdata$df <- NA
+    gdata$ta_LL <- NULL
+    gdata$ta_UL <- NULL
   }
   gdata$y_value <- gdata$effect_size
   gdata$x_label <- gdata$effect

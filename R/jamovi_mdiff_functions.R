@@ -159,7 +159,7 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
     convert_to_number = TRUE,
     lower = 10,
     lower_inclusive = TRUE,
-    upper = 2000,
+    upper = 3000,
     upper_inclusive = TRUE
   )
   height <- jamovi_sanitize(

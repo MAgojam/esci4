@@ -9,6 +9,7 @@ plot_magnitude <- function(
   error_scale = 0.3,
   error_nudge = 0.35,
   error_normalize = c("groups", "all", "panels"),
+  null_hypothesis = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -105,6 +106,77 @@ plot_magnitude <- function(
     myplot <- try(eval(raw_expression))
   }
 
+  # Null?
+  plot_null <- FALSE
+  interval_null <- FALSE
+  null_symbol <- if (effect_size == "mean") "mu" else "eta"
+
+  if (length(null_hypothesis) == 1) null_hypothesis[[2]] = null_hypothesis[[1]]
+
+  if (!is.na(null_hypothesis[[1]])) {
+    plot_null <- TRUE
+    null_label <- paste(
+      "H[0]: ",
+      null_symbol,
+      " == ",
+      null_hypothesis[[1]],
+      sep = ""
+    )
+  }
+
+  if (!is.na(null_hypothesis[[1]]) & !is.na(null_hypothesis[[2]])) {
+    if (null_hypothesis[[1]] != null_hypothesis[[2]]) {
+      plot_null <- TRUE
+      interval_null <- TRUE
+      null_label <- glue::glue(
+        "{null_hypothesis[[1]]}*' < '*{null_symbol}*' < '*{null_hypothesis[[2]]}"
+      )
+    }
+  }
+
+  if (plot_null & !interval_null) {
+    myplot <- myplot + ggplot2::geom_hline(
+      yintercept = null_hypothesis[[1]],
+      colour = "red",
+      size = 1.5,
+      linetype = "dotted"
+    )
+    myplot <- myplot + ggplot2::annotate(
+      geom = "text",
+      label = null_label,
+      y = null_hypothesis[[1]],
+      x = Inf,
+      vjust = -1,
+      hjust = "inward",
+      parse = TRUE
+    )
+  }
+
+  if (plot_null & interval_null) {
+    myplot <- myplot + ggplot2::geom_rect(
+      ggplot2::aes(
+        ymin = null_hypothesis[[1]],
+        ymax = null_hypothesis[[2]],
+        xmin = -Inf,
+        xmax = Inf
+      ),
+      alpha = 0.07,
+      fill = 'black'
+    )
+
+    myplot <- myplot + ggplot2::annotate(
+      geom = "text",
+      label = null_label,
+      y = null_hypothesis[[2]],
+      x = Inf,
+      vjust = -1,
+      hjust = "inward",
+      parse = TRUE
+    )
+
+  }
+
+
   # Customize plot -------------------------------
   # Default aesthetics
   myplot <- esci_plot_simple_aesthetics(myplot, use_ggdist = (effect_size == "mean"))
@@ -115,7 +187,7 @@ plot_magnitude <- function(
     labels = gdata$x_label
   )
   myplot <- myplot + ggplot2::coord_cartesian(
-    xlim = c(min(gdata$x_value)-0.5, max(gdata$x_value)+0.5)
+    xlim = c(min(gdata$x_value)-0.5, max(gdata$x_value)+0.75)
   )
 
   # Labels -----------------------------

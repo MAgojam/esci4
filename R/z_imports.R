@@ -5,8 +5,6 @@
 # Methods and details: http://mkweb.bcgsc.ca/colorblind
 # Color names: http://mkweb.bcgsc.ca/colornames
 ################################################################################
-
-
 #' @importFrom glue glue
 #' @importFrom methods is
 #' @importFrom rlang enquo

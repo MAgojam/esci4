@@ -423,7 +423,7 @@ jamovi_plot_mdiff <- function(
     convert_to_number = TRUE,
     lower = 10,
     lower_inclusive = TRUE,
-    upper = 5000,
+    upper = 4000,
     upper_inclusive = TRUE,
     my_value_name = "Plot height"
   )

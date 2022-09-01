@@ -59,12 +59,12 @@ options:
       default: Grouping variable
 
     - name: comparison_labels
-      title: Comparison levels
+      title: Comparison subset
       type: String
       default: ' '
 
     - name: reference_labels
-      title: Reference levels
+      title: Reference subset
       type: String
       default: ' '
 
@@ -237,7 +237,7 @@ options:
 
     - name: shape_raw_unused
       type: List
-      default: 'square filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle

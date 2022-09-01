@@ -42,7 +42,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             difference_axis_breaks = "auto",
             shape_raw_reference = "circle filled",
             shape_raw_comparison = "circle filled",
-            shape_raw_unused = "square filled",
+            shape_raw_unused = "circle filled",
             shape_summary_reference = "circle filled",
             shape_summary_comparison = "circle filled",
             shape_summary_unused = "circle filled",
@@ -288,7 +288,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             private$..shape_raw_unused <- jmvcore::OptionList$new(
                 "shape_raw_unused",
                 shape_raw_unused,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -2390,7 +2390,7 @@ jamovimdiffindcontrast <- function(
     difference_axis_breaks = "auto",
     shape_raw_reference = "circle filled",
     shape_raw_comparison = "circle filled",
-    shape_raw_unused = "square filled",
+    shape_raw_unused = "circle filled",
     shape_summary_reference = "circle filled",
     shape_summary_comparison = "circle filled",
     shape_summary_unused = "circle filled",
