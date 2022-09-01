@@ -65,15 +65,6 @@ plot_describe <- function(
       draw_percentile <- FALSE
     } else {
       draw_percentile <- TRUE
-      #esci_assert_type(mark_percentile, "is.numeric")
-      # esci_assert_range(
-      #   mark_percentile,
-      #   lower = 0,
-      #   upper = 1,
-      #   lower_inclusive = TRUE,
-      #   upper_inclusive = TRUE
-      # )
-
     }
   }
 
@@ -90,42 +81,39 @@ plot_describe <- function(
   rd_median <- estimate$overview$median[1]
 
   # Marking percentile
-  fills <- c("TRUE" = fill_highlighted, "FALSE" = fill_regular)
-  q_value <- if(draw_percentile)
-      quantile(
-        x = rd$outcome_variable,
-        probs = c(mark_percentile),
-        na.rm = TRUE
-      )
-    else
-      min(rd$outcome_variable, na.rm = TRUE) - 100
+  fills <- c("FALSE" = fill_regular, "TRUE" = fill_highlighted)
+
+  if (draw_percentile) {
+    rd$outcome_variable <- sort(rd$outcome_variable)
+    rd$q <- seq(1:nrow(rd))/nrow(rd)
+    rd$qfill <- rd$q <= mark_percentile
+  } else {
+    rd$q <- mark_percentile - 1
+    rd$qfill <- FALSE
+  }
 
 
   # Plot --------------------------------------------------------------
-  # Base plot
-  myplot <- ggplot2::ggplot(
-    data = rd,
-    ggplot2::aes(
-      x = outcome_variable,
-      fill = stat(x <= q_value)
-    )
-  )
-
-  # Theme
-  myplot <- myplot + ggtheme
-
-  # Fills for marking percentiles
-  myplot <- myplot + ggplot2::scale_fill_manual(values = fills)
-
   # Histogram or dotplot
   if (type == "histogram") {
-    myplot <- myplot + ggplot2::geom_histogram(
+    myplot <- ggplot2::ggplot() + ggplot2::geom_histogram(
+      data = rd,
+      ggplot2::aes(
+        x = outcome_variable,
+        fill = qfill
+      ),
       bins = histogram_bins,
       color = color
     )
 
   } else {
-    myplot <- myplot + ggdist::geom_dots(
+    myplot <- ggplot2::ggplot() + ggdist::geom_dots(
+      data = rd,
+      ggplot2::aes(
+        x = outcome_variable,
+        z = q,
+        fill = stat(z <= mark_percentile)
+      ),
       orientation = "horizontal",
       scale = 1,
       color = color
@@ -133,6 +121,11 @@ plot_describe <- function(
 
   }
 
+  # Theme
+  myplot <- myplot + ggtheme
+
+  # Fills for marking percentiles
+  myplot <- myplot + ggplot2::scale_fill_manual(values = fills)
 
   # z lines
   if (mark_z_lines) {
