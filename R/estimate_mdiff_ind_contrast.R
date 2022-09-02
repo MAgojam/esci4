@@ -839,12 +839,30 @@ Invalid groups are those with n < 2.
   # Warning if all_overview has a row for missing grouping data
   if ("missing" %in% row.names(all_overview)) {
     n_miss <- all_overview[row.names(all_overview) == "missing", "n"]
-    msg <-  glue::glue("
+    n_rows <- all_overview[row.names(all_overview) == "missing", "missing"]
+    if (n_miss > 0 & n_rows > 0) {
+      msg <-  glue::glue("
+There are {n_rows} rows missing the outcome variable and grouping variable and {n_miss} rows missing only the grouping variable ({grouping_variable_name}).
+Outcomes with missing grouping variables were **dropped* from the analysis
+    ")
+      estimate$warnings <- c(estimate$warnings, msg)
+      warning(msg)
+    }
+    if (n_miss > 0 & n_rows == 0) {
+      msg <-  glue::glue("
 There are {n_miss} missing values in grouping variable {grouping_variable_name}.
 Outcomes with missing grouping variables were **dropped* from the analysis
     ")
-    estimate$warnings <- c(estimate$warnings, msg)
-    warning(msg)
+      estimate$warnings <- c(estimate$warnings, msg)
+      warning(msg)
+    }
+    if (n_rows > 0 & n_miss == 0) {
+      msg <-  glue::glue("
+There are {n_rows} rows that were missing values for both the grouping variable ({grouping_variable_name}) and the outcome variable.
+    ")
+      estimate$warnings <- c(estimate$warnings, msg)
+      warning(msg)
+    }
   }
 
   if(length(invalid_groups) > 0) {

@@ -573,9 +573,13 @@ overview.vector <- function(
     overview_table[is.na(overview_table$n), ]$n <- 0
   }
 
+  if (nrow(overview_table[is.na(overview_table$missing), ]) > 0) {
+    overview_table[is.na(overview_table$missing), ]$missing <- 0
+  }
+
   na_level <- NULL
-  if(overview_table[nrow(overview_table), "n"] == 0) {
-    overview_table <- head(overview_table, -1)
+  if(overview_table[nrow(overview_table), "n"] == 0 & overview_table[nrow(overview_table), "missing"] == 0) {
+      overview_table <- head(overview_table, -1)
   } else {
     na_level <- "Missing"
     while (na_level %in% overview_table$group) {
@@ -702,7 +706,7 @@ wrap_ci_median1 <- function(
   drop = FALSE
 ) {
 
-  if(length(x) < 2) return(c(median(x), NA, NA, NA))
+  if(length(na.omit(x)) < 2) return(c(median(x), NA, NA, NA))
 
   res <- statpsych::ci.median1(
     alpha = 1 - conf_level,

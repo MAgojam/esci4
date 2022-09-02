@@ -42,8 +42,8 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         estimate$es_mean_difference$t_multiplier <- stats::qt(1-alpha/2, estimate$es_mean_difference$df)
 
         for (x in 1:nrow(estimate$es_smd)) {
+          estimate$overview[estimate$overview$outcome_variable_name == estimate$es_smd$outcome_variable_name[[x]], "s_pooled"] <- estimate$es_smd$denominator[[x]]
           estimate$es_mean_difference$s_component[c(x*3-2, x*3-1, x*3-0)] <- estimate$es_smd$denominator[[x]]
-          estimate$overview$s_pooled[c(x*2-1, x*2-0)] <- estimate$es_smd$denominator[[x]]
         }
         estimate$es_mean_difference$n_component <- estimate$es_mean_difference$SE / estimate$es_mean_difference$s_component
 
@@ -288,6 +288,7 @@ jamovi_mdiff_two <- function(
     }
     args$grouping_variable <- unname(self$options$grouping_variable)
     args$switch_comparison_order <- self$options$switch_comparison_order
+
   } else {
     args$outcome_variable_name <- jamovi_sanitize(
       self$options$outcome_variable_name,
@@ -320,6 +321,8 @@ jamovi_mdiff_two <- function(
 
   }
 
+  # self$results$debug$setContent(args)
+  # self$results$debug$setVisible(TRUE)
 
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))
@@ -331,6 +334,9 @@ jamovi_mdiff_two <- function(
   }
 
   self$results$help$setState(notes)
+
+
+
 
   return(estimate)
 
