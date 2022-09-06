@@ -60,6 +60,7 @@ plot_describe <- function(
 
   if (is.null(mark_percentile)) {
     draw_percentile <- FALSE
+    mark_percentile <- 0
   } else {
     if (mark_percentile == 0) {
       draw_percentile <- FALSE
@@ -84,6 +85,7 @@ plot_describe <- function(
   fills <- c("FALSE" = fill_regular, "TRUE" = fill_highlighted)
 
   if (draw_percentile) {
+    rd <- rd[!is.na(rd$outcome_variable), ]
     rd$outcome_variable <- sort(rd$outcome_variable)
     rd$q <- seq(1:nrow(rd))/nrow(rd)
     rd$qfill <- rd$q <= mark_percentile

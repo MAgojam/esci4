@@ -142,7 +142,8 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
               lower = 10,
               lower_inclusive = TRUE,
               upper = 2000,
-              upper_inclusive = TRUE
+              upper_inclusive = TRUE,
+              my_value_name = "Plot width"
             )
             height <- jamovi_sanitize(
               my_value = self$options$es_plot_height,
@@ -151,7 +152,8 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
               lower = 10,
               lower_inclusive = TRUE,
               upper = 4000,
-              upper_inclusive = TRUE
+              upper_inclusive = TRUE,
+              my_value_name = "Plot height"
             )
 
 

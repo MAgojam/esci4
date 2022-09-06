@@ -48,7 +48,7 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
-            upper = 5000,
+            upper = 4000,
             upper_inclusive = TRUE
           )
 

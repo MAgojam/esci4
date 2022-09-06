@@ -467,22 +467,6 @@ jamovi_plot_hdiff <- function(
   # Basic plot
   notes <- NULL
 
-  myplot$layers[[3]]$aes_params$shape <- self$options$shape_summary_difference
-  myplot$layers[[3]]$aes_params$colour <- self$options$color_summary_difference
-  myplot$layers[[3]]$aes_params$fill <- self$options$fill_summary_difference
-  myplot$layers[[3]]$aes_params$alpha <- as.numeric(self$options$alpha_summary_difference)
-  myplot$layers[[3]]$aes_params$size <- as.numeric(self$options$size_summary_difference)
-
-  myplot$layers[[1]]$aes_params$linetype <- self$options$linetype_summary_difference
-  myplot$layers[[2]]$aes_params$linetype <- self$options$linetype_summary_difference
-  myplot$layers[[1]]$aes_params$colour <- self$options$color_interval_difference
-  myplot$layers[[2]]$aes_params$colour <- self$options$color_interval_difference
-  myplot$layers[[1]]$aes_params$alpha <- as.numeric(self$options$alpha_interval_difference)
-  myplot$layers[[2]]$aes_params$alpha <- as.numeric(self$options$alpha_interval_difference)
-  myplot$layers[[1]]$aes_params$size <- as.numeric(self$options$size_interval_difference)+2
-  myplot$layers[[2]]$aes_params$size <- as.numeric(self$options$size_interval_difference)
-
-
   # Basic graph options --------------------
   # Axis font sizes
 
@@ -533,11 +517,6 @@ jamovi_plot_hdiff <- function(
     axis.text.x = element_text(size = axis.text.x),
     axis.title.x = element_text(size = axis.title.x)
   )
-
-
-  # myplot <- myplot + ggplot2::theme(
-  #   axis.text.y = element_text(size = axis.text.y)
-  # )
 
 
   return(myplot)
