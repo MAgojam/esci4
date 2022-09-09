@@ -167,7 +167,7 @@ plot_magnitude <- function(
         xmin = -Inf,
         xmax = Inf
       ),
-      alpha = 0.07,
+      alpha = 0.12,
       fill = "red"
     )
 
