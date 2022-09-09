@@ -16,6 +16,11 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             effect_size = "mean",
             show_details = FALSE,
             show_calculations = FALSE,
+            evaluate_hypotheses = FALSE,
+            null_value = "0",
+            null_boundary = "0",
+            null_color = "#A40122",
+            alpha = 0.05,
             es_plot_width = "300",
             es_plot_height = "400",
             ymin = "auto",
@@ -104,6 +109,66 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 "show_calculations",
                 show_calculations,
                 default=FALSE)
+            private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
+                "evaluate_hypotheses",
+                evaluate_hypotheses,
+                default=FALSE)
+            private$..null_value <- jmvcore::OptionString$new(
+                "null_value",
+                null_value,
+                default="0")
+            private$..null_boundary <- jmvcore::OptionString$new(
+                "null_boundary",
+                null_boundary,
+                default="0")
+            private$..null_color <- jmvcore::OptionList$new(
+                "null_color",
+                null_color,
+                default="#A40122",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..alpha <- jmvcore::OptionNumber$new(
+                "alpha",
+                alpha,
+                default=0.05,
+                min=0,
+                max=1)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
@@ -542,6 +607,11 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..effect_size)
             self$.addOption(private$..show_details)
             self$.addOption(private$..show_calculations)
+            self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_value)
+            self$.addOption(private$..null_boundary)
+            self$.addOption(private$..null_color)
+            self$.addOption(private$..alpha)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -586,6 +656,11 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         effect_size = function() private$..effect_size$value,
         show_details = function() private$..show_details$value,
         show_calculations = function() private$..show_calculations$value,
+        evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_value = function() private$..null_value$value,
+        null_boundary = function() private$..null_boundary$value,
+        null_color = function() private$..null_color$value,
+        alpha = function() private$..alpha$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -629,6 +704,11 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..effect_size = NA,
         ..show_details = NA,
         ..show_calculations = NA,
+        ..evaluate_hypotheses = NA,
+        ..null_value = NA,
+        ..null_boundary = NA,
+        ..null_color = NA,
+        ..alpha = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -670,6 +750,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
+        es_smd = function() private$.items[["es_smd"]],
         magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
         magnitude_plot = function() private$.items[["magnitude_plot"]]),
     private = list(),
@@ -800,6 +881,58 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="Sample size", 
                         `superTitle`="Calculation component", 
                         `visible`="(show_calculations & effect_size == 'mean')"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_smd",
+                title="Standardized Mean Difference",
+                rows=1,
+                visible="(effect_size == 'mean' & evaluate_hypotheses)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="numerator", 
+                        `title`="<i>M</i> &ndash; Reference", 
+                        `superTitle`="Numerator", 
+                        `type`="number"),
+                    list(
+                        `name`="denominator", 
+                        `title`="Standardizer", 
+                        `superTitle`="Standardizer", 
+                        `type`="number"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>d</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="integer", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="d_biased", 
+                        `title`="<i>d</i><sub>biased</sub>", 
+                        `type`="number"))))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="magnitude_plot_warnings",
@@ -848,6 +981,11 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param effect_size .
 #' @param show_details .
 #' @param show_calculations .
+#' @param evaluate_hypotheses .
+#' @param null_value .
+#' @param null_boundary .
+#' @param null_color .
+#' @param alpha .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -885,6 +1023,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
@@ -908,6 +1047,11 @@ jamovimagnitude <- function(
     effect_size = "mean",
     show_details = FALSE,
     show_calculations = FALSE,
+    evaluate_hypotheses = FALSE,
+    null_value = "0",
+    null_boundary = "0",
+    null_color = "#A40122",
+    alpha = 0.05,
     es_plot_width = "300",
     es_plot_height = "400",
     ymin = "auto",
@@ -962,6 +1106,11 @@ jamovimagnitude <- function(
         effect_size = effect_size,
         show_details = show_details,
         show_calculations = show_calculations,
+        evaluate_hypotheses = evaluate_hypotheses,
+        null_value = null_value,
+        null_boundary = null_boundary,
+        null_color = null_color,
+        alpha = alpha,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,

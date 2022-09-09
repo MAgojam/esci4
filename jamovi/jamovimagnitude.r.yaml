@@ -104,6 +104,48 @@ items:
           superTitle: Calculation component
           visible: (show_calculations & effect_size == 'mean')
 
+    - name:  es_smd
+      title: Standardized Mean Difference
+      type: Table
+      rows:  1
+      visible: (effect_size == 'mean' & evaluate_hypotheses)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: numerator
+          title: <i>M</i> &ndash; Reference
+          superTitle: Numerator
+          type: number
+        - name: denominator
+          title: Standardizer
+          superTitle: Standardizer
+          type: number
+        - name: effect_size
+          type: number
+          title: "<i>d</i>"
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: df
+          title: <i>df</i>
+          type: integer
+          visible: (show_details)
+        - name: d_biased
+          title: "<i>d</i><sub>biased</sub>"
+          type: number
+
     - name: magnitude_plot_warnings
       title: Figure Warnings
       type: Html

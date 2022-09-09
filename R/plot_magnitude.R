@@ -153,6 +153,13 @@ plot_magnitude <- function(
   }
 
   if (plot_null & interval_null) {
+    myplot <- myplot + ggplot2::geom_hline(
+      yintercept = null_hypothesis[[2]] - ((null_hypothesis[[2]] - null_hypothesis[[1]])/2),
+      colour = "red",
+      size = 1.5,
+      linetype = "dotted"
+    )
+
     myplot <- myplot + ggplot2::geom_rect(
       ggplot2::aes(
         ymin = null_hypothesis[[1]],
@@ -161,18 +168,18 @@ plot_magnitude <- function(
         xmax = Inf
       ),
       alpha = 0.07,
-      fill = 'black'
+      fill = "red"
     )
 
-    myplot <- myplot + ggplot2::annotate(
-      geom = "text",
-      label = null_label,
-      y = null_hypothesis[[2]],
-      x = Inf,
-      vjust = -1,
-      hjust = "inward",
-      parse = TRUE
-    )
+    # myplot <- myplot + ggplot2::annotate(
+    #   geom = "text",
+    #   label = null_label,
+    #   y = null_hypothesis[[2]],
+    #   x = Inf,
+    #   vjust = -1,
+    #   hjust = "inward",
+    #   parse = TRUE
+    # )
 
   }
 

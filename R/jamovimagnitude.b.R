@@ -96,6 +96,49 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             args$estimate <- estimate
             args$data_layout <- self$options$data_layout
             args$effect_size = self$options$effect_size
+
+            #Hyothesis evaluation
+            interval_null <- FALSE
+            if (self$options$evaluate_hypotheses) {
+              args <- jamovi_arg_builder(
+                args,
+                "null_boundary",
+                my_value = self$options$null_boundary,
+                return_value = 0,
+                convert_to_number = TRUE,
+                lower = 0,
+                lower_inclusive = TRUE,
+                my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+              )
+              args <- jamovi_arg_builder(
+                args,
+                "point_null",
+                my_value = self$options$null_value,
+                return_value = 0,
+                convert_to_number = TRUE,
+                my_value_name = "Hypothesis Evaluation: Null value"
+              )
+
+              args$null_hypothesis <- c(
+                args$point_null - args$null_boundary,
+                args$point_null + args$null_boundary
+              )
+
+              if (args$null_hypothesis[[1]] != args$null_hypothesis[[2]]) {
+                interval_null <- FALSE
+              }
+
+              # args$null_color <- self$options$null_color
+
+              notes <- c(
+                notes,
+                names(args$point_null),
+                names(args$null_boundary)
+              )
+              args$point_null <- NULL
+              args$null_boundary <- NULL
+            }
+
             args <- jamovi_arg_builder(
                 args,
                 "data_spread",
@@ -362,6 +405,12 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 ))
             )
 
+            if (self$options$evaluate_hypotheses) {
+              myplot$layers[[3]]$aes_params$colour <- self$options$null_color
+              myplot$layers[[4]]$aes_params$fill <- self$options$null_color
+            }
+
+
             notes <- c(
                 notes,
                 names(axis.text.y),
@@ -446,7 +495,14 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::estimate_magnitude
+    call <- esci4::estimate_mdiff_one
+
+    args$reference_mean <- jamovi_sanitize(
+      my_value = self$options$null_value,
+      return_value = 0,
+      convert_to_number = TRUE,
+      my_value_name = "Null value"
+    )
 
     args$save_raw_data <- save_raw_data
     args$conf_level <- jamovi_sanitize(
