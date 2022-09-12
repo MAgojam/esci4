@@ -15,6 +15,7 @@ plot_mdiff <- function(
   simple_contrast_labels = TRUE,
   ylim = c(NA, NA),
   ybreaks = 5,
+  null_hypothesis = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -181,6 +182,7 @@ plot_mdiff <- function(
     ylim = ylim,
     ybreaks = ybreaks,
     daxis_space = difference_axis_space,
+    null_hypothesis = null_hypothesis,
     ggtheme = ggtheme
   )
 
@@ -234,12 +236,14 @@ plot_mdiff_base <- function(
   ylim = c(NA, NA),
   ybreaks = 5,
   daxis_space = 1,
+  null_hypothesis = c(NA, NA),
   ggtheme = NULL
 ) {
 
   # Input checks ---------------------------------------------------------------
   warnings <- NULL
   difference_axis_units <- match.arg(difference_axis_units)
+  if (length(null_hypothesis) == 1) null_hypothesis[[2]] = null_hypothesis[[1]]
 
     # Data prep --------------------------------------
   # Initialization
@@ -386,6 +390,7 @@ plot_mdiff_base <- function(
   }
 
 
+
   # Difference axis ------------------------------------
   daxis_x <- max(gdata$x_value) + daxis_space
 
@@ -398,6 +403,14 @@ plot_mdiff_base <- function(
     saxisEnd <- 0
   }
 
+  if (!is.na(null_hypothesis[[2]])) {
+      if (null_hypothesis[[2]] > rawEnd) {
+          rawEnd <- null_hypothesis[[2]]
+          saxisEnd <- ceiling(difference_UL/pooled_sd)
+          if (saxisEnd < 1) saxisEnd = 1
+      }
+  }
+
   if ( (difference_LL + reference_es) < reference_es) {
     rawStart <- difference_LL
     saxisStart <- floor(difference_LL/pooled_sd)
@@ -405,6 +418,14 @@ plot_mdiff_base <- function(
   } else {
     rawStart <- 0
     saxisStart <- 0
+  }
+
+  if (!is.na(null_hypothesis[[1]])) {
+    if (null_hypothesis[[1]] < rawStart) {
+      rawStart <- null_hypothesis[[1]]
+      saxisStart <- floor(difference_LL/pooled_sd)
+      if (saxisStart > -1) saxisStart = -1
+    }
   }
 
 
@@ -521,6 +542,94 @@ plot_mdiff_base <- function(
   }
 
 
+  # Null
+  plot_null <- FALSE
+  interval_null <- FALSE
+  null_symbol <- sapply(
+    effect_size,
+    switch,
+    r = "rho",
+    mean = "mu",
+    median = "eta",
+    proportion = "P"
+  )
+
+  if (length(null_hypothesis) == 1) null_hypothesis[[2]] = null_hypothesis[[1]]
+
+  if (!is.na(null_hypothesis[[1]])) {
+    plot_null <- TRUE
+    null_label <- paste(
+      "H[0]: ",
+      null_symbol,
+      " == ",
+      null_hypothesis[[1]],
+      sep = ""
+    )
+  }
+
+  if (!is.na(null_hypothesis[[1]]) & !is.na(null_hypothesis[[2]])) {
+    if (null_hypothesis[[1]] != null_hypothesis[[2]]) {
+      plot_null <- TRUE
+      interval_null <- TRUE
+      null_label <- glue::glue(
+        "{null_hypothesis[[1]]}*' < '*{null_symbol}*' < '*{null_hypothesis[[2]]}"
+      )
+    }
+  }
+
+  null_hypothesis <- null_hypothesis + reference_es
+
+
+  if (plot_null & !interval_null) {
+    myplot <- myplot + ggplot2::geom_segment(
+      ggplot2::aes(
+        y = null_hypothesis[[1]],
+        yend = null_hypothesis[[1]],
+        x = max(gdata$x_value),
+        xend = daxis_x
+      ),
+      colour = "red",
+      size = 1.5,
+      linetype = "dotted"
+    )
+    myplot <- myplot + ggplot2::annotate(
+      geom = "text",
+      label = null_label,
+      y = null_hypothesis[[1]],
+      x = daxis_x,
+      vjust = -1,
+      hjust = "inward",
+      parse = TRUE
+    )
+  }
+
+  if (plot_null & interval_null) {
+    myplot <- myplot + ggplot2::geom_segment(
+      ggplot2::aes(
+        y = null_hypothesis[[2]] - ((null_hypothesis[[2]] - null_hypothesis[[1]])/2),
+        yend = null_hypothesis[[2]] - ((null_hypothesis[[2]] - null_hypothesis[[1]])/2),
+        x = max(gdata$x_value),
+        xend = daxis_x
+      ),
+      colour = "red",
+      size = 1.5,
+      linetype = "dotted"
+    )
+
+    myplot <- myplot + ggplot2::geom_rect(
+      ggplot2::aes(
+        ymin = null_hypothesis[[1]],
+        ymax = null_hypothesis[[2]],
+        xmin = max(gdata$x_value),
+        xmax = daxis_x
+      ),
+      alpha = 0.12,
+      fill = "red"
+    )
+
+  }
+
+
   # Floating axis
   myplot <- myplot + ggplot2::geom_segment(color="black",
                                            linetype="solid",
@@ -535,8 +644,8 @@ plot_mdiff_base <- function(
 
   # Now define the y-axis
   p <- ggplot2::ggplot_build(myplot)
-  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd), na.rm = TRUE)
-  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart), na.rm = TRUE)
+  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd, null_hypothesis - reference_es), na.rm = TRUE)
+  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart, null_hypothesis - reference_es), na.rm = TRUE)
   for (x in 1:length(p$data)) {
     lowest <- min(c(lowest, p$data[[x]]$y), na.rm = TRUE)
     highest <- max(c(highest, p$data[[x]]$y), na.rm = TRUE)
@@ -635,6 +744,7 @@ plot_pdiff <- function(
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
   simple_contrast_labels = TRUE,
+  null_hypothesis = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -727,6 +837,7 @@ plot_pdiff <- function(
     error_scale = error_scale,
     error_nudge = 0,
     error_normalize = error_normalize,
+    null_hypothesis = null_hypothesis,
     ggtheme = ggtheme
   )
 
@@ -771,6 +882,7 @@ plot_rdiff <- function(
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
   simple_contrast_labels = TRUE,
+  null_hypothesis = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -845,6 +957,7 @@ plot_rdiff <- function(
     error_scale = error_scale,
     error_nudge = 0,
     error_normalize = error_normalize,
+    null_hypothesis = null_hypothesis,
     ggtheme = ggtheme
   )
 
