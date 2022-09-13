@@ -58,11 +58,19 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           else
             "median"
 
+          rope_upper <- jamovi_sanitize(
+            self$options$null_boundary,
+            na_ok = FALSE,
+            return_value = 0,
+            convert_to_number = TRUE
+          )
+
+
           test_results <- test_mdiff(
             estimate,
             effect_size = effect_size,
-            rope_lower = self$options$null_boundary*-1,
-            rope_upper = self$options$null_boundary,
+            rope_lower = rope_upper * -1,
+            rope_upper = rope_upper,
             rope_units = self$options$rope_units,
             output_html = TRUE
           )

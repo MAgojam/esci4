@@ -354,6 +354,10 @@ children:
           - type: TextBox
             name: null_boundary
             format: string
+          - type: ComboBox
+            name: rope_units
+            label: ' '
+            enable: (evaluate_hypotheses)
           - type: TextBox
             name: alpha
             format: number

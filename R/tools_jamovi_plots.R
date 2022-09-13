@@ -17,6 +17,44 @@ jamovi_plot_mdiff <- function(
   # Basic plot
   notes <- NULL
   args <- list()
+
+
+  #Hyothesis evaluation
+  interval_null <- FALSE
+  htest <- FALSE
+  try(htest <- self$options$evaluate_hypotheses)
+  if (htest) {
+    args <- jamovi_arg_builder(
+      args,
+      "null_boundary",
+      my_value = self$options$null_boundary,
+      return_value = 0,
+      convert_to_number = TRUE,
+      lower = 0,
+      lower_inclusive = TRUE,
+      my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+    )
+
+    args$rope_units <- self$options$rope_units
+
+    args$rope <- c(
+      0 - args$null_boundary,
+      0 + args$null_boundary
+    )
+
+    if (args$rope[[1]] != args$rope[[2]]) {
+      interval_null <- FALSE
+    }
+
+    notes <- c(
+      notes,
+      names(args$null_boundary)
+    )
+    args$null_boundary <- NULL
+  }
+
+
+
   args$estimate <- estimate
   args$effect_size <- effect_size
   args$data_layout <- self$options$data_layout
@@ -125,6 +163,11 @@ jamovi_plot_mdiff <- function(
     what = plot_mdiff,
     args = args
   )
+
+  if (htest) {
+    myplot$layers[[4]]$aes_params$colour <- self$options$null_color
+    myplot$layers[[5]]$aes_params$fill <- self$options$null_color
+  }
 
   # Basic graph options --------------------
   # Axis font sizes

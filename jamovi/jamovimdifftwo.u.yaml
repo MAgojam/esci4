@@ -1,4 +1,4 @@
-title: "Means and Medians: Two Groups"
+title: 'Means and Medians: Two Groups'
 name: jamovimdifftwo
 jus: '3.0'
 stage: 0
@@ -193,7 +193,7 @@ children:
             stretchFactor: 2
             enable: '(switch:from_summary)'
   - type: Label
-    label: '<hr>Analysis options'
+    label: <hr>Analysis options
     stretchFactor: 1
     children:
       - type: TextBox
@@ -745,9 +745,12 @@ children:
         style: inline
         children:
           - type: TextBox
+            name: null_value
+            format: string
+            enable: '(effect_size:never)'
+          - type: TextBox
             name: null_boundary
-            format: number
-            enable: (evaluate_hypotheses)
+            format: string
           - type: ComboBox
             name: rope_units
             label: ' '
@@ -756,3 +759,11 @@ children:
             name: alpha
             format: number
             enable: '(effect_size:never)'
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: null_color
+            enable: (evaluate_hypotheses)
+

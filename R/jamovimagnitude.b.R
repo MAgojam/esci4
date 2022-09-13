@@ -119,12 +119,12 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 my_value_name = "Hypothesis Evaluation: Null value"
               )
 
-              args$null_hypothesis <- c(
+              args$rope <- c(
                 args$point_null - args$null_boundary,
                 args$point_null + args$null_boundary
               )
 
-              if (args$null_hypothesis[[1]] != args$null_hypothesis[[2]]) {
+              if (args$rope[[1]] != args$rope[[2]]) {
                 interval_null <- FALSE
               }
 

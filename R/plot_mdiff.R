@@ -15,7 +15,8 @@ plot_mdiff <- function(
   simple_contrast_labels = TRUE,
   ylim = c(NA, NA),
   ybreaks = 5,
-  null_hypothesis = c(NA, NA),
+  rope = c(NA, NA),
+  rope_units = c("raw", "sd"),
   ggtheme = NULL
 ) {
 
@@ -24,6 +25,7 @@ plot_mdiff <- function(
 
   esci_assert_type(estimate, "is.estimate")
   effect_size <- match.arg(effect_size)
+  rope_units <- match.arg(rope_units)
   if (effect_size == "median" & is.null(estimate$es_median_difference) & !is.null(estimate$properties$contrast)) {
     stop("effect_size parameter is 'median' but no median-based effect size available to plot")
   }
@@ -88,6 +90,21 @@ plot_mdiff <- function(
       "<i>M</i><sub>diff</sub>"
     else
       "<i>Mdn</i><sub>diff</sub>"
+
+  #
+  if (length(rope) > 1) {
+
+    if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
+      if (rope[[1]] != rope[[2]]) {
+        if (rope_units == "sd") {
+          sd <- estimate$es_smd[[1, "denominator"]]
+          rope <- rope * sd
+        }
+      }
+    }
+
+
+  }
 
   # Raw data
   if (plot_raw) {
@@ -182,7 +199,7 @@ plot_mdiff <- function(
     ylim = ylim,
     ybreaks = ybreaks,
     daxis_space = difference_axis_space,
-    null_hypothesis = null_hypothesis,
+    rope = rope,
     ggtheme = ggtheme
   )
 
@@ -236,14 +253,14 @@ plot_mdiff_base <- function(
   ylim = c(NA, NA),
   ybreaks = 5,
   daxis_space = 1,
-  null_hypothesis = c(NA, NA),
+  rope = c(NA, NA),
   ggtheme = NULL
 ) {
 
   # Input checks ---------------------------------------------------------------
   warnings <- NULL
   difference_axis_units <- match.arg(difference_axis_units)
-  if (length(null_hypothesis) == 1) null_hypothesis[[2]] = null_hypothesis[[1]]
+  if (length(rope) == 1) rope[[2]] = rope[[1]]
 
     # Data prep --------------------------------------
   # Initialization
@@ -403,9 +420,9 @@ plot_mdiff_base <- function(
     saxisEnd <- 0
   }
 
-  if (!is.na(null_hypothesis[[2]])) {
-      if (null_hypothesis[[2]] > rawEnd) {
-          rawEnd <- null_hypothesis[[2]]
+  if (!is.na(rope[[2]])) {
+      if (rope[[2]] > rawEnd) {
+          rawEnd <- rope[[2]]
           saxisEnd <- ceiling(difference_UL/pooled_sd)
           if (saxisEnd < 1) saxisEnd = 1
       }
@@ -420,9 +437,9 @@ plot_mdiff_base <- function(
     saxisStart <- 0
   }
 
-  if (!is.na(null_hypothesis[[1]])) {
-    if (null_hypothesis[[1]] < rawStart) {
-      rawStart <- null_hypothesis[[1]]
+  if (!is.na(rope[[1]])) {
+    if (rope[[1]] < rawStart) {
+      rawStart <- rope[[1]]
       saxisStart <- floor(difference_LL/pooled_sd)
       if (saxisStart > -1) saxisStart = -1
     }
@@ -554,37 +571,37 @@ plot_mdiff_base <- function(
     proportion = "P"
   )
 
-  if (length(null_hypothesis) == 1) null_hypothesis[[2]] = null_hypothesis[[1]]
+  if (length(rope) == 1) rope[[2]] = rope[[1]]
 
-  if (!is.na(null_hypothesis[[1]])) {
+  if (!is.na(rope[[1]])) {
     plot_null <- TRUE
     null_label <- paste(
       "H[0]: ",
       null_symbol,
       " == ",
-      null_hypothesis[[1]],
+      rope[[1]],
       sep = ""
     )
   }
 
-  if (!is.na(null_hypothesis[[1]]) & !is.na(null_hypothesis[[2]])) {
-    if (null_hypothesis[[1]] != null_hypothesis[[2]]) {
+  if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
+    if (rope[[1]] != rope[[2]]) {
       plot_null <- TRUE
       interval_null <- TRUE
       null_label <- glue::glue(
-        "{null_hypothesis[[1]]}*' < '*{null_symbol}*' < '*{null_hypothesis[[2]]}"
+        "{rope[[1]]}*' < '*{null_symbol}*' < '*{rope[[2]]}"
       )
     }
   }
 
-  null_hypothesis <- null_hypothesis + reference_es
+  rope <- rope + reference_es
 
 
   if (plot_null & !interval_null) {
     myplot <- myplot + ggplot2::geom_segment(
       ggplot2::aes(
-        y = null_hypothesis[[1]],
-        yend = null_hypothesis[[1]],
+        y = rope[[1]],
+        yend = rope[[1]],
         x = max(gdata$x_value),
         xend = daxis_x
       ),
@@ -595,7 +612,7 @@ plot_mdiff_base <- function(
     myplot <- myplot + ggplot2::annotate(
       geom = "text",
       label = null_label,
-      y = null_hypothesis[[1]],
+      y = rope[[1]],
       x = daxis_x,
       vjust = -1,
       hjust = "inward",
@@ -606,8 +623,8 @@ plot_mdiff_base <- function(
   if (plot_null & interval_null) {
     myplot <- myplot + ggplot2::geom_segment(
       ggplot2::aes(
-        y = null_hypothesis[[2]] - ((null_hypothesis[[2]] - null_hypothesis[[1]])/2),
-        yend = null_hypothesis[[2]] - ((null_hypothesis[[2]] - null_hypothesis[[1]])/2),
+        y = rope[[2]] - ((rope[[2]] - rope[[1]])/2),
+        yend = rope[[2]] - ((rope[[2]] - rope[[1]])/2),
         x = max(gdata$x_value),
         xend = daxis_x
       ),
@@ -618,8 +635,8 @@ plot_mdiff_base <- function(
 
     myplot <- myplot + ggplot2::geom_rect(
       ggplot2::aes(
-        ymin = null_hypothesis[[1]],
-        ymax = null_hypothesis[[2]],
+        ymin = rope[[1]],
+        ymax = rope[[2]],
         xmin = max(gdata$x_value),
         xmax = daxis_x
       ),
@@ -644,8 +661,8 @@ plot_mdiff_base <- function(
 
   # Now define the y-axis
   p <- ggplot2::ggplot_build(myplot)
-  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd, null_hypothesis - reference_es), na.rm = TRUE)
-  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart, null_hypothesis - reference_es), na.rm = TRUE)
+  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd, rope - reference_es), na.rm = TRUE)
+  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart, rope - reference_es), na.rm = TRUE)
   for (x in 1:length(p$data)) {
     lowest <- min(c(lowest, p$data[[x]]$y), na.rm = TRUE)
     highest <- max(c(highest, p$data[[x]]$y), na.rm = TRUE)
@@ -744,7 +761,7 @@ plot_pdiff <- function(
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
   simple_contrast_labels = TRUE,
-  null_hypothesis = c(NA, NA),
+  rope = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -837,7 +854,7 @@ plot_pdiff <- function(
     error_scale = error_scale,
     error_nudge = 0,
     error_normalize = error_normalize,
-    null_hypothesis = null_hypothesis,
+    rope = rope,
     ggtheme = ggtheme
   )
 
@@ -882,7 +899,7 @@ plot_rdiff <- function(
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
   simple_contrast_labels = TRUE,
-  null_hypothesis = c(NA, NA),
+  rope = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -957,7 +974,7 @@ plot_rdiff <- function(
     error_scale = error_scale,
     error_nudge = 0,
     error_normalize = error_normalize,
-    null_hypothesis = null_hypothesis,
+    rope = rope,
     ggtheme = ggtheme
   )
 
