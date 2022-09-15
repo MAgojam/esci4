@@ -19,7 +19,6 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             evaluate_hypotheses = FALSE,
             null_value = "0",
             null_boundary = "0",
-            rope_units = "raw",
             null_color = "#A40122",
             alpha = 0.05,
             es_plot_width = "300",
@@ -122,13 +121,6 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 "null_boundary",
                 null_boundary,
                 default="0")
-            private$..rope_units <- jmvcore::OptionList$new(
-                "rope_units",
-                rope_units,
-                default="raw",
-                options=list(
-                    "sd",
-                    "raw"))
             private$..null_color <- jmvcore::OptionList$new(
                 "null_color",
                 null_color,
@@ -618,7 +610,6 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
-            self$.addOption(private$..rope_units)
             self$.addOption(private$..null_color)
             self$.addOption(private$..alpha)
             self$.addOption(private$..es_plot_width)
@@ -668,7 +659,6 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
-        rope_units = function() private$..rope_units$value,
         null_color = function() private$..null_color$value,
         alpha = function() private$..alpha$value,
         es_plot_width = function() private$..es_plot_width$value,
@@ -717,7 +707,6 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
         ..null_boundary = NA,
-        ..rope_units = NA,
         ..null_color = NA,
         ..alpha = NA,
         ..es_plot_width = NA,
@@ -995,7 +984,6 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param evaluate_hypotheses .
 #' @param null_value .
 #' @param null_boundary .
-#' @param rope_units .
 #' @param null_color .
 #' @param alpha .
 #' @param es_plot_width .
@@ -1062,7 +1050,6 @@ jamovimagnitude <- function(
     evaluate_hypotheses = FALSE,
     null_value = "0",
     null_boundary = "0",
-    rope_units = "raw",
     null_color = "#A40122",
     alpha = 0.05,
     es_plot_width = "300",
@@ -1122,7 +1109,6 @@ jamovimagnitude <- function(
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
         null_boundary = null_boundary,
-        rope_units = rope_units,
         null_color = null_color,
         alpha = alpha,
         es_plot_width = es_plot_width,

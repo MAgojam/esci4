@@ -188,3 +188,17 @@ esci_plot_group_data <- function(effect_size) {
 
   return(error_glue)
 }
+
+
+esci_plot_layers <- function(myplot, layer_name) {
+  if (length(myplot$layers) == 0) return(myplot)
+
+  if (is.null(names(myplot$layers))) {
+      names(myplot$layers) <- seq(1:length(myplot$layers))
+  }
+
+  names(myplot$layers)[length(myplot$layers)] <- layer_name
+
+  return(myplot)
+
+}

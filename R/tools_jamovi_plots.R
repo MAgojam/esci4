@@ -43,7 +43,7 @@ jamovi_plot_mdiff <- function(
     )
 
     if (args$rope[[1]] != args$rope[[2]]) {
-      interval_null <- FALSE
+      interval_null <- TRUE
     }
 
     notes <- c(
@@ -165,8 +165,10 @@ jamovi_plot_mdiff <- function(
   )
 
   if (htest) {
-    myplot$layers[[4]]$aes_params$colour <- self$options$null_color
-    myplot$layers[[5]]$aes_params$fill <- self$options$null_color
+      myplot$layers[["null_line"]]$aes_params$colour <- self$options$null_color
+      if (interval_null) {
+        try(myplot$layers[["null_interval"]]$aes_params$fill <- self$options$null_color)
+      }
   }
 
   # Basic graph options --------------------

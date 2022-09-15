@@ -87,6 +87,10 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            # self$results$debug$setContent(estimate)
+            # self$results$debug$setVisible(TRUE)
+            # return(TRUE)
+
             divider <- 1
             if (self$options$effect_size == "median") divider <- 4
 
@@ -119,16 +123,19 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 my_value_name = "Hypothesis Evaluation: Null value"
               )
 
+              multiplier <- 1
+              # if (self$options$rope_units == "sd") {
+              #   multiplier <- estimate$es_smd[[1, "denominator"]]
+              # }
+
               args$rope <- c(
-                args$point_null - args$null_boundary,
-                args$point_null + args$null_boundary
+                args$point_null - (args$null_boundary * multiplier),
+                args$point_null + (args$null_boundary * multiplier)
               )
 
               if (args$rope[[1]] != args$rope[[2]]) {
-                interval_null <- FALSE
+                interval_null <- TRUE
               }
-
-              # args$null_color <- self$options$null_color
 
               notes <- c(
                 notes,
@@ -406,8 +413,14 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
 
             if (self$options$evaluate_hypotheses) {
-              myplot$layers[[3]]$aes_params$colour <- self$options$null_color
-              myplot$layers[[4]]$aes_params$fill <- self$options$null_color
+              myplot$layers[["null_line"]]$aes_params$colour <- self$options$null_color
+              if (interval_null) {
+                try(myplot$layers[["null_interval"]]$aes_params$fill <- self$options$null_color)
+                try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_interval)/divider+1)
+                try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_interval))
+                try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_interval)
+                try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$linetype_summary)
+              }
             }
 
 
@@ -447,17 +460,17 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
             is.null(self$options$outcome_variable)
         ) return(NULL)
     } else {
-        args$mean <- jamovi_required_numeric(
+        args$comparison_mean <- jamovi_required_numeric(
             self$options$mean,
             my_value_name = "Mean (<i>M</i>)"
         )
-        args$sd <- jamovi_required_numeric(
+        args$comparison_sd <- jamovi_required_numeric(
             self$options$sd,
             lower = 0,
             lower_inclusive = FALSE,
             my_value_name = "Standard deviation (<i>s</i>)"
         )
-        args$n <- jamovi_required_numeric(
+        args$comparison_n <- jamovi_required_numeric(
             self$options$n,
             integer_required = TRUE,
             lower = 2,

@@ -85,15 +85,6 @@ options:
       type: String
       default: '0'
 
-    - name: rope_units
-      type: List
-      default: raw
-      options:
-        - name: sd
-          title: Standard deviations
-        - name: raw
-          title: Original units
-
     - name: null_color
       type: List
       title: 'Color for null hypothesis'

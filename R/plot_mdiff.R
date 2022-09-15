@@ -602,18 +602,20 @@ plot_mdiff_base <- function(
       ggplot2::aes(
         y = rope[[1]],
         yend = rope[[1]],
-        x = max(gdata$x_value),
+        x = max(gdata$x_value) - .2,
         xend = daxis_x
       ),
       colour = "red",
-      size = 1.5,
-      linetype = "dotted"
+      size = 1,
+      linetype = "solid"
     )
+    myplot <- esci_plot_layers(myplot, "null_line")
+
     myplot <- myplot + ggplot2::annotate(
       geom = "text",
       label = null_label,
-      y = rope[[1]],
-      x = daxis_x,
+      y = rope[[1]] - .2,
+      x = daxis_x - .05,
       vjust = -1,
       hjust = "inward",
       parse = TRUE
@@ -625,24 +627,26 @@ plot_mdiff_base <- function(
       ggplot2::aes(
         y = rope[[2]] - ((rope[[2]] - rope[[1]])/2),
         yend = rope[[2]] - ((rope[[2]] - rope[[1]])/2),
-        x = max(gdata$x_value),
+        x = max(gdata$x_value) - .2,
         xend = daxis_x
       ),
       colour = "red",
-      size = 1.5,
-      linetype = "dotted"
+      size = 1,
+      linetype = "solid"
     )
+    myplot <- esci_plot_layers(myplot, "null_line")
 
     myplot <- myplot + ggplot2::geom_rect(
       ggplot2::aes(
         ymin = rope[[1]],
         ymax = rope[[2]],
-        xmin = max(gdata$x_value),
+        xmin = max(gdata$x_value) - .2,
         xmax = daxis_x
       ),
       alpha = 0.12,
       fill = "red"
     )
+    myplot <- esci_plot_layers(myplot, "null_interval")
 
   }
 
@@ -661,8 +665,8 @@ plot_mdiff_base <- function(
 
   # Now define the y-axis
   p <- ggplot2::ggplot_build(myplot)
-  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd, rope - reference_es), na.rm = TRUE)
-  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart, rope - reference_es), na.rm = TRUE)
+  lowest <- min(c(gdata$y_value, ylim[[1]], saxisStart, saxisEnd, rope), na.rm = TRUE)
+  highest <- max(c(gdata$y_value, ylim[[2]], saxisEnd, saxisStart, rope), na.rm = TRUE)
   for (x in 1:length(p$data)) {
     lowest <- min(c(lowest, p$data[[x]]$y), na.rm = TRUE)
     highest <- max(c(highest, p$data[[x]]$y), na.rm = TRUE)
