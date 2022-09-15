@@ -232,6 +232,13 @@ estimate_magnitude.base <- function(
     "df" = overview_table$df
   )
 
+  alpha <- 1 - conf_level
+  estimate$es_mean$tcrit <- qt(p = alpha * 2, df = estimate$es_mean$df, lower.tail = FALSE)
+  estimate$es_mean$ta_LL <- estimate$es_mean$effect_size - (estimate$es_mean$SE * estimate$es_mean$tcrit)
+  estimate$es_mean$ta_UL <- estimate$es_mean$effect_size + (estimate$es_mean$SE * estimate$es_mean$tcrit)
+  estimate$es_mean$tcit <- NULL
+
+
   if (!is.null(overview_table$median)) {
     estimate$es_median <- data.frame(
       "outcome_variable_name" = overview_table$outcome_variable_name,
@@ -314,6 +321,7 @@ estimate_magnitude.summary <- function(
       conf_level = conf_level
   )
 
+
   estimate$properties$data_type <- "summary"
   estimate$properties$data_source <- NULL
 
@@ -373,6 +381,14 @@ estimate_magnitude.vector <- function(
   estimate$properties$data_type <- "vector"
   estimate$properties$data_source <- NULL
 
+  # 2 alpha CI for median
+  mdn_2a <- statpsych::ci.median1(
+    alpha = (1 - conf_level)*2,
+    y =outcome_variable[!is.na(outcome_variable)]
+  )
+
+  estimate$es_median$ta_LL <- mdn_2a[1, "LL"]
+  estimate$es_median$ta_UL <- mdn_2a[1, "UL"]
 
   # Store raw data -----------------------------------------------
   if (save_raw_data) {

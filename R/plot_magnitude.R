@@ -127,11 +127,10 @@ plot_magnitude <- function(
   # 90% CI
   if (interval_null) {
     alpha <- 1 - estimate$properties$conf_level
-
-    if (effect_size == "mean") {
-      gdata$tcrit <- qt(p = alpha, df = gdata$df, lower.tail = FALSE)
-      gdata$ta_LL <- gdata$effect_size - (gdata$SE * gdata$tcrit)
-      gdata$ta_UL <- gdata$effect_size + (gdata$SE * gdata$tcrit)
+    conf_level <- c(
+      1 - (alpha*2),
+      conf_level
+    )
 
 
     myplot <- myplot + ggplot2::geom_segment(
@@ -141,12 +140,12 @@ plot_magnitude <- function(
         xend = x_value + nudge,
         y = ta_LL,
         yend = ta_UL
-      )
+      ),
+      colour = "black",
+      size = 2
     )
 
     myplot <- esci_plot_layers(myplot, "ta_CI")
-
-    }
   }
 
   # Group data
@@ -154,13 +153,13 @@ plot_magnitude <- function(
   error_call <- esci_plot_error_layouts(error_layout)
   error_expression <- parse(text = glue::glue(error_glue))
   myplot <- try(eval(error_expression))
+  myplot <- esci_plot_layers(myplot, "group_data")
 
   # Raw data
   if (plot_raw) {
     raw_expression <- esci_plot_raw_data(myplot, data_layout, data_spread)
     myplot <- try(eval(raw_expression))
   }
-
 
   # Plot nulls
   if (plot_null & !interval_null) {
@@ -223,7 +222,7 @@ plot_magnitude <- function(
   # Labels -----------------------------
   vnames <- paste(estimate$es_mean$outcome_variable_name, collapse = ", ")
   esize <- paste(toupper(substr(effect_size, 1, 1)), substr(effect_size, 2, nchar(effect_size)), sep = "")
-  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{esize} and {conf_level*100}% Confidence Interval")
+  ylab <- glue::glue("{vnames}\n{if (plot_raw) 'Data, ' else ''}{esize} and {glue::glue_collapse(conf_level*100, sep = '%, ')}% Confidence Interval")
   xlab <- NULL
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
