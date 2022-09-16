@@ -138,8 +138,8 @@ plot_mdiff <- function(
   } else {
     gdata <- estimate$es_median_difference
     gdata$df <- NA
-    gdata$ta_LL <- NULL
-    gdata$ta_UL <- NULL
+    # gdata$ta_LL <- NULL
+    # gdata$ta_UL <- NULL
   }
   gdata$y_value <- gdata$effect_size
   gdata$x_label <- gdata$effect
@@ -470,10 +470,71 @@ plot_mdiff_base <- function(
   daxis_name <- parse(text = daxis_name)
 
 
+  # Initialize htests
+  # Null
+  plot_null <- FALSE
+  interval_null <- FALSE
+  null_symbol <- sapply(
+    effect_size,
+    switch,
+    r = "rho",
+    mean = "mu",
+    median = "eta",
+    proportion = "P"
+  )
+
+  if (length(rope) == 1) rope[[2]] = rope[[1]]
+
+  if (!is.na(rope[[1]])) {
+    plot_null <- TRUE
+    null_label <- paste(
+      "H[0]: ",
+      null_symbol,
+      " == ",
+      rope[[1]],
+      sep = ""
+    )
+  }
+
+  if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
+    if (rope[[1]] != rope[[2]]) {
+      plot_null <- TRUE
+      interval_null <- TRUE
+      null_label <- glue::glue(
+        "{rope[[1]]}*' < '*{null_symbol}*' < '*{rope[[2]]}"
+      )
+    }
+  }
+
 
   # Build plot ------------------------------------
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
+
+  # 90% CI
+  if (interval_null) {
+    alpha <- 1 - conf_level
+    conf_level <- c(
+      1 - (alpha*2),
+      conf_level
+    )
+
+
+    myplot <- myplot + ggplot2::geom_segment(
+      data = gdata[gdata$type == "Difference_summary", ],
+      aes(
+        x = x_value + nudge,
+        xend = x_value + nudge,
+        y = ta_LL + reference_es,
+        yend = ta_UL + reference_es
+      ),
+      colour = "black",
+      size = 2
+    )
+
+    myplot <- esci_plot_layers(myplot, "ta_CI")
+  }
+
 
   if (!simple_contrast) {
     myplot <- myplot + ggplot2::geom_segment(
@@ -559,41 +620,7 @@ plot_mdiff_base <- function(
   }
 
 
-  # Null
-  plot_null <- FALSE
-  interval_null <- FALSE
-  null_symbol <- sapply(
-    effect_size,
-    switch,
-    r = "rho",
-    mean = "mu",
-    median = "eta",
-    proportion = "P"
-  )
-
-  if (length(rope) == 1) rope[[2]] = rope[[1]]
-
-  if (!is.na(rope[[1]])) {
-    plot_null <- TRUE
-    null_label <- paste(
-      "H[0]: ",
-      null_symbol,
-      " == ",
-      rope[[1]],
-      sep = ""
-    )
-  }
-
-  if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
-    if (rope[[1]] != rope[[2]]) {
-      plot_null <- TRUE
-      interval_null <- TRUE
-      null_label <- glue::glue(
-        "{rope[[1]]}*' < '*{null_symbol}*' < '*{rope[[2]]}"
-      )
-    }
-  }
-
+  # Plot null
   rope <- rope + reference_es
 
 

@@ -236,7 +236,7 @@ estimate_magnitude.base <- function(
   estimate$es_mean$tcrit <- qt(p = alpha * 2, df = estimate$es_mean$df, lower.tail = FALSE)
   estimate$es_mean$ta_LL <- estimate$es_mean$effect_size - (estimate$es_mean$SE * estimate$es_mean$tcrit)
   estimate$es_mean$ta_UL <- estimate$es_mean$effect_size + (estimate$es_mean$SE * estimate$es_mean$tcrit)
-  estimate$es_mean$tcit <- NULL
+  estimate$es_mean$tcrit <- NULL
 
 
   if (!is.null(overview_table$median)) {

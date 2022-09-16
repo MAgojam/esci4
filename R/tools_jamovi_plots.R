@@ -168,6 +168,16 @@ jamovi_plot_mdiff <- function(
       myplot$layers[["null_line"]]$aes_params$colour <- self$options$null_color
       if (interval_null) {
         try(myplot$layers[["null_interval"]]$aes_params$fill <- self$options$null_color)
+
+        try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_interval_difference)/divider+1)
+        try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_interval_difference))
+        try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_interval_difference)
+        try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$self$options$linetype_summary_difference)
+
+        if (plot_median) {
+          try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary_difference)
+        }
+
       }
   }
 
