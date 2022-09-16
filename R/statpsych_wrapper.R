@@ -207,8 +207,22 @@ wrapper_ci.mean.ps <- function(
     )
   )
 
+  ta_res <- as.data.frame(
+    statpsych::ci.mean.ps(
+      alpha = (1 - conf_level)*2,
+      m1 = comparison_mean,
+      m2 = reference_mean,
+      sd1 = comparison_sd,
+      sd2 = reference_sd,
+      cor = correlation,
+      n = n
+    )
+  )
+
   es_mean_difference <- es_mean_difference[ , c("Estimate", "LL", "UL", "SE", "df")]
   colnames(es_mean_difference) <- c("effect_size", "LL", "UL", "SE", "df")
+  es_mean_difference$ta_LL <- ta_res$LL
+  es_mean_difference$ta_UL <- ta_res$UL
 
   es_mean_difference <- cbind(
     "type" = "Difference",
