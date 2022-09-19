@@ -575,7 +575,7 @@ children:
                   column: 3
                   row: 14
   - type: CollapseBox
-    label: Evaluate hypotheses
+    label: Hypothesis evaluation
     name: hpanel
     collapsed: true
     children:
@@ -589,14 +589,21 @@ children:
         style: inline
         children:
           - type: TextBox
+            name: null_value
+            format: string
+            enable: '(effect_size:never)'
+          - type: TextBox
             name: null_boundary
-            format: number
-            enable: (evaluate_hypotheses)
-          - type: ComboBox
-            name: rope_units
-            label: ' '
+            format: string
             enable: (evaluate_hypotheses)
           - type: TextBox
             name: alpha
             format: number
             enable: '(effect_size:never)'
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: null_color
+            enable: (evaluate_hypotheses)

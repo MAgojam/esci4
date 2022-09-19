@@ -18,8 +18,9 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             show_calculations = FALSE,
             reference_mean = " ",
             evaluate_hypotheses = FALSE,
-            null_boundary = 0,
-            rope_units = "raw",
+            null_value = "0",
+            null_boundary = "0",
+            null_color = "#A40122",
             alpha = 0.05,
             es_plot_width = "550",
             es_plot_height = "450",
@@ -136,18 +137,56 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "evaluate_hypotheses",
                 evaluate_hypotheses,
                 default=FALSE)
-            private$..null_boundary <- jmvcore::OptionNumber$new(
+            private$..null_value <- jmvcore::OptionString$new(
+                "null_value",
+                null_value,
+                default="0")
+            private$..null_boundary <- jmvcore::OptionString$new(
                 "null_boundary",
                 null_boundary,
-                min=0,
-                default=0)
-            private$..rope_units <- jmvcore::OptionList$new(
-                "rope_units",
-                rope_units,
-                default="raw",
+                default="0")
+            private$..null_color <- jmvcore::OptionList$new(
+                "null_color",
+                null_color,
+                default="#A40122",
                 options=list(
-                    "sd",
-                    "raw"))
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
             private$..alpha <- jmvcore::OptionNumber$new(
                 "alpha",
                 alpha,
@@ -964,8 +1003,9 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..show_calculations)
             self$.addOption(private$..reference_mean)
             self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
-            self$.addOption(private$..rope_units)
+            self$.addOption(private$..null_color)
             self$.addOption(private$..alpha)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
@@ -1032,8 +1072,9 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         show_calculations = function() private$..show_calculations$value,
         reference_mean = function() private$..reference_mean$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
-        rope_units = function() private$..rope_units$value,
+        null_color = function() private$..null_color$value,
         alpha = function() private$..alpha$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
@@ -1099,8 +1140,9 @@ jamovimdiffoneOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..show_calculations = NA,
         ..reference_mean = NA,
         ..evaluate_hypotheses = NA,
+        ..null_value = NA,
         ..null_boundary = NA,
-        ..rope_units = NA,
+        ..null_color = NA,
         ..alpha = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
@@ -1168,8 +1210,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
         htest = function() private$.items[["htest"]],
-        htest_summary = function() private$.items[["htest_summary"]],
-        hplot = function() private$.items[["hplot"]]),
+        htest_summary = function() private$.items[["htest_summary"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1546,15 +1587,7 @@ jamovimdiffoneResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="note", 
                         `title`="Conclusion", 
                         `type`="text", 
-                        `combineBelow`=FALSE))))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="hplot",
-                title="Hypothesis Test Plots",
-                width=550,
-                height=250,
-                visible="(evaluate_hypotheses)",
-                renderFun=".plot_hplot"))}))
+                        `combineBelow`=FALSE))))}))
 
 jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffoneBase",
@@ -1592,8 +1625,9 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param show_calculations .
 #' @param reference_mean .
 #' @param evaluate_hypotheses .
+#' @param null_value .
 #' @param null_boundary .
-#' @param rope_units .
+#' @param null_color .
 #' @param alpha .
 #' @param es_plot_width .
 #' @param es_plot_height .
@@ -1658,7 +1692,6 @@ jamovimdiffoneBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$hplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -1682,8 +1715,9 @@ jamovimdiffone <- function(
     show_calculations = FALSE,
     reference_mean = " ",
     evaluate_hypotheses = FALSE,
-    null_boundary = 0,
-    rope_units = "raw",
+    null_value = "0",
+    null_boundary = "0",
+    null_color = "#A40122",
     alpha = 0.05,
     es_plot_width = "550",
     es_plot_height = "450",
@@ -1760,8 +1794,9 @@ jamovimdiffone <- function(
         show_calculations = show_calculations,
         reference_mean = reference_mean,
         evaluate_hypotheses = evaluate_hypotheses,
+        null_value = null_value,
         null_boundary = null_boundary,
-        rope_units = rope_units,
+        null_color = null_color,
         alpha = alpha,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,

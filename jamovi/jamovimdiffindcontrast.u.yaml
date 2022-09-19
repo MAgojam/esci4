@@ -739,3 +739,39 @@ children:
                 cell:
                   column: 4
                   row: 14
+  - type: CollapseBox
+    label: Evaluate hypotheses
+    name: hpanel
+    collapsed: true
+    children:
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: CheckBox
+            name: evaluate_hypotheses
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: TextBox
+            name: null_value
+            format: string
+            enable: '(effect_size:never)'
+          - type: TextBox
+            name: null_boundary
+            format: string
+            enable: (evaluate_hypotheses)
+          - type: ComboBox
+            name: rope_units
+            label: ' '
+          - type: TextBox
+            name: alpha
+            format: number
+            enable: '(effect_size:never)'
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: null_color
+            enable: (evaluate_hypotheses)

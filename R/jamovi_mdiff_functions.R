@@ -172,12 +172,6 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
     upper_inclusive = TRUE
   )
 
-  if (!is.null(tbl_eval)) {
-    try(self$results$hplot$setSize(width, height))
-
-  }
-
-
   keys <- if (from_raw)
     self$options$outcome_variable
   else

@@ -1581,8 +1581,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
         htest = function() private$.items[["htest"]],
-        htest_summary = function() private$.items[["htest_summary"]],
-        hplot = function() private$.items[["hplot"]]),
+        htest_summary = function() private$.items[["htest_summary"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -2145,15 +2144,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="note", 
                         `title`="Conclusion", 
                         `type`="text", 
-                        `combineBelow`=FALSE))))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="hplot",
-                title="Hypothesis Test Plots",
-                width=550,
-                height=250,
-                visible="(evaluate_hypotheses)",
-                renderFun=".plot_hplot"))}))
+                        `combineBelow`=FALSE))))}))
 
 jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdifftwoBase",
@@ -2281,7 +2272,6 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$hplot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

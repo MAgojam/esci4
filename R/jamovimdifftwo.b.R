@@ -75,8 +75,6 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             output_html = TRUE
           )
 
-          image <- self$results$hplot
-          image$setState(test_results)
 
           # Fill table
           jamovi_table_filler(
@@ -146,23 +144,6 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
 
           print(myplot)
-          TRUE
-
-        },
-        .plot_hplot=function(image, ggtheme, theme, ...) {  # <-- the plot function
-          if (is.null(image$state))
-            return(FALSE)
-
-          test_data <- image$state
-
-          plot <- jamovi_plot_hdiff(
-            self,
-            image,
-            ggtheme,
-            theme
-          )
-
-          print(plot)
           TRUE
 
         })

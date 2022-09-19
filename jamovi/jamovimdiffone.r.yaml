@@ -313,13 +313,4 @@ items:
           title: 'Conclusion'
           type: text
           combineBelow: false
-
-
-    - name: hplot
-      title: Hypothesis Test Plots
-      type: Image
-      width:  550
-      height: 250
-      visible: (evaluate_hypotheses)
-      renderFun: .plot_hplot
 ...

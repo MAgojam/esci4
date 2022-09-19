@@ -21,6 +21,12 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             effect_size = "mean_difference",
             assume_equal_variance = TRUE,
             show_details = FALSE,
+            evaluate_hypotheses = FALSE,
+            null_value = "0",
+            null_boundary = "0",
+            rope_units = "raw",
+            alpha = 0.05,
+            null_color = "#A40122",
             es_plot_width = "550",
             es_plot_height = "450",
             ymin = "auto",
@@ -180,6 +186,73 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
+                "evaluate_hypotheses",
+                evaluate_hypotheses,
+                default=FALSE)
+            private$..null_value <- jmvcore::OptionString$new(
+                "null_value",
+                null_value,
+                default="0")
+            private$..null_boundary <- jmvcore::OptionString$new(
+                "null_boundary",
+                null_boundary,
+                default="0")
+            private$..rope_units <- jmvcore::OptionList$new(
+                "rope_units",
+                rope_units,
+                default="raw",
+                options=list(
+                    "sd",
+                    "raw"))
+            private$..alpha <- jmvcore::OptionNumber$new(
+                "alpha",
+                alpha,
+                default=0.05,
+                min=0,
+                max=1)
+            private$..null_color <- jmvcore::OptionList$new(
+                "null_color",
+                null_color,
+                default="#A40122",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
@@ -1589,6 +1662,12 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             self$.addOption(private$..effect_size)
             self$.addOption(private$..assume_equal_variance)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_value)
+            self$.addOption(private$..null_boundary)
+            self$.addOption(private$..rope_units)
+            self$.addOption(private$..alpha)
+            self$.addOption(private$..null_color)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
             self$.addOption(private$..ymin)
@@ -1684,6 +1763,12 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         effect_size = function() private$..effect_size$value,
         assume_equal_variance = function() private$..assume_equal_variance$value,
         show_details = function() private$..show_details$value,
+        evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_value = function() private$..null_value$value,
+        null_boundary = function() private$..null_boundary$value,
+        rope_units = function() private$..rope_units$value,
+        alpha = function() private$..alpha$value,
+        null_color = function() private$..null_color$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
         ymin = function() private$..ymin$value,
@@ -1778,6 +1863,12 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
         ..effect_size = NA,
         ..assume_equal_variance = NA,
         ..show_details = NA,
+        ..evaluate_hypotheses = NA,
+        ..null_value = NA,
+        ..null_boundary = NA,
+        ..rope_units = NA,
+        ..alpha = NA,
+        ..null_color = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
         ..ymin = NA,
@@ -2255,6 +2346,12 @@ jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
 #' @param effect_size .
 #' @param assume_equal_variance .
 #' @param show_details .
+#' @param evaluate_hypotheses .
+#' @param null_value .
+#' @param null_boundary .
+#' @param rope_units .
+#' @param alpha .
+#' @param null_color .
 #' @param es_plot_width .
 #' @param es_plot_height .
 #' @param ymin .
@@ -2369,6 +2466,12 @@ jamovimdiffindcontrast <- function(
     effect_size = "mean_difference",
     assume_equal_variance = TRUE,
     show_details = FALSE,
+    evaluate_hypotheses = FALSE,
+    null_value = "0",
+    null_boundary = "0",
+    rope_units = "raw",
+    alpha = 0.05,
+    null_color = "#A40122",
     es_plot_width = "550",
     es_plot_height = "450",
     ymin = "auto",
@@ -2486,6 +2589,12 @@ jamovimdiffindcontrast <- function(
         effect_size = effect_size,
         assume_equal_variance = assume_equal_variance,
         show_details = show_details,
+        evaluate_hypotheses = evaluate_hypotheses,
+        null_value = null_value,
+        null_boundary = null_boundary,
+        rope_units = rope_units,
+        alpha = alpha,
+        null_color = null_color,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
         ymin = ymin,
