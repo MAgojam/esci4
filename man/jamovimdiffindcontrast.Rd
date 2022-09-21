@@ -21,6 +21,12 @@ jamovimdiffindcontrast(
   effect_size = "mean_difference",
   assume_equal_variance = TRUE,
   show_details = FALSE,
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  rope_units = "raw",
+  alpha = 0.05,
+  null_color = "#A40122",
   es_plot_width = "550",
   es_plot_height = "450",
   ymin = "auto",
@@ -42,7 +48,7 @@ jamovimdiffindcontrast(
   difference_axis_breaks = "auto",
   shape_raw_reference = "circle filled",
   shape_raw_comparison = "circle filled",
-  shape_raw_unused = "square filled",
+  shape_raw_unused = "circle filled",
   shape_summary_reference = "circle filled",
   shape_summary_comparison = "circle filled",
   shape_summary_unused = "circle filled",
@@ -133,6 +139,18 @@ jamovimdiffindcontrast(
 \item{assume_equal_variance}{.}
 
 \item{show_details}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{rope_units}{.}
+
+\item{alpha}{.}
+
+\item{null_color}{.}
 
 \item{es_plot_width}{.}
 
@@ -299,8 +317,8 @@ A results object containing:
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
-\code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

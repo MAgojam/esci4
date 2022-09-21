@@ -26,6 +26,12 @@ jamovimdifftwo(
   switch_comparison_order = FALSE,
   show_details = FALSE,
   show_calculations = FALSE,
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  rope_units = "raw",
+  alpha = 0.05,
+  null_color = "#A40122",
   es_plot_width = "600",
   es_plot_height = "400",
   ymin = "auto",
@@ -132,6 +138,18 @@ jamovimdifftwo(
 \item{show_details}{.}
 
 \item{show_calculations}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{rope_units}{.}
+
+\item{alpha}{.}
+
+\item{null_color}{.}
 
 \item{es_plot_width}{.}
 
@@ -268,8 +286,10 @@ A results object containing:
 \code{results$es_mean_ratio} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
-\code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
+\code{results$htest} \tab \tab \tab \tab \tab a table \cr
+\code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

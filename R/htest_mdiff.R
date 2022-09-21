@@ -21,11 +21,9 @@ test_mdiff <- function(
   #   rope_units = "sd" | "raw"
   esci_assert_type(estimate, "is.estimate")
   effect_size <- match.arg(effect_size)
-
-  if (length(rope) == 1) rope[[2]] = rope[[1]]
+  if (length(rope) < 1) rope[[2]] <- rope[[1]]
   rope_lower <- rope[[1]]
   rope_upper <- rope[[2]]
-
   esci_assert_range(
     var = rope_lower,
     upper = 0,
@@ -92,15 +90,15 @@ test_mdiff <- function(
     # Get single effect size and contrast to work with
     es <- as.list(effect_sizes[my_row, ])
 
-
     #### Set rope limits
-    sd <- if(rope_units == "sd") {
-      estimate$es_smd[[my_row, "denominator"]]
+    if (rope_units == "sd") {
+      sd <- estimate$es_smd[[my_row, "denominator"]]
+      this_rope_upper <- rope_upper * sd
+      this_rope_lower <- rope_lower * sd
     } else {
-      1
+      this_rope_upper <- rope_upper
+      this_rope_lower <- rope_lower
     }
-    this_rope_upper <- rope_upper * sd
-    this_rope_lower <- rope_lower * sd
 
 
     # Nil hypothesis test ------------------------------
@@ -119,12 +117,12 @@ test_mdiff <- function(
       significant <- (0 < es$LL | 0 > es$UL)
     }
 
-    null_hypothesis <- glue::glue("{parameter} = 0")
     null_words <- glue::glue("{parameter} is exactly 0")
 
-    CI <- glue::glue("{confidence}% CI [{format(es$LL, digits = 2)}, {format(es$UL, digits = 2)}])")
-
-    CI_compare <- glue::glue("{confidence}% CI does {if (!significant) 'not '}contain the Null")
+    CI_compare <- if (significant)
+      glue::glue("The {confidence}% CI does not include 0")
+    else
+      glue::glue("The {confidence}% CI includes 0")
 
     p_result <- if (significant)
       glue::glue("{p_symbol} < {alpha}")
@@ -132,18 +130,18 @@ test_mdiff <- function(
       glue::glue("{p_symbol} \U002265 {alpha}")
 
     conclusion <- if (significant)
-      glue::glue("{parameter} is not exactly 0")
+      glue::glue("At \U03B1 = {alpha}, conclude {parameter} is not exactly 0")
     else
-      glue::glue("0 is a compatible value for {parameter}")
-
+      glue::glue("At \U03B1 = {alpha}, cannot rule out 0 as a compatible value of {parameter}")
 
     nil_result <- list(
       test_type = "Nil Hypothesis Test",
       outcome_variable_name = es$outcome_variable_name,
       effect = es$effect,
-      null_hypothesis = null_hypothesis,
       null_words = null_words,
-      CI = CI,
+      confidence = confidence,
+      LL = es$LL,
+      UL = es$UL,
       CI_compare = CI_compare,
       t = t,
       df = df,
@@ -152,7 +150,6 @@ test_mdiff <- function(
       conclusion = conclusion,
       significant = significant
     )
-
 
     res$hypothesis_evaluations <- rbind(
       res$hypothesis_evaluations,
@@ -168,15 +165,12 @@ test_mdiff <- function(
       significant <- (es$LL >= this_rope_upper| es$UL <= this_rope_lower)
       me_significant <- significant
 
-      null_hypothesis <- glue::glue("{this_rope_lower} < {parameter} < {this_rope_upper}")
       null_words <- glue::glue("{parameter} is negligible, between {this_rope_lower} and {this_rope_upper}")
 
-      CI <- glue::glue("{confidence}% CI [{format(es$LL, digits = 2)}, {format(es$UL, digits = 2)}]")
-
       CI_compare <- if (significant)
-        "No overlap between null range and CI"
+        glue::glue("The {confidence}% CI contains no negligible values")
       else
-        "At least some overlap between null range and CI"
+        glue::glue("The {confidence}% CI contains at least some negligible values")
 
       p_result <- if (significant)
         glue::glue("{p_symbol} < {alpha}")
@@ -192,9 +186,10 @@ test_mdiff <- function(
         test_type = "Maximal effect test",
         outcome_variable_name = es$outcome_variable_name,
         effect = es$effect,
-        null_hypothesis = null_hypothesis,
         null_words = null_words,
-        CI = CI,
+        confidence = confidence,
+        LL = es$LL,
+        UL = es$UL,
         CI_compare = CI_compare,
         t = t,
         df = df,
@@ -217,15 +212,14 @@ test_mdiff <- function(
       significant <- (es$ta_LL > this_rope_lower & es$ta_UL < this_rope_upper)
       eq_significant <- significant
 
-      null_hypothesis <- glue::glue("{parameter} < {this_rope_lower} or {parameter} > {this_rope_upper}")
       null_words <- glue::glue("{parameter} is substantive, outside the range of {this_rope_lower} to {this_rope_upper}")
 
       CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL, digits = 2)}, {format(es$ta_UL, digits = 2)}]")
 
       CI_compare <- if (significant)
-        "No overlap between null range and CI"
+        "The {confidence_2alpha}% CI contains no substantive values"
       else
-        "At least some overlap between null range and CI"
+        "The {confidence_2alpha}% CI contains at least some substantive values"
 
       p_result <- if (significant)
         glue::glue("{p_symbol} < {alpha}")
@@ -242,9 +236,10 @@ test_mdiff <- function(
         test_type = "Equivalence test",
         outcome_variable_name = es$outcome_variable_name,
         effect = es$effect,
-        null_hypothesis = null_hypothesis,
         null_words = null_words,
-        CI = CI,
+        confidence = confidence,
+        LL = es$ta_LL,
+        UL = es$ta_UL,
         CI_compare = CI_compare,
         t = t,
         df = df,
@@ -258,34 +253,8 @@ test_mdiff <- function(
         res$hypothesis_evaluations,
         as.data.frame(eq_result)
       )
+    }
 
-      # Finalize overall interpretation
-      if (me_significant) {
-        test_plot$note <- glue::glue(
-          "At \U03B1 = {alpha}, this is a substantive (non-negligible) effect."
-        )
-      }
-
-      if (eq_significant) {
-        test_plot$note <- glue::glue(
-          "At \U03B1 = {alpha}, this is negligible effect."
-        )
-      }
-
-      if (!me_significant & !eq_significant) {
-        test_plot$note <- glue::glue(
-          "At \U03B1 = {alpha}, there is not enough data to discern if this is a neglgible or substantive effect."
-        )
-      }
-
-    }  # Finish with interval null tests
-
-
-    # Add row that will plot test results
-    res$test_plot <- rbind(
-      res$test_plot,
-      as.data.frame(test_plot)
-    )
 
   } # Continue looping through effects
 
@@ -294,112 +263,111 @@ test_mdiff <- function(
 
 }
 
-
-#
-# plot_htest <- function(
-#     test_result,
-#     ggtheme = NULL
-# ) {
-#
-#   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
-#
-#
-#   myplot <- ggplot2::ggplot(
-#     data = test_result$test_plot,
-#     ggplot2::aes(
-#       y = 1,
-#       x = effect_size
-#     )
-#   )
-#
-#   # Apply theme
-#   myplot <- myplot + ggtheme
-#
-#   myplot <- myplot + ggplot2::theme(
-#     axis.text.x = ggplot2::element_blank(), #remove x axis labels
-#     axis.ticks.x = ggplot2::element_blank(), #remove x axis ticks
-#     axis.text.y = ggplot2::element_blank(),  #remove y axis labels
-#     axis.ticks.y = ggplot2::element_blank()  #remove y axis ticks
-#   )
-#
-#   myplot <- myplot + ggplot2::facet_grid(
-#     rows = ggplot2::vars(outcome_variable_name)
-#   )
-#
-#
-#   # Apply 2-alpha error bar
-#   myplot <- myplot + ggplot2::geom_errorbar(
-#     ggplot2::aes(
-#       xmin = ta_LL,
-#       xmax = ta_UL
-#     ),
-#     width = 0,
-#     size = 3
-#   )
-#
-#   # Apply 1-alpha error bar
-#   myplot <- myplot + ggplot2::geom_errorbar(
-#     ggplot2::aes(
-#       xmin = LL,
-#       xmax = UL
-#     ),
-#     width = 0,
-#     size = 1
-#   )
-#
-#   # Mark the effect_size
-#   myplot <- myplot + ggplot2::geom_point(
-#     shape = "triangle filled",
-#     size = 4,
-#     fill = "white"
-#   )
-#
-#   # Mark 0 effect
-#   myplot <- myplot + ggplot2::geom_vline(
-#     xintercept = 0,
-#     linetype = "dotted"
-#   )
-#
-#   # If testing an interval null, mark the interval
-#   if (test_result$properties$interval_null) {
-#       myplot <- myplot + ggplot2::geom_rect(
-#         ggplot2::aes(
-#           xmin = rope_lower,
-#           xmax = rope_upper,
-#           ymin = -Inf,
-#           ymax = Inf
-#         ),
-#         alpha = 0.07,
-#         fill = 'black'
-#       )
-#   }
-#
-#   myplot <- myplot + ggplot2::ylab(NULL)
-#
-#   if (test_result$properties$effect_size_name == "mean") {
-#     ename <- "Mean difference"
-#   } else {
-#     ename <- "Median difference"
-#   }
-#
-#   confidence <- 1 - test_result$properties$alpha
-#   confidence_ta <- 1 - 2*test_result$properties$alpha
-#   xlab <- glue::glue(
-#     "{ename} with {confidence*100}% (thin bar) and {confidence_ta*100}% (thick bar) CIs."
-#   )
-#
-#   if (test_result$properties$interval_null) {
-#     xlab <- paste(
-#       xlab,
-#       "\n",
-#       "The gray shaded area represents the null interval."
-#     )
-#   }
-#
-#   myplot <- myplot + ggplot2::xlab(
-#     xlab
-#   )
-#
-#   return(myplot)
-#
-# }
+#'
+#' plot_htest <- function(
+    #'     test_result,
+#'     ggtheme = NULL
+#' ) {
+#'
+#'   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
+#'
+#'
+#'   myplot <- ggplot2::ggplot(
+#'     data = test_result$test_plot,
+#'     ggplot2::aes(
+#'       y = 1,
+#'       x = effect_size
+#'     )
+#'   )
+#'
+#'   # Apply theme
+#'   myplot <- myplot + ggtheme
+#'
+#'   myplot <- myplot + ggplot2::theme(
+#'     axis.text.x = ggplot2::element_blank(), #remove x axis labels
+#'     axis.ticks.x = ggplot2::element_blank(), #remove x axis ticks
+#'     axis.text.y = ggplot2::element_blank(),  #remove y axis labels
+#'     axis.ticks.y = ggplot2::element_blank()  #remove y axis ticks
+#'   )
+#'
+#'   myplot <- myplot + ggplot2::facet_grid(
+#'     rows = ggplot2::vars(outcome_variable_name)
+#'   )
+#'
+#'
+#'   # Apply 2-alpha error bar
+#'   myplot <- myplot + ggplot2::geom_errorbar(
+#'     ggplot2::aes(
+#'       xmin = ta_LL,
+#'       xmax = ta_UL
+#'     ),
+#'     width = 0,
+#'     size = 3
+#'   )
+#'
+#'   # Apply 1-alpha error bar
+#'   myplot <- myplot + ggplot2::geom_errorbar(
+#'     ggplot2::aes(
+#'       xmin = LL,
+#'       xmax = UL
+#'     ),
+#'     width = 0,
+#'     size = 1
+#'   )
+#'
+#'   # Mark the effect_size
+#'   myplot <- myplot + ggplot2::geom_point(
+#'     shape = "triangle filled",
+#'     size = 4,
+#'     fill = "white"
+#'   )
+#'
+#'   # Mark 0 effect
+#'   myplot <- myplot + ggplot2::geom_vline(
+#'     xintercept = 0,
+#'     linetype = "dotted"
+#'   )
+#'
+#'   # If testing an interval null, mark the interval
+#'   if (test_result$properties$interval_null) {
+#'       myplot <- myplot + ggplot2::geom_rect(
+#'         ggplot2::aes(
+#'           xmin = rope_lower,
+#'           xmax = rope_upper,
+#'           ymin = -Inf,
+#'           ymax = Inf
+#'         ),
+#'         alpha = 0.07,
+#'         fill = 'black'
+#'       )
+#'   }
+#'
+#'   myplot <- myplot + ggplot2::ylab(NULL)
+#'
+#'   if (test_result$properties$effect_size_name == "mean") {
+#'     ename <- "Mean difference"
+#'   } else {
+#'     ename <- "Median difference"
+#'   }
+#'
+#'   confidence <- 1 - test_result$properties$alpha
+#'   confidence_ta <- 1 - 2*test_result$properties$alpha
+#'   xlab <- glue::glue(
+#'     "{ename} with {confidence*100}% (thin bar) and {confidence_ta*100}% (thick bar) CIs."
+#'   )
+#'
+#'   if (test_result$properties$interval_null) {
+#'     xlab <- paste(
+#'       xlab,
+#'       "\n",
+#'       "The gray shaded area represents the null interval."
+#'     )
+#'   }
+#'
+#'   myplot <- myplot + ggplot2::xlab(
+#'     xlab
+#'   )
+#'
+#'   return(myplot)
+#'
+#' }

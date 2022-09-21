@@ -16,6 +16,11 @@ jamovimagnitude(
   effect_size = "mean",
   show_details = FALSE,
   show_calculations = FALSE,
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  null_color = "#A40122",
+  alpha = 0.05,
   es_plot_width = "300",
   es_plot_height = "400",
   ymin = "auto",
@@ -72,6 +77,16 @@ jamovimagnitude(
 \item{show_details}{.}
 
 \item{show_calculations}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{null_color}{.}
+
+\item{alpha}{.}
 
 \item{es_plot_width}{.}
 
@@ -143,6 +158,7 @@ A results object containing:
 \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+\code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
 \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 }
