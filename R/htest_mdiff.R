@@ -117,12 +117,22 @@ test_mdiff <- function(
       significant <- (0 < es$LL | 0 > es$UL)
     }
 
-    null_words <- glue::glue("{parameter} is exactly 0")
+    # null_words <- glue::glue("{parameter} is exactly 0")
+    null_words <- glue::glue("0.00")
+
+    rope <- glue::glue("[0.00, 0.00]")
+
+    CI <- glue::glue("{confidence}% CI [{format(es$LL, nsmall = 2)}, {format(es$UL, nsmall = 2)}]")
+
+    # CI_compare <- if (significant)
+    #   glue::glue("The {confidence}% CI does not include 0")
+    # else
+    #   glue::glue("The {confidence}% CI includes 0")
 
     CI_compare <- if (significant)
-      glue::glue("The {confidence}% CI does not include 0")
+      glue::glue("No overlap")
     else
-      glue::glue("The {confidence}% CI includes 0")
+      glue::glue("Overlap")
 
     p_result <- if (significant)
       glue::glue("{p_symbol} < {alpha}")
@@ -139,10 +149,13 @@ test_mdiff <- function(
       outcome_variable_name = es$outcome_variable_name,
       effect = es$effect,
       null_words = null_words,
+      rope = rope,
       confidence = confidence,
       LL = es$LL,
       UL = es$UL,
+      CI = CI,
       CI_compare = CI_compare,
+      rope_compare = CI_compare,
       t = t,
       df = df,
       p = p,
@@ -165,12 +178,20 @@ test_mdiff <- function(
       significant <- (es$LL >= this_rope_upper| es$UL <= this_rope_lower)
       me_significant <- significant
 
-      null_words <- glue::glue("{parameter} is negligible, between {this_rope_lower} and {this_rope_upper}")
+      # null_words <- glue::glue("{parameter} is negligible, between {this_rope_lower} and {this_rope_upper}")
+      null_words <- glue::glue("[{format(this_rope_lower, nsmall = 2)}, {format(this_rope_upper, nsmall = 2)}]")
+
+      CI <- glue::glue("{confidence}% CI [{format(es$LL, nsmall = 2)}, {format(es$UL, nsmall = 2)}]")
+
+      # CI_compare <- if (significant)
+      #   glue::glue("The {confidence}% CI contains no negligible values")
+      # else
+      #   glue::glue("The {confidence}% CI contains at least some negligible values")
 
       CI_compare <- if (significant)
-        glue::glue("The {confidence}% CI contains no negligible values")
+        glue::glue("Overlap")
       else
-        glue::glue("The {confidence}% CI contains at least some negligible values")
+        glue::glue("No overlap")
 
       p_result <- if (significant)
         glue::glue("{p_symbol} < {alpha}")
@@ -178,19 +199,22 @@ test_mdiff <- function(
         glue::glue("{p_symbol} \U002265 {alpha}")
 
       conclusion <- if (significant)
-        glue::glue("{parameter} is not negligible")
+        glue::glue("At \U03B1 = {alpha}, conclude {parameter} is not negligible")
       else
-        glue::glue("At least some negligible values are compatible with {parameter}")
+        glue::glue("At \U03B1 = {alpha}, cannot rule out neglible values of {parameter}")
 
       me_result <- list(
         test_type = "Maximal effect test",
         outcome_variable_name = es$outcome_variable_name,
         effect = es$effect,
         null_words = null_words,
+        rope = null_words,
         confidence = confidence,
         LL = es$LL,
         UL = es$UL,
         CI_compare = CI_compare,
+        rope_compare = CI_compare,
+        CI = CI,
         t = t,
         df = df,
         p = p,
@@ -212,14 +236,14 @@ test_mdiff <- function(
       significant <- (es$ta_LL > this_rope_lower & es$ta_UL < this_rope_upper)
       eq_significant <- significant
 
-      null_words <- glue::glue("{parameter} is substantive, outside the range of {this_rope_lower} to {this_rope_upper}")
+      null_words <- glue::glue("[{format(this_rope_lower, nsmall = 2)}, {format(this_rope_upper, nsmall = 2)}]")
 
-      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL, digits = 2)}, {format(es$ta_UL, digits = 2)}]")
+      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL, nsmall = 2)}, {format(es$ta_UL, nsmall = 2)}]")
 
       CI_compare <- if (significant)
-        "The {confidence_2alpha}% CI contains no substantive values"
+        glue::glue("No overlap")
       else
-        "The {confidence_2alpha}% CI contains at least some substantive values"
+        glue::glue("Overlap")
 
       p_result <- if (significant)
         glue::glue("{p_symbol} < {alpha}")
@@ -227,9 +251,9 @@ test_mdiff <- function(
         glue::glue("{p_symbol} \U002265 {alpha}")
 
       conclusion <- if (significant)
-        glue::glue("{parameter} is negligible")
+        glue::glue("At \U03B1 = {alpha}, concude {parameter} is negligible")
       else
-        glue::glue("At least some substantive values are compatible with {parameter}")
+        glue::glue("At \U03B1 = {alpha}, cannot rule out negligble values of {parameter}")
 
 
       eq_result <- list(
@@ -237,10 +261,13 @@ test_mdiff <- function(
         outcome_variable_name = es$outcome_variable_name,
         effect = es$effect,
         null_words = null_words,
-        confidence = confidence,
+        rope = null_words,
+        confidence = confidence_2alpha,
         LL = es$ta_LL,
         UL = es$ta_UL,
         CI_compare = CI_compare,
+        rope_compare = CI_compare,
+        CI = CI,
         t = t,
         df = df,
         p = p,

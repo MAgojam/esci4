@@ -14,8 +14,8 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   tbl_es_median_difference <- NULL
   tbl_es_median_ratio <- NULL
   tbl_es_odds_ratio <- NULL
-  tbl_eval <- NULL
-  tbl_htest_summary <- NULL
+  tbl_hypothesis_evaluations <- NULL
+  # tbl_htest_summary <- NULL
   assume_equal_variance <- NULL
   try(tbl_overview <- self$results$overview)
   try(tbl_es_mean_difference <- self$results$es_mean_difference)
@@ -25,8 +25,8 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   try(tbl_es_median_ratio <- self$results$es_median_ratio)
   try(tbl_es_odds_ratio <- self$results$es_odds_ratio)
   try(assume_equal_variance <- self$options$assume_equal_variance)
-  try(tbl_eval <- self$results$htest)
-  try(tbl_htest_summary <- self$results$htest_summary)
+  try(tbl_hypothesis_evaluations <- self$results$hypothesis_evaluations)
+  # try(tbl_htest_summary <- self$results$htest_summary)
   try(effect_size <- self$options$effect_size)
 
 
@@ -133,7 +133,7 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
   jamovi_init_table(tbl_es_median_ratio, smd_rows, breaks = 3)
 
-  if (!is.null(tbl_eval)) {
+  if (!is.null(tbl_hypothesis_evaluations)) {
     eval_base <- if(self$options$null_boundary != 0) {
       3
     } else {
@@ -143,11 +143,11 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
     eval_rows <- eval_base * contrast_count * outcome_count
 
     jamovi_init_table(
-      tbl_eval,
+      tbl_hypothesis_evaluations,
       eval_rows,
       breaks = if(eval_base == 1) NULL else eval_base
     )
-    jamovi_init_table(tbl_htest_summary, outcome_count)
+    # jamovi_init_table(tbl_htest_summary, outcome_count)
 
 
   }
@@ -191,5 +191,36 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
 }
 
 
+jamovi_add_htest_mdiff <- function(self, estimate) {
+  evaluate_h <- self$options$evaluate_hypotheses
+
+  if(evaluate_h) {
+    # Test results
+    effect_size <- if (self$options$effect_size == "mean_difference")
+      "mean"
+    else
+      "median"
+
+    rope_upper <- jamovi_sanitize(
+      self$options$null_boundary,
+      na_ok = FALSE,
+      return_value = 0,
+      convert_to_number = TRUE
+    )
+
+    test_results <- test_mdiff(
+      estimate,
+      effect_size = effect_size,
+      rope = c(rope_upper * -1, rope_upper),
+      rope_units = self$options$rope_units,
+      output_html = TRUE
+    )
+
+    estimate$hypothesis_evaluations <- test_results$hypothesis_evaluations
+  }
+
+  return(estimate)
+
+}
 
 

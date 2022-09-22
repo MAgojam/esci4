@@ -406,7 +406,7 @@ items:
           requiresData: true
           renderFun: .estimation_plots
 
-    - name:  htest
+    - name:  hypothesis_evaluations
       title: Evaluate Hypotheses
       type: Table
       rows:  1
@@ -425,18 +425,25 @@ items:
           title: 'Test Type'
           type: text
           visible: (null_boundary != 0)
-        - name: null_hypothesis
-          title: "Null Hypothesis"
-          type: text
         - name: null_words
-          title: "Null in Words"
+          title: "Null Value"
           type: text
+          visible: (null_boundary == 0)
+        - name: rope
+          title: "ROPE"
+          type: text
+          visible: (null_boundary != 0)
         - name: CI
           title: "CI"
           type: text
         - name: CI_compare
-          title: "Compare Null to CI"
+          title: "Compare CI to Null"
           type: text
+          visible: (null_boundary == 0)
+        - name: rope_compare
+          title: "Compare CI to ROPE"
+          type: text
+          visible: (null_boundary != 0)
         - name: t
           title: 't'
           type: number
@@ -461,20 +468,5 @@ items:
           title: 'Statistical Significant'
           type: text
           visible: false
-
-    - name:  htest_summary
-      title: Hypothesis Testing Summary
-      type: Table
-      rows:  1
-      visible: (evaluate_hypotheses)
-      columns:
-        - name: effect
-          title: 'Effect'
-          type: text
-          combineBelow: true
-        - name: note
-          title: 'Conclusion'
-          type: text
-          combineBelow: false
 
 ...

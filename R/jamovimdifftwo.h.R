@@ -1580,8 +1580,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_median_ratio = function() private$.items[["es_median_ratio"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         estimation_plots = function() private$.items[["estimation_plots"]],
-        htest = function() private$.items[["htest"]],
-        htest_summary = function() private$.items[["htest_summary"]]),
+        hypothesis_evaluations = function() private$.items[["hypothesis_evaluations"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -2061,7 +2060,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     renderFun=".estimation_plots")))
             self$add(jmvcore::Table$new(
                 options=options,
-                name="htest",
+                name="hypothesis_evaluations",
                 title="Evaluate Hypotheses",
                 rows=1,
                 visible="(evaluate_hypotheses)",
@@ -2083,21 +2082,29 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text", 
                         `visible`="(null_boundary != 0)"),
                     list(
-                        `name`="null_hypothesis", 
-                        `title`="Null Hypothesis", 
-                        `type`="text"),
-                    list(
                         `name`="null_words", 
-                        `title`="Null in Words", 
-                        `type`="text"),
+                        `title`="Null Value", 
+                        `type`="text", 
+                        `visible`="(null_boundary == 0)"),
+                    list(
+                        `name`="rope", 
+                        `title`="ROPE", 
+                        `type`="text", 
+                        `visible`="(null_boundary != 0)"),
                     list(
                         `name`="CI", 
                         `title`="CI", 
                         `type`="text"),
                     list(
                         `name`="CI_compare", 
-                        `title`="Compare Null to CI", 
-                        `type`="text"),
+                        `title`="Compare CI to Null", 
+                        `type`="text", 
+                        `visible`="(null_boundary == 0)"),
+                    list(
+                        `name`="rope_compare", 
+                        `title`="Compare CI to ROPE", 
+                        `type`="text", 
+                        `visible`="(null_boundary != 0)"),
                     list(
                         `name`="t", 
                         `title`="t", 
@@ -2127,24 +2134,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="significant", 
                         `title`="Statistical Significant", 
                         `type`="text", 
-                        `visible`=FALSE))))
-            self$add(jmvcore::Table$new(
-                options=options,
-                name="htest_summary",
-                title="Hypothesis Testing Summary",
-                rows=1,
-                visible="(evaluate_hypotheses)",
-                columns=list(
-                    list(
-                        `name`="effect", 
-                        `title`="Effect", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="note", 
-                        `title`="Conclusion", 
-                        `type`="text", 
-                        `combineBelow`=FALSE))))}))
+                        `visible`=FALSE))))}))
 
 jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdifftwoBase",
@@ -2270,8 +2260,7 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
-#'   \code{results$htest} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$hypothesis_evaluations} \tab \tab \tab \tab \tab a table \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

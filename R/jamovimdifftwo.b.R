@@ -14,9 +14,6 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
         from_raw <- (self$options$switch == "from_raw")
 
-        evaluate_h <- self$options$evaluate_hypotheses
-        tbl_eval <- self$results$htest
-        tbl_htest_summary <- self$results$htest_summary
 
         estimate <- jamovi_mdiff_two(
           self,
@@ -50,43 +47,6 @@ jamovimdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         # Fill tables
         jamovi_estimate_filler(self, estimate, TRUE)
 
-
-        if(evaluate_h) {
-          # Test results
-          effect_size <- if (self$options$effect_size == "mean_difference")
-            "mean"
-          else
-            "median"
-
-          rope_upper <- jamovi_sanitize(
-            self$options$null_boundary,
-            na_ok = FALSE,
-            return_value = 0,
-            convert_to_number = TRUE
-          )
-
-
-          test_results <- test_mdiff(
-            estimate,
-            effect_size = effect_size,
-            rope_lower = rope_upper * -1,
-            rope_upper = rope_upper,
-            rope_units = self$options$rope_units,
-            output_html = TRUE
-          )
-
-
-          # Fill table
-          jamovi_table_filler(
-            tbl_eval,
-            test_results$hypothesis_evaluations
-          )
-          jamovi_table_filler(
-            tbl_htest_summary,
-            test_results$test_plot
-          )
-
-        }
 
         # Deal with plots ----------------------------------------
         # Set up array of estimation plots
@@ -317,10 +277,16 @@ jamovi_mdiff_two <- function(
   estimate <- try(do.call(what = call, args = args))
 
   if (!is(estimate, "try-error")) {
+    estimate <- jamovi_add_htest_mdiff(
+      self = self,
+      estimate = estimate
+    )
+
     if (length(estimate$warnings) > 0) {
       notes <- c(notes, estimate$warnings)
     }
   }
+
 
   self$results$help$setState(notes)
 
