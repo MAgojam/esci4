@@ -107,7 +107,7 @@ items:
     - name:  es_smd
       title: Standardized Mean Difference
       type: Table
-      rows:  1
+      rows:  (outcome_variable)
       visible: (effect_size == 'mean' & evaluate_hypotheses)
       columns:
         - name: outcome_variable_name
@@ -158,5 +158,68 @@ items:
       width:  400
       height: 300
       renderFun: .magnitude_plot
+
+    - name:  hypothesis_evaluations
+      title: Evaluate Hypotheses
+      type: Table
+      rows:  (outcome_variable)
+      visible: (evaluate_hypotheses)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          visible: true
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+          combineBelow: false
+        - name: test_type
+          title: 'Test Type'
+          type: text
+          visible: (null_boundary != 0)
+        - name: null_words
+          title: "Null Value"
+          type: text
+          visible: (null_boundary == 0)
+        - name: rope
+          title: "ROPE"
+          type: text
+          visible: (null_boundary != 0)
+        - name: CI
+          title: "CI"
+          type: text
+        - name: CI_compare
+          title: "CI overlap with Null"
+          type: text
+          visible: (null_boundary == 0)
+        - name: rope_compare
+          title: "CI overlap with ROPE"
+          type: text
+          visible: (null_boundary != 0)
+        - name: t
+          title: 't'
+          type: number
+          visible: (effect_size == 'mean' & null_boundary == 0)
+        - name: df
+          title: 'df'
+          type: integer
+          visible: (effect_size == 'mean' & null_boundary == 0)
+        - name: p
+          title: "<i>p</i>"
+          type: number
+          format: zto,pvalue
+          visible: (effect_size == 'mean' & null_boundary == 0)
+        - name: p_result
+          title: "<i>p</i>"
+          type: text
+          visible: (effect_size == 'median' | null_boundary != 0)
+        - name: conclusion
+          title: 'Conclusion'
+          type: text
+        - name: significant
+          title: 'Statistical Significant'
+          type: text
+          visible: false
 
 ...

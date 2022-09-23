@@ -196,10 +196,9 @@ jamovi_add_htest_mdiff <- function(self, estimate) {
 
   if(evaluate_h) {
     # Test results
-    effect_size <- if (self$options$effect_size == "mean_difference")
-      "mean"
-    else
-      "median"
+    effect_size = self$options$effect_size
+    if (effect_size == "mean_difference") effect_size <- "mean"
+    if (effect_size == "median_difference") effect_size <- "median"
 
     rope_upper <- jamovi_sanitize(
       self$options$null_boundary,
@@ -208,11 +207,14 @@ jamovi_add_htest_mdiff <- function(self, estimate) {
       convert_to_number = TRUE
     )
 
+    rope_units <- "raw"
+    try(rope_units <- self$options$rope_units)
+
     test_results <- test_mdiff(
       estimate,
       effect_size = effect_size,
       rope = c(rope_upper * -1, rope_upper),
-      rope_units = self$options$rope_units,
+      rope_units = rope_units,
       output_html = TRUE
     )
 

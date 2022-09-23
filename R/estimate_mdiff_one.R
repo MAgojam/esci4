@@ -219,8 +219,8 @@ estimate_mdiff_one <- function(
     )
     estimate$es_mean_difference[2, c("effect_size", "LL", "UL", "SE", "df")] <-
       c(reference_mean, NA, NA, NA, NA)
-    estimate$es_mean_difference[3, c("effect_size", "LL", "UL")] <-
-      estimate$es_mean_difference[3, c("effect_size", "LL", "UL")] - reference_mean
+    estimate$es_mean_difference[3, c("effect_size", "LL", "UL", "ta_LL", "ta_UL")] <-
+      estimate$es_mean_difference[3, c("effect_size", "LL", "UL", "ta_LL", "ta_UL")] - reference_mean
 
     # estimate$es_mean <- NULL
     # estimate$es_mean_properties <- NULL

@@ -53,14 +53,35 @@ test_mdiff <- function(
   # Prep ------------------------------------------
   etable <- if(effect_size == "mean") "es_mean_difference" else "es_median_difference"
 
-  if (output_html) {
-    statistic <- if(effect_size == "mean") "<i>M</i><sub>diff</sub>" else "<i>Mdn</i><sub>diff</sub>"
-    parameter <- if(effect_size == "mean") "<i>&mu;</i><sub>diff</sub>" else "<i>&eta;</i><sub>diff</sub>"
-    p_symbol <- "<i>p</i>"
+  reference_value <- 0
+  effect_is_difference <- TRUE
+  if (is.na(estimate[[etable]][2, "LL"])) {
+    reference_value <- estimate[[etable]][2, "effect_size"]
+    effect_is_difference <- FALSE
+  }
+
+  if (effect_is_difference) {
+    if (output_html) {
+      statistic <- if(effect_size == "mean") "<i>M</i><sub>diff</sub>" else "<i>Mdn</i><sub>diff</sub>"
+      parameter <- if(effect_size == "mean") "<i>&mu;</i><sub>diff</sub>" else "<i>&eta;</i><sub>diff</sub>"
+      p_symbol <- "<i>p</i>"
+    } else {
+      statistic <- if(effect_size == "mean") "M_diff" else "Mdn_diff"
+      parameter <- if(effect_size == "mean") "\U003BC_diff" else "\U003B7_diff"
+      p_symbol <- "p"
+    }
+
   } else {
-    statistic <- if(effect_size == "mean") "M_diff" else "Mdn_diff"
-    parameter <- if(effect_size == "mean") "\U003BC_diff" else "\U003B7_diff"
-    p_symbol <- "p"
+    if (output_html) {
+      statistic <- if(effect_size == "mean") "<i>M</i>" else "<i>Mdn</i>"
+      parameter <- if(effect_size == "mean") "<i>&mu;</i>" else "<i>&eta;</i>"
+      p_symbol <- "<i>p</i>"
+    } else {
+      statistic <- if(effect_size == "mean") "M" else "Mdn"
+      parameter <- if(effect_size == "mean") "\U003BC" else "\U003B7"
+      p_symbol <- "p"
+    }
+
   }
 
   alpha <- 1 - estimate$properties$conf_level
@@ -118,11 +139,11 @@ test_mdiff <- function(
     }
 
     # null_words <- glue::glue("{parameter} is exactly 0")
-    null_words <- glue::glue("0.00")
+    null_words <- glue::glue("{format(reference_value, nsmall=2)}")
 
-    rope <- glue::glue("[0.00, 0.00]")
+    rope_words <- glue::glue("[{format(reference_value, nsmall=2)}, {format(reference_value, nsmall=2)}]")
 
-    CI <- glue::glue("{confidence}% CI [{format(es$LL, nsmall = 2)}, {format(es$UL, nsmall = 2)}]")
+    CI <- glue::glue("{confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]")
 
     # CI_compare <- if (significant)
     #   glue::glue("The {confidence}% CI does not include 0")
@@ -130,9 +151,9 @@ test_mdiff <- function(
     #   glue::glue("The {confidence}% CI includes 0")
 
     CI_compare <- if (significant)
-      glue::glue("No overlap")
+      glue::glue("No")
     else
-      glue::glue("Overlap")
+      glue::glue("Yes")
 
     p_result <- if (significant)
       glue::glue("{p_symbol} < {alpha}")
@@ -140,16 +161,16 @@ test_mdiff <- function(
       glue::glue("{p_symbol} \U002265 {alpha}")
 
     conclusion <- if (significant)
-      glue::glue("At \U03B1 = {alpha}, conclude {parameter} is not exactly 0")
+      glue::glue("At \U03B1 = {alpha}, conclude {parameter} is not exactly {format(reference_value, nsmall=2)}")
     else
-      glue::glue("At \U03B1 = {alpha}, cannot rule out 0 as a compatible value of {parameter}")
+      glue::glue("At \U03B1 = {alpha}, cannot rule out {format(reference_value, nsmall=2)} as a compatible value of {parameter}")
 
     nil_result <- list(
       test_type = "Nil Hypothesis Test",
       outcome_variable_name = es$outcome_variable_name,
       effect = es$effect,
       null_words = null_words,
-      rope = rope,
+      rope = rope_words,
       confidence = confidence,
       LL = es$LL,
       UL = es$UL,
@@ -175,13 +196,13 @@ test_mdiff <- function(
       t <- NA
       p <- NA
 
-      significant <- (es$LL >= this_rope_upper| es$UL <= this_rope_lower)
+      significant <- (es$LL >= this_rope_upper | es$UL <= this_rope_lower)
       me_significant <- significant
 
       # null_words <- glue::glue("{parameter} is negligible, between {this_rope_lower} and {this_rope_upper}")
-      null_words <- glue::glue("[{format(this_rope_lower, nsmall = 2)}, {format(this_rope_upper, nsmall = 2)}]")
+      null_words <- glue::glue("[{format(this_rope_lower+reference_value, nsmall = 2)}, {format(this_rope_upper+reference_value, nsmall = 2)}]")
 
-      CI <- glue::glue("{confidence}% CI [{format(es$LL, nsmall = 2)}, {format(es$UL, nsmall = 2)}]")
+      CI <- glue::glue("{confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]")
 
       # CI_compare <- if (significant)
       #   glue::glue("The {confidence}% CI contains no negligible values")
@@ -189,9 +210,9 @@ test_mdiff <- function(
       #   glue::glue("The {confidence}% CI contains at least some negligible values")
 
       CI_compare <- if (significant)
-        glue::glue("Overlap")
+        glue::glue("CI fully outside the ROPE")
       else
-        glue::glue("No overlap")
+        glue::glue("CI contains values inside ROPE")
 
       p_result <- if (significant)
         glue::glue("{p_symbol} < {alpha}")
@@ -199,7 +220,7 @@ test_mdiff <- function(
         glue::glue("{p_symbol} \U002265 {alpha}")
 
       conclusion <- if (significant)
-        glue::glue("At \U03B1 = {alpha}, conclude {parameter} is not negligible")
+        glue::glue("At \U03B1 = {alpha}, conclude {parameter} is substantive")
       else
         glue::glue("At \U03B1 = {alpha}, cannot rule out neglible values of {parameter}")
 
@@ -236,14 +257,14 @@ test_mdiff <- function(
       significant <- (es$ta_LL > this_rope_lower & es$ta_UL < this_rope_upper)
       eq_significant <- significant
 
-      null_words <- glue::glue("[{format(this_rope_lower, nsmall = 2)}, {format(this_rope_upper, nsmall = 2)}]")
+      null_words <- glue::glue("[{format(this_rope_lower+reference_value, nsmall = 2)}, {format(this_rope_upper+reference_value, nsmall = 2)}]")
 
-      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL, nsmall = 2)}, {format(es$ta_UL, nsmall = 2)}]")
+      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL+reference_value, nsmall = 2)}, {format(es$ta_UL+reference_value, nsmall = 2)}]")
 
       CI_compare <- if (significant)
-        glue::glue("No overlap")
+        glue::glue("CI fully inside ROPE")
       else
-        glue::glue("Overlap")
+        glue::glue("CI contains values outside ROPE")
 
       p_result <- if (significant)
         glue::glue("{p_symbol} < {alpha}")
@@ -253,7 +274,7 @@ test_mdiff <- function(
       conclusion <- if (significant)
         glue::glue("At \U03B1 = {alpha}, concude {parameter} is negligible")
       else
-        glue::glue("At \U03B1 = {alpha}, cannot rule out negligble values of {parameter}")
+        glue::glue("At \U03B1 = {alpha}, cannot rule out substantive values of {parameter}")
 
 
       eq_result <- list(

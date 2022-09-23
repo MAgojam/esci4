@@ -560,9 +560,14 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
     estimate <- try(do.call(what = call, args = args))
 
     if (!is(estimate, "try-error")) {
-        if (length(estimate$warnings) > 0) {
-            notes <- c(notes, estimate$warnings)
-        }
+      estimate <- jamovi_add_htest_mdiff(
+        self = self,
+        estimate = estimate
+      )
+
+      if (length(estimate$warnings) > 0) {
+          notes <- c(notes, estimate$warnings)
+      }
     }
 
     self$results$help$setState(notes)
