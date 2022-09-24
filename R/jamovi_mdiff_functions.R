@@ -25,8 +25,8 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   try(tbl_es_median_ratio <- self$results$es_median_ratio)
   try(tbl_es_odds_ratio <- self$results$es_odds_ratio)
   try(assume_equal_variance <- self$options$assume_equal_variance)
-  try(tbl_hypothesis_evaluations <- self$results$hypothesis_evaluations)
-  # try(tbl_htest_summary <- self$results$htest_summary)
+  try(tbl_point_null <- self$results$point_null)
+  try(tbl_interval_null <- self$results$interval_null)
   try(effect_size <- self$options$effect_size)
 
 
@@ -133,23 +133,17 @@ jamovi_mdiff_initialize <- function(self, grouping_variable = TRUE) {
   jamovi_init_table(tbl_es_median_difference, mdiff_rows, breaks = 3)
   jamovi_init_table(tbl_es_median_ratio, smd_rows, breaks = 3)
 
-  if (!is.null(tbl_hypothesis_evaluations)) {
-    eval_base <- if(self$options$null_boundary != 0) {
-      3
-    } else {
-      1
-    }
-
-    eval_rows <- eval_base * contrast_count * outcome_count
-
+  if (!is.null(tbl_point_null)) {
     jamovi_init_table(
-      tbl_hypothesis_evaluations,
-      eval_rows,
-      breaks = if(eval_base == 1) NULL else eval_base
+      tbl_point_null,
+      outcome_count
     )
-    # jamovi_init_table(tbl_htest_summary, outcome_count)
-
-
+  }
+  if (!is.null(tbl_interval_null)) {
+    jamovi_init_table(
+      tbl_interval_null,
+      outcome_count
+    )
   }
 
 
@@ -218,7 +212,8 @@ jamovi_add_htest_mdiff <- function(self, estimate) {
       output_html = TRUE
     )
 
-    estimate$hypothesis_evaluations <- test_results$hypothesis_evaluations
+    estimate$point_null <- test_results$point_null
+    estimate$interval_null <- test_results$interval_null
   }
 
   return(estimate)

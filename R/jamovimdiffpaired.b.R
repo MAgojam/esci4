@@ -286,6 +286,12 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))
 
+  estimate <- jamovi_add_htest_mdiff(
+    self = self,
+    estimate = estimate
+  )
+
+
   if (!is(estimate, "try-error")) {
     if (length(estimate$warnings) > 0) {
       notes <- c(notes, estimate$warnings)

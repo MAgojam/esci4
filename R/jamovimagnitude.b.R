@@ -17,6 +17,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
 
             jamovi_set_confidence(tbl_overview, conf_level)
+            jamovi_set_confidence(self$results$es_smd, conf_level)
 
 
             width <- jamovi_sanitize(
@@ -564,6 +565,9 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
         self = self,
         estimate = estimate
       )
+
+      estimate$es_smd$reference_value <- args$reference_mean
+      estimate$es_smd$mean <- estimate$es_smd$numerator + args$reference_mean
 
       if (length(estimate$warnings) > 0) {
           notes <- c(notes, estimate$warnings)

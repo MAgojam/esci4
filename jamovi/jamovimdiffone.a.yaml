@@ -278,7 +278,7 @@ options:
       default: raw
       options:
         - name: raw
-          title: Raw scores
+          title: Original units
         - name: sd
           title: Standard deviations
 

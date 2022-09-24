@@ -753,7 +753,8 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         es_smd = function() private$.items[["es_smd"]],
         magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
         magnitude_plot = function() private$.items[["magnitude_plot"]],
-        hypothesis_evaluations = function() private$.items[["hypothesis_evaluations"]]),
+        point_null = function() private$.items[["point_null"]],
+        interval_null = function() private$.items[["interval_null"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -899,6 +900,14 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="Effect", 
                         `type`="text"),
                     list(
+                        `name`="mean", 
+                        `title`="<i>M</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="reference_value", 
+                        `title`="Reference value", 
+                        `type`="number"),
+                    list(
                         `name`="numerator", 
                         `title`="<i>M</i> &ndash; Reference", 
                         `superTitle`="Numerator", 
@@ -949,37 +958,20 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 renderFun=".magnitude_plot"))
             self$add(jmvcore::Table$new(
                 options=options,
-                name="hypothesis_evaluations",
+                name="point_null",
                 title="Evaluate Hypotheses",
-                rows="(outcome_variable)",
-                visible="(evaluate_hypotheses)",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary == 0)",
                 columns=list(
-                    list(
-                        `name`="outcome_variable_name", 
-                        `title`="Outcome variable", 
-                        `visible`=TRUE, 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),
                     list(
-                        `name`="test_type", 
-                        `title`="Test Type", 
-                        `type`="text", 
-                        `visible`="(null_boundary != 0)"),
-                    list(
                         `name`="null_words", 
                         `title`="Null Value", 
-                        `type`="text", 
-                        `visible`="(null_boundary == 0)"),
-                    list(
-                        `name`="rope", 
-                        `title`="ROPE", 
-                        `type`="text", 
-                        `visible`="(null_boundary != 0)"),
+                        `type`="text"),
                     list(
                         `name`="CI", 
                         `title`="CI", 
@@ -987,43 +979,65 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="CI_compare", 
                         `title`="CI overlap with Null", 
-                        `type`="text", 
-                        `visible`="(null_boundary == 0)"),
-                    list(
-                        `name`="rope_compare", 
-                        `title`="CI overlap with ROPE", 
-                        `type`="text", 
-                        `visible`="(null_boundary != 0)"),
+                        `type`="text"),
                     list(
                         `name`="t", 
                         `title`="t", 
                         `type`="number", 
-                        `visible`="(effect_size == 'mean' & null_boundary == 0)"),
+                        `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="df", 
                         `title`="df", 
                         `type`="integer", 
-                        `visible`="(effect_size == 'mean' & null_boundary == 0)"),
+                        `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="p", 
                         `title`="<i>p</i>", 
                         `type`="number", 
                         `format`="zto,pvalue", 
-                        `visible`="(effect_size == 'mean' & null_boundary == 0)"),
+                        `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="p_result", 
                         `title`="<i>p</i>", 
                         `type`="text", 
-                        `visible`="(effect_size == 'median' | null_boundary != 0)"),
+                        `visible`="(effect_size == 'median')"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
+                        `type`="text"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="interval_null",
+                title="Evaluate Hypotheses",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary != 0)",
+                columns=list(
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="rope", 
+                        `title`="ROPE", 
                         `type`="text"),
                     list(
-                        `name`="significant", 
-                        `title`="Statistical Significant", 
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="rope_compare", 
+                        `title`="CI overlap with ROPE", 
+                        `type`="text"),
+                    list(
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
                         `type`="text", 
-                        `visible`=FALSE))))}))
+                        `visible`="(effect_size == 'median')"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))}))
 
 jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimagnitudeBase",
@@ -1104,7 +1118,8 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$hypothesis_evaluations} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

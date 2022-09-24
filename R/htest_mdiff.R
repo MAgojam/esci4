@@ -170,13 +170,11 @@ test_mdiff <- function(
       outcome_variable_name = es$outcome_variable_name,
       effect = es$effect,
       null_words = null_words,
-      rope = rope_words,
       confidence = confidence,
       LL = es$LL,
       UL = es$UL,
       CI = CI,
       CI_compare = CI_compare,
-      rope_compare = CI_compare,
       t = t,
       df = df,
       p = p,
@@ -185,124 +183,96 @@ test_mdiff <- function(
       significant = significant
     )
 
-    res$hypothesis_evaluations <- rbind(
-      res$hypothesis_evaluations,
+    if (is.null(nil_result$outcome_variable_name)) {
+      nil_result$outcome_variable_name <- paste(
+        es$comparison_measure_name,
+        es$reference_measure_name,
+        sep = " - "
+      )
+    }
+
+    res$point_null <- rbind(
+      res$point_null,
       as.data.frame(nil_result)
     )
 
     if (!(this_rope_lower == 0 & this_rope_upper == 0)) {
-      # Maximal effect test
-      df <- NA
-      t <- NA
-      p <- NA
+      eq_significant <- (es$ta_LL > this_rope_lower & es$ta_UL < this_rope_upper)
+      me_significant <- (es$LL >= this_rope_upper | es$UL <= this_rope_lower)
 
-      significant <- (es$LL >= this_rope_upper | es$UL <= this_rope_lower)
-      me_significant <- significant
+      significant <- (eq_significant | me_significant)
 
-      # null_words <- glue::glue("{parameter} is negligible, between {this_rope_lower} and {this_rope_upper}")
       null_words <- glue::glue("[{format(this_rope_lower+reference_value, nsmall = 2)}, {format(this_rope_upper+reference_value, nsmall = 2)}]")
 
-      CI <- glue::glue("{confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]")
 
-      # CI_compare <- if (significant)
-      #   glue::glue("The {confidence}% CI contains no negligible values")
-      # else
-      #   glue::glue("The {confidence}% CI contains at least some negligible values")
+      if(output_html) {
+          CI <- glue::glue("
+        {confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]
+        </br>
+        {confidence_2alpha}% CI [{format(es$ta_LL+reference_value, nsmall = 2)}, {format(es$ta_UL+reference_value, nsmall = 2)}]
+        ")
 
-      CI_compare <- if (significant)
-        glue::glue("CI fully outside the ROPE")
+      } else {
+        CI <- glue::glue("
+        {confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]
+        {confidence_2alpha}% CI [{format(es$ta_LL+reference_value, nsmall = 2)}, {format(es$ta_UL+reference_value, nsmall = 2)}]
+        ")
+
+      }
+
+
+      CI_compare <- if (me_significant)
+        glue::glue("{confidence}% CI fully outside the ROPE")
       else
-        glue::glue("CI contains values inside ROPE")
+        glue::glue("{confidence}% CI has values inside and outside the ROPE")
 
-      p_result <- if (significant)
+      if (eq_significant) {
+        CI_compare <- glue::glue("{confidence_2alpha}% CI fully inside the ROPE")
+      }
+
+      p_result <- if (me_significant | eq_significant)
         glue::glue("{p_symbol} < {alpha}")
       else
         glue::glue("{p_symbol} \U002265 {alpha}")
 
-      conclusion <- if (significant)
+
+      conclusion <- if (me_significant)
         glue::glue("At \U03B1 = {alpha}, conclude {parameter} is substantive")
       else
-        glue::glue("At \U03B1 = {alpha}, cannot rule out neglible values of {parameter}")
+        glue::glue("At \U03B1 = {alpha}, this is an ambiguous result")
 
-      me_result <- list(
-        test_type = "Maximal effect test",
+      if (eq_significant) {
+        conclusion <- glue::glue("At \U03B1 = {alpha}, conclude {parameter} is negligible")
+      }
+
+      interval_result <- list(
+        test_type = "Practical significance test",
         outcome_variable_name = es$outcome_variable_name,
         effect = es$effect,
-        null_words = null_words,
         rope = null_words,
         confidence = confidence,
-        LL = es$LL,
-        UL = es$UL,
-        CI_compare = CI_compare,
-        rope_compare = CI_compare,
         CI = CI,
-        t = t,
-        df = df,
-        p = p,
+        rope_compare = CI_compare,
         p_result = p_result,
         conclusion = conclusion,
         significant = significant
       )
 
-      res$hypothesis_evaluations <- rbind(
-        res$hypothesis_evaluations,
-        as.data.frame(me_result)
+
+      if (is.null(interval_result$outcome_variable_name)) {
+        interval_result$outcome_variable_name <- paste(
+          es$comparison_measure_name,
+          es$reference_measure_name,
+          sep = " - "
+        )
+      }
+
+
+      res$interval_null <- rbind(
+        res$interval_null,
+        as.data.frame(interval_result)
       )
-
-      # Equiv effect test
-      df <- NA
-      t <- NA
-      p <- NA
-
-      significant <- (es$ta_LL > this_rope_lower & es$ta_UL < this_rope_upper)
-      eq_significant <- significant
-
-      null_words <- glue::glue("[{format(this_rope_lower+reference_value, nsmall = 2)}, {format(this_rope_upper+reference_value, nsmall = 2)}]")
-
-      CI <- glue::glue("{confidence_2alpha}% CI [{format(es$ta_LL+reference_value, nsmall = 2)}, {format(es$ta_UL+reference_value, nsmall = 2)}]")
-
-      CI_compare <- if (significant)
-        glue::glue("CI fully inside ROPE")
-      else
-        glue::glue("CI contains values outside ROPE")
-
-      p_result <- if (significant)
-        glue::glue("{p_symbol} < {alpha}")
-      else
-        glue::glue("{p_symbol} \U002265 {alpha}")
-
-      conclusion <- if (significant)
-        glue::glue("At \U03B1 = {alpha}, concude {parameter} is negligible")
-      else
-        glue::glue("At \U03B1 = {alpha}, cannot rule out substantive values of {parameter}")
-
-
-      eq_result <- list(
-        test_type = "Equivalence test",
-        outcome_variable_name = es$outcome_variable_name,
-        effect = es$effect,
-        null_words = null_words,
-        rope = null_words,
-        confidence = confidence_2alpha,
-        LL = es$ta_LL,
-        UL = es$ta_UL,
-        CI_compare = CI_compare,
-        rope_compare = CI_compare,
-        CI = CI,
-        t = t,
-        df = df,
-        p = p,
-        p_result = p_result,
-        conclusion = conclusion,
-        significant = significant
-      )
-
-      res$hypothesis_evaluations <- rbind(
-        res$hypothesis_evaluations,
-        as.data.frame(eq_result)
-      )
-    }
-
+    } # End interval tests
 
   } # Continue looping through effects
 

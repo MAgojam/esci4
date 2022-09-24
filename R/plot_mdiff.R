@@ -428,6 +428,7 @@ plot_mdiff_base <- function(
       }
   }
 
+
   if ( (difference_LL + reference_es) < reference_es) {
     rawStart <- difference_LL
     saxisStart <- floor(difference_LL/pooled_sd)
@@ -443,6 +444,27 @@ plot_mdiff_base <- function(
       saxisStart <- floor(difference_LL/pooled_sd)
       if (saxisStart > -1) saxisStart = -1
     }
+  }
+
+  if (plot_raw) {
+    rdata_max <- max(rdata$outcome_variable, na.rm = TRUE)
+    rdata_min <- min(rdata$outcome_variable, na.rm = TRUE)
+    rdata_range <- rdata_max - rdata_min
+    axis_range <- rawEnd - rawStart
+    if (axis_range / rdata_range < .36) {
+      ref_percent <- (reference_es -  rdata_min) / rdata_range
+      rangeEnd <- reference_es + (0.36 * (1-ref_percent) * rdata_range)
+      rangeStart <- reference_es - (0.36 * (ref_percent) * rdata_range)
+
+      if (rangeEnd > rawEnd) rawEnd <- rangeEnd
+      if (rangeStart < rawStart) rawStart <- rangeStart
+
+      saxisEnd <- ceiling(difference_UL/pooled_sd)
+      if (saxisEnd < 1) saxisEnd = 1
+      saxisStart <- floor(difference_LL/pooled_sd)
+      if (saxisStart > -1) saxisStart = -1
+    }
+    # Adjust floating axis points for cases where small % of raw data range
   }
 
 

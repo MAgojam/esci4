@@ -406,11 +406,11 @@ items:
           requiresData: true
           renderFun: .estimation_plots
 
-    - name:  hypothesis_evaluations
+    - name:  point_null
       title: Evaluate Hypotheses
       type: Table
       rows:  1
-      visible: (evaluate_hypotheses)
+      visible: (evaluate_hypotheses & null_boundary == 0)
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -421,52 +421,67 @@ items:
           title: 'Effect'
           type: text
           combineBelow: false
-        - name: test_type
-          title: 'Test Type'
-          type: text
-          visible: (null_boundary != 0)
         - name: null_words
           title: "Null Value"
           type: text
-          visible: (null_boundary == 0)
-        - name: rope
-          title: "ROPE"
-          type: text
-          visible: (null_boundary != 0)
         - name: CI
           title: "CI"
           type: text
         - name: CI_compare
-          title: "Compare CI to Null"
+          title: "CI overlap with Null"
           type: text
-          visible: (null_boundary == 0)
-        - name: rope_compare
-          title: "Compare CI to ROPE"
-          type: text
-          visible: (null_boundary != 0)
         - name: t
           title: 't'
           type: number
-          visible: (effect_size == 'mean_difference' & null_boundary == 0)
+          visible: (effect_size == 'mean')
         - name: df
           title: 'df'
           type: integer
-          visible: (effect_size == 'mean_difference' & null_boundary == 0)
+          visible: (effect_size == 'mean')
         - name: p
           title: "<i>p</i>"
           type: number
           format: zto,pvalue
-          visible: (effect_size == 'mean_difference' & null_boundary == 0)
+          visible: (effect_size == 'mean')
         - name: p_result
           title: "<i>p</i>"
           type: text
-          visible: (effect_size == 'median_difference' | null_boundary != 0)
+          visible: (effect_size == 'median')
         - name: conclusion
           title: 'Conclusion'
           type: text
-        - name: significant
-          title: 'Statistical Significant'
+
+    - name:  interval_null
+      title: Evaluate Hypotheses
+      type: Table
+      rows:  1
+      visible: (evaluate_hypotheses & null_boundary != 0)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          visible: true
           type: text
-          visible: false
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+          combineBelow: false
+        - name: rope
+          title: "ROPE"
+          type: text
+        - name: CI
+          title: "CI"
+          type: text
+        - name: rope_compare
+          title: "CI overlap with ROPE"
+          type: text
+        - name: p_result
+          title: "<i>p</i>"
+          type: text
+          visible: (effect_size == 'median')
+        - name: conclusion
+          title: 'Conclusion'
+          type: text
+
 
 ...

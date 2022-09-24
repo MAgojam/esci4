@@ -1701,7 +1701,9 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         es_median_difference = function() private$.items[["es_median_difference"]],
         es_median_ratio = function() private$.items[["es_median_ratio"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        estimation_plots = function() private$.items[["estimation_plots"]]),
+        estimation_plots = function() private$.items[["estimation_plots"]],
+        point_null = function() private$.items[["point_null"]],
+        interval_null = function() private$.items[["interval_null"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -2125,7 +2127,101 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 width=300,
                 height=450,
                 requiresData=TRUE,
-                renderFun=".estimation_plots"))}))
+                renderFun=".estimation_plots"))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="point_null",
+                title="Evaluate Hypotheses",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary == 0)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `visible`=TRUE, 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="null_words", 
+                        `title`="Null Value", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="CI_compare", 
+                        `title`="CI overlap with Null", 
+                        `type`="text"),
+                    list(
+                        `name`="t", 
+                        `title`="t", 
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean')"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer", 
+                        `visible`="(effect_size == 'mean')"),
+                    list(
+                        `name`="p", 
+                        `title`="<i>p</i>", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(effect_size == 'mean')"),
+                    list(
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
+                        `type`="text", 
+                        `visible`="(effect_size == 'median')"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="interval_null",
+                title="Evaluate Hypotheses",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary != 0)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `visible`=TRUE, 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="rope", 
+                        `title`="ROPE", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="rope_compare", 
+                        `title`="CI overlap with ROPE", 
+                        `type`="text"),
+                    list(
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
+                        `type`="text", 
+                        `visible`="(effect_size == 'median')"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))}))
 
 jamovimdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiffpairedBase",
@@ -2255,6 +2351,8 @@ jamovimdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #'   \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

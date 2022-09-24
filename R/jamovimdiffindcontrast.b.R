@@ -273,6 +273,11 @@ in {self$options$grouping_variable_levels}.  Rows with empty group labels have b
 
   # For summary data, store in a list based on outcome_variable_name
   if (!is(estimate, "try-error")) {
+    estimate <- jamovi_add_htest_mdiff(
+      self = self,
+      estimate = estimate
+    )
+
     notes <- c(notes, estimate$warnings)
     self$results$help$setState(notes)
     if(!from_raw) {
