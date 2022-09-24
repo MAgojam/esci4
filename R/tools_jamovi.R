@@ -604,7 +604,7 @@ jamovi_check_contrast <- function(
 
   run_analysis <- TRUE
 
-  if(nchar(labels)>1) {
+  if(nchar(labels)>=1) {
     # Verify list of reference groups
     # Split by comma, then trim ws while also
     #  reducing the list returned by split to a vector
