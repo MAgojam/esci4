@@ -44,7 +44,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
                 outcome_variable)
-            private$..grouping_variable <- jmvcore::OptionVariables$new(
+            private$..grouping_variable <- jmvcore::OptionVariable$new(
                 "grouping_variable",
                 grouping_variable)
             private$..comparison_cases <- jmvcore::OptionString$new(

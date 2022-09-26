@@ -24,7 +24,7 @@ options:
 
     - name: grouping_variable
       title: Grouping variable
-      type: Variables
+      type: Variable
 
     - name: comparison_cases
       title: Comparison cases

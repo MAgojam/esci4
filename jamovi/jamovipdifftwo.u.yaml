@@ -1,4 +1,4 @@
-title: "Proportions: Two Groups"
+title: 'Proportions: Two Groups'
 name: jamovipdifftwo
 jus: '3.0'
 stage: 0
@@ -27,12 +27,6 @@ children:
         persistentItems: false
         stretchFactor: 1
         children:
-          - type: TargetLayoutBox
-            label: Grouping variable
-            children:
-              - type: VariablesListBox
-                name: grouping_variable
-                isTarget: true
           - type: TargetLayoutBox
             label: Outcome variable(s)
             children:
@@ -77,6 +71,17 @@ children:
       - type: TextBox
         name: grouping_variable_name
         format: string
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Grouping variable
+        children:
+          - type: VariablesListBox
+            name: grouping_variable
+            maxItemCount: 1
+            isTarget: true
   - type: Label
     label: Analysis options
     children:
