@@ -37,7 +37,7 @@ items:
           title: Cases
           type: integer
         - name: n
-          title: <i>N</i>
+          title: <i>n</i>
           type: integer
         - name: P
           title: <i>P</i>
@@ -50,7 +50,7 @@ items:
           type: number
         - name: P_SE
           type: number
-          title: <i>SE<sub>P</sub></i>
+          title: <i>SE<sub></sub>P</i>
           visible: (show_details)
 
     - name:  es_proportion_difference
@@ -62,6 +62,7 @@ items:
           title: 'Grouping variable'
           type: text
           combineBelow: true
+          visible: false
         - name: outcome_variable_name
           title: 'Outcome variable'
           type: text
@@ -92,6 +93,7 @@ items:
           title: 'Grouping variable'
           type: text
           combineBelow: true
+          visible: false
         - name: outcome_variable_name
           title: 'Outcome variable'
           type: text

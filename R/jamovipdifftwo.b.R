@@ -108,26 +108,30 @@ jamovi_pdiff_two <- function(self) {
             self$options$comparison_cases,
             lower = 0,
             lower_inclusive = TRUE,
-            integer_required = TRUE
+            integer_required = TRUE,
+            my_value_name = "Comparison group cases"
         )
         args$comparison_n <- jamovi_required_numeric(
             self$options$comparison_n,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "Comparison <i>n</i>"
         )
 
         args$reference_cases <- jamovi_required_numeric(
             self$options$reference_cases,
             lower = 0,
             lower_inclusive = TRUE,
-            integer_required = TRUE
+            integer_required = TRUE,
+            my_value_name = "Reference group cases"
         )
         args$reference_n <- jamovi_required_numeric(
             self$options$reference_n,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "Reference <i>n</i>"
         )
 
         unfilled <- names(args[which(is.na(args))])
@@ -182,33 +186,39 @@ jamovi_pdiff_two <- function(self) {
         args$case_label <- jamovi_sanitize(
             self$options$case_label,
             return_value = "Affected",
-            na_ok = FALSE
+            na_ok = FALSE,
+            my_value_name = "Label for cases"
         )
         args$not_case_label <- jamovi_sanitize(
             self$options$not_case_label,
             return_value = "Not affected",
-            na_ok = FALSE
+            na_ok = FALSE,
+            my_value_name = "Label for not cases"
         )
         args$grouping_variable_level1 <- jamovi_sanitize(
             self$options$grouping_variable_level1,
             return_value = "Comparison Level",
-            na_ok = FALSE
+            na_ok = FALSE,
+            my_value_name = "Comparison group label"
         )
         args$grouping_variable_level2 <- jamovi_sanitize(
             self$options$grouping_variable_level2,
             return_value = "Reference Level",
-            na_ok = FALSE
+            na_ok = FALSE,
+            my_value_name = "Reference group label"
         )
 
         args$outcome_variable_name <- jamovi_sanitize(
             self$options$outcome_variable_name,
             return_value = "My outcome variable",
-            na_ok = FALSE
+            na_ok = FALSE,
+            my_value_name = "Outcome variable name"
         )
         args$grouping_variable_name <- jamovi_sanitize(
             self$options$grouping_variable_name,
             return_value = "My grouping variable",
-            na_ok = FALSE
+            na_ok = FALSE,
+            my_value_name = "Grouping variable name"
         )
 
         for (element in args) {
@@ -237,6 +247,15 @@ jamovi_pdiff_two <- function(self) {
     estimate <- try(do.call(what = call, args = args))
 
     if (!is(estimate, "try-error")) {
+
+        estimate$es_proportion_difference <- jamovi_peffect_html(
+          estimate$es_proportion_difference
+        )
+
+        estimate$es_odds_ratio <- jamovi_peffect_html(
+          estimate$es_odds_ratio
+        )
+
         if (length(estimate$warnings) > 0) {
             notes <- c(notes, estimate$warnings)
         }

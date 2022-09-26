@@ -21,7 +21,12 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             grouping_variable_name = "Grouping variable",
             count_NA = FALSE,
             conf_level = 95,
-            show_details = FALSE, ...) {
+            show_details = FALSE,
+            evaluate_hypotheses = FALSE,
+            null_value = "0",
+            null_boundary = "0",
+            alpha = 0.05,
+            null_color = "#A40122", ...) {
 
             super$initialize(
                 package="esci4",
@@ -96,6 +101,66 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
+                "evaluate_hypotheses",
+                evaluate_hypotheses,
+                default=FALSE)
+            private$..null_value <- jmvcore::OptionString$new(
+                "null_value",
+                null_value,
+                default="0")
+            private$..null_boundary <- jmvcore::OptionString$new(
+                "null_boundary",
+                null_boundary,
+                default="0")
+            private$..alpha <- jmvcore::OptionNumber$new(
+                "alpha",
+                alpha,
+                default=0.05,
+                min=0,
+                max=1)
+            private$..null_color <- jmvcore::OptionList$new(
+                "null_color",
+                null_color,
+                default="#A40122",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
 
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
@@ -113,6 +178,11 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..count_NA)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_value)
+            self$.addOption(private$..null_boundary)
+            self$.addOption(private$..alpha)
+            self$.addOption(private$..null_color)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -130,7 +200,12 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         grouping_variable_name = function() private$..grouping_variable_name$value,
         count_NA = function() private$..count_NA$value,
         conf_level = function() private$..conf_level$value,
-        show_details = function() private$..show_details$value),
+        show_details = function() private$..show_details$value,
+        evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_value = function() private$..null_value$value,
+        null_boundary = function() private$..null_boundary$value,
+        alpha = function() private$..alpha$value,
+        null_color = function() private$..null_color$value),
     private = list(
         ..switch = NA,
         ..outcome_variable = NA,
@@ -147,7 +222,12 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..grouping_variable_name = NA,
         ..count_NA = NA,
         ..conf_level = NA,
-        ..show_details = NA)
+        ..show_details = NA,
+        ..evaluate_hypotheses = NA,
+        ..null_value = NA,
+        ..null_boundary = NA,
+        ..alpha = NA,
+        ..null_color = NA)
 )
 
 jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -206,7 +286,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="integer"),
                     list(
                         `name`="n", 
-                        `title`="<i>N</i>", 
+                        `title`="<i>n</i>", 
                         `type`="integer"),
                     list(
                         `name`="P", 
@@ -223,7 +303,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="P_SE", 
                         `type`="number", 
-                        `title`="<i>SE<sub>P</sub></i>", 
+                        `title`="<i>SE<sub></sub>P</i>", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -235,7 +315,8 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="outcome_variable_name", 
                         `title`="Outcome variable", 
@@ -272,7 +353,8 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="outcome_variable_name", 
                         `title`="Outcome variable", 
@@ -334,6 +416,11 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param count_NA .
 #' @param conf_level .
 #' @param show_details .
+#' @param evaluate_hypotheses .
+#' @param null_value .
+#' @param null_boundary .
+#' @param alpha .
+#' @param null_color .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
@@ -367,7 +454,12 @@ jamovipdifftwo <- function(
     grouping_variable_name = "Grouping variable",
     count_NA = FALSE,
     conf_level = 95,
-    show_details = FALSE) {
+    show_details = FALSE,
+    evaluate_hypotheses = FALSE,
+    null_value = "0",
+    null_boundary = "0",
+    alpha = 0.05,
+    null_color = "#A40122") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovipdifftwo requires jmvcore to be installed (restart may be required)")
@@ -397,7 +489,12 @@ jamovipdifftwo <- function(
         grouping_variable_name = grouping_variable_name,
         count_NA = count_NA,
         conf_level = conf_level,
-        show_details = show_details)
+        show_details = show_details,
+        evaluate_hypotheses = evaluate_hypotheses,
+        null_value = null_value,
+        null_boundary = null_boundary,
+        alpha = alpha,
+        null_color = null_color)
 
     analysis <- jamovipdifftwoClass$new(
         options = options,
