@@ -168,6 +168,8 @@ plot_mdiff <- function(
       effect_size = if (effect_size == "mean") estimate$overview$mean else estimate$overview$median,
       LL = if (effect_size == "mean") estimate$overview$mean_LL else estimate$overview$median_LL,
       UL = if (effect_size == "mean") estimate$overview$mean_UL else estimate$overview$median_UL,
+      ta_LL = NA,
+      ta_UL = NA,
       SE = if (effect_size == "mean") estimate$overview$mean_SE else estimate$overview$median_SE,
       df = estimate$overview$df,
       x_label = estimate$overview$grouping_variable_level,
