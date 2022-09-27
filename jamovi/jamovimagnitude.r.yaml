@@ -152,21 +152,8 @@ items:
           title: "<i>d</i><sub>biased</sub>"
           type: number
 
-    - name: magnitude_plot_warnings
-      title: Figure Warnings
-      type: Html
-      visible: true
-
-    - name: magnitude_plot
-      title: Estimation Figure
-      type: Image
-      requiresData: true
-      width:  400
-      height: 300
-      renderFun: .magnitude_plot
-
     - name:  point_null
-      title: Evaluate Hypotheses
+      title: Hypothesis evaluation
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
@@ -207,7 +194,7 @@ items:
 
 
     - name:  interval_null
-      title: Evaluate Hypotheses
+      title: Hypothesis evaluation
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
@@ -233,4 +220,16 @@ items:
           title: 'Conclusion'
           type: text
 
+    - name: magnitude_plot_warnings
+      title: Figure Warnings
+      type: Html
+      visible: true
+
+    - name: magnitude_plot
+      title: Estimation Figure
+      type: Image
+      requiresData: true
+      width:  400
+      height: 300
+      renderFun: .magnitude_plot
 ...

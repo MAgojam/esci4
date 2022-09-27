@@ -740,7 +740,7 @@ children:
                   column: 4
                   row: 14
   - type: CollapseBox
-    label: Evaluate hypotheses
+    label: Hypothesis evaluation
     name: hpanel
     collapsed: true
     children:
