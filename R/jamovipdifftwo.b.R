@@ -66,9 +66,27 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             jamovi_init_table(tbl_es_proportion_difference, mdiff_rows, breaks = 3)
             jamovi_init_table(tbl_es_odds_ratio, smd_rows)
 
+            # Hide odds ratio table when more than 2 levels in the grouping variable
+            tbl_es_odds_ratio$setVisible(level_count <= 2)
+
+            keys <- if (from_raw)
+              self$options$outcome_variable
+            else
+              jamovi_sanitize(
+                self$options$outcome_variable_name,
+                "My outcome variable",
+                na_ok = FALSE
+              )
+
+            for (my_key in keys) {
+              self$results$estimation_plots$addItem(key = my_key)
+              image <- self$results$estimation_plots$get(my_key)
+              # image$setSize(width , height)
+            }
 
         },
         .run = function() {
+            from_raw <- (self$options$switch == "from_raw")
 
             estimate <- jamovi_pdiff_two(self)
 
@@ -84,11 +102,66 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
 
+            # Deal with plots
+            keys <- if (from_raw)
+              self$options$outcome_variable
+            else
+              jamovi_sanitize(
+                self$options$outcome_variable_name,
+                "My outcome variable",
+                na_ok = FALSE
+              )
+
+            for (my_key in keys) {
+              image <- self$results$estimation_plots$get(key=my_key)
+              image$setState(my_key)
+            }
+
+            if (length(keys) > 1) {
+              self$results$estimation_plots$setTitle(
+                paste(
+                  self$results$estimation_plots$title,
+                  "s",
+                  sep = ""
+                )
+              )
+            }
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          if (is.null(image$state))
+            return(FALSE)
+
+          # Redo analysis
+          estimate <- jamovi_pdiff_two(
+            self = self,
+            outcome_variable = c(image$state)
+          )
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          if (is.null(estimate$properties$contrast)) {
+            return(TRUE)
+          }
+
+          myplot <- jamovi_plot_pdiff(
+            self,
+            estimate,
+            image,
+            ggtheme,
+            theme
+          )
+
+          print(myplot)
+          TRUE
+
         })
 )
 
 
-jamovi_pdiff_two <- function(self) {
+jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
     # Prelim -----------------------------------------------------
     from_raw <- (self$options$switch == "from_raw")
     notes <- c(NULL)
@@ -98,11 +171,15 @@ jamovi_pdiff_two <- function(self) {
 
 
     if(from_raw) {
+      if (is.null(outcome_variable)) {
         if (
-            is.null(self$options$outcome_variable) |
-            is.null(self$options$grouping_variable)
+          is.null(self$options$outcome_variable) |
+          length(self$options$outcome_variable) == 0
         ) return(NULL)
-
+      }
+      if (
+        is.null(self$options$grouping_variable)
+      ) return(NULL)
     } else {
         args$comparison_cases <- jamovi_required_numeric(
             self$options$comparison_cases,
@@ -180,7 +257,14 @@ jamovi_pdiff_two <- function(self) {
 
     if(from_raw) {
         args$data <- self$data
-        args$outcome_variable <- unname(self$options$outcome_variable)
+
+        if (is.null(outcome_variable)) {
+          args$outcome_variable <- unname(self$options$outcome_variable)
+        } else {
+          args$outcome_variable <- unname(outcome_variable)
+          args$outcome_variable_name <- outcome_variable
+        }
+
         args$grouping_variable <- unname(self$options$grouping_variable)
     } else {
         args$case_label <- jamovi_sanitize(

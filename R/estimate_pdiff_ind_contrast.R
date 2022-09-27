@@ -298,11 +298,11 @@ The contrast passed was: {passed_contrast}.
   names(cases) <- grouping_variable_levels
   weights <- esci_tool_contrast_fixed(contrast, cases)
   contrast_labels <- esci_tool_contrast_labels(weights)
-  contrast_labels <- paste(
-    contrast_labels,
-    paste("P_", case_label, sep = ""),
-    sep = " "
-  )
+  # contrast_labels <- paste(
+  #   contrast_labels,
+  #   paste("P_", case_label, sep = ""),
+  #   sep = " "
+  # )
 
   # We'll estimate the comparison subset, reference subset, and the difference
   contrasts <- list(
@@ -348,6 +348,18 @@ The contrast passed was: {passed_contrast}.
       )
     )
 
+    res_2a <- as.data.frame(
+      statpsych::ci.lc.prop.bs(
+        alpha = (1 - conf_level)*2,
+        f = cases,
+        n = ns,
+        v = mycontrast
+      )
+    )
+
+    res$ta_LL <- res_2a$LL
+    res$ta_UL <- res_2a$UL
+
     res$Estimate <- sum(mycontrast*(cases/ns))
 
     es_proportion_difference <- rbind(
@@ -359,17 +371,16 @@ The contrast passed was: {passed_contrast}.
 
 
   estimate$es_proportion_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
-  estimate$es_proportion_difference[ , c("effect_size", "LL", "UL", "SE")] <-
-    es_proportion_difference[ , c("Estimate", "LL", "UL", "SE")]
+  estimate$es_proportion_difference[ , c("effect_size", "LL", "UL", "SE", "ta_LL", "ta_UL")] <-
+    es_proportion_difference[ , c("Estimate", "LL", "UL", "SE", "ta_LL", "ta_UL")]
 
   estimate$es_proportion_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),
-    outcome_variable_name = outcome_variable_name,
+    outcome_variable_name = paste(outcome_variable_name, paste(": P_", case_label, sep = ""), sep = ""),
     grouping_variable_name = grouping_variable_name,
     effect = contrast_labels,
     estimate$es_proportion_difference
   )
-
 
   # Odds ratio?
   if (length(cases) == 2) {
@@ -382,8 +393,22 @@ The contrast passed was: {passed_contrast}.
         f11 = ns[2] - cases[2]
       )
     )
+
+    res_2a <- as.data.frame(
+      statpsych::ci.oddsratio(
+        alpha = (1 - conf_level)*2,
+        f00 = cases[1],
+        f01 = ns[1] - cases[1],
+        f10 = cases[2],
+        f11 = ns[2] - cases[2]
+      )
+    )
+
+    estimate$es_odds_ratio$ta_LL <- res_2a$LL
+    estimate$es_odds_ratio$ta_UL <- res_2a$UL
+
     estimate$es_odds_ratio <- cbind(
-      outcome_variable_name = outcome_variable_name,
+      outcome_variable_name = paste(outcome_variable_name, paste(": P_", case_label, sep = ""), sep = ""),
       grouping_variable_name = grouping_variable_name,
       effect = contrast_labels[3],
       effect_size = estimate$es_odds_ratio$Estimate,

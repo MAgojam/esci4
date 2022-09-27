@@ -1578,10 +1578,10 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_mean_ratio = function() private$.items[["es_mean_ratio"]],
         es_median_difference = function() private$.items[["es_median_difference"]],
         es_median_ratio = function() private$.items[["es_median_ratio"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        estimation_plots = function() private$.items[["estimation_plots"]],
         point_null = function() private$.items[["point_null"]],
-        interval_null = function() private$.items[["interval_null"]]),
+        interval_null = function() private$.items[["interval_null"]],
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -2043,22 +2043,6 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="UL", 
                         `title`="UL", 
                         `type`="number"))))
-            self$add(jmvcore::Html$new(
-                options=options,
-                name="estimation_plot_warnings",
-                title="Estimation Figure Warnings",
-                visible=TRUE))
-            self$add(jmvcore::Array$new(
-                options=options,
-                name="estimation_plots",
-                title="Estimation Figure",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    width=300,
-                    height=450,
-                    requiresData=TRUE,
-                    renderFun=".estimation_plots")))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="point_null",
@@ -2152,7 +2136,23 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
-                        `type`="text"))))}))
+                        `type`="text"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Estimation Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="estimation_plots",
+                title="Estimation Figure",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    width=300,
+                    height=450,
+                    requiresData=TRUE,
+                    renderFun=".estimation_plots")))}))
 
 jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdifftwoBase",
@@ -2276,10 +2276,10 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_mean_ratio} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

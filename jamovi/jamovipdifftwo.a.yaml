@@ -20,10 +20,12 @@ options:
 
     - name: outcome_variable
       title: Outcome variable(s)
+      permitted: [factor]
       type: Variables
 
     - name: grouping_variable
       title: Grouping variable
+      permitted: [factor]
       type: Variable
 
     - name: comparison_cases

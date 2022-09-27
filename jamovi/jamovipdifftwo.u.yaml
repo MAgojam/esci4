@@ -28,11 +28,20 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
+            label: Grouping variable
+            children:
+              - type: VariablesListBox
+                name: grouping_variable
+                maxItemCount: 1
+                isTarget: true
+                enable: '(switch:from_raw)'
+          - type: TargetLayoutBox
             label: Outcome variable(s)
             children:
               - type: VariablesListBox
                 name: outcome_variable
                 isTarget: true
+                enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Work with summary data
     name: spanel
@@ -71,17 +80,6 @@ children:
       - type: TextBox
         name: grouping_variable_name
         format: string
-  - type: VariableSupplier
-    persistentItems: false
-    stretchFactor: 1
-    children:
-      - type: TargetLayoutBox
-        label: Grouping variable
-        children:
-          - type: VariablesListBox
-            name: grouping_variable
-            maxItemCount: 1
-            isTarget: true
   - type: Label
     label: Analysis options
     children:

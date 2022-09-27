@@ -43,10 +43,14 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "from_summary"))
             private$..outcome_variable <- jmvcore::OptionVariables$new(
                 "outcome_variable",
-                outcome_variable)
+                outcome_variable,
+                permitted=list(
+                    "factor"))
             private$..grouping_variable <- jmvcore::OptionVariable$new(
                 "grouping_variable",
-                grouping_variable)
+                grouping_variable,
+                permitted=list(
+                    "factor"))
             private$..comparison_cases <- jmvcore::OptionString$new(
                 "comparison_cases",
                 comparison_cases,
@@ -238,7 +242,9 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_proportion_difference = function() private$.items[["es_proportion_difference"]],
-        es_odds_ratio = function() private$.items[["es_odds_ratio"]]),
+        es_odds_ratio = function() private$.items[["es_odds_ratio"]],
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -374,7 +380,23 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="UL", 
                         `title`="UL", 
-                        `type`="number"))))}))
+                        `type`="number"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Estimation Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Array$new(
+                options=options,
+                name="estimation_plots",
+                title="Estimation Figure",
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    width=300,
+                    height=450,
+                    requiresData=TRUE,
+                    renderFun=".estimation_plots")))}))
 
 jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovipdifftwoBase",
@@ -428,6 +450,8 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_odds_ratio} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -472,6 +496,8 @@ jamovipdifftwo <- function(
             `if`( ! missing(outcome_variable), outcome_variable, NULL),
             `if`( ! missing(grouping_variable), grouping_variable, NULL))
 
+    for (v in outcome_variable) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+    for (v in grouping_variable) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- jamovipdifftwoOptions$new(
         switch = switch,
