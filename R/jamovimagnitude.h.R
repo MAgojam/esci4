@@ -751,10 +751,10 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_smd = function() private$.items[["es_smd"]],
-        magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
-        magnitude_plot = function() private$.items[["magnitude_plot"]],
         point_null = function() private$.items[["point_null"]],
-        interval_null = function() private$.items[["interval_null"]]),
+        interval_null = function() private$.items[["interval_null"]],
+        magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
+        magnitude_plot = function() private$.items[["magnitude_plot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -943,23 +943,10 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="d_biased", 
                         `title`="<i>d</i><sub>biased</sub>", 
                         `type`="number"))))
-            self$add(jmvcore::Html$new(
-                options=options,
-                name="magnitude_plot_warnings",
-                title="Figure Warnings",
-                visible=TRUE))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="magnitude_plot",
-                title="Estimation Figure",
-                requiresData=TRUE,
-                width=400,
-                height=300,
-                renderFun=".magnitude_plot"))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="point_null",
-                title="Evaluate Hypotheses",
+                title="Hypothesis evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary == 0)",
                 columns=list(
@@ -1008,7 +995,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Table$new(
                 options=options,
                 name="interval_null",
-                title="Evaluate Hypotheses",
+                title="Hypothesis evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary != 0)",
                 columns=list(
@@ -1037,7 +1024,20 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
-                        `type`="text"))))}))
+                        `type`="text"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="magnitude_plot_warnings",
+                title="Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="magnitude_plot",
+                title="Estimation Figure",
+                requiresData=TRUE,
+                width=400,
+                height=300,
+                renderFun=".magnitude_plot"))}))
 
 jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimagnitudeBase",
@@ -1116,10 +1116,10 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
