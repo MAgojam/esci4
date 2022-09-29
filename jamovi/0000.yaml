@@ -38,12 +38,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Single Group
-  - title: 'Single Group, Reference Value'
-    name: jamovimdiffone
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Means and Medians
-    menuTitle: 'Single Group, Reference Value'
   - title: Two Groups
     name: jamovimdifftwo
     ns: esci4
