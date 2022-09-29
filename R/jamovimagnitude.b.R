@@ -223,6 +223,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 args = args
             )
 
+
             # Basic graph options --------------------
             # Axis font sizes
             axis.text.y <- jamovi_sanitize(
@@ -324,10 +325,29 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 my_value_name = "Y axis: Number of tick marks"
             )
 
-            myplot <- myplot + ggplot2::scale_y_continuous(
+            if (self$options$data_layout == "swarm") {
+               if (is.na(ymin) & is.na(ymax)) {
+                 myplot <- myplot + ggplot2::scale_y_continuous(
+                   n.breaks = breaks
+                 )
+               }
+
+              if (!is.na(ymin) & !is.na(ymax)) {
+                myplot <- myplot + ggplot2::scale_y_continuous(
+                  limits = c(ymin, ymax),
+                  n.breaks = breaks
+                )
+              }
+
+            } else {
+              myplot <- myplot + ggplot2::scale_y_continuous(
                 limits = c(ymin, ymax),
                 n.breaks = breaks
-            )
+              )
+            }
+
+
+
 
 
             #aesthetics
