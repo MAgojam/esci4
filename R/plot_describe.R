@@ -84,15 +84,12 @@ plot_describe <- function(
   # Marking percentile
   fills <- c("FALSE" = fill_regular, "TRUE" = fill_highlighted)
 
-  if (draw_percentile) {
-    rd <- rd[!is.na(rd$outcome_variable), ]
-    rd$outcome_variable <- sort(rd$outcome_variable)
-    rd$q <- seq(1:nrow(rd))/nrow(rd)
-    rd$qfill <- rd$q <= mark_percentile
-  } else {
-    rd$q <- mark_percentile - 1
-    rd$qfill <- FALSE
-  }
+  rd <- rd[!is.na(rd$outcome_variable), ]
+  rd$outcome_variable <- sort(rd$outcome_variable)
+  rd$q <- seq(1:nrow(rd))/nrow(rd)
+  rd$qfill <- rd$q <= mark_percentile
+
+  if (!draw_percentile) rd$qfill <- FALSE
 
 
   # Plot --------------------------------------------------------------
@@ -153,7 +150,7 @@ plot_describe <- function(
     max(
       c(
         ylim[2],
-        ggplot2::ggplot_build(myplot)$data[[1]]$count
+        ggplot2::ggplot_build(myplot)$data[[1]]$y
       ),
       na.rm = TRUE
     )
