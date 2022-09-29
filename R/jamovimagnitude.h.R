@@ -957,7 +957,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `combineBelow`=FALSE),
                     list(
                         `name`="null_words", 
-                        `title`="Null Value", 
+                        `title`="<i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="CI", 
@@ -965,7 +965,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="text"),
                     list(
                         `name`="CI_compare", 
-                        `title`="CI overlap with Null", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="t", 
@@ -985,9 +985,12 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="p_result", 
-                        `title`="<i>p</i>", 
+                        `title`="<i>p</i>, two-tailed", 
                         `type`="text", 
                         `visible`="(effect_size == 'median')"),
+                    list(
+                        `name`="null_decision", 
+                        `title`="<i>H</i><sub>0</sub> decision"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
@@ -1006,7 +1009,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `combineBelow`=FALSE),
                     list(
                         `name`="rope", 
-                        `title`="ROPE", 
+                        `title`="<i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="CI", 
@@ -1014,13 +1017,12 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="text"),
                     list(
                         `name`="rope_compare", 
-                        `title`="CI overlap with ROPE", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="p_result", 
                         `title`="<i>p</i>", 
-                        `type`="text", 
-                        `visible`="(effect_size == 'median')"),
+                        `type`="text"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 

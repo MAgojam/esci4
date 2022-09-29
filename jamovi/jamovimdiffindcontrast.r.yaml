@@ -288,36 +288,42 @@ items:
           visible: true
           type: text
           combineBelow: true
+        - name: null_words
+          title: "<i>H</i><sub>0</sub>"
+          type: text
         - name: effect
           title: 'Effect'
           type: text
           combineBelow: false
-        - name: null_words
-          title: "Null Value"
-          type: text
         - name: CI
           title: "CI"
           type: text
         - name: CI_compare
-          title: "CI overlap with Null"
+          title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: t
           title: 't'
           type: number
-          visible: (effect_size == 'mean')
+          visible: (effect_size == 'mean_difference')
         - name: df
-          title: 'df'
+          title: <i>df</i>
+          type: number
+          visible: (effect_size == 'mean_difference' & !assume_equal_variance)
+        - name: df_i
+          title: <i>df</i>
           type: integer
-          visible: (effect_size == 'mean')
+          visible: (effect_size == 'mean_difference' & assume_equal_variance)
         - name: p
-          title: "<i>p</i>"
+          title: "<i>p</i>, two-tailed"
           type: number
           format: zto,pvalue
-          visible: (effect_size == 'mean')
+          visible: (effect_size == 'mean_difference')
         - name: p_result
-          title: "<i>p</i>"
+          title: "<i>p</i>, two-tailed"
           type: text
-          visible: (effect_size == 'median')
+          visible: (effect_size == 'median_difference')
+        - name: null_decision
+          title: "<i>H</i><sub>0</sub> decision"
         - name: conclusion
           title: 'Conclusion'
           type: text
@@ -338,18 +344,17 @@ items:
           type: text
           combineBelow: false
         - name: rope
-          title: "ROPE"
+          title: "<i>H</i><sub>0</sub>"
           type: text
         - name: CI
           title: "CI"
           type: text
         - name: rope_compare
-          title: "CI overlap with ROPE"
+          title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: p_result
           title: "<i>p</i>"
           type: text
-          visible: (effect_size == 'median')
         - name: conclusion
           title: 'Conclusion'
           type: text

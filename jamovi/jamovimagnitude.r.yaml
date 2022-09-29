@@ -163,13 +163,13 @@ items:
           type: text
           combineBelow: false
         - name: null_words
-          title: "Null Value"
+          title: "<i>H</i><sub>0</sub>"
           type: text
         - name: CI
           title: "CI"
           type: text
         - name: CI_compare
-          title: "CI overlap with Null"
+          title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: t
           title: 't'
@@ -185,9 +185,11 @@ items:
           format: zto,pvalue
           visible: (effect_size == 'mean')
         - name: p_result
-          title: "<i>p</i>"
+          title: "<i>p</i>, two-tailed"
           type: text
           visible: (effect_size == 'median')
+        - name: null_decision
+          title: "<i>H</i><sub>0</sub> decision"
         - name: conclusion
           title: 'Conclusion'
           type: text
@@ -204,18 +206,17 @@ items:
           type: text
           combineBelow: false
         - name: rope
-          title: "ROPE"
+          title: "<i>H</i><sub>0</sub>"
           type: text
         - name: CI
           title: "CI"
           type: text
         - name: rope_compare
-          title: "CI overlap with ROPE"
+          title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: p_result
           title: "<i>p</i>"
           type: text
-          visible: (effect_size == 'median')
         - name: conclusion
           title: 'Conclusion'
           type: text

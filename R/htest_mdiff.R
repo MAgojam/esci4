@@ -60,29 +60,25 @@ test_mdiff <- function(
     effect_is_difference <- FALSE
   }
 
-  if (effect_is_difference) {
-    if (output_html) {
-      statistic <- if(effect_size == "mean") "<i>M</i><sub>diff</sub>" else "<i>Mdn</i><sub>diff</sub>"
-      parameter <- if(effect_size == "mean") "<i>&mu;</i><sub>diff</sub>" else "<i>&eta;</i><sub>diff</sub>"
-      p_symbol <- "<i>p</i>"
-    } else {
-      statistic <- if(effect_size == "mean") "M_diff" else "Mdn_diff"
-      parameter <- if(effect_size == "mean") "\U003BC_diff" else "\U003B7_diff"
-      p_symbol <- "p"
-    }
-
+  if (output_html) {
+    null_symbol <- "<i>H</i><sub>0</sub>"
+    p_symbol <- "<i>p</i>"
+    statistic <- if(effect_size == "mean") "<i>M</i>" else "<i>Mdn</i>"
+    parameter <- if(effect_size == "mean") "<i>&mu;</i>" else "<i>&eta;</i>"
+    difference_marker <- "<sub>diff</sub>"
   } else {
-    if (output_html) {
-      statistic <- if(effect_size == "mean") "<i>M</i>" else "<i>Mdn</i>"
-      parameter <- if(effect_size == "mean") "<i>&mu;</i>" else "<i>&eta;</i>"
-      p_symbol <- "<i>p</i>"
-    } else {
-      statistic <- if(effect_size == "mean") "M" else "Mdn"
-      parameter <- if(effect_size == "mean") "\U003BC" else "\U003B7"
-      p_symbol <- "p"
-    }
-
+    null_symbol <- "H_0"
+    p_symbol <- "p"
+    statistic <- if(effect_size == "mean") "M" else "Mdn"
+    parameter <- if(effect_size == "mean") "\U003BC" else "\U003B7"
+    difference_marker <- "_diff"
   }
+
+  if (effect_is_difference) {
+    statistic <- paste(statistic, difference_marker, sep = "")
+    parameter <- paste(parameter, difference_marker, sep = "")
+  }
+
 
   alpha <- 1 - estimate$properties$conf_level
   confidence <- estimate$properties$conf_level*100
@@ -145,15 +141,20 @@ test_mdiff <- function(
 
     CI <- glue::glue("{confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]")
 
-    # CI_compare <- if (significant)
-    #   glue::glue("The {confidence}% CI does not include 0")
-    # else
-    #   glue::glue("The {confidence}% CI includes 0")
-
     CI_compare <- if (significant)
-      glue::glue("No")
+      glue::glue("The {confidence}% CI does not contain {null_symbol}")
     else
-      glue::glue("Yes")
+      glue::glue("The {confidence}% CI contains {null_symbol}")
+
+    # CI_compare <- if (significant)
+    #   glue::glue("No")
+    # else
+    #   glue::glue("Yes")
+
+    null_decision <- if (significant)
+      glue::glue("Reject {null_symbol}")
+    else
+      glue::glue("Fail to reject {null_symbol}")
 
     p_result <- if (significant)
       glue::glue("{p_symbol} < {alpha}")
@@ -161,9 +162,9 @@ test_mdiff <- function(
       glue::glue("{p_symbol} \U002265 {alpha}")
 
     conclusion <- if (significant)
-      glue::glue("At \U03B1 = {alpha}, conclude {parameter} is not exactly {format(reference_value, nsmall=2)}")
+      glue::glue("At \U03B1 = {alpha}, {format(reference_value, nsmall=2)} is not a plausible value of {parameter}")
     else
-      glue::glue("At \U03B1 = {alpha}, cannot rule out {format(reference_value, nsmall=2)} as a compatible value of {parameter}")
+      glue::glue("At \U03B1 = {alpha}, {format(reference_value, nsmall=2)} remains a plausible value of {parameter}")
 
     nil_result <- list(
       test_type = "Nil Hypothesis Test",
@@ -179,6 +180,7 @@ test_mdiff <- function(
       df = df,
       p = p,
       p_result = p_result,
+      null_decision = null_decision,
       conclusion = conclusion,
       significant = significant
     )
@@ -222,12 +224,12 @@ test_mdiff <- function(
 
 
       CI_compare <- if (me_significant)
-        glue::glue("{confidence}% CI fully outside the ROPE")
+        glue::glue("{confidence}% CI fully outside {null_symbol}")
       else
-        glue::glue("{confidence}% CI has values inside and outside the ROPE")
+        glue::glue("{confidence}% CI has values inside and outside {null_symbol}")
 
       if (eq_significant) {
-        CI_compare <- glue::glue("{confidence_2alpha}% CI fully inside the ROPE")
+        CI_compare <- glue::glue("{confidence_2alpha}% CI fully inside {null_symbol}")
       }
 
       p_result <- if (me_significant | eq_significant)
@@ -239,7 +241,7 @@ test_mdiff <- function(
       conclusion <- if (me_significant)
         glue::glue("At \U03B1 = {alpha}, conclude {parameter} is substantive")
       else
-        glue::glue("At \U03B1 = {alpha}, this is an ambiguous result")
+        glue::glue("At \U03B1 = {alpha}, not clear if {parameter} is substantive or negligible")
 
       if (eq_significant) {
         conclusion <- glue::glue("At \U03B1 = {alpha}, conclude {parameter} is negligible")

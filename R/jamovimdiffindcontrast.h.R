@@ -2306,43 +2306,51 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="null_words", 
+                        `title`="<i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),
-                    list(
-                        `name`="null_words", 
-                        `title`="Null Value", 
-                        `type`="text"),
                     list(
                         `name`="CI", 
                         `title`="CI", 
                         `type`="text"),
                     list(
                         `name`="CI_compare", 
-                        `title`="CI overlap with Null", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="t", 
                         `title`="t", 
                         `type`="number", 
-                        `visible`="(effect_size == 'mean')"),
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="df", 
-                        `title`="df", 
+                        `title`="<i>df</i>", 
+                        `type`="number", 
+                        `visible`="(effect_size == 'mean_difference' & !assume_equal_variance)"),
+                    list(
+                        `name`="df_i", 
+                        `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(effect_size == 'mean')"),
+                        `visible`="(effect_size == 'mean_difference' & assume_equal_variance)"),
                     list(
                         `name`="p", 
-                        `title`="<i>p</i>", 
+                        `title`="<i>p</i>, two-tailed", 
                         `type`="number", 
                         `format`="zto,pvalue", 
-                        `visible`="(effect_size == 'mean')"),
+                        `visible`="(effect_size == 'mean_difference')"),
                     list(
                         `name`="p_result", 
-                        `title`="<i>p</i>", 
+                        `title`="<i>p</i>, two-tailed", 
                         `type`="text", 
-                        `visible`="(effect_size == 'median')"),
+                        `visible`="(effect_size == 'median_difference')"),
+                    list(
+                        `name`="null_decision", 
+                        `title`="<i>H</i><sub>0</sub> decision"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 
@@ -2367,7 +2375,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `combineBelow`=FALSE),
                     list(
                         `name`="rope", 
-                        `title`="ROPE", 
+                        `title`="<i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="CI", 
@@ -2375,13 +2383,12 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `type`="text"),
                     list(
                         `name`="rope_compare", 
-                        `title`="CI overlap with ROPE", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
                         `name`="p_result", 
                         `title`="<i>p</i>", 
-                        `type`="text", 
-                        `visible`="(effect_size == 'median')"),
+                        `type`="text"),
                     list(
                         `name`="conclusion", 
                         `title`="Conclusion", 

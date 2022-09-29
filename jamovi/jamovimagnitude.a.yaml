@@ -76,7 +76,7 @@ options:
       default: false
 
     - name: null_value
-      title: 'Evaluate against null of: '
+      title: 'Evaluate against <i>H</i><sub>0</sub> of: '
       type: String
       default: '0'
 

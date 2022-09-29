@@ -115,7 +115,7 @@ options:
       default: false
 
     - name: null_value
-      title: 'Evaluate against null of: '
+      title: 'Evaluate against <i>H</i><sub>0</sub> of: '
       type: String
       default: '0'
 
@@ -128,10 +128,10 @@ options:
       type: List
       default: raw
       options:
-        - name: sd
-          title: Standard deviations
         - name: raw
           title: Original units
+        - name: sd
+          title: Standard deviations
 
     - name: alpha
       title: '&alpha;'
