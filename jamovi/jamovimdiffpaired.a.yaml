@@ -809,7 +809,7 @@ options:
 
     - name: color_summary_difference
       type: List
-      default: '#E20134'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'
@@ -1283,7 +1283,7 @@ options:
 
     - name: fill_summary_difference
       type: List
-      default: '#E20134'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'
