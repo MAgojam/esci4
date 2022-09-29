@@ -665,9 +665,9 @@ plot_mdiff_base <- function(
     myplot <- myplot + ggplot2::annotate(
       geom = "text",
       label = null_label,
-      y = rope[[1]] - .2,
+      y = rope[[1]],
       x = daxis_x - .05,
-      vjust = -1,
+      vjust = 0,
       hjust = "inward",
       parse = TRUE
     )

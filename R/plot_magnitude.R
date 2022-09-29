@@ -174,9 +174,9 @@ plot_magnitude <- function(
     myplot <- myplot + ggplot2::annotate(
       geom = "text",
       label = null_label,
-      y = rope[[1]] - 0.2,
+      y = rope[[1]],
       x = Inf,
-      vjust = -1,
+      vjust = 0,
       hjust = "inward",
       parse = TRUE
     )
