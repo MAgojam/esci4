@@ -203,8 +203,8 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                 rope_units,
                 default="raw",
                 options=list(
-                    "sd",
-                    "raw"))
+                    "raw",
+                    "sd"))
             private$..alpha <- jmvcore::OptionNumber$new(
                 "alpha",
                 alpha,
