@@ -24,12 +24,12 @@ items:
         - name: mean
           type: number
           title: <i>M</i>
-        - name: mean_UL
-          title: UL
+        - name: mean_LL
+          title: LL
           type: number
           visible: (show_details)
-        - name: median_LL
-          title: LL
+        - name: mean_UL
+          title: UL
           type: number
           visible: (show_details)
         - name: moe
@@ -43,7 +43,7 @@ items:
         - name: median
           title: <i>Mdn</i>
           type: number
-        - name: mean_LL
+        - name: median_LL
           title: LL
           type: number
           visible: (show_details)

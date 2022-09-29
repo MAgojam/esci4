@@ -398,13 +398,13 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number", 
                         `title`="<i>M</i>"),
                     list(
-                        `name`="mean_UL", 
-                        `title`="UL", 
+                        `name`="mean_LL", 
+                        `title`="LL", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
-                        `name`="median_LL", 
-                        `title`="LL", 
+                        `name`="mean_UL", 
+                        `title`="UL", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
@@ -422,7 +422,7 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="<i>Mdn</i>", 
                         `type`="number"),
                     list(
-                        `name`="mean_LL", 
+                        `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
                         `visible`="(show_details)"),
