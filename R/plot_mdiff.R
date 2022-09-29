@@ -408,10 +408,45 @@ plot_mdiff_base <- function(
 
   }
 
+  # Initialize Null
+  plot_null <- FALSE
+  interval_null <- FALSE
+  null_symbol <- sapply(
+    effect_size,
+    switch,
+    r = "rho",
+    mean = "mu",
+    median = "eta",
+    proportion = "P"
+  )
+
+  if (length(rope) == 1) rope[[2]] = rope[[1]]
+
+  if (!is.na(rope[[1]])) {
+    plot_null <- TRUE
+    null_label <- paste(
+      "H[0]: ",
+      null_symbol,
+      " == ",
+      rope[[1]],
+      sep = ""
+    )
+  }
+
+  if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
+    if (rope[[1]] != rope[[2]]) {
+      plot_null <- TRUE
+      interval_null <- TRUE
+      null_label <- glue::glue(
+        "{rope[[1]]}*' < '*{null_symbol}*' < '*{rope[[2]]}"
+      )
+    }
+  }
 
 
   # Difference axis ------------------------------------
   daxis_x <- max(gdata$x_value) + daxis_space
+  if (plot_null) daxis_x <- daxis_x + 0.5
 
   if ( (difference_UL + reference_es) > reference_es) {
     rawEnd <- difference_UL
@@ -495,40 +530,6 @@ plot_mdiff_base <- function(
 
 
   # Initialize htests
-  # Null
-  plot_null <- FALSE
-  interval_null <- FALSE
-  null_symbol <- sapply(
-    effect_size,
-    switch,
-    r = "rho",
-    mean = "mu",
-    median = "eta",
-    proportion = "P"
-  )
-
-  if (length(rope) == 1) rope[[2]] = rope[[1]]
-
-  if (!is.na(rope[[1]])) {
-    plot_null <- TRUE
-    null_label <- paste(
-      "H[0]: ",
-      null_symbol,
-      " == ",
-      rope[[1]],
-      sep = ""
-    )
-  }
-
-  if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
-    if (rope[[1]] != rope[[2]]) {
-      plot_null <- TRUE
-      interval_null <- TRUE
-      null_label <- glue::glue(
-        "{rope[[1]]}*' < '*{null_symbol}*' < '*{rope[[2]]}"
-      )
-    }
-  }
 
 
   # Build plot ------------------------------------
