@@ -67,7 +67,7 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             jamovi_init_table(tbl_es_odds_ratio, smd_rows)
 
             # Hide odds ratio table when more than 2 levels in the grouping variable
-            tbl_es_odds_ratio$setVisible(level_count <= 2)
+            tbl_es_odds_ratio$setVisible(self$options$show_ratio)
 
             keys <- if (from_raw)
               self$options$outcome_variable

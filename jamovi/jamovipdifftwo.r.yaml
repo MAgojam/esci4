@@ -87,7 +87,8 @@ items:
     - name:  es_odds_ratio
       title: Odds Ratio
       type: Table
-      rows:  (outcome_variable)
+      rows:  1
+      visible: true
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable'

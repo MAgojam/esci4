@@ -383,7 +383,7 @@ The contrast passed was: {passed_contrast}.
   )
 
   # Odds ratio?
-  if (length(cases) == 2) {
+  if (length(cases) < 20) {
     estimate$es_odds_ratio <- as.data.frame(
       statpsych::ci.oddsratio(
         alpha = 1 - conf_level,

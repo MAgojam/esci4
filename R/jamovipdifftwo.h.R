@@ -20,6 +20,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             outcome_variable_name = "Outcome variable",
             grouping_variable_name = "Grouping variable",
             count_NA = FALSE,
+            show_ratio = FALSE,
             conf_level = 95,
             show_details = FALSE,
             evaluate_hypotheses = FALSE,
@@ -94,6 +95,10 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..count_NA <- jmvcore::OptionBool$new(
                 "count_NA",
                 count_NA,
+                default=FALSE)
+            private$..show_ratio <- jmvcore::OptionBool$new(
+                "show_ratio",
+                show_ratio,
                 default=FALSE)
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
@@ -180,6 +185,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..grouping_variable_name)
             self$.addOption(private$..count_NA)
+            self$.addOption(private$..show_ratio)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
             self$.addOption(private$..evaluate_hypotheses)
@@ -203,6 +209,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         outcome_variable_name = function() private$..outcome_variable_name$value,
         grouping_variable_name = function() private$..grouping_variable_name$value,
         count_NA = function() private$..count_NA$value,
+        show_ratio = function() private$..show_ratio$value,
         conf_level = function() private$..conf_level$value,
         show_details = function() private$..show_details$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
@@ -225,6 +232,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..outcome_variable_name = NA,
         ..grouping_variable_name = NA,
         ..count_NA = NA,
+        ..show_ratio = NA,
         ..conf_level = NA,
         ..show_details = NA,
         ..evaluate_hypotheses = NA,
@@ -353,7 +361,8 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="es_odds_ratio",
                 title="Odds Ratio",
-                rows="(outcome_variable)",
+                rows=1,
+                visible=TRUE,
                 columns=list(
                     list(
                         `name`="grouping_variable_name", 
@@ -436,6 +445,7 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param outcome_variable_name .
 #' @param grouping_variable_name .
 #' @param count_NA .
+#' @param show_ratio .
 #' @param conf_level .
 #' @param show_details .
 #' @param evaluate_hypotheses .
@@ -477,6 +487,7 @@ jamovipdifftwo <- function(
     outcome_variable_name = "Outcome variable",
     grouping_variable_name = "Grouping variable",
     count_NA = FALSE,
+    show_ratio = FALSE,
     conf_level = 95,
     show_details = FALSE,
     evaluate_hypotheses = FALSE,
@@ -514,6 +525,7 @@ jamovipdifftwo <- function(
         outcome_variable_name = outcome_variable_name,
         grouping_variable_name = grouping_variable_name,
         count_NA = count_NA,
+        show_ratio = show_ratio,
         conf_level = conf_level,
         show_details = show_details,
         evaluate_hypotheses = evaluate_hypotheses,

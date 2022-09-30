@@ -45,46 +45,145 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 1
+    style: inline
+    stretchFactor: 7
     collapsed: true
     children:
       - type: Label
         label: Summary data
-      - type: TextBox
-        name: comparison_cases
-        format: string
-      - type: TextBox
-        name: comparison_n
-        format: string
-      - type: TextBox
-        name: reference_cases
-        format: string
-      - type: TextBox
-        name: reference_n
-        format: string
-      - type: TextBox
-        name: case_label
-        format: string
-      - type: TextBox
-        name: not_case_label
-        format: string
-      - type: TextBox
-        name: grouping_variable_level1
-        format: string
+        stretchFactor: 1
+        horizontalAlignment: center
+        cell:
+          column: 0
+          row: 0
+      - type: Label
+        label: ' '
+        stretchFactor: 1
+        horizontalAlignment: center
+        cell:
+          column: 0
+          row: 1
+      - type: Label
+        label: Reference group
+        stretchFactor: 3
+        horizontalAlignment: right
+        cell:
+          column: 1
+          row: 1
+      - type: Label
+        label: Comparison group
+        horizontalAlignment: right
+        stretchFactor: 3
+        cell:
+          column: 2
+          row: 1
+      - type: Label
+        label: '<span style="font-weight:normal">Name</span> '
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 2
       - type: TextBox
         name: grouping_variable_level2
         format: string
+        stretchFactor: 3
+        horizontalAlignment: left
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 2
       - type: TextBox
-        name: outcome_variable_name
+        name: grouping_variable_level1
         format: string
+        stretchFactor: 3
+        horizontalAlignment: left
+        enable: '(switch:from_summary)'
+        cell:
+          column: 2
+          row: 2
+      - type: Label
+        stretchFactor: 1
+        label: '<span style="font-weight:normal">Cases</span> '
+        cell:
+          column: 0
+          row: 3
       - type: TextBox
-        name: grouping_variable_name
+        name: reference_cases
+        stretchFactor: 3
         format: string
+        horizontalAlignment: left
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 3
+      - type: TextBox
+        name: comparison_cases
+        stretchFactor: 3
+        horizontalAlignment: left
+        enable: '(switch:from_summary)'
+        format: string
+        cell:
+          column: 2
+          row: 3
+      - type: Label
+        label: '<span style="font-weight:normal">Sample size (<i>n</i>)</span> '
+        stretchFactor: 1
+        cell:
+          column: 0
+          row: 4
+      - type: TextBox
+        name: reference_n
+        format: string
+        horizontalAlignment: left
+        stretchFactor: 3
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 4
+      - type: TextBox
+        name: comparison_n
+        format: string
+        horizontalAlignment: left
+        stretchFactor: 3
+        enable: '(switch:from_summary)'
+        cell:
+          column: 2
+          row: 4
+      - type: LayoutBox
+        stretchFactor: 2
+        margin: none
+        cell:
+          column: 0
+          row: 5
+        children:
+          - type: TextBox
+            name: case_label
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
+          - type: TextBox
+            name: not_case_label
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
+          - type: TextBox
+            name: outcome_variable_name
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
+          - type: TextBox
+            name: grouping_variable_name
+            format: string
+            stretchFactor: 2
+            enable: '(switch:from_summary)'
   - type: Label
     label: Analysis options
     children:
       - type: CheckBox
         name: count_NA
+        enable: '(switch:from_raw)'
+      - type: CheckBox
+        name: show_ratio
       - type: TextBox
         name: conf_level
         format: number
