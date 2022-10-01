@@ -120,6 +120,15 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            # Revise P symbol
+            estimate$es_proportion_difference <- jamovi_peffect_html(
+              estimate$es_proportion_difference
+            )
+
+            estimate$es_odds_ratio <- jamovi_peffect_html(
+              estimate$es_odds_ratio
+            )
+
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
 
@@ -353,15 +362,7 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
 
     if (!is(estimate, "try-error")) {
 
-        estimate$es_proportion_difference <- jamovi_peffect_html(
-          estimate$es_proportion_difference
-        )
-
-        estimate$es_odds_ratio <- jamovi_peffect_html(
-          estimate$es_odds_ratio
-        )
-
-        if (length(estimate$warnings) > 0) {
+         if (length(estimate$warnings) > 0) {
             notes <- c(notes, estimate$warnings)
         }
     }
