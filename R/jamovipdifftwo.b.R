@@ -69,6 +69,27 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             # Hide odds ratio table when more than 2 levels in the grouping variable
             tbl_es_odds_ratio$setVisible(self$options$show_ratio)
 
+
+            width <- jamovi_sanitize(
+              my_value = self$options$es_plot_width,
+              return_value = 400,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 3000,
+              upper_inclusive = TRUE
+            )
+            height <- jamovi_sanitize(
+              my_value = self$options$es_plot_height,
+              return_value = 450,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 4000,
+              upper_inclusive = TRUE
+            )
+
+
             keys <- if (from_raw)
               self$options$outcome_variable
             else
@@ -81,7 +102,7 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             for (my_key in keys) {
               self$results$estimation_plots$addItem(key = my_key)
               image <- self$results$estimation_plots$get(my_key)
-              # image$setSize(width , height)
+              image$setSize(width , height)
             }
 
         },

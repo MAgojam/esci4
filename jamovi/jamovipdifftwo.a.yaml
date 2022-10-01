@@ -199,12 +199,12 @@ options:
     - name: es_plot_width
       title: Width
       type: String
-      default: '600'
+      default: '400'
 
     - name: es_plot_height
       title: Height
       type: String
-      default: '400'
+      default: '450'
 
     - name: ybreaks
       title: 'Num. tick marks'

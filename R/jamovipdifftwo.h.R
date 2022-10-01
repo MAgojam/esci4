@@ -28,8 +28,8 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             null_boundary = "0",
             alpha = 0.05,
             null_color = "#A40122",
-            es_plot_width = "600",
-            es_plot_height = "400",
+            es_plot_width = "400",
+            es_plot_height = "450",
             ybreaks = "auto",
             ylab = "auto",
             xlab = "auto",
@@ -203,11 +203,11 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="600")
+                default="400")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
-                default="400")
+                default="450")
             private$..ybreaks <- jmvcore::OptionString$new(
                 "ybreaks",
                 ybreaks,
@@ -1067,8 +1067,8 @@ jamovipdifftwo <- function(
     null_boundary = "0",
     alpha = 0.05,
     null_color = "#A40122",
-    es_plot_width = "600",
-    es_plot_height = "400",
+    es_plot_width = "400",
+    es_plot_height = "450",
     ybreaks = "auto",
     ylab = "auto",
     xlab = "auto",

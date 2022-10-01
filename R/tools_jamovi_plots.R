@@ -872,7 +872,7 @@ jamovi_plot_pdiff <- function(
 
   width <- jamovi_sanitize(
     my_value = self$options$es_plot_width,
-    return_value = 600,
+    return_value = 400,
     convert_to_number = TRUE,
     lower = 10,
     lower_inclusive = TRUE,
@@ -882,7 +882,7 @@ jamovi_plot_pdiff <- function(
   )
   height <- jamovi_sanitize(
     my_value = self$options$es_plot_height,
-    return_value = 400,
+    return_value = 450,
     convert_to_number = TRUE,
     lower = 10,
     lower_inclusive = TRUE,
