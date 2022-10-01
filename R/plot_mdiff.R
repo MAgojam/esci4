@@ -816,7 +816,10 @@ plot_pdiff <- function(
   error_layout = c("halfeye", "eye", "gradient", "none"),
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
+  difference_axis_breaks = 5,
+  difference_axis_space = 1,
   simple_contrast_labels = TRUE,
+  ybreaks = 5,
   rope = c(NA, NA),
   ggtheme = NULL
 ) {
@@ -910,6 +913,9 @@ plot_pdiff <- function(
     error_scale = error_scale,
     error_nudge = 0,
     error_normalize = error_normalize,
+    difference_axis_breaks = difference_axis_breaks,
+    daxis_space = difference_axis_space,
+    ybreaks = ybreaks,
     rope = rope,
     ggtheme = ggtheme
   )
