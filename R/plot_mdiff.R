@@ -855,13 +855,12 @@ plot_pdiff <- function(
   difference_es_name <- "<i>Proportion</i><sub>diff</sub>"
 
   gdata <- estimate$es_proportion_difference
-  x <- 1
-  found <- FALSE
-  while ((x <= nrow(estimate$overview)) & (found == FALSE)) {
-    clevel <- estimate$overview$outcome_variable_level[[x]]
-    if (grepl(clevel, estimate$es_proportion_difference$effect[[1]])) found <- TRUE
-    x <- x + 1
-  }
+  outcome_var <- estimate$overview$outcome_variable_name[[1]]
+  clevel <- gsub(
+    paste(outcome_var, ": P_", sep = ""),
+    "",
+    estimate$es_proportion_difference$outcome_variable_name[[1]]
+  )
 
   gdata$y_value <- gdata$effect_size
   gdata$x_label <- gsub(paste(" P_", clevel, sep = ""), "", gdata$effect)
@@ -934,7 +933,7 @@ plot_pdiff <- function(
     vname <- NULL
     xlab <- NULL
   } else {
-    vname <- estimate$es_proportion_difference$outcome_variable_name[[1]]
+    vname <- outcome_var
     xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
   }
   ylab <- glue::glue("{vname}\nProportion {clevel} and {conf_level*100}% Confidence Interval")
