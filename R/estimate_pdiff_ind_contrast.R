@@ -410,7 +410,7 @@ The contrast passed was: {passed_contrast}.
     estimate$es_odds_ratio <- cbind(
       outcome_variable_name = paste(outcome_variable_name, paste(": P_", case_label, sep = ""), sep = ""),
       grouping_variable_name = grouping_variable_name,
-      effect = contrast_labels[3],
+      effect = paste(contrast_labels[[1]], " / ", contrast_labels[[1]], sep = ""),
       effect_size = estimate$es_odds_ratio$Estimate,
       estimate$es_odds_ratio
     )
