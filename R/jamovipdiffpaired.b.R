@@ -12,6 +12,8 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             tbl_overview <- self$results$overview
             tbl_es_proportion_difference <- self$results$es_proportion_difference
             tbl_es_phi <- self$results$es_phi
+            tbl_point_null <- NULL
+            tbl_interval_null <- NULL
 
             # Prep output -------------------------------------------
             # Set CI and MoE columns to reflect confidence level
@@ -41,6 +43,26 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             jamovi_init_table(tbl_overview, overview_rows)
 
+            width <- jamovi_sanitize(
+              my_value = self$options$es_plot_width,
+              return_value = 400,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 3000,
+              upper_inclusive = TRUE
+            )
+            height <- jamovi_sanitize(
+              my_value = self$options$es_plot_height,
+              return_value = 450,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 4000,
+              upper_inclusive = TRUE
+            )
+
+            self$results$estimation_plots$setSize(width , height)
 
         },
         .run = function() {
@@ -58,6 +80,28 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          # Redo analysis
+          estimate <- jamovi_pdiff_two(
+            self = self
+          )
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          myplot <- jamovi_plot_pdiff(
+            self,
+            estimate,
+            image,
+            ggtheme,
+            theme
+          )
+
+          print(myplot)
+          TRUE
 
         })
 )
@@ -191,9 +235,14 @@ jamovi_pdiff_paired <- function(self) {
     estimate <- try(do.call(what = call, args = args))
 
     if (!is(estimate, "try-error")) {
-        if (length(estimate$warnings) > 0) {
-            notes <- c(notes, estimate$warnings)
-        }
+      estimate <- jamovi_add_htest_pdiff(
+        self = self,
+        estimate = estimate
+      )
+
+      if (length(estimate$warnings) > 0) {
+          notes <- c(notes, estimate$warnings)
+      }
     }
 
     self$results$help$setState(notes)
