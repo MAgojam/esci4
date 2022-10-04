@@ -175,6 +175,8 @@ A results object containing:
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_odds_ratio} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 }

@@ -68,12 +68,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Correlations
     menuTitle: Two Groups
-  - title: Paired
-    name: jamovirdiffpaired
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Correlations
-    menuTitle: Paired
   - title: Single Group
     name: jamoviproportion
     ns: esci4
@@ -98,12 +92,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Paired
-  - title: Independent Groups Contrast
-    name: jamovipdiffindcontrast
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Proportions
-    menuTitle: Independent Groups Contrast
   - title: Means
     name: jamovirmetamean
     ns: esci4
