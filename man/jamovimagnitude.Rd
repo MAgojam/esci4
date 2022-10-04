@@ -159,6 +159,8 @@ A results object containing:
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 }

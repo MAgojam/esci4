@@ -23,3 +23,31 @@ jamovi_peffect_html <- function(tfix) {
 
 }
 
+
+
+jamovi_add_htest_pdiff <- function(self, estimate) {
+  evaluate_h <- self$options$evaluate_hypotheses
+
+  if(evaluate_h) {
+    # Test results
+
+    rope_upper <- jamovi_sanitize(
+      self$options$null_boundary,
+      na_ok = FALSE,
+      return_value = 0,
+      convert_to_number = TRUE
+    )
+
+    test_results <- test_pdiff(
+      estimate,
+      rope = c(rope_upper * -1, rope_upper),
+      output_html = TRUE
+    )
+
+    estimate$point_null <- test_results$point_null
+    estimate$interval_null <- test_results$interval_null
+  }
+
+  return(estimate)
+
+}

@@ -1,7 +1,6 @@
-#' @export
-test_mdiff <- function(
+test_diff_base <- function(
     estimate,
-    effect_size = c("mean", "median"),
+    effect_size = c("mean", "median", "P", "r"),
     rope = c(0, 0),
     rope_units = c("raw", "sd"),
     output_html = FALSE
@@ -13,7 +12,7 @@ test_mdiff <- function(
   # Input Checks ---------------------
   # This function expects:
   #   estimate should be of class estimate
-  #   effect_size = "mean" | "median"
+  #   effect_size = "mean" | "median" | "P" | "r"
   #   rope_lower <= 0
   #   rope_upper >= 0
   #   If rope_lower and rope_upper = 0, only traditional nil test returned
@@ -51,7 +50,13 @@ test_mdiff <- function(
   }
 
   # Prep ------------------------------------------
-  etable <- if(effect_size == "mean") "es_mean_difference" else "es_median_difference"
+  etable <- switch(
+    effect_size,
+    "mean" = "es_mean_difference",
+    "median" = "es_median_difference",
+    "P" = "es_proportion_difference",
+    "r" = "es_correlation_difference"
+  )
 
   reference_value <- 0
   effect_is_difference <- TRUE
@@ -63,14 +68,38 @@ test_mdiff <- function(
   if (output_html) {
     null_symbol <- "<i>H</i><sub>0</sub>"
     p_symbol <- "<i>p</i>"
-    statistic <- if(effect_size == "mean") "<i>M</i>" else "<i>Mdn</i>"
-    parameter <- if(effect_size == "mean") "<i>&mu;</i>" else "<i>&eta;</i>"
+    statistic <- switch(
+      effect_size,
+      "mean" = "<i>M</i>",
+      "median" = "<i>Mdn</i>",
+      "P" = "<i>P</i>",
+      "r" = "<i>r</i>"
+    )
+    parameter <- switch(
+      effect_size,
+      "mean" = "<i>&mu;</i>",
+      "median" = "<i>&eta;</i>",
+      "P" = "<i>P</i>",
+      "r" = "<i>&rho;</i>"
+    )
     difference_marker <- "<sub>diff</sub>"
   } else {
     null_symbol <- "H_0"
     p_symbol <- "p"
-    statistic <- if(effect_size == "mean") "M" else "Mdn"
-    parameter <- if(effect_size == "mean") "\U003BC" else "\U003B7"
+    statistic <- switch(
+      effect_size,
+      "mean" = "M",
+      "median" = "Mdn",
+      "P" = "P",
+      "r" = "r"
+    )
+    parameter <- switch(
+      effect_size,
+      "mean" = "\U003BC",
+      "median" = "\U003B7",
+      "P" = "P",
+      "r" = "r"
+    )
     difference_marker <- "_diff"
   }
 
@@ -119,8 +148,9 @@ test_mdiff <- function(
 
 
     # Nil hypothesis test ------------------------------
-    if (effect_size == "mean") {
+    if (effect_size == "mean" | effect_size == "P") {
       df <- es$df
+      if (is.null(df)) df <- NA
       t <- es$effect_size / es$SE
       if (is.na(df))
         p <- 2*pnorm(-abs(t))
@@ -208,7 +238,7 @@ test_mdiff <- function(
 
 
       if(output_html) {
-          CI <- glue::glue("
+        CI <- glue::glue("
         {confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]
         </br>
         {confidence_2alpha}% CI [{format(es$ta_LL+reference_value, nsmall = 2)}, {format(es$ta_UL+reference_value, nsmall = 2)}]
@@ -283,111 +313,117 @@ test_mdiff <- function(
 
 }
 
-#'
-#' plot_htest <- function(
-    #'     test_result,
-#'     ggtheme = NULL
-#' ) {
-#'
-#'   if(is.null(ggtheme)) { ggtheme <- ggplot2::theme_classic()}
-#'
-#'
-#'   myplot <- ggplot2::ggplot(
-#'     data = test_result$test_plot,
-#'     ggplot2::aes(
-#'       y = 1,
-#'       x = effect_size
-#'     )
-#'   )
-#'
-#'   # Apply theme
-#'   myplot <- myplot + ggtheme
-#'
-#'   myplot <- myplot + ggplot2::theme(
-#'     axis.text.x = ggplot2::element_blank(), #remove x axis labels
-#'     axis.ticks.x = ggplot2::element_blank(), #remove x axis ticks
-#'     axis.text.y = ggplot2::element_blank(),  #remove y axis labels
-#'     axis.ticks.y = ggplot2::element_blank()  #remove y axis ticks
-#'   )
-#'
-#'   myplot <- myplot + ggplot2::facet_grid(
-#'     rows = ggplot2::vars(outcome_variable_name)
-#'   )
-#'
-#'
-#'   # Apply 2-alpha error bar
-#'   myplot <- myplot + ggplot2::geom_errorbar(
-#'     ggplot2::aes(
-#'       xmin = ta_LL,
-#'       xmax = ta_UL
-#'     ),
-#'     width = 0,
-#'     size = 3
-#'   )
-#'
-#'   # Apply 1-alpha error bar
-#'   myplot <- myplot + ggplot2::geom_errorbar(
-#'     ggplot2::aes(
-#'       xmin = LL,
-#'       xmax = UL
-#'     ),
-#'     width = 0,
-#'     size = 1
-#'   )
-#'
-#'   # Mark the effect_size
-#'   myplot <- myplot + ggplot2::geom_point(
-#'     shape = "triangle filled",
-#'     size = 4,
-#'     fill = "white"
-#'   )
-#'
-#'   # Mark 0 effect
-#'   myplot <- myplot + ggplot2::geom_vline(
-#'     xintercept = 0,
-#'     linetype = "dotted"
-#'   )
-#'
-#'   # If testing an interval null, mark the interval
-#'   if (test_result$properties$interval_null) {
-#'       myplot <- myplot + ggplot2::geom_rect(
-#'         ggplot2::aes(
-#'           xmin = rope_lower,
-#'           xmax = rope_upper,
-#'           ymin = -Inf,
-#'           ymax = Inf
-#'         ),
-#'         alpha = 0.07,
-#'         fill = 'black'
-#'       )
-#'   }
-#'
-#'   myplot <- myplot + ggplot2::ylab(NULL)
-#'
-#'   if (test_result$properties$effect_size_name == "mean") {
-#'     ename <- "Mean difference"
-#'   } else {
-#'     ename <- "Median difference"
-#'   }
-#'
-#'   confidence <- 1 - test_result$properties$alpha
-#'   confidence_ta <- 1 - 2*test_result$properties$alpha
-#'   xlab <- glue::glue(
-#'     "{ename} with {confidence*100}% (thin bar) and {confidence_ta*100}% (thick bar) CIs."
-#'   )
-#'
-#'   if (test_result$properties$interval_null) {
-#'     xlab <- paste(
-#'       xlab,
-#'       "\n",
-#'       "The gray shaded area represents the null interval."
-#'     )
-#'   }
-#'
-#'   myplot <- myplot + ggplot2::xlab(
-#'     xlab
-#'   )
-#'
-#'   return(myplot)
-#'
-#' }
+
+
+
+#' @export
+test_mdiff <- function(
+    estimate,
+    effect_size = c("mean", "median"),
+    rope = c(0, 0),
+    rope_units = c("raw", "sd"),
+    output_html = FALSE
+)
+
+{
+
+
+  # Input Checks ---------------------
+  # This function expects:
+  #   estimate should be of class estimate
+  #   effect_size = "mean" | "median"
+  #   rope_lower <= 0
+  #   rope_upper >= 0
+  #   If rope_lower and rope_upper = 0, only traditional nil test returned
+  #   0 < alpha < 1
+  #   rope_units = "sd" | "raw"
+  esci_assert_type(estimate, "is.estimate")
+  effect_size <- match.arg(effect_size)
+  if (length(rope) < 1) rope[[2]] <- rope[[1]]
+  rope_lower <- rope[[1]]
+  rope_upper <- rope[[2]]
+  esci_assert_range(
+    var = rope_lower,
+    upper = 0,
+    upper_inclusive = TRUE
+  )
+  esci_assert_range(
+    var = rope_upper,
+    lower = 0,
+    lower_inclusive = TRUE
+  )
+
+  rope_units <- match.arg(rope_units)
+
+  if (effect_size == "median" & is.null(estimate$es_median_difference)) {
+    stop("Effect size is median, but estimate object passed doesn't have a median difference table.")
+  }
+
+  if (effect_size == "median" & is.null(estimate$es_mean_difference)) {
+    stop("Effect size is mean, but estimate object passed doesn't have a mean difference table.")
+  }
+
+  if (rope_units == "sd" & is.null(estimate$es_smd)) {
+    stop("Units are sd, but estimate object passed doesn't have a standardized-mean difference table.")
+
+  }
+
+
+  return(
+    test_diff_base(
+      estimate = estimate,
+      effect_size = effect_size,
+      rope = rope,
+      rope_units = rope_units,
+      output_html = output_html
+    )
+  )
+
+}
+
+
+
+#' @export
+test_pdiff <- function(
+    estimate,
+    rope = c(0, 0),
+    output_html = FALSE
+)
+
+{
+
+
+  # Input Checks ---------------------
+  # This function expects:
+  #   estimate should be of class estimate
+  #   rope_lower <= 0
+  #   rope_upper >= 0
+  #   If rope_lower and rope_upper = 0, only traditional nil test returned
+  #   0 < alpha < 1
+  esci_assert_type(estimate, "is.estimate")
+  if (length(rope) < 1) rope[[2]] <- rope[[1]]
+  rope_lower <- rope[[1]]
+  rope_upper <- rope[[2]]
+  esci_assert_range(
+    var = rope_lower,
+    upper = 0,
+    upper_inclusive = TRUE
+  )
+  esci_assert_range(
+    var = rope_upper,
+    lower = 0,
+    lower_inclusive = TRUE
+  )
+
+
+  return(
+    test_diff_base(
+      estimate = estimate,
+      effect_size = "P",
+      rope = rope,
+      rope_units = "raw",
+      output_html = output_html
+    )
+  )
+
+}

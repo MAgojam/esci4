@@ -793,6 +793,8 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         overview = function() private$.items[["overview"]],
         es_proportion_difference = function() private$.items[["es_proportion_difference"]],
         es_odds_ratio = function() private$.items[["es_odds_ratio"]],
+        point_null = function() private$.items[["point_null"]],
+        interval_null = function() private$.items[["interval_null"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
@@ -932,6 +934,90 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="UL", 
                         `title`="UL", 
                         `type`="number"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="point_null",
+                title="Hypothesis evaluation",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary == 0)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `visible`=TRUE, 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="null_words", 
+                        `title`="<i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="CI_compare", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="t", 
+                        `title`="<i>z</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="p", 
+                        `title`="<i>p</i>, two-tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
+                    list(
+                        `name`="null_decision", 
+                        `title`="<i>H</i><sub>0</sub> decision"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="interval_null",
+                title="Hypothesis evaluation",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary != 0)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `visible`=TRUE, 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="rope", 
+                        `title`="<i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="rope_compare", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
+                        `type`="text"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="estimation_plot_warnings",
@@ -1032,6 +1118,8 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_odds_ratio} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #' }

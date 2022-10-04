@@ -60,13 +60,13 @@ jamovimdiffpaired(
   color_raw_difference = "#E20134",
   color_summary_reference = "#008DF9",
   color_summary_comparison = "#008DF9",
-  color_summary_difference = "#E20134",
+  color_summary_difference = "black",
   fill_raw_reference = "NA",
   fill_raw_comparison = "NA",
   fill_raw_difference = "NA",
   fill_summary_reference = "#008DF9",
   fill_summary_comparison = "#008DF9",
-  fill_summary_difference = "#E20134",
+  fill_summary_difference = "black",
   size_raw_reference = "2",
   size_raw_comparison = "2",
   size_raw_difference = "2",
@@ -296,6 +296,8 @@ A results object containing:
 \code{results$es_mean_ratio} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 }

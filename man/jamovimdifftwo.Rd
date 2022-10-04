@@ -286,10 +286,10 @@ A results object containing:
 \code{results$es_mean_ratio} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_median_ratio} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
-\code{results$htest} \tab \tab \tab \tab \tab a table \cr
-\code{results$htest_summary} \tab \tab \tab \tab \tab a table \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

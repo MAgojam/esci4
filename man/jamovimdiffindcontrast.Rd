@@ -317,6 +317,8 @@ A results object containing:
 \code{results$es_median_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_mean_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_smd} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 }

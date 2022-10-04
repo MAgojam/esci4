@@ -12,6 +12,10 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             tbl_overview <- self$results$overview
             tbl_es_proportion_difference <- self$results$es_proportion_difference
             tbl_es_odds_ratio <- self$results$es_odds_ratio
+            tbl_point_null <- NULL
+            tbl_interval_null <- NULL
+            try(tbl_point_null <- self$results$point_null)
+            try(tbl_interval_null <- self$results$interval_null)
 
             # Prep output -------------------------------------------
             # Set CI and MoE columns to reflect confidence level
@@ -65,6 +69,19 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             jamovi_init_table(tbl_overview, overview_rows)
             jamovi_init_table(tbl_es_proportion_difference, mdiff_rows, breaks = 3)
             jamovi_init_table(tbl_es_odds_ratio, smd_rows)
+
+            if (!is.null(tbl_point_null)) {
+              jamovi_init_table(
+                tbl_point_null,
+                outcome_count
+              )
+            }
+            if (!is.null(tbl_interval_null)) {
+              jamovi_init_table(
+                tbl_interval_null,
+                outcome_count
+              )
+            }
 
             # Hide odds ratio table when more than 2 levels in the grouping variable
             tbl_es_odds_ratio$setVisible(self$options$show_ratio)
@@ -362,9 +379,14 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
 
     if (!is(estimate, "try-error")) {
 
-         if (length(estimate$warnings) > 0) {
-            notes <- c(notes, estimate$warnings)
-        }
+      estimate <- jamovi_add_htest_pdiff(
+        self = self,
+        estimate = estimate
+      )
+
+      if (length(estimate$warnings) > 0) {
+          notes <- c(notes, estimate$warnings)
+      }
     }
 
     self$results$help$setState(notes)
