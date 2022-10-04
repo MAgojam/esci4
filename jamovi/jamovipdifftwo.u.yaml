@@ -463,7 +463,7 @@ children:
           - type: TextBox
             name: null_value
             format: string
-            enable: '(switch:never)'
+            enable: '(switch:nope)'
           - type: TextBox
             name: null_boundary
             format: string
@@ -471,7 +471,7 @@ children:
           - type: TextBox
             name: alpha
             format: number
-            enable: '(switch:never)'
+            enable: '(switch:nope)'
       - type: LayoutBox
         margin: large
         style: inline
