@@ -15,8 +15,10 @@ jamovipdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             not_cases_inconsistent = " ",
             case_label = "Sick",
             not_case_label = "Well",
-            comparison_measure_name = "Pretest",
-            reference_measure_name = "Posttest",
+            case_label_repeat = "Sick",
+            not_case_label_repeat = "Well",
+            comparison_measure_name = "Post-test",
+            reference_measure_name = "Pre-test",
             conf_level = 95,
             show_details = FALSE,
             evaluate_hypotheses = FALSE,
@@ -98,14 +100,22 @@ jamovipdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 "not_case_label",
                 not_case_label,
                 default="Well")
+            private$..case_label_repeat <- jmvcore::OptionString$new(
+                "case_label_repeat",
+                case_label_repeat,
+                default="Sick")
+            private$..not_case_label_repeat <- jmvcore::OptionString$new(
+                "not_case_label_repeat",
+                not_case_label_repeat,
+                default="Well")
             private$..comparison_measure_name <- jmvcore::OptionString$new(
                 "comparison_measure_name",
                 comparison_measure_name,
-                default="Pretest")
+                default="Post-test")
             private$..reference_measure_name <- jmvcore::OptionString$new(
                 "reference_measure_name",
                 reference_measure_name,
-                default="Posttest")
+                default="Pre-test")
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -608,6 +618,8 @@ jamovipdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..not_cases_inconsistent)
             self$.addOption(private$..case_label)
             self$.addOption(private$..not_case_label)
+            self$.addOption(private$..case_label_repeat)
+            self$.addOption(private$..not_case_label_repeat)
             self$.addOption(private$..comparison_measure_name)
             self$.addOption(private$..reference_measure_name)
             self$.addOption(private$..conf_level)
@@ -658,6 +670,8 @@ jamovipdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         not_cases_inconsistent = function() private$..not_cases_inconsistent$value,
         case_label = function() private$..case_label$value,
         not_case_label = function() private$..not_case_label$value,
+        case_label_repeat = function() private$..case_label_repeat$value,
+        not_case_label_repeat = function() private$..not_case_label_repeat$value,
         comparison_measure_name = function() private$..comparison_measure_name$value,
         reference_measure_name = function() private$..reference_measure_name$value,
         conf_level = function() private$..conf_level$value,
@@ -707,6 +721,8 @@ jamovipdiffpairedOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..not_cases_inconsistent = NA,
         ..case_label = NA,
         ..not_case_label = NA,
+        ..case_label_repeat = NA,
+        ..not_case_label_repeat = NA,
         ..comparison_measure_name = NA,
         ..reference_measure_name = NA,
         ..conf_level = NA,
@@ -985,6 +1001,8 @@ jamovipdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param not_cases_inconsistent .
 #' @param case_label .
 #' @param not_case_label .
+#' @param case_label_repeat .
+#' @param not_case_label_repeat .
 #' @param comparison_measure_name .
 #' @param reference_measure_name .
 #' @param conf_level .
@@ -1055,8 +1073,10 @@ jamovipdiffpaired <- function(
     not_cases_inconsistent = " ",
     case_label = "Sick",
     not_case_label = "Well",
-    comparison_measure_name = "Pretest",
-    reference_measure_name = "Posttest",
+    case_label_repeat = "Sick",
+    not_case_label_repeat = "Well",
+    comparison_measure_name = "Post-test",
+    reference_measure_name = "Pre-test",
     conf_level = 95,
     show_details = FALSE,
     evaluate_hypotheses = FALSE,
@@ -1117,6 +1137,8 @@ jamovipdiffpaired <- function(
         not_cases_inconsistent = not_cases_inconsistent,
         case_label = case_label,
         not_case_label = not_case_label,
+        case_label_repeat = case_label_repeat,
+        not_case_label_repeat = not_case_label_repeat,
         comparison_measure_name = comparison_measure_name,
         reference_measure_name = reference_measure_name,
         conf_level = conf_level,

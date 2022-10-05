@@ -27,44 +27,44 @@ options:
       type: Variable
 
     - name: cases_consistent
-      title: Cases that stayed cases
       type: String
       default: ' '
 
     - name: cases_inconsistent
-      title: Cases that changed
       type: String
       default: ' '
 
     - name: not_cases_consistent
-      title: Non-cases that stayed non-cases
       type: String
       default: ' '
 
     - name: not_cases_inconsistent
-      title: Non-cases that changed
       type: String
       default: ' '
 
     - name: case_label
-      title: Label for cases
       type: String
       default: 'Sick'
 
     - name: not_case_label
-      title: Label for not cases
+      type: String
+      default: 'Well'
+
+    - name: case_label_repeat
+      type: String
+      default: 'Sick'
+
+    - name: not_case_label_repeat
       type: String
       default: 'Well'
 
     - name: comparison_measure_name
-      title: Comparison measure name
       type: String
-      default: 'Pretest'
+      default: 'Post-test'
 
     - name: reference_measure_name
-      title: Reference measure name
       type: String
-      default: 'Posttest'
+      default: 'Pre-test'
 
     - name: conf_level
       type: Number

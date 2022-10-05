@@ -44,43 +44,96 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 1
+    style: inline
+    stretchFactor: 6
     collapsed: true
     children:
       - type: Label
         label: Summary data
-      - type: TextBox
-        name: cases_consistent
-        format: string
-        enable: '(switch:from_summary)'
-      - type: TextBox
-        name: cases_inconsistent
-        format: string
-        enable: '(switch:from_summary)'
-      - type: TextBox
-        name: not_cases_consistent
-        format: string
-        enable: '(switch:from_summary)'
-      - type: TextBox
-        name: not_cases_inconsistent
-        format: string
-        enable: '(switch:from_summary)'
-      - type: TextBox
-        name: case_label
-        format: string
-        enable: '(switch:from_summary)'
-      - type: TextBox
-        name: not_case_label
-        format: string
-        enable: '(switch:from_summary)'
+        horizontalAlignment: center
+        cell:
+          column: 0
+          row: 0
       - type: TextBox
         name: comparison_measure_name
         format: string
+        stretchFactor: 4
         enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 1
       - type: TextBox
         name: reference_measure_name
+        stretchFactor: 2
         format: string
         enable: '(switch:from_summary)'
+        cell:
+          column: 0
+          row: 2
+      - type: TextBox
+        name: case_label
+        format: string
+        stretchFactor: 2
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 2
+      - type: TextBox
+        name: not_case_label
+        stretchFactor: 2
+        format: string
+        enable: '(switch:from_summary)'
+        cell:
+          column: 2
+          row: 2
+      - type: TextBox
+        name: case_label_repeat
+        format: string
+        stretchFactor: 2
+        enable: '(switch:nope)'
+        cell:
+          column: 0
+          row: 3
+      - type: TextBox
+        name: cases_consistent
+        format: string
+        stretchFactor: 2
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 3
+      - type: TextBox
+        name: not_cases_inconsistent
+        stretchFactor: 2
+        format: string
+        enable: '(switch:from_summary)'
+        cell:
+          column: 2
+          row: 3
+      - type: TextBox
+        name: not_case_label_repeat
+        format: string
+        stretchFactor: 2
+        enable: '(switch:nope)'
+        cell:
+          column: 0
+          row: 4
+      - type: TextBox
+        name: cases_inconsistent
+        stretchFactor: 2
+        format: string
+        enable: '(switch:from_summary)'
+        cell:
+          column: 1
+          row: 4
+      - type: TextBox
+        name: not_cases_consistent
+        stretchFactor: 2
+        format: string
+        enable: '(switch:from_summary)'
+        cell:
+          column: 2
+          row: 4
   - type: Label
     label: Analysis options
     children:

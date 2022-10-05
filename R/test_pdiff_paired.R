@@ -128,4 +128,97 @@ test_pdiff_paired <- function() {
     case_label = "No Answer"
   )
 
+
+  bh <- c(
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"
+  )
+
+  ah <- c(
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	No Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"	,
+    "	Pain	"
+  )
+
+  bh <- trimws(bh)
+  ah <- trimws(ah)
+
+  mydf <- data.frame(before_h = factor(bh, levels = c("Pain", "No Pain")), after_h = factor(ah, levels = c("Pain", "No Pain")))
+  mydf
+  estimate <- estimate_pdiff_paired(mydf, after_h, before_h)
+
+
 }

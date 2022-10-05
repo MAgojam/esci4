@@ -26,6 +26,14 @@
             ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
         },
 
+        case_label_changed: function(ui, event) {
+            ui.case_label_repeat.setValue(ui.case_label.value());
+        },
+
+        not_case_label_changed: function(ui, event) {
+            ui.not_case_label_repeat.setValue(ui.not_case_label.value());
+        },
+
 
         // this is an example of an auxiliary function
         setPanels: function(ui, event) {
