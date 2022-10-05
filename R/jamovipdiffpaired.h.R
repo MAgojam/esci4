@@ -824,16 +824,6 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 rows=3,
                 columns=list(
                     list(
-                        `name`="comparison_measure_name", 
-                        `title`="Comparison measure", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="reference_measure_name", 
-                        `title`="Reference measure", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text"),
@@ -861,15 +851,6 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 rows=1,
                 columns=list(
                     list(
-                        `name`="outcome_variable_1", 
-                        `title`="Outcome variable 1", 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
-                    list(
-                        `name`="outcome_variable_2", 
-                        `title`="Outcome variable 2", 
-                        `type`="text"),
-                    list(
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text"),
@@ -892,12 +873,6 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary == 0)",
                 columns=list(
-                    list(
-                        `name`="outcome_variable_name", 
-                        `title`="Outcome variable", 
-                        `visible`=TRUE, 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
                     list(
                         `name`="null_words", 
                         `title`="<i>H</i><sub>0</sub>", 
@@ -938,12 +913,6 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary != 0)",
                 columns=list(
-                    list(
-                        `name`="outcome_variable_name", 
-                        `title`="Outcome variable", 
-                        `visible`=TRUE, 
-                        `type`="text", 
-                        `combineBelow`=TRUE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 

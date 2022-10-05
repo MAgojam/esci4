@@ -260,11 +260,11 @@ estimate_pdiff_paired.summary <- function(
   )
   comparison_cases = sum(
     cases_consistent,
-    cases_inconsistent
+    not_cases_inconsistent
   )
   reference_cases = sum(
     cases_consistent,
-    not_cases_inconsistent
+    cases_inconsistent
   )
 
   # Analysis --------------------------
@@ -287,10 +287,10 @@ estimate_pdiff_paired.summary <- function(
   pdiff_row <- as.data.frame(
     statpsych::ci.prop.ps(
       alpha = 1 - conf_level,
-      f00 = cases_consistent,
-      f01 = cases_inconsistent,
-      f10 = not_cases_inconsistent,
-      f11 = not_cases_consistent
+      f00 = not_cases_consistent,
+      f01 = not_cases_inconsistent,
+      f10 = cases_inconsistent,
+      f11 = cases_consistent
     )
   )
 
@@ -306,6 +306,7 @@ estimate_pdiff_paired.summary <- function(
     type = type_store,
     comparison_measure_name = comparison_measure_name,
     reference_measure_name = reference_measure_name,
+    case_label = case_label,
     estimate$es_proportion_difference
   )
 
@@ -500,13 +501,13 @@ case_label must be either a numeric or a valid level from data[[reference_measur
 
 
   # Count cases
-  my_cases <- data[data[[comparison_measure]] == case_label, ]
-  my_not_cases <- data[data[[comparison_measure]] != case_label, ]
+  my_cases <- data[data[[reference_measure]] == case_label, ]
+  my_not_cases <- data[data[[reference_measure]] != case_label, ]
 
-  cases_consistent <- nrow(my_cases[my_cases[[reference_measure]] == case_label, ])
+  cases_consistent <- nrow(my_cases[my_cases[[comparison_measure]] == case_label, ])
   cases_inconsistent <- nrow(my_cases) - cases_consistent
 
-  not_cases_consistent <- nrow(my_not_cases[my_not_cases[[reference_measure]] != case_label, ])
+  not_cases_consistent <- nrow(my_not_cases[my_not_cases[[comparison_measure]] != case_label, ])
   not_cases_inconsistent <- nrow(my_not_cases) - not_cases_consistent
 
 

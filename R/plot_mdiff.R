@@ -856,11 +856,16 @@ plot_pdiff <- function(
 
   gdata <- estimate$es_proportion_difference
   outcome_var <- estimate$overview$outcome_variable_name[[1]]
-  clevel <- gsub(
-    paste(outcome_var, ": P_", sep = ""),
-    "",
-    estimate$es_proportion_difference$outcome_variable_name[[1]]
-  )
+  if (plot_paired) {
+    clevel <- estimate$es_proportion_difference$case_label[[1]]
+  } else {
+    clevel <- gsub(
+      paste(outcome_var, ": P_", sep = ""),
+      "",
+      estimate$es_proportion_difference$outcome_variable_name[[1]]
+    )
+
+  }
 
   gdata$y_value <- gdata$effect_size
   gdata$x_label <- gsub(paste(" P_", clevel, sep = ""), "", gdata$effect)
@@ -930,7 +935,7 @@ plot_pdiff <- function(
 
   # Labels -----------------------------
   if (plot_paired) {
-    vname <- NULL
+    vname <- " "
     xlab <- NULL
   } else {
     vname <- outcome_var

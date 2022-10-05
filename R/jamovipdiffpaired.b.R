@@ -69,6 +69,8 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             estimate <- jamovi_pdiff_paired(self)
 
+
+
             # Print any notes that emerged from running the analysis
             jamovi_set_notes(self$results$help)
 
@@ -79,13 +81,22 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             if(is(estimate, "try-error")) stop(estimate[1])
 
             # Fill tables
+
+            estimate$es_proportion_difference$effect <- paste(
+              "<i>P</i><sub>",
+              estimate$es_proportion_difference$case_label,
+              "</sub>: ",
+              estimate$es_proportion_difference$effect,
+              sep = ""
+            )
+
             jamovi_estimate_filler(self, estimate, TRUE)
 
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
 
           # Redo analysis
-          estimate <- jamovi_pdiff_two(
+          estimate <- jamovi_pdiff_paired(
             self = self
           )
 
@@ -124,7 +135,7 @@ jamovi_pdiff_paired <- function(self) {
 
     } else {
         args$cases_consistent <- jamovi_required_numeric(
-            self$options$cases_inconsistent,
+            self$options$cases_consistent,
             lower = 0,
             lower_inclusive = TRUE,
             integer_required = TRUE
@@ -136,7 +147,7 @@ jamovi_pdiff_paired <- function(self) {
             lower_inclusive = TRUE
         )
         args$not_cases_consistent <- jamovi_required_numeric(
-            self$options$not_cases_inconsistent,
+            self$options$not_cases_consistent,
             lower = 0,
             lower_inclusive = TRUE,
             integer_required = TRUE
@@ -235,6 +246,7 @@ jamovi_pdiff_paired <- function(self) {
     estimate <- try(do.call(what = call, args = args))
 
     if (!is(estimate, "try-error")) {
+
       estimate <- jamovi_add_htest_pdiff(
         self = self,
         estimate = estimate

@@ -586,7 +586,7 @@ jamovi_plot_pdiff <- function(
     "difference_axis_breaks",
     self$options$difference_axis_breaks,
     return_value = 5,
-    lower = 1,
+    lower = 2,
     lower_inclusive = TRUE,
     upper = 50,
     upper_inclusive = TRUE,

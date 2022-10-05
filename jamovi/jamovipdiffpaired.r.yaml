@@ -50,14 +50,6 @@ items:
       type: Table
       rows:  3
       columns:
-        - name: comparison_measure_name
-          title: 'Comparison measure'
-          type: text
-          combineBelow: true
-        - name: reference_measure_name
-          title: 'Reference measure'
-          type: text
-          combineBelow: true
         - name: effect
           title: 'Effect'
           type: text
@@ -80,13 +72,6 @@ items:
       type: Table
       rows:  1
       columns:
-        - name: outcome_variable_1
-          title: 'Outcome variable 1'
-          type: text
-          combineBelow: true
-        - name: outcome_variable_2
-          title: 'Outcome variable 2'
-          type: text
         - name: effect
           title: 'Effect'
           type: text
@@ -106,11 +91,6 @@ items:
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
       columns:
-        - name: outcome_variable_name
-          title: 'Outcome variable'
-          visible: true
-          type: text
-          combineBelow: true
         - name: null_words
           title: "<i>H</i><sub>0</sub>"
           type: text
@@ -143,11 +123,6 @@ items:
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
       columns:
-        - name: outcome_variable_name
-          title: 'Outcome variable'
-          visible: true
-          type: text
-          combineBelow: true
         - name: effect
           title: 'Effect'
           type: text

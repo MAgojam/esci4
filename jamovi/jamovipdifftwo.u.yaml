@@ -292,7 +292,7 @@ children:
               row: 9
           - type: ComboBox
             name: error_layout
-            enable: '(effect_size:mean_difference)'
+            enable: '(switch:nope)'
             cell:
               column: 1
               row: 9
