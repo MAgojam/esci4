@@ -262,7 +262,7 @@ overview_nominal.base <- function(
 
     overview_table[x, esci_column_names] <- res[statpsych_row, statpsych_cnames]
     overview_table[x, "ta_LL"] <- res_ta[statpsych_row, "LL"]
-    overview_table$[x, "ta_UL"] <- res_ta[statpsych_row, "UL"]
+    overview_table[x, "ta_UL"] <- res_ta[statpsych_row, "UL"]
 
   }
 
