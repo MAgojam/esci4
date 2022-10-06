@@ -153,7 +153,9 @@ estimate_proportion <- function(
     "effect_size",
     "LL",
     "UL",
-    "SE"
+    "SE",
+    "ta_LL",
+    "ta_UL"
   )
 
 

@@ -254,6 +254,10 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
             my_value = self$options$breaks,
             return_value = NULL,
             na_ok = FALSE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 200,
+            upper_inclusive = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Y axis: Number of tick marks"
           )
@@ -318,7 +322,7 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
               try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$linetype_summary)
 
               # if (self$options$effect_size == "median") {
-              #   try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary)
+              #  try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary)
               # }
 
             }
@@ -357,13 +361,13 @@ jamovi_proportion <- function(self) {
       is.null(self$options$outcome_variable)
     ) return(NULL)
   } else {
-    args$cases <- jamovi_required_numeric(
+    args$comparison_cases <- jamovi_required_numeric(
       self$options$cases,
       lower = 0,
       lower_inclusive = TRUE,
       integer_required = TRUE
     )
-    args$observations <- jamovi_required_numeric(
+    args$comparison_n <- jamovi_required_numeric(
       self$options$observations,
       integer_required = TRUE,
       lower = 0,
@@ -400,7 +404,15 @@ jamovi_proportion <- function(self) {
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::estimate_proportion
+  call <- esci4::estimate_pdiff_one
+
+  args$reference_p <- jamovi_sanitize(
+    my_value = self$options$null_value,
+    return_value = 0,
+    convert_to_number = TRUE,
+    my_value_name = "Null value"
+  )
+
   args$count_NA <- self$options$count_NA
   args$conf_level <- jamovi_sanitize(
     my_value = self$options$conf_level,
@@ -424,11 +436,6 @@ jamovi_proportion <- function(self) {
       return_value = "Affected",
       na_ok = FALSE
     )
-    args$not_case_label <- jamovi_sanitize(
-      self$options$not_case_label,
-      return_value = "Not affected",
-      na_ok = FALSE
-    )
     args$outcome_variable_name <- jamovi_sanitize(
       self$options$outcome_variable_name,
       return_value = "My outcome variable",
@@ -438,14 +445,6 @@ jamovi_proportion <- function(self) {
     for (element in args) {
       notes <- c(notes, names(element))
     }
-
-    args$outcome_variable_levels <- c(
-      args$case_label,
-      args$not_case_label
-    )
-
-    args$case_label <- NULL
-    args$not_case_label <- NULL
 
   }
 

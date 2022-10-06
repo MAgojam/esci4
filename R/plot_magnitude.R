@@ -438,6 +438,30 @@ plot_proportion <- function(
   }
 
 
+  # 90% CI
+  if (interval_null) {
+    alpha <- 1 - estimate$properties$conf_level
+    conf_level <- c(
+      1 - (alpha*2),
+      conf_level
+    )
+
+
+    myplot <- myplot + ggplot2::geom_segment(
+      data = gdata,
+      aes(
+        x = x_value + nudge,
+        xend = x_value + nudge,
+        y = ta_LL,
+        yend = ta_UL
+      ),
+      colour = "black",
+      size = 2
+    )
+
+    myplot <- esci_plot_layers(myplot, "ta_CI")
+  }
+
 
   # Group data
   error_glue <- esci_plot_group_data(effect_size = effect_size)
@@ -462,7 +486,8 @@ plot_proportion <- function(
 
 
   # Labels
-  ylab <- glue::glue("Proportion and {conf_level*100}% Confidence Interval")
+  ylab <- glue::glue("Proportion and {glue::glue_collapse(conf_level*100, sep = '%, ')}% Confidence Interval")
+
   xlab <- gdata$outcome_variable_name[[1]]
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 

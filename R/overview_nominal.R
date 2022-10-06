@@ -238,6 +238,7 @@ overview_nominal.base <- function(
         "UL" = NA,
         "SE" = NA
       )
+      res_ta <- res
     } else {
       res <- as.data.frame(
         statpsych::ci.prop1(
@@ -246,11 +247,22 @@ overview_nominal.base <- function(
           n = overview_table$n[x]
         )
       )
+
+      res_ta <- as.data.frame(
+        statpsych::ci.prop1(
+          alpha = (1 - conf_level)*2,
+          f = overview_table$cases[x],
+          n = overview_table$n[x]
+        )
+      )
     }
 
     res$Estimate[1] <- res$Estimate[2]
+    res_ta$Estimate[1] <- res_ta$Estimate[2]
 
     overview_table[x, esci_column_names] <- res[statpsych_row, statpsych_cnames]
+    overview_table[x, "ta_LL"] <- res_ta[statpsych_row, "LL"]
+    overview_table$[x, "ta_UL"] <- res_ta[statpsych_row, "UL"]
 
   }
 
