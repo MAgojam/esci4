@@ -862,6 +862,11 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="P_SE", 
                         `type`="number", 
                         `title`="<i>SE<sub></sub>P</i>", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="P_adjusted", 
+                        `type`="number", 
+                        `title`="<i>P<sub>adjusted</sub></i>", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -899,6 +904,11 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="SE", 
                         `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="effect_size_adjusted", 
+                        `title`="<i>P<sub>adjusted</sub></i>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(

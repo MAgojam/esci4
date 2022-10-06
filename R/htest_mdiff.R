@@ -151,7 +151,11 @@ test_diff_base <- function(
     if (effect_size == "mean" | effect_size == "P") {
       df <- es$df
       if (is.null(df)) df <- NA
-      t <- es$effect_size / es$SE
+      if (is.null(es$effect_size_adjusted)) {
+        t <- es$effect_size / es$SE
+      } else {
+        t <- es$effect_size_adjusted / es$SE
+      }
       if (is.na(df))
         p <- 2*pnorm(-abs(t))
       else

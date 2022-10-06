@@ -257,10 +257,12 @@ overview_nominal.base <- function(
       )
     }
 
+    effect_size_adjusted <- res$Estimate[1]
     res$Estimate[1] <- res$Estimate[2]
     res_ta$Estimate[1] <- res_ta$Estimate[2]
 
     overview_table[x, esci_column_names] <- res[statpsych_row, statpsych_cnames]
+    overview_table[x, "P_adjusted"] <- effect_size_adjusted
     overview_table[x, "ta_LL"] <- res_ta[statpsych_row, "LL"]
     overview_table[x, "ta_UL"] <- res_ta[statpsych_row, "UL"]
 

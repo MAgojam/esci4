@@ -43,6 +43,10 @@ items:
           type: number
           title: <i>SE<sub>P</sub></i>
           visible: (show_details)
+        - name: P_adjusted
+          type: number
+          title: <i>P<sub>adjusted</sub></i>
+          visible: (show_details)
 
     - name:  point_null
       title: Hypothesis evaluation
@@ -106,12 +110,15 @@ items:
       type: Html
       visible: true
 
-    - name: magnitude_plot
+    - name: estimation_plots
       title: Estimation Figure
-      type: Image
-      requiresData: true
-      width:  400
-      height: 300
-      renderFun: .magnitude_plot
+      type: Array
+      template:
+          title: $key
+          type: Image
+          width:  300
+          height: 450
+          requiresData: true
+          renderFun: .estimation_plots
 
 ...

@@ -154,6 +154,7 @@ estimate_proportion <- function(
     "LL",
     "UL",
     "SE",
+    "effect_size_adjusted",
     "ta_LL",
     "ta_UL"
   )

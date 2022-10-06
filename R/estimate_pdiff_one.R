@@ -226,10 +226,10 @@ estimate_pdiff_one <- function(
       reference_label,
       effect_label
     )
-    estimate$es_proportion_difference[2, c("effect_size", "LL", "UL", "SE", "ta_LL", "ta_UL")] <-
-      c(reference_p, NA, NA, NA, NA, NA)
-    estimate$es_proportion_difference[3, c("effect_size", "LL", "UL", "ta_LL", "ta_UL")] <-
-      estimate$es_proportion_difference[3, c("effect_size", "LL", "UL", "ta_LL", "ta_UL")] - reference_p
+    estimate$es_proportion_difference[2, c("effect_size", "LL", "UL", "SE", "effect_size_adjusted", "ta_LL", "ta_UL")] <-
+      c(reference_p, NA, NA, NA, NA, NA, NA)
+    estimate$es_proportion_difference[3, c("effect_size", "LL", "UL", "effect_size_adjusted", "ta_LL", "ta_UL")] <-
+      estimate$es_proportion_difference[3, c("effect_size", "LL", "UL", "effect_size_adjusted", "ta_LL", "ta_UL")] - reference_p
 
 
     estimate$es_proportion <- NULL

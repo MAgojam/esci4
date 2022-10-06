@@ -360,6 +360,7 @@ The contrast passed was: {passed_contrast}.
     res$ta_LL <- res_2a$LL
     res$ta_UL <- res_2a$UL
 
+    res$effect_size_adjusted <- res$Estimate
     res$Estimate <- sum(mycontrast*(cases/ns))
 
     es_proportion_difference <- rbind(
@@ -371,8 +372,8 @@ The contrast passed was: {passed_contrast}.
 
 
   estimate$es_proportion_difference <- data.frame(matrix(NA, ncol=1, nrow=3))[-1]
-  estimate$es_proportion_difference[ , c("effect_size", "LL", "UL", "SE", "ta_LL", "ta_UL")] <-
-    es_proportion_difference[ , c("Estimate", "LL", "UL", "SE", "ta_LL", "ta_UL")]
+  estimate$es_proportion_difference[ , c("effect_size", "LL", "UL", "SE", "effect_size_adjusted", "ta_LL", "ta_UL")] <-
+    es_proportion_difference[ , c("Estimate", "LL", "UL", "SE", "effect_size_adjusted", "ta_LL", "ta_UL")]
 
   estimate$es_proportion_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),

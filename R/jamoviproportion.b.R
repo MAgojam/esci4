@@ -34,7 +34,7 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           )
           height <- jamovi_sanitize(
             my_value = self$options$es_plot_height,
-            return_value = 400,
+            return_value = 450,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -52,12 +52,27 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           } else {
             level_count <- 1
           }
-          image <- self$results$magnitude_plot
-          image$setSize(width * level_count, height)
+
+
+          keys <- if (from_raw)
+            self$options$outcome_variable
+          else
+            jamovi_sanitize(
+              self$options$outcome_variable_name,
+              "My outcome variable",
+              na_ok = FALSE
+            )
+
+          for (my_key in keys) {
+            self$results$estimation_plots$addItem(key = my_key)
+            image <- self$results$estimation_plots$get(my_key)
+            image$setSize(width , height)
+          }
+
 
         },
         .run = function() {
-
+          from_raw <- (self$options$switch == "from_raw")
           estimate <- jamovi_proportion(self)
 
           # Print any notes that emerged from running the analysis
@@ -73,11 +88,44 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           jamovi_estimate_filler(self, estimate, TRUE)
 
 
+          # Deal with plots
+          keys <- if (from_raw)
+            self$options$outcome_variable
+          else
+            jamovi_sanitize(
+              self$options$outcome_variable_name,
+              "My outcome variable",
+              na_ok = FALSE
+            )
+
+          for (my_key in keys) {
+            image <- self$results$estimation_plots$get(key=my_key)
+            image$setState(my_key)
+          }
+
+          if (length(keys) > 1) {
+            self$results$estimation_plots$setTitle(
+              paste(
+                self$results$estimation_plots$title,
+                "s",
+                sep = ""
+              )
+            )
+          }
+
+
         },
-        .magnitude_plot = function(image, ggtheme, theme, ...) {
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          if (is.null(image$state))
+            return(FALSE)
+
 
           # Do analysis
-          estimate <- jamovi_proportion(self)
+          estimate <- jamovi_proportion(
+            self,
+            outcome_variable = c(image$state)
+          )
           if(is.null(estimate)) return(TRUE)
           if(is(estimate, "try-error")) stop(estimate[1])
 
@@ -348,7 +396,7 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
         })
 )
 
-jamovi_proportion <- function(self) {
+jamovi_proportion <- function(self, outcome_variable = NULL) {
   # Prelim -----------------------------------------------------
   from_raw <- (self$options$switch == "from_raw")
   notes <- c(NULL)
@@ -357,9 +405,12 @@ jamovi_proportion <- function(self) {
   args <- list()
 
   if(from_raw) {
-    if (
-      is.null(self$options$outcome_variable)
-    ) return(NULL)
+    if (is.null(outcome_variable)) {
+      if (
+        is.null(self$options$outcome_variable) |
+        length(self$options$outcome_variable) == 0
+      ) return(NULL)
+    }
   } else {
     args$comparison_cases <- jamovi_required_numeric(
       self$options$cases,
@@ -426,7 +477,14 @@ jamovi_proportion <- function(self) {
 
   if(from_raw) {
     args$data <- self$data
-    args$outcome_variable <- unname(self$options$outcome_variable)
+
+    if (is.null(outcome_variable)) {
+      args$outcome_variable <- unname(self$options$outcome_variable)
+    } else {
+      args$outcome_variable <- unname(outcome_variable)
+      args$outcome_variable_name <- outcome_variable
+    }
+
   } else {
     args$case_label <- jamovi_sanitize(
       self$options$case_label,

@@ -423,7 +423,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
         magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
-        magnitude_plot = function() private$.items[["magnitude_plot"]]),
+        estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -478,6 +478,11 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                         `name`="P_SE", 
                         `type`="number", 
                         `title`="<i>SE<sub>P</sub></i>", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="P_adjusted", 
+                        `type`="number", 
+                        `title`="<i>P<sub>adjusted</sub></i>", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -555,14 +560,17 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 name="magnitude_plot_warnings",
                 title="Figure Warnings",
                 visible=TRUE))
-            self$add(jmvcore::Image$new(
+            self$add(jmvcore::Array$new(
                 options=options,
-                name="magnitude_plot",
+                name="estimation_plots",
                 title="Estimation Figure",
-                requiresData=TRUE,
-                width=400,
-                height=300,
-                renderFun=".magnitude_plot"))}))
+                template=jmvcore::Image$new(
+                    options=options,
+                    title="$key",
+                    width=300,
+                    height=450,
+                    requiresData=TRUE,
+                    renderFun=".estimation_plots")))}))
 
 jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamoviproportionBase",
@@ -627,7 +635,7 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

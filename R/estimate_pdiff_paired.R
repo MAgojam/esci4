@@ -294,8 +294,8 @@ estimate_pdiff_paired.summary <- function(
     )
   )
 
-  estimate$es_proportion_difference[3, c("LL", "UL", "SE")] <-
-    pdiff_row[ , c("LL", "UL", "SE")]
+  estimate$es_proportion_difference[3, c("LL", "UL", "SE", "effect_size_adjusted")] <-
+    pdiff_row[ , c("LL", "UL", "SE", "Estimate")]
 
   type_store <- estimate$es_proportion_difference$type
   cancel_columns <- c(

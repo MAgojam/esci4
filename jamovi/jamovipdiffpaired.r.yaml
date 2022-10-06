@@ -44,6 +44,10 @@ items:
           type: number
           title: <i>SE<sub>P</sub></i>
           visible: (show_details)
+        - name: P_adjusted
+          type: number
+          title: <i>P<sub>adjusted</sub></i>
+          visible: (show_details)
 
     - name:  es_proportion_difference
       title: Proportion Difference
@@ -64,6 +68,10 @@ items:
           type: number
         - name: SE
           title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: effect_size_adjusted
+          title: <i>P<sub>adjusted</sub></i>
           type: number
           visible: (show_details)
 
