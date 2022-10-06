@@ -33,14 +33,9 @@ options:
       default: ' '
 
     - name: case_label
-      title: Cases
+      title: Case label
       type: String
       default: 'Affected'
-
-    - name: not_case_label
-      title: Cases
-      type: String
-      default: 'Not Affected'
 
     - name: outcome_variable_name
       title: Outcome variable name
@@ -396,7 +391,7 @@ options:
     - name: size_summary
       type: List
       title: 'Size'
-      default: '1'
+      default: '4'
       options:
         - name: '1'
           title: '1'

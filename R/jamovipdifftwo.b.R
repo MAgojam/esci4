@@ -238,8 +238,8 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
         args$comparison_n <- jamovi_required_numeric(
             self$options$comparison_n,
             integer_required = TRUE,
-            lower = 0,
-            lower_inclusive = FALSE,
+            lower = args$comparison_cases,
+            lower_inclusive = TRUE,
             my_value_name = "Comparison <i>n</i>"
         )
 
@@ -253,8 +253,8 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
         args$reference_n <- jamovi_required_numeric(
             self$options$reference_n,
             integer_required = TRUE,
-            lower = 0,
-            lower_inclusive = FALSE,
+            lower = args$reference_cases,
+            lower_inclusive = TRUE,
             my_value_name = "Reference <i>n</i>"
         )
 

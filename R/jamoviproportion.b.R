@@ -134,7 +134,7 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           # return(TRUE)
 
           # Basic plot
-          divider <- 1
+          divider <- 4
           notes <- NULL
           args <- list()
           args$estimate <- estimate
@@ -421,8 +421,8 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     args$comparison_n <- jamovi_required_numeric(
       self$options$observations,
       integer_required = TRUE,
-      lower = 0,
-      lower_inclusive = FALSE
+      lower =  args$comparison_cases,
+      lower_inclusive = TRUE
     )
 
     unfilled <- names(args[which(is.na(args))])

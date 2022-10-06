@@ -774,7 +774,7 @@ options:
 
     - name: size_summary_reference
       type: List
-      default: '1'
+      default: '4'
       options:
         - name: '1'
           title: '1'
@@ -791,7 +791,7 @@ options:
 
     - name: size_summary_comparison
       type: List
-      default: '1'
+      default: '4'
       options:
         - name: '1'
           title: '1'
@@ -808,7 +808,7 @@ options:
 
     - name: size_summary_difference
       type: List
-      default: '1'
+      default: '4'
       options:
         - name: '1'
           title: '1'

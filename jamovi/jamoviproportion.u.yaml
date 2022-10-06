@@ -34,7 +34,7 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 1
+    stretchFactor: 3
     collapsed: true
     children:
       - type: Label
@@ -44,22 +44,22 @@ children:
         name: cases
         format: string
         enable: '(switch:from_summary)'
+        stretchFactor: 2
       - type: TextBox
         name: observations
         format: string
         enable: '(switch:from_summary)'
+        stretchFactor: 2
       - type: TextBox
         name: case_label
         format: string
         enable: '(switch:from_summary)'
-      - type: TextBox
-        name: not_case_label
-        format: string
-        enable: '(switch:from_summary)'
+        stretchFactor: 3
       - type: TextBox
         name: outcome_variable_name
         format: string
         enable: '(switch:from_summary)'
+        stretchFactor: 3
   - type: Label
     label: <hr>Analysis options
     stretchFactor: 1

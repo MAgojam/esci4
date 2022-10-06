@@ -49,9 +49,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             fill_summary_reference = "#008DF9",
             fill_summary_comparison = "#009F81",
             fill_summary_difference = "black",
-            size_summary_reference = "1",
-            size_summary_comparison = "1",
-            size_summary_difference = "1",
+            size_summary_reference = "4",
+            size_summary_comparison = "4",
+            size_summary_difference = "4",
             alpha_summary_reference = "1",
             alpha_summary_comparison = "1",
             alpha_summary_difference = "1",
@@ -532,7 +532,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..size_summary_reference <- jmvcore::OptionList$new(
                 "size_summary_reference",
                 size_summary_reference,
-                default="1",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -543,7 +543,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..size_summary_comparison <- jmvcore::OptionList$new(
                 "size_summary_comparison",
                 size_summary_comparison,
-                default="1",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -554,7 +554,7 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..size_summary_difference <- jmvcore::OptionList$new(
                 "size_summary_difference",
                 size_summary_difference,
-                default="1",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -1186,9 +1186,9 @@ jamovipdifftwo <- function(
     fill_summary_reference = "#008DF9",
     fill_summary_comparison = "#009F81",
     fill_summary_difference = "black",
-    size_summary_reference = "1",
-    size_summary_comparison = "1",
-    size_summary_difference = "1",
+    size_summary_reference = "4",
+    size_summary_comparison = "4",
+    size_summary_difference = "4",
     alpha_summary_reference = "1",
     alpha_summary_comparison = "1",
     alpha_summary_difference = "1",

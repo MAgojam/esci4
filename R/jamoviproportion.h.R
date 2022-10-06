@@ -11,7 +11,6 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             cases = " ",
             observations = " ",
             case_label = "Affected",
-            not_case_label = "Not Affected",
             outcome_variable_name = "Outcome variable",
             count_NA = FALSE,
             conf_level = 95,
@@ -34,7 +33,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             shape_summary = "circle filled",
             color_summary = "#008DF9",
             fill_summary = "#008DF9",
-            size_summary = "1",
+            size_summary = "4",
             alpha_summary = "1",
             linetype_summary = "solid", ...) {
 
@@ -66,10 +65,6 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 "case_label",
                 case_label,
                 default="Affected")
-            private$..not_case_label <- jmvcore::OptionString$new(
-                "not_case_label",
-                not_case_label,
-                default="Not Affected")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
@@ -286,7 +281,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             private$..size_summary <- jmvcore::OptionList$new(
                 "size_summary",
                 size_summary,
-                default="1",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -320,7 +315,6 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             self$.addOption(private$..cases)
             self$.addOption(private$..observations)
             self$.addOption(private$..case_label)
-            self$.addOption(private$..not_case_label)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..count_NA)
             self$.addOption(private$..conf_level)
@@ -353,7 +347,6 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         cases = function() private$..cases$value,
         observations = function() private$..observations$value,
         case_label = function() private$..case_label$value,
-        not_case_label = function() private$..not_case_label$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         count_NA = function() private$..count_NA$value,
         conf_level = function() private$..conf_level$value,
@@ -385,7 +378,6 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         ..cases = NA,
         ..observations = NA,
         ..case_label = NA,
-        ..not_case_label = NA,
         ..outcome_variable_name = NA,
         ..count_NA = NA,
         ..conf_level = NA,
@@ -601,7 +593,6 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
 #' @param cases .
 #' @param observations .
 #' @param case_label .
-#' @param not_case_label .
 #' @param outcome_variable_name .
 #' @param count_NA .
 #' @param conf_level .
@@ -652,7 +643,6 @@ jamoviproportion <- function(
     cases = " ",
     observations = " ",
     case_label = "Affected",
-    not_case_label = "Not Affected",
     outcome_variable_name = "Outcome variable",
     count_NA = FALSE,
     conf_level = 95,
@@ -675,7 +665,7 @@ jamoviproportion <- function(
     shape_summary = "circle filled",
     color_summary = "#008DF9",
     fill_summary = "#008DF9",
-    size_summary = "1",
+    size_summary = "4",
     alpha_summary = "1",
     linetype_summary = "solid") {
 
@@ -695,7 +685,6 @@ jamoviproportion <- function(
         cases = cases,
         observations = observations,
         case_label = case_label,
-        not_case_label = not_case_label,
         outcome_variable_name = outcome_variable_name,
         count_NA = count_NA,
         conf_level = conf_level,

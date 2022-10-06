@@ -14,6 +14,9 @@ jamovi_plot_mdiff <- function(
   }
   if (from_raw & plot_median) effect_size <- "median"
 
+  divider <- 1
+  if (effect_size == "median") divider <- 4
+
   # Basic plot
   notes <- NULL
   args <- list()
@@ -516,6 +519,7 @@ jamovi_plot_pdiff <- function(
 ) {
 
   from_raw <- (self$options$switch == "from_raw")
+  divider <- 4
 
   # Basic plot
   notes <- NULL
@@ -785,7 +789,7 @@ jamovi_plot_pdiff <- function(
     aesthetics = c("fill", "point_fill")
   )
   #
-  divider <- 1
+  divider <- 4
   #
   myplot <- myplot + ggplot2::discrete_scale(
     c("size", "point_size"),
