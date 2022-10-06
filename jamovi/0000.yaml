@@ -74,12 +74,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Single Group
-  - title: 'Single Group, Reference Value'
-    name: jamovipdiffone
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Proportions
-    menuTitle: 'Single Group, Reference Value'
   - title: Two Groups
     name: jamovipdifftwo
     ns: esci4
