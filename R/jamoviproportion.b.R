@@ -397,9 +397,6 @@ jamovi_proportion <- function(self) {
       return(NULL)
     }
 
-    args$cases <- c(args$cases, args$observations - args$cases)
-    args$observations <- NULL
-
   }
 
 
@@ -453,13 +450,15 @@ jamovi_proportion <- function(self) {
   estimate <- try(do.call(what = call, args = args))
 
   if (!is(estimate, "try-error")) {
+    estimate <- jamovi_add_htest_pdiff(
+      self = self,
+      estimate = estimate
+    )
+
     if (length(estimate$warnings) > 0) {
-      estimate <- jamovi_add_htest_pdiff(
-        self = self,
-        estimate = estimate
-      )
 
       notes <- c(notes, estimate$warnings)
+
     }
   }
 

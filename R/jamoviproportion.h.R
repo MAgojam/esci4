@@ -434,7 +434,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
-                visible=FALSE))
+                visible=TRUE))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="help",
@@ -505,12 +505,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                         `type`="text"),
                     list(
                         `name`="t", 
-                        `title`="z", 
-                        `type`="number"),
-                    list(
-                        `name`="df", 
-                        `title`="df", 
-                        `type`="integer"),
+                        `title`="z"),
                     list(
                         `name`="p", 
                         `title`="<i>p</i>", 

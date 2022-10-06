@@ -6,7 +6,7 @@ jrs:   '1.1'
 items:
     - name: debug
       type: Preformatted
-      visible: false
+      visible: true
 
     - name: help
       type: Html
@@ -65,10 +65,6 @@ items:
           type: text
         - name: t
           title: 'z'
-          type: number
-        - name: df
-          title: 'df'
-          type: integer
         - name: p
           title: "<i>p</i>"
           type: number
