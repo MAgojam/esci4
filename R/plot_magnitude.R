@@ -349,15 +349,6 @@ plot_proportion <- function(
   nudge <- 0
   effect_size <- "P"
 
-  gdata <- estimate$overview
-  gdata$type <- as.factor("summary")
-  gdata$x_label <- gdata$outcome_variable_level
-  gdata$y_value <- gdata$P
-  gdata$x_value <- seq(from = 1, to = nrow(gdata), by = 1)
-  gdata$nudge <- nudge
-  gdata$LL <- gdata$P_LL
-  gdata$UL <- gdata$P_UL
-
   # Initialize null information
   plot_null <- FALSE
   interval_null <- FALSE
@@ -385,6 +376,24 @@ plot_proportion <- function(
       )
     }
   }
+
+  clevel <- estimate$overview$outcome_variable_level[[1]]
+
+  gdata <- estimate$overview
+
+  if (plot_null & !is.null(clevel)) {
+    gdata <- gdata[gdata$outcome_variable_level == clevel, ]
+  }
+
+  gdata$type <- as.factor("summary")
+  gdata$x_label <- gdata$outcome_variable_level
+  gdata$y_value <- gdata$P
+  gdata$x_value <- seq(from = 1, to = nrow(gdata), by = 1)
+  gdata$nudge <- nudge
+  gdata$LL <- gdata$P_LL
+  gdata$UL <- gdata$P_UL
+
+
 
 
 
