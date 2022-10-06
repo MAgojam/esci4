@@ -235,12 +235,13 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
             integer_required = TRUE,
             my_value_name = "Comparison group cases"
         )
-        args$comparison_n <- jamovi_required_numeric(
-            self$options$comparison_n,
-            integer_required = TRUE,
-            lower = args$comparison_cases,
-            lower_inclusive = TRUE,
-            my_value_name = "Comparison <i>n</i>"
+
+        args$comparison_not_cases <- jamovi_required_numeric(
+          self$options$comparison_not_cases,
+          lower = 0,
+          lower_inclusive = TRUE,
+          integer_required = TRUE,
+          my_value_name = "Comparison group not cases"
         )
 
         args$reference_cases <- jamovi_required_numeric(
@@ -250,12 +251,13 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
             integer_required = TRUE,
             my_value_name = "Reference group cases"
         )
-        args$reference_n <- jamovi_required_numeric(
-            self$options$reference_n,
-            integer_required = TRUE,
-            lower = args$reference_cases,
-            lower_inclusive = TRUE,
-            my_value_name = "Reference <i>n</i>"
+
+        args$reference_not_cases <- jamovi_required_numeric(
+          self$options$reference_not_cases,
+          lower = 0,
+          lower_inclusive = TRUE,
+          integer_required = TRUE,
+          my_value_name = "Reference group not cases"
         )
 
         unfilled <- names(args[which(is.na(args))])
@@ -281,7 +283,10 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
             return(NULL)
         }
 
-
+        args$comparison_n <- args$comparison_cases + args$comparison_not_cases
+        args$comparison_not_cases <- NULL
+        args$reference_n <- args$reference_cases + args$reference_not_cases
+        args$reference_not_cases <- NULL
     }
 
 

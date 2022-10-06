@@ -51,42 +51,31 @@ children:
     children:
       - type: Label
         label: Summary data
-        stretchFactor: 1
+        stretchFactor: 3
         horizontalAlignment: center
         cell:
           column: 0
           row: 0
-      - type: Label
-        label: ' '
-        stretchFactor: 1
-        horizontalAlignment: center
-        cell:
-          column: 0
-          row: 1
-      - type: Label
-        label: Reference group
-        stretchFactor: 3
-        horizontalAlignment: right
+      - type: TextBox
+        name: grouping_variable_name
+        format: string
+        stretchFactor: 2
+        enable: '(switch:from_summary)'
         cell:
           column: 1
           row: 1
-      - type: Label
-        label: Comparison group
-        horizontalAlignment: right
+      - type: TextBox
+        name: outcome_variable_name
+        format: string
         stretchFactor: 3
-        cell:
-          column: 2
-          row: 1
-      - type: Label
-        label: '<span style="font-weight:normal">Name</span> '
-        stretchFactor: 1
+        enable: '(switch:from_summary)'
         cell:
           column: 0
           row: 2
       - type: TextBox
         name: grouping_variable_level2
         format: string
-        stretchFactor: 3
+        stretchFactor: 2
         horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
@@ -95,21 +84,23 @@ children:
       - type: TextBox
         name: grouping_variable_level1
         format: string
-        stretchFactor: 3
+        stretchFactor: 2
         horizontalAlignment: left
         enable: '(switch:from_summary)'
         cell:
           column: 2
           row: 2
-      - type: Label
-        stretchFactor: 1
-        label: '<span style="font-weight:normal">Cases</span> '
+      - type: TextBox
+        name: case_label
+        format: string
+        stretchFactor: 3
+        enable: '(switch:from_summary)'
         cell:
           column: 0
           row: 3
       - type: TextBox
         name: reference_cases
-        stretchFactor: 3
+        stretchFactor: 2
         format: string
         horizontalAlignment: left
         enable: '(switch:from_summary)'
@@ -118,64 +109,39 @@ children:
           row: 3
       - type: TextBox
         name: comparison_cases
-        stretchFactor: 3
+        stretchFactor: 2
         horizontalAlignment: left
         enable: '(switch:from_summary)'
         format: string
         cell:
           column: 2
           row: 3
-      - type: Label
-        label: '<span style="font-weight:normal">Sample size (<i>n</i>)</span> '
-        stretchFactor: 1
+      - type: TextBox
+        name: not_case_label
+        format: string
+        stretchFactor: 3
+        enable: '(switch:from_summary)'
         cell:
           column: 0
           row: 4
       - type: TextBox
-        name: reference_n
+        name: reference_not_cases
+        stretchFactor: 2
         format: string
         horizontalAlignment: left
-        stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
           column: 1
           row: 4
       - type: TextBox
-        name: comparison_n
-        format: string
+        name: comparison_not_cases
+        stretchFactor: 2
         horizontalAlignment: left
-        stretchFactor: 3
         enable: '(switch:from_summary)'
+        format: string
         cell:
           column: 2
           row: 4
-      - type: LayoutBox
-        stretchFactor: 2
-        margin: none
-        cell:
-          column: 0
-          row: 5
-        children:
-          - type: TextBox
-            name: case_label
-            format: string
-            stretchFactor: 2
-            enable: '(switch:from_summary)'
-          - type: TextBox
-            name: not_case_label
-            format: string
-            stretchFactor: 2
-            enable: '(switch:from_summary)'
-          - type: TextBox
-            name: outcome_variable_name
-            format: string
-            stretchFactor: 2
-            enable: '(switch:from_summary)'
-          - type: TextBox
-            name: grouping_variable_name
-            format: string
-            stretchFactor: 2
-            enable: '(switch:from_summary)'
   - type: Label
     label: Analysis options
     children:

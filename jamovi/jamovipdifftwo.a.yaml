@@ -32,7 +32,7 @@ options:
       type: String
       default: ' '
 
-    - name: comparison_n
+    - name: comparison_not_cases
       type: String
       default: ' '
 
@@ -40,17 +40,15 @@ options:
       type: String
       default: ' '
 
-    - name: reference_n
+    - name: reference_not_cases
       type: String
       default: ' '
 
     - name: case_label
-      title: Label for cases
       type: String
       default: 'Sick'
 
     - name: not_case_label
-      title: Label for not cases
       type: String
       default: 'Well'
 
@@ -63,12 +61,10 @@ options:
       default: 'Control'
 
     - name: outcome_variable_name
-      title: Outcome variable name
       type: String
       default: Outcome variable
 
     - name: grouping_variable_name
-      title: Grouping variable name
       type: String
       default: Grouping variable
 

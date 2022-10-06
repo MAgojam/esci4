@@ -10,9 +10,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             outcome_variable = NULL,
             grouping_variable = NULL,
             comparison_cases = " ",
-            comparison_n = " ",
+            comparison_not_cases = " ",
             reference_cases = " ",
-            reference_n = " ",
+            reference_not_cases = " ",
             case_label = "Sick",
             not_case_label = "Well",
             grouping_variable_level1 = "Treated",
@@ -86,17 +86,17 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "comparison_cases",
                 comparison_cases,
                 default=" ")
-            private$..comparison_n <- jmvcore::OptionString$new(
-                "comparison_n",
-                comparison_n,
+            private$..comparison_not_cases <- jmvcore::OptionString$new(
+                "comparison_not_cases",
+                comparison_not_cases,
                 default=" ")
             private$..reference_cases <- jmvcore::OptionString$new(
                 "reference_cases",
                 reference_cases,
                 default=" ")
-            private$..reference_n <- jmvcore::OptionString$new(
-                "reference_n",
-                reference_n,
+            private$..reference_not_cases <- jmvcore::OptionString$new(
+                "reference_not_cases",
+                reference_not_cases,
                 default=" ")
             private$..case_label <- jmvcore::OptionString$new(
                 "case_label",
@@ -627,9 +627,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..grouping_variable)
             self$.addOption(private$..comparison_cases)
-            self$.addOption(private$..comparison_n)
+            self$.addOption(private$..comparison_not_cases)
             self$.addOption(private$..reference_cases)
-            self$.addOption(private$..reference_n)
+            self$.addOption(private$..reference_not_cases)
             self$.addOption(private$..case_label)
             self$.addOption(private$..not_case_label)
             self$.addOption(private$..grouping_variable_level1)
@@ -681,9 +681,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         outcome_variable = function() private$..outcome_variable$value,
         grouping_variable = function() private$..grouping_variable$value,
         comparison_cases = function() private$..comparison_cases$value,
-        comparison_n = function() private$..comparison_n$value,
+        comparison_not_cases = function() private$..comparison_not_cases$value,
         reference_cases = function() private$..reference_cases$value,
-        reference_n = function() private$..reference_n$value,
+        reference_not_cases = function() private$..reference_not_cases$value,
         case_label = function() private$..case_label$value,
         not_case_label = function() private$..not_case_label$value,
         grouping_variable_level1 = function() private$..grouping_variable_level1$value,
@@ -734,9 +734,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..outcome_variable = NA,
         ..grouping_variable = NA,
         ..comparison_cases = NA,
-        ..comparison_n = NA,
+        ..comparison_not_cases = NA,
         ..reference_cases = NA,
-        ..reference_n = NA,
+        ..reference_not_cases = NA,
         ..case_label = NA,
         ..not_case_label = NA,
         ..grouping_variable_level1 = NA,
@@ -1073,9 +1073,9 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param outcome_variable .
 #' @param grouping_variable .
 #' @param comparison_cases .
-#' @param comparison_n .
+#' @param comparison_not_cases .
 #' @param reference_cases .
-#' @param reference_n .
+#' @param reference_not_cases .
 #' @param case_label .
 #' @param not_case_label .
 #' @param grouping_variable_level1 .
@@ -1147,9 +1147,9 @@ jamovipdifftwo <- function(
     outcome_variable,
     grouping_variable,
     comparison_cases = " ",
-    comparison_n = " ",
+    comparison_not_cases = " ",
     reference_cases = " ",
-    reference_n = " ",
+    reference_not_cases = " ",
     case_label = "Sick",
     not_case_label = "Well",
     grouping_variable_level1 = "Treated",
@@ -1215,9 +1215,9 @@ jamovipdifftwo <- function(
         outcome_variable = outcome_variable,
         grouping_variable = grouping_variable,
         comparison_cases = comparison_cases,
-        comparison_n = comparison_n,
+        comparison_not_cases = comparison_not_cases,
         reference_cases = reference_cases,
-        reference_n = reference_n,
+        reference_not_cases = reference_not_cases,
         case_label = case_label,
         not_case_label = not_case_label,
         grouping_variable_level1 = grouping_variable_level1,
