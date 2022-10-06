@@ -22,6 +22,39 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
 
           jamovi_set_confidence(tbl_overview, conf_level)
 
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 300,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 2000,
+            upper_inclusive = TRUE
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 400,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE
+          )
+          if (from_raw) {
+            level_count <- jamovi_sanitize(
+              my_value = length(self$options$outcome_variable),
+              return_value = 1,
+              convert_to_number = TRUE,
+              lower = 1,
+              lower_inclusive = TRUE
+            )
+          } else {
+            level_count <- 1
+          }
+          image <- self$results$magnitude_plot
+          image$setSize(width * level_count, height)
+
         },
         .run = function() {
 
@@ -40,6 +73,274 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           jamovi_estimate_filler(self, estimate, TRUE)
 
 
+        },
+        .magnitude_plot = function(image, ggtheme, theme, ...) {
+
+          # Do analysis
+          estimate <- jamovi_proportion(self)
+          if(is.null(estimate)) return(TRUE)
+          if(is(estimate, "try-error")) stop(estimate[1])
+
+          # self$results$debug$setContent(estimate)
+          # self$results$debug$setVisible(TRUE)
+          # return(TRUE)
+
+          # Basic plot
+          divider <- 1
+          notes <- NULL
+          args <- list()
+          args$estimate <- estimate
+
+          #Hyothesis evaluation
+          interval_null <- FALSE
+          if (self$options$evaluate_hypotheses) {
+            args <- jamovi_arg_builder(
+              args,
+              "null_boundary",
+              my_value = self$options$null_boundary,
+              return_value = 0,
+              convert_to_number = TRUE,
+              lower = 0,
+              lower_inclusive = TRUE,
+              my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+            )
+            args <- jamovi_arg_builder(
+              args,
+              "point_null",
+              my_value = self$options$null_value,
+              return_value = 0,
+              convert_to_number = TRUE,
+              my_value_name = "Hypothesis Evaluation: Null value"
+            )
+
+            multiplier <- 1
+
+            args$rope <- c(
+              args$point_null - (args$null_boundary * multiplier),
+              args$point_null + (args$null_boundary * multiplier)
+            )
+
+            if (args$rope[[1]] != args$rope[[2]]) {
+              interval_null <- TRUE
+            }
+
+            notes <- c(
+              notes,
+              names(args$point_null),
+              names(args$null_boundary)
+            )
+            args$point_null <- NULL
+            args$null_boundary <- NULL
+          }
+
+          args$ggtheme <- ggtheme[[1]]
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 300,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 2000,
+            upper_inclusive = TRUE,
+            my_value_name = "Plot width"
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 400,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE,
+            my_value_name = "Plot height"
+          )
+
+
+          # Store notes from basic plot
+          notes <- c(
+            notes,
+            args$warnings,
+            names(width),
+            names(height)
+          )
+          args$warnings <- NULL
+
+          # Do basic plot
+          myplot <- do.call(
+            what = plot_proportion,
+            args = args
+          )
+
+
+          # Basic graph options --------------------
+          # Axis font sizes
+          axis.text.y <- jamovi_sanitize(
+            my_value = self$options$axis.text.y,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Y axis: Tick font size"
+          )
+          axis.title.y <- jamovi_sanitize(
+            my_value = self$options$axis.title.y,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Y axis: Label font size"
+          )
+          axis.text.x <- jamovi_sanitize(
+            my_value = self$options$axis.text.x,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "X axis: Tick font size"
+          )
+          axis.title.x <- jamovi_sanitize(
+            my_value = self$options$axis.title.x,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "X axis: Label font size"
+          )
+
+
+          myplot <- myplot + ggplot2::theme(
+            axis.text.y = element_text(size = axis.text.y),
+            axis.title.y = element_text(size = axis.title.y),
+            axis.text.x = element_text(size = axis.text.x),
+            axis.title.x = element_text(size = axis.title.x)
+          )
+
+
+          # Axis labels
+          xlab <- jamovi_sanitize(
+            my_value = self$options$xlab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "X axis: Title"
+          )
+
+          ylab <- jamovi_sanitize(
+            my_value = self$options$ylab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "Y axis: Title"
+          )
+
+
+          if (!(self$options$xlab %in% c("auto", "Auto", "AUTO"))) {
+            myplot <- myplot + ggplot2::xlab(xlab)
+          }
+          if (!(self$options$ylab %in% c("auto", "Auto", "AUTO"))) {
+            myplot <- myplot + ggplot2::ylab(ylab)
+          }
+
+
+          # Axis breaks
+          breaks <- jamovi_sanitize(
+            my_value = self$options$breaks,
+            return_value = NULL,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            my_value_name = "Y axis: Number of tick marks"
+          )
+
+          myplot <- myplot + ggplot2::scale_y_continuous(
+            limits = c(0, 1),
+            n.breaks = breaks
+          )
+
+
+          #aesthetics
+          myplot <- myplot + ggplot2::scale_shape_manual(
+            values = c(
+              "summary" = self$options$shape_summary
+            )
+          )
+
+          myplot <- myplot + ggplot2::scale_color_manual(
+            values = c(
+              "summary" = self$options$color_summary
+            ),
+            aesthetics = c("color", "point_color")
+          )
+
+          myplot <- myplot + ggplot2::scale_fill_manual(
+            values = c(
+              "summary" = self$options$fill_summary
+            ),
+            aesthetics = c("fill", "point_fill")
+          )
+
+          myplot <- myplot + ggplot2::discrete_scale(
+            c("size", "point_size"),
+            "point_size_d",
+            function(n) return(c(
+              "summary" = as.numeric(self$options$size_summary)/divider
+            ))
+          )
+
+          myplot <- myplot + ggplot2::discrete_scale(
+            c("alpha", "point_alpha"),
+            "point_alpha_d",
+            function(n) return(c(
+              "summary" = as.numeric(self$options$alpha_summary)
+            ))
+          )
+
+          myplot <- myplot + ggplot2::scale_linetype_manual(
+            values = c(
+              "summary" = self$options$linetype_summary
+            )
+          )
+
+
+          if (self$options$evaluate_hypotheses) {
+            myplot$layers[["null_line"]]$aes_params$colour <- self$options$null_color
+            if (interval_null) {
+              try(myplot$layers[["null_interval"]]$aes_params$fill <- self$options$null_color)
+              try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_interval)/divider+1)
+              try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_interval))
+              try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_interval)
+              try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$linetype_summary)
+
+              # if (self$options$effect_size == "median") {
+              #   try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary)
+              # }
+
+            }
+          }
+
+
+          notes <- c(
+            notes,
+            names(axis.text.y),
+            names(axis.title.y),
+            names(axis.text.x),
+            names(axis.title.x),
+            names(xlab),
+            names(ylab),
+            names(breaks)
+          )
+          self$results$magnitude_plot_warnings$setState(notes)
+          jamovi_set_notes(self$results$magnitude_plot_warnings)
+
+
+          print(myplot)
+          TRUE
         })
 )
 
@@ -154,6 +455,11 @@ jamovi_proportion <- function(self) {
 
   if (!is(estimate, "try-error")) {
     if (length(estimate$warnings) > 0) {
+      estimate <- jamovi_add_htest_pdiff(
+        self = self,
+        estimate = estimate
+      )
+
       notes <- c(notes, estimate$warnings)
     }
   }

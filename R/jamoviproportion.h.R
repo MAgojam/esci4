@@ -15,7 +15,28 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             outcome_variable_name = "Outcome variable",
             count_NA = FALSE,
             conf_level = 95,
-            show_details = FALSE, ...) {
+            show_details = FALSE,
+            evaluate_hypotheses = FALSE,
+            null_value = "0",
+            null_boundary = "0",
+            null_color = "#A40122",
+            alpha = 0.05,
+            es_plot_width = "300",
+            es_plot_height = "400",
+            breaks = "auto",
+            ylab = "auto",
+            xlab = "auto",
+            axis.text.y = "14",
+            axis.title.y = "15",
+            axis.text.x = "14",
+            axis.title.x = "15",
+            error_layout = "none",
+            shape_summary = "circle filled",
+            color_summary = "#008DF9",
+            fill_summary = "#008DF9",
+            size_summary = "1",
+            alpha_summary = "1",
+            linetype_summary = "solid", ...) {
 
             super$initialize(
                 package="esci4",
@@ -67,6 +88,232 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
+                "evaluate_hypotheses",
+                evaluate_hypotheses,
+                default=FALSE)
+            private$..null_value <- jmvcore::OptionString$new(
+                "null_value",
+                null_value,
+                default="0")
+            private$..null_boundary <- jmvcore::OptionString$new(
+                "null_boundary",
+                null_boundary,
+                default="0")
+            private$..null_color <- jmvcore::OptionList$new(
+                "null_color",
+                null_color,
+                default="#A40122",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..alpha <- jmvcore::OptionNumber$new(
+                "alpha",
+                alpha,
+                default=0.05,
+                min=0,
+                max=1)
+            private$..es_plot_width <- jmvcore::OptionString$new(
+                "es_plot_width",
+                es_plot_width,
+                default="300")
+            private$..es_plot_height <- jmvcore::OptionString$new(
+                "es_plot_height",
+                es_plot_height,
+                default="400")
+            private$..breaks <- jmvcore::OptionString$new(
+                "breaks",
+                breaks,
+                default="auto")
+            private$..ylab <- jmvcore::OptionString$new(
+                "ylab",
+                ylab,
+                default="auto")
+            private$..xlab <- jmvcore::OptionString$new(
+                "xlab",
+                xlab,
+                default="auto")
+            private$..axis.text.y <- jmvcore::OptionString$new(
+                "axis.text.y",
+                axis.text.y,
+                default="14")
+            private$..axis.title.y <- jmvcore::OptionString$new(
+                "axis.title.y",
+                axis.title.y,
+                default="15")
+            private$..axis.text.x <- jmvcore::OptionString$new(
+                "axis.text.x",
+                axis.text.x,
+                default="14")
+            private$..axis.title.x <- jmvcore::OptionString$new(
+                "axis.title.x",
+                axis.title.x,
+                default="15")
+            private$..error_layout <- jmvcore::OptionList$new(
+                "error_layout",
+                error_layout,
+                default="none",
+                options=list(
+                    "none"))
+            private$..shape_summary <- jmvcore::OptionList$new(
+                "shape_summary",
+                shape_summary,
+                default="circle filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "triangle filled",
+                    "diamond filled"))
+            private$..color_summary <- jmvcore::OptionList$new(
+                "color_summary",
+                color_summary,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_summary <- jmvcore::OptionList$new(
+                "fill_summary",
+                fill_summary,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..size_summary <- jmvcore::OptionList$new(
+                "size_summary",
+                size_summary,
+                default="1",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..alpha_summary <- jmvcore::OptionList$new(
+                "alpha_summary",
+                alpha_summary,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..linetype_summary <- jmvcore::OptionList$new(
+                "linetype_summary",
+                linetype_summary,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
 
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
@@ -78,6 +325,27 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             self$.addOption(private$..count_NA)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..evaluate_hypotheses)
+            self$.addOption(private$..null_value)
+            self$.addOption(private$..null_boundary)
+            self$.addOption(private$..null_color)
+            self$.addOption(private$..alpha)
+            self$.addOption(private$..es_plot_width)
+            self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..breaks)
+            self$.addOption(private$..ylab)
+            self$.addOption(private$..xlab)
+            self$.addOption(private$..axis.text.y)
+            self$.addOption(private$..axis.title.y)
+            self$.addOption(private$..axis.text.x)
+            self$.addOption(private$..axis.title.x)
+            self$.addOption(private$..error_layout)
+            self$.addOption(private$..shape_summary)
+            self$.addOption(private$..color_summary)
+            self$.addOption(private$..fill_summary)
+            self$.addOption(private$..size_summary)
+            self$.addOption(private$..alpha_summary)
+            self$.addOption(private$..linetype_summary)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -89,7 +357,28 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         outcome_variable_name = function() private$..outcome_variable_name$value,
         count_NA = function() private$..count_NA$value,
         conf_level = function() private$..conf_level$value,
-        show_details = function() private$..show_details$value),
+        show_details = function() private$..show_details$value,
+        evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
+        null_value = function() private$..null_value$value,
+        null_boundary = function() private$..null_boundary$value,
+        null_color = function() private$..null_color$value,
+        alpha = function() private$..alpha$value,
+        es_plot_width = function() private$..es_plot_width$value,
+        es_plot_height = function() private$..es_plot_height$value,
+        breaks = function() private$..breaks$value,
+        ylab = function() private$..ylab$value,
+        xlab = function() private$..xlab$value,
+        axis.text.y = function() private$..axis.text.y$value,
+        axis.title.y = function() private$..axis.title.y$value,
+        axis.text.x = function() private$..axis.text.x$value,
+        axis.title.x = function() private$..axis.title.x$value,
+        error_layout = function() private$..error_layout$value,
+        shape_summary = function() private$..shape_summary$value,
+        color_summary = function() private$..color_summary$value,
+        fill_summary = function() private$..fill_summary$value,
+        size_summary = function() private$..size_summary$value,
+        alpha_summary = function() private$..alpha_summary$value,
+        linetype_summary = function() private$..linetype_summary$value),
     private = list(
         ..switch = NA,
         ..outcome_variable = NA,
@@ -100,7 +389,28 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         ..outcome_variable_name = NA,
         ..count_NA = NA,
         ..conf_level = NA,
-        ..show_details = NA)
+        ..show_details = NA,
+        ..evaluate_hypotheses = NA,
+        ..null_value = NA,
+        ..null_boundary = NA,
+        ..null_color = NA,
+        ..alpha = NA,
+        ..es_plot_width = NA,
+        ..es_plot_height = NA,
+        ..breaks = NA,
+        ..ylab = NA,
+        ..xlab = NA,
+        ..axis.text.y = NA,
+        ..axis.title.y = NA,
+        ..axis.text.x = NA,
+        ..axis.title.x = NA,
+        ..error_layout = NA,
+        ..shape_summary = NA,
+        ..color_summary = NA,
+        ..fill_summary = NA,
+        ..size_summary = NA,
+        ..alpha_summary = NA,
+        ..linetype_summary = NA)
 )
 
 jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -109,7 +419,11 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
     active = list(
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
-        overview = function() private$.items[["overview"]]),
+        overview = function() private$.items[["overview"]],
+        point_null = function() private$.items[["point_null"]],
+        interval_null = function() private$.items[["interval_null"]],
+        magnitude_plot_warnings = function() private$.items[["magnitude_plot_warnings"]],
+        magnitude_plot = function() private$.items[["magnitude_plot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -164,7 +478,96 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                         `name`="P_SE", 
                         `type`="number", 
                         `title`="<i>SE<sub>P</sub></i>", 
-                        `visible`="(show_details)"))))}))
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="point_null",
+                title="Hypothesis evaluation",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary == 0)",
+                columns=list(
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="null_words", 
+                        `title`="<i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="CI_compare", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="t", 
+                        `title`="z", 
+                        `type`="number"),
+                    list(
+                        `name`="df", 
+                        `title`="df", 
+                        `type`="integer"),
+                    list(
+                        `name`="p", 
+                        `title`="<i>p</i>", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
+                    list(
+                        `name`="null_decision", 
+                        `title`="<i>H</i><sub>0</sub> decision"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="interval_null",
+                title="Hypothesis evaluation",
+                rows=1,
+                visible="(evaluate_hypotheses & null_boundary != 0)",
+                columns=list(
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `combineBelow`=FALSE),
+                    list(
+                        `name`="rope", 
+                        `title`="<i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="CI", 
+                        `title`="CI", 
+                        `type`="text"),
+                    list(
+                        `name`="rope_compare", 
+                        `title`="Compare CI with <i>H</i><sub>0</sub>", 
+                        `type`="text"),
+                    list(
+                        `name`="p_result", 
+                        `title`="<i>p</i>", 
+                        `type`="text"),
+                    list(
+                        `name`="conclusion", 
+                        `title`="Conclusion", 
+                        `type`="text"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="magnitude_plot_warnings",
+                title="Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="magnitude_plot",
+                title="Estimation Figure",
+                requiresData=TRUE,
+                width=400,
+                height=300,
+                renderFun=".magnitude_plot"))}))
 
 jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamoviproportionBase",
@@ -200,11 +603,36 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
 #' @param count_NA .
 #' @param conf_level .
 #' @param show_details .
+#' @param evaluate_hypotheses .
+#' @param null_value .
+#' @param null_boundary .
+#' @param null_color .
+#' @param alpha .
+#' @param es_plot_width .
+#' @param es_plot_height .
+#' @param breaks .
+#' @param ylab .
+#' @param xlab .
+#' @param axis.text.y .
+#' @param axis.title.y .
+#' @param axis.text.x .
+#' @param axis.title.x .
+#' @param error_layout .
+#' @param shape_summary .
+#' @param color_summary .
+#' @param fill_summary .
+#' @param size_summary .
+#' @param alpha_summary .
+#' @param linetype_summary .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$magnitude_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -225,7 +653,28 @@ jamoviproportion <- function(
     outcome_variable_name = "Outcome variable",
     count_NA = FALSE,
     conf_level = 95,
-    show_details = FALSE) {
+    show_details = FALSE,
+    evaluate_hypotheses = FALSE,
+    null_value = "0",
+    null_boundary = "0",
+    null_color = "#A40122",
+    alpha = 0.05,
+    es_plot_width = "300",
+    es_plot_height = "400",
+    breaks = "auto",
+    ylab = "auto",
+    xlab = "auto",
+    axis.text.y = "14",
+    axis.title.y = "15",
+    axis.text.x = "14",
+    axis.title.x = "15",
+    error_layout = "none",
+    shape_summary = "circle filled",
+    color_summary = "#008DF9",
+    fill_summary = "#008DF9",
+    size_summary = "1",
+    alpha_summary = "1",
+    linetype_summary = "solid") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamoviproportion requires jmvcore to be installed (restart may be required)")
@@ -247,7 +696,28 @@ jamoviproportion <- function(
         outcome_variable_name = outcome_variable_name,
         count_NA = count_NA,
         conf_level = conf_level,
-        show_details = show_details)
+        show_details = show_details,
+        evaluate_hypotheses = evaluate_hypotheses,
+        null_value = null_value,
+        null_boundary = null_boundary,
+        null_color = null_color,
+        alpha = alpha,
+        es_plot_width = es_plot_width,
+        es_plot_height = es_plot_height,
+        breaks = breaks,
+        ylab = ylab,
+        xlab = xlab,
+        axis.text.y = axis.text.y,
+        axis.title.y = axis.title.y,
+        axis.text.x = axis.text.x,
+        axis.title.x = axis.title.x,
+        error_layout = error_layout,
+        shape_summary = shape_summary,
+        color_summary = color_summary,
+        fill_summary = fill_summary,
+        size_summary = size_summary,
+        alpha_summary = alpha_summary,
+        linetype_summary = linetype_summary)
 
     analysis <- jamoviproportionClass$new(
         options = options,
