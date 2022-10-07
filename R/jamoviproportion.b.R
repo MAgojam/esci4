@@ -318,7 +318,7 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           )
 
           myplot <- myplot + ggplot2::scale_y_continuous(
-            limits = c(0, 1),
+            limits = ggplot2::layer_scales(myplot)$y$limits,
             n.breaks = breaks
           )
 
