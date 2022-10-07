@@ -150,15 +150,21 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
               convert_to_number = TRUE,
               lower = 0,
               lower_inclusive = TRUE,
-              my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+              upper = 1,
+              upper_inclusive = TRUE,
+              my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> boundary (+/-)"
             )
             args <- jamovi_arg_builder(
               args,
               "point_null",
               my_value = self$options$null_value,
               return_value = 0,
+              lower = 0,
+              lower_inclusive = TRUE,
+              upper = 1,
+              upper_inclusive = TRUE,
               convert_to_number = TRUE,
-              my_value_name = "Hypothesis Evaluation: Null value"
+              my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> value"
             )
 
             multiplier <- 1
@@ -172,11 +178,11 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
               interval_null <- TRUE
             }
 
-            notes <- c(
-              notes,
-              names(args$point_null),
-              names(args$null_boundary)
-            )
+            # notes <- c(
+            #   notes,
+            #   names(args$point_null),
+            #   names(args$null_boundary)
+            # )
             args$point_null <- NULL
             args$null_boundary <- NULL
           }
@@ -458,8 +464,13 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     my_value = self$options$null_value,
     return_value = 0,
     convert_to_number = TRUE,
-    my_value_name = "Null value"
+    lower = 0,
+    lower_inclusive = TRUE,
+    upper = 1,
+    upper_inclusive = TRUE,
+    my_value_name = "Hypothesis evaluation: <i>H</i><sub>0</sub> value"
   )
+  notes <- c(notes, names(args$reference_p))
 
   args$count_NA <- self$options$count_NA
   args$conf_level <- jamovi_sanitize(
@@ -496,12 +507,11 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
       return_value = "My outcome variable",
       na_ok = FALSE
     )
-
     for (element in args) {
       notes <- c(notes, names(element))
     }
-
   }
+
 
 
   # Do analysis, then post any notes that have emerged

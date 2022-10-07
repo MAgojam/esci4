@@ -39,7 +39,8 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
       lower_inclusive = TRUE,
       upper = 1,
       upper_inclusive = TRUE,
-      convert_to_number = TRUE
+      convert_to_number = TRUE,
+      my_value_name = "Hypothesis evaluation: <i>H</i><sub>0</sub> boundary"
     )
 
     test_results <- test_pdiff(
@@ -50,8 +51,7 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
 
     estimate$warnings <- c(
       estimate$warnings,
-      names(rope_upper),
-      names(test_results)
+      names(rope_upper)
     )
 
     estimate$point_null <- test_results$point_null
