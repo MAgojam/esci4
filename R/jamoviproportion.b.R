@@ -183,6 +183,7 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
             #   names(args$point_null),
             #   names(args$null_boundary)
             # )
+            args$warnings <- NULL
             args$point_null <- NULL
             args$null_boundary <- NULL
           }
