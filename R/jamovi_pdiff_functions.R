@@ -35,6 +35,10 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
       self$options$null_boundary,
       na_ok = FALSE,
       return_value = 0,
+      lower = 0,
+      lower_inclusive = TRUE,
+      upper = 1,
+      upper_inclusive = TRUE,
       convert_to_number = TRUE
     )
 
@@ -42,6 +46,12 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
       estimate,
       rope = c(rope_upper * -1, rope_upper),
       output_html = TRUE
+    )
+
+    estimate$warnings <- c(
+      estimate$warnings,
+      names(rope_upper),
+      names(test_results)
     )
 
     estimate$point_null <- test_results$point_null

@@ -319,7 +319,7 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
             breaks <- jamovi_sanitize(
                 my_value = self$options$breaks,
-                return_value = NULL,
+                return_value = 8,
                 na_ok = FALSE,
                 convert_to_number = TRUE,
                 my_value_name = "Y axis: Number of tick marks"

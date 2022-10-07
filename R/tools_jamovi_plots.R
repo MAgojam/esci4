@@ -144,7 +144,7 @@ jamovi_plot_mdiff <- function(
     args,
     "ybreaks",
     self$options$ybreaks,
-    return_value = 5,
+    return_value = 8,
     lower = 1,
     lower_inclusive = TRUE,
     upper = 50,

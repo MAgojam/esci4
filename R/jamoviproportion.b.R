@@ -300,9 +300,9 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           # Axis breaks
           breaks <- jamovi_sanitize(
             my_value = self$options$breaks,
-            return_value = NULL,
+            return_value = 8,
             na_ok = FALSE,
-            lower = 1,
+            lower = 2,
             lower_inclusive = TRUE,
             upper = 200,
             upper_inclusive = TRUE,
