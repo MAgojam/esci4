@@ -531,16 +531,19 @@ jamovi_plot_pdiff <- function(
   htest <- FALSE
   try(htest <- self$options$evaluate_hypotheses)
   if (htest) {
-    args <- jamovi_arg_builder(
-      args,
-      "null_boundary",
-      my_value = self$options$null_boundary,
-      return_value = 0,
-      convert_to_number = TRUE,
-      lower = 0,
-      lower_inclusive = TRUE,
-      my_value_name = "Hypothesis Evaluation: Null range (+/-)"
-    )
+      args <- jamovi_arg_builder(
+        args,
+        "null_boundary",
+        my_value = self$options$null_boundary,
+        return_value = 0,
+        convert_to_number = TRUE,
+        lower = 0,
+        lower_inclusive = TRUE,
+        upper = 1,
+        upper_inclusive = TRUE,
+        my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> boundary (+/-)"
+      )
+
 
     args$rope <- c(
       0 - args$null_boundary,
@@ -551,10 +554,11 @@ jamovi_plot_pdiff <- function(
       interval_null <- TRUE
     }
 
-    notes <- c(
-      notes,
-      names(args$null_boundary)
-    )
+    # notes <- c(
+    #   notes,
+    #   names(args$null_boundary)
+    # )
+    args$warnings <- NULL
     args$null_boundary <- NULL
   }
 
