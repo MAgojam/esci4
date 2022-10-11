@@ -501,7 +501,9 @@ plot_proportion <- function(
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
   # Limits
-  myplot <- myplot + ylim(c(min(0, rope[[1]]), na.rm = TRUE), max(c(1, rope[[2]]), na.rm = TRUE))
+  ylow <- min(0, rope[[1]], na.rm = TRUE)
+  yhigh <- max(1, rope[[2]], na.rm = TRUE)
+  myplot <- myplot + ylim(c(ylow, yhigh))
 
   return(myplot)
 
