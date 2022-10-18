@@ -318,11 +318,15 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 my_value_name = "Y axis: Axis maximum"
             )
             breaks <- jamovi_sanitize(
-                my_value = self$options$breaks,
-                return_value = 8,
-                na_ok = FALSE,
-                convert_to_number = TRUE,
-                my_value_name = "Y axis: Number of tick marks"
+              my_value = self$options$breaks,
+              return_value = 8,
+              na_ok = FALSE,
+              lower = 2,
+              lower_inclusive = TRUE,
+              upper = 200,
+              upper_inclusive = TRUE,
+              convert_to_number = TRUE,
+              my_value_name = "Y axis: Number of tick marks"
             )
 
             if (self$options$data_layout == "swarm") {

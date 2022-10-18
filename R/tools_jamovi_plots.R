@@ -105,7 +105,7 @@ jamovi_plot_mdiff <- function(
     "difference_axis_breaks",
     self$options$difference_axis_breaks,
     return_value = 5,
-    lower = 1,
+    lower = 2,
     lower_inclusive = TRUE,
     upper = 50,
     upper_inclusive = TRUE,
@@ -145,13 +145,14 @@ jamovi_plot_mdiff <- function(
     "ybreaks",
     self$options$ybreaks,
     return_value = 8,
-    lower = 1,
+    lower = 2,
     lower_inclusive = TRUE,
     upper = 50,
     upper_inclusive = TRUE,
     my_value_name = "Y axis: Number of tick marks",
     convert_to_number = TRUE
   )
+
   args$ggtheme <- ggtheme[[1]]
 
   # Store notes from basic plot
