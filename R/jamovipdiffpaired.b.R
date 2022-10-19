@@ -82,12 +82,17 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             # Fill tables
 
-            estimate$es_proportion_difference$effect <- paste(
-              "<i>P</i><sub>",
-              estimate$es_proportion_difference$case_label,
-              "</sub>: ",
-              estimate$es_proportion_difference$effect,
-              sep = ""
+            # estimate$es_proportion_difference$effect <- paste(
+            #   "<i>P</i><sub>",
+            #   estimate$es_proportion_difference$case_label,
+            #   "</sub>: ",
+            #   estimate$es_proportion_difference$effect,
+            #   sep = ""
+            # )
+
+            # Revise P symbol
+            estimate$es_proportion_difference <- jamovi_peffect_html(
+              estimate$es_proportion_difference
             )
 
             jamovi_estimate_filler(self, estimate, TRUE)
