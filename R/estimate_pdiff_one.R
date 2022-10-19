@@ -130,6 +130,7 @@ estimate_pdiff_one <- function(
           # This only succeeds if outcome_variable was passed unquoted
           # Reset outcome_variable to be fully quoted
           outcome_variable <- outcome_variable_quoname
+          outcome_variable_name <- outcome_variable
         } else {
           stop("Could not parse outcome_variable")
         }
@@ -201,12 +202,12 @@ estimate_pdiff_one <- function(
     # Store some info from the results ------------------
     comparison_p = estimate$es_proportion$effect_size
     case_label <- estimate$es_proportion$effect
-    comparison_label <- paste(outcome_variable_name, " P_", case_label, sep = "")
-    reference_label <- paste("Reference P_", case_label, sep = "")
+    comparison_label <- paste(outcome_variable_name, ": P_", case_label, sep = "")
+    reference_label <- paste("Reference: P_", case_label, sep = "")
     effect_label = paste(
-      comparison_label,
-      "-",
-      reference_label,
+      outcome_variable_name,
+      " \U2012 Reference value: P_",
+      case_label,
       sep = " "
     )
 

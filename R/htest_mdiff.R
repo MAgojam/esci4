@@ -79,7 +79,7 @@ test_diff_base <- function(
       effect_size,
       "mean" = "<i>&mu;</i>",
       "median" = "<i>&eta;</i>",
-      "P" = "<i>P</i>",
+      "P" = "<i>&Pi</i>",
       "r" = "<i>&rho;</i>"
     )
     difference_marker <- "<sub>diff</sub>"
@@ -97,7 +97,7 @@ test_diff_base <- function(
       effect_size,
       "mean" = "\U003BC",
       "median" = "\U003B7",
-      "P" = "P",
+      "P" = "\U03A0",
       "r" = "r"
     )
     difference_marker <- "_diff"
@@ -405,7 +405,7 @@ test_pdiff <- function(
   #   If rope_lower and rope_upper = 0, only traditional nil test returned
   #   0 < alpha < 1
   esci_assert_type(estimate, "is.estimate")
-  if (length(rope) < 1) rope[[2]] <- rope[[1]]
+  if (length(rope) == 1) rope[[2]] <- rope[[1]]
   rope_lower <- rope[[1]]
   rope_upper <- rope[[2]]
   esci_assert_range(

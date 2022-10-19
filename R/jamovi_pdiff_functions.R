@@ -15,6 +15,21 @@ jamovi_peffect_html <- function(tfix) {
       sep = ""
     )
 
+    old_effect <- tfix[x, "effect"]
+    if (!is.null(old_effect)) {
+      last_under <- gregexpr("_", old_effect, fixed=TRUE)[[1]]
+      last_under <- last_under[length(last_under)]
+
+      tfix[x, "effect"] <- paste(
+        substr(old_effect, 1, last_under -2),
+        "<i>P</i><sub>",
+        substr(old_effect, last_under + 1, nchar(old_effect)),
+        "</sub>",
+        sep = ""
+      )
+
+
+    }
 
 
   }
@@ -54,8 +69,8 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
       names(rope_upper)
     )
 
-    estimate$point_null <- test_results$point_null
-    estimate$interval_null <- test_results$interval_null
+    estimate$point_null <- jamovi_peffect_html(test_results$point_null)
+    estimate$interval_null <- jamovi_peffect_html(test_results$interval_null)
   }
 
   return(estimate)

@@ -310,6 +310,13 @@ estimate_pdiff_paired.summary <- function(
     estimate$es_proportion_difference
   )
 
+  estimate$es_proportion_difference$effect <- paste(
+    estimate$es_proportion_difference$effect,
+    ": P_",
+    case_label,
+    sep = ""
+  )
+
   estimate$overview <- rbind(
     overview_nominal.summary(
       cases = c(comparison_cases, n-comparison_cases),
