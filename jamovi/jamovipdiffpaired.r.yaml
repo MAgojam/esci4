@@ -75,24 +75,6 @@ items:
           type: number
           visible: (show_details)
 
-    - name:  es_phi
-      title: Association
-      type: Table
-      rows:  1
-      columns:
-        - name: effect
-          title: 'Effect'
-          type: text
-        - name: effect_size
-          type: number
-          title: <i>Phi</i>
-        - name: LL
-          title: LL
-          type: number
-        - name: UL
-          title: UL
-          type: number
-
     - name:  point_null
       title: Hypothesis evaluation
       type: Table

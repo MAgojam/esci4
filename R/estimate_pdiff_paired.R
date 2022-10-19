@@ -310,12 +310,12 @@ estimate_pdiff_paired.summary <- function(
     estimate$es_proportion_difference
   )
 
-  estimate$es_proportion_difference$effect <- paste(
-    estimate$es_proportion_difference$effect,
-    ": P_",
-    case_label,
-    sep = ""
-  )
+  # estimate$es_proportion_difference$effect <- paste(
+  #   estimate$es_proportion_difference$effect,
+  #   ": P_",
+  #   case_label,
+  #   sep = ""
+  # )
 
   estimate$overview <- rbind(
     overview_nominal.summary(
@@ -334,31 +334,31 @@ estimate_pdiff_paired.summary <- function(
 
 
   # Phi
-  estimate$es_phi <- as.data.frame(
-    statpsych::ci.phi(
-      alpha = 1 - conf_level,
-      f00 = cases_consistent,
-      f01 = cases_inconsistent,
-      f10 = not_cases_inconsistent,
-      f11 = not_cases_consistent
-    )
-  )
-
-  colnames(estimate$es_phi) <- c("effect_size", "SE_temp", "LL", "UL")
-  estimate$es_phi$SE <- estimate$es_phi$SE_temp
-  estimate$es_phi$SE_temp <- NULL
-
-  estimate$es_phi <- cbind(
-    "outcome_variable_1" = comparison_measure_name,
-    "outcome_variable_2" = reference_measure_name,
-    effect = paste(
-      comparison_measure_name,
-      " related to ",
-      reference_measure_name,
-      sep = ""
-    ),
-    estimate$es_phi
-  )
+  # estimate$es_phi <- as.data.frame(
+  #   statpsych::ci.phi(
+  #     alpha = 1 - conf_level,
+  #     f00 = cases_consistent,
+  #     f01 = cases_inconsistent,
+  #     f10 = not_cases_inconsistent,
+  #     f11 = not_cases_consistent
+  #   )
+  # )
+  #
+  # colnames(estimate$es_phi) <- c("effect_size", "SE_temp", "LL", "UL")
+  # estimate$es_phi$SE <- estimate$es_phi$SE_temp
+  # estimate$es_phi$SE_temp <- NULL
+  #
+  # estimate$es_phi <- cbind(
+  #   "outcome_variable_1" = comparison_measure_name,
+  #   "outcome_variable_2" = reference_measure_name,
+  #   effect = paste(
+  #     comparison_measure_name,
+  #     " related to ",
+  #     reference_measure_name,
+  #     sep = ""
+  #   ),
+  #   estimate$es_phi
+  # )
 
 
   # output prep -----------------------------------------

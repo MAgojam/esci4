@@ -11,7 +11,7 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             # Get a handle for each table
             tbl_overview <- self$results$overview
             tbl_es_proportion_difference <- self$results$es_proportion_difference
-            tbl_es_phi <- self$results$es_phi
+            # tbl_es_phi <- self$results$es_phi
             tbl_point_null <- NULL
             tbl_interval_null <- NULL
 
@@ -26,7 +26,7 @@ jamovipdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             jamovi_set_confidence(tbl_overview, conf_level)
             jamovi_set_confidence(tbl_es_proportion_difference, conf_level)
-            jamovi_set_confidence(tbl_es_phi, conf_level)
+            # jamovi_set_confidence(tbl_es_phi, conf_level)
 
             #overview rows
             overview_rows <- 4

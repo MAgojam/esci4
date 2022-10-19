@@ -772,7 +772,6 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_proportion_difference = function() private$.items[["es_proportion_difference"]],
-        es_phi = function() private$.items[["es_phi"]],
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
@@ -870,28 +869,6 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `title`="<i>P<sub>adjusted</sub></i>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
-            self$add(jmvcore::Table$new(
-                options=options,
-                name="es_phi",
-                title="Association",
-                rows=1,
-                columns=list(
-                    list(
-                        `name`="effect", 
-                        `title`="Effect", 
-                        `type`="text"),
-                    list(
-                        `name`="effect_size", 
-                        `type`="number", 
-                        `title`="<i>Phi</i>"),
-                    list(
-                        `name`="LL", 
-                        `title`="LL", 
-                        `type`="number"),
-                    list(
-                        `name`="UL", 
-                        `title`="UL", 
-                        `type`="number"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="point_null",
@@ -1058,7 +1035,6 @@ jamovipdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$es_phi} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr

@@ -208,7 +208,7 @@ estimate_pdiff_one <- function(
       outcome_variable_name,
       " \U2012 Reference value: P_",
       case_label,
-      sep = " "
+      sep = ""
     )
 
     # es_proportion_difference table ---------------------------
