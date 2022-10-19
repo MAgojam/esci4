@@ -99,13 +99,13 @@ items:
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
       columns:
-        - name: null_words
-          title: "<i>H</i><sub>0</sub>"
-          type: text
         - name: effect
           title: 'Effect'
           type: text
           combineBelow: false
+        - name: null_words
+          title: "<i>H</i><sub>0</sub>"
+          type: text
         - name: CI
           title: "CI"
           type: text
