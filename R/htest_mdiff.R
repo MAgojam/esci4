@@ -79,7 +79,7 @@ test_diff_base <- function(
       effect_size,
       "mean" = "<i>&mu;</i>",
       "median" = "<i>&eta;</i>",
-      "P" = "<i>&Pi</i>",
+      "P" = "<i>&Pi;</i>",
       "r" = "<i>&rho;</i>"
     )
     difference_marker <- "<sub>diff</sub>"

@@ -282,6 +282,7 @@ estimate_pdiff_one.jamovi <- function(
     res[[outcome_variable]] <- estimate_pdiff_one(
       data = data,
       outcome_variable = outcome_variable,
+      outcome_variable_name = outcome_variable,
       reference_p = reference_p,
       case_label = case_label,
       conf_level = conf_level,

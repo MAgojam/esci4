@@ -85,6 +85,10 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           if(is(estimate, "try-error")) stop(estimate[1])
 
           # Fill tables
+#
+#           self$results$debug$setVisible(TRUE)
+#           self$results$debug$setContent(estimate$point_null)
+
           jamovi_estimate_filler(self, estimate, TRUE)
 
 
@@ -523,6 +527,10 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
       self = self,
       estimate = estimate
     )
+
+
+    # self$results$debug$setVisible(TRUE)
+    # self$results$debug$setContent(estimate$point_null)
 
     if (length(estimate$warnings) > 0) {
 

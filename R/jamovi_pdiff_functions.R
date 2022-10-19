@@ -10,7 +10,7 @@ jamovi_peffect_html <- function(tfix) {
     tfix[x, "outcome_variable_name"] <- paste(
       substr(old_effect, 1, last_under -2),
       "<i>P</i><sub>",
-      substr(old_effect, last_under + 1, nchar(old_effect)),
+      substr(old_effect, last_under + 2, nchar(old_effect)),
       "</sub>",
       sep = ""
     )
@@ -23,7 +23,7 @@ jamovi_peffect_html <- function(tfix) {
       tfix[x, "effect"] <- paste(
         substr(old_effect, 1, last_under -2),
         "<i>P</i><sub>",
-        substr(old_effect, last_under + 1, nchar(old_effect)),
+        substr(old_effect, last_under + 2, nchar(old_effect)),
         "</sub>",
         sep = ""
       )
