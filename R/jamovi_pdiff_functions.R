@@ -2,7 +2,7 @@ jamovi_peffect_html <- function(tfix) {
 
   if (is.null(tfix)) return(NULL)
   if (nrow(tfix) == 0) return(tfix)
-  columns_to_fix <- c("outcome_variable_name", "effect")
+  columns_to_fix <- c("effect")
   for (x in 1:nrow(tfix)) {
     for (c in columns_to_fix) {
       old_effect <- tfix[x, c]

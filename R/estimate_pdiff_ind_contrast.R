@@ -377,9 +377,9 @@ The contrast passed was: {passed_contrast}.
 
   estimate$es_proportion_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),
-    outcome_variable_name = paste(outcome_variable_name, paste(": P_", case_label, sep = ""), sep = ""),
+    outcome_variable_name = outcome_variable_name,
     grouping_variable_name = grouping_variable_name,
-    effect = contrast_labels,
+    effect = paste(contrast_labels, paste(": P_", case_label, sep = ""), sep = ""),
     estimate$es_proportion_difference
   )
 
