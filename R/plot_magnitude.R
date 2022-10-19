@@ -352,7 +352,7 @@ plot_proportion <- function(
   # Initialize null information
   plot_null <- FALSE
   interval_null <- FALSE
-  null_symbol <- "P"
+  null_symbol <- "Pi"
 
   if (length(rope) == 1) rope[[2]] = rope[[1]]
 

@@ -417,7 +417,8 @@ plot_mdiff_base <- function(
     r = "rho",
     mean = "mu",
     median = "eta",
-    proportion = "P"
+    P = "Pi",
+    Proportion = "Pi"
   )
 
   if (length(rope) == 1) rope[[2]] = rope[[1]]
