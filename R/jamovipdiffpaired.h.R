@@ -861,12 +861,12 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `type`="number"),
                     list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE</i><sub>Proportion</sub>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
                         `name`="effect_size_adjusted", 
-                        `title`="<i>P<sub>adjusted</sub></i>", 
+                        `title`="<i>P</i><sub>adjusted</sub>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(

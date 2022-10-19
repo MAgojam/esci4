@@ -861,12 +861,12 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="P_SE", 
                         `type`="number", 
-                        `title`="<i>SE<sub></sub>P</i>", 
+                        `title`="<i>SE</i><sub>Proportion</sub>", 
                         `visible`="(show_details)"),
                     list(
                         `name`="P_adjusted", 
                         `type`="number", 
-                        `title`="<i>P<sub>adjusted</sub></i>", 
+                        `title`="<i>P</i><sub>adjusted</sub>", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,

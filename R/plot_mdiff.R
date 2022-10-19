@@ -414,11 +414,11 @@ plot_mdiff_base <- function(
   null_symbol <- sapply(
     effect_size,
     switch,
-    r = "rho",
-    mean = "mu",
-    median = "eta",
-    P = "Pi",
-    Proportion = "Pi"
+    r = "rho[diff]",
+    mean = "mu[diff]",
+    median = "eta[diff]",
+    P = "Pi[diff]",
+    Proportion = "Pi[diff]"
   )
 
   if (length(rope) == 1) rope[[2]] = rope[[1]]

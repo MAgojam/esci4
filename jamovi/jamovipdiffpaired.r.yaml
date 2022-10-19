@@ -67,11 +67,11 @@ items:
           title: UL
           type: number
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE</i><sub>Proportion</sub>
           type: number
           visible: (show_details)
         - name: effect_size_adjusted
-          title: <i>P<sub>adjusted</sub></i>
+          title: <i>P</i><sub>adjusted</sub>
           type: number
           visible: (show_details)
 

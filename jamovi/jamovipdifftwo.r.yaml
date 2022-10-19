@@ -50,11 +50,11 @@ items:
           type: number
         - name: P_SE
           type: number
-          title: <i>SE<sub></sub>P</i>
+          title: <i>SE</i><sub>Proportion</sub>
           visible: (show_details)
         - name: P_adjusted
           type: number
-          title: <i>P<sub>adjusted</sub></i>
+          title: <i>P</i><sub>adjusted</sub>
           visible: (show_details)
 
     - name:  es_proportion_difference
