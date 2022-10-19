@@ -114,6 +114,7 @@ items:
           title: 'Outcome variable'
           type: text
           combineBelow: true
+          visible: false
         - name: effect
           title: 'Effect'
           type: text

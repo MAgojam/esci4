@@ -894,7 +894,8 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="outcome_variable_name", 
                         `title`="Outcome variable", 
                         `type`="text", 
-                        `combineBelow`=TRUE),
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
                     list(
                         `name`="effect", 
                         `title`="Effect", 
