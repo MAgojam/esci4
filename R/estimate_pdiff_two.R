@@ -109,6 +109,12 @@ estimate_pdiff_two <- function(
 
     if (is.null(data)) {
       analysis_type <- "vector"
+      if (is.null(grouping_variable_name) | grouping_variable_name == "My grouping variable") {
+        grouping_variable_name <-  deparse(substitute(grouping_variable))
+      }
+      if (outcome_variable_name == "My outcome variable") {
+        outcome_variable_name <- deparse(substitute(outcome_variable))
+      }
     } else {
 
       # Check grouping_variable -- if it is an unquoted column name
@@ -129,6 +135,8 @@ estimate_pdiff_two <- function(
         } else {
           stop("Could not parse grouping_variable")
         }
+      } else {
+        grouping_variable_name <- grouping_variable
       }
 
 
@@ -187,32 +195,50 @@ estimate_pdiff_two <- function(
       )
     }
 
+    level_warning <- NULL
+    if (length(grouping_variable_levels) > 2) {
+      level_warning <- paste(
+          "The grouping variable (",
+          grouping_variable_name,
+          ") had",
+          length(grouping_variable_levels),
+          "levels.  Only the first 2 levels were used for effect-size calculations.",
+          sep = " "
+        )
+    }
+
     names(contrast) <- grouping_variable_levels[1:2]
   }
 
 
   if(analysis_type == "data.frame") {
     return(
-      estimate_pdiff_ind_contrast.data.frame(
-        data = data,
-        outcome_variable = outcome_variable,
-        grouping_variable = grouping_variable,
-        case_label = case_label,
-        contrast = contrast,
-        conf_level = conf_level,
-        count_NA = count_NA
+      esci_wrap_warning(
+        estimate_pdiff_ind_contrast.data.frame(
+          data = data,
+          outcome_variable = outcome_variable,
+          grouping_variable = grouping_variable,
+          case_label = case_label,
+          contrast = contrast,
+          conf_level = conf_level,
+          count_NA = count_NA
+        ),
+        level_warning
       )
     )
   } else if (analysis_type == "jamovi") {
     return(
-      estimate_pdiff_ind_contrast.jamovi(
-        data = data,
-        outcome_variables = outcome_variable,
-        grouping_variable = grouping_variable,
-        case_label = case_label,
-        contrast = contrast,
-        conf_level = conf_level,
-        count_NA = count_NA
+      esci_wrap_warning(
+        estimate_pdiff_ind_contrast.jamovi(
+          data = data,
+          outcome_variables = outcome_variable,
+          grouping_variable = grouping_variable,
+          case_label = case_label,
+          contrast = contrast,
+          conf_level = conf_level,
+          count_NA = count_NA
+        ),
+        level_warning
       )
     )
 
@@ -244,23 +270,19 @@ estimate_pdiff_two <- function(
     return(estimate)
 
   } else if (analysis_type == "vector") {
-    if (is.null(grouping_variable_name) | grouping_variable_name == "My grouping variable") {
-      grouping_variable_name <-  deparse(substitute(grouping_variable))
-    }
-    if (outcome_variable_name == "My outcome variable") {
-      outcome_variable_name <- deparse(substitute(outcome_variable))
-    }
-
     return(
-      estimate_pdiff_ind_contrast.vector(
-        grouping_variable = grouping_variable,
-        outcome_variable = outcome_variable,
-        contrast = contrast,
-        case_label = case_label,
-        outcome_variable_name = outcome_variable_name,
-        grouping_variable_name = grouping_variable_name,
-        conf_level = conf_level,
-        count_NA = count_NA
+      esci_wrap_warning(
+        estimate_pdiff_ind_contrast.vector(
+          grouping_variable = grouping_variable,
+          outcome_variable = outcome_variable,
+          contrast = contrast,
+          case_label = case_label,
+          outcome_variable_name = outcome_variable_name,
+          grouping_variable_name = grouping_variable_name,
+          conf_level = conf_level,
+          count_NA = count_NA
+        ),
+        level_warning
       )
     )
   }
@@ -270,4 +292,10 @@ estimate_pdiff_two <- function(
 
 }
 
-
+esci_wrap_warning <- function(estimate, level_warning = NULL) {
+  estimate$warnings <- c(
+    estimate$warnings,
+    level_warning
+  )
+  return(estimate)
+}
