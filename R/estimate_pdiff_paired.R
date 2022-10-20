@@ -506,6 +506,8 @@ case_label must be either a numeric or a valid level from data[[reference_measur
 
   }
 
+  missing <- nrow(data) - nrow(data[complete.cases(data), ])
+  data <- data[complete.cases(data), ]
 
   # Count cases
   my_cases <- data[data[[reference_measure]] == case_label, ]
@@ -545,6 +547,50 @@ case_label must be either a numeric or a valid level from data[[reference_measur
       count_NA = FALSE
     )
   )
+
+
+  if (missing > 0) {
+    estimate$overview_propertes <- list()
+    invalid <- missing
+    estimate$overview_properties$message <-
+      paste(
+        "N_pairs = ",
+        max(estimate$overview$n),
+        ".  There were ",
+        invalid,
+        " rows with incomplete data.  All analyses are based only on the ",
+        max(estimate$overview$n),
+        " rows with complete data.",
+        sep = ""
+      )
+    estimate$overview_properties$message_html <-
+      paste(
+        "<i>N</i><sub>pairs</sub> = ",
+        max(estimate$overview$n),
+        "<br>There were ",
+        invalid,
+        " rows with incomplete data.<br>All analyses are based only on the ",
+        max(estimate$overview$n),
+        " rows with complete data.",
+        sep = ""
+      )
+  } else {
+    estimate$overview_properties$message <-
+      paste(
+        "N_pairs = ",
+        max(estimate$overview$n),
+        ".",
+        sep = ""
+      )
+
+    estimate$overview_properties$message_html <-
+      paste(
+        "<i>N</i><sub>pairs</sub> = ",
+        max(estimate$overview$n),
+        ".",
+        sep = ""
+      )
+  }
 
 
   # Update estimate properties
