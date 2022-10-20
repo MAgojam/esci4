@@ -202,12 +202,11 @@ estimate_pdiff_one <- function(
     # Store some info from the results ------------------
     comparison_p = estimate$es_proportion$effect_size
     case_label <- estimate$es_proportion$effect
-    comparison_label <- paste(outcome_variable_name, ": P_", case_label, sep = "")
-    reference_label <- paste("Reference: P_", case_label, sep = "")
+    comparison_label <- outcome_variable_name
+    reference_label <- "Reference value"
     effect_label = paste(
       outcome_variable_name,
-      " \U2012 Reference value: P_",
-      case_label,
+      " \U2012 Reference value",
       sep = ""
     )
 

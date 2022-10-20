@@ -492,7 +492,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 visible="(evaluate_hypotheses & null_boundary == 0)",
                 columns=list(
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),
@@ -531,7 +531,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 visible="(evaluate_hypotheses & null_boundary != 0)",
                 columns=list(
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),

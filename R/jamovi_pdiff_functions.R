@@ -2,26 +2,40 @@ jamovi_peffect_html <- function(tfix) {
 
   if (is.null(tfix)) return(NULL)
   if (nrow(tfix) == 0) return(tfix)
-  columns_to_fix <- c("effect")
-  for (x in 1:nrow(tfix)) {
-    for (c in columns_to_fix) {
-      old_effect <- tfix[x, c]
-      if (!is.null(old_effect)) {
-        last_under <- gregexpr("P_", old_effect, fixed=TRUE)[[1]]
-        last_under <- last_under[length(last_under)]
 
-        tfix[x, c] <- paste(
-          substr(old_effect, 1, last_under -2),
-          " <i>P</i><sub>",
-          substr(old_effect, last_under + 2, nchar(old_effect)),
-          "</sub>",
-          sep = ""
-        )
-      }
+  tfix$case_label <- gsub("P_", "<i>P</i><sub>", tfix$case_label)
 
-    }
+  tfix$effect_plus <- paste(
+    tfix$case_label,
+    "</sub>: ",
+    tfix$effect,
+    sep = ""
+  )
 
-  }
+#
+#
+#   if (is.null(tfix)) return(NULL)
+#   if (nrow(tfix) == 0) return(tfix)
+#   columns_to_fix <- c("effect")
+#   for (x in 1:nrow(tfix)) {
+#     for (c in columns_to_fix) {
+#       old_effect <- tfix[x, c]
+#       if (!is.null(old_effect)) {
+#         last_under <- gregexpr("P_", old_effect, fixed=TRUE)[[1]]
+#         last_under <- last_under[length(last_under)]
+#
+#         tfix[x, c] <- paste(
+#           substr(old_effect, 1, last_under -2),
+#           " <i>P</i><sub>",
+#           substr(old_effect, last_under + 2, nchar(old_effect)),
+#           "</sub>",
+#           sep = ""
+#         )
+#       }
+#
+#     }
+#
+#   }
 
   return(tfix)
 

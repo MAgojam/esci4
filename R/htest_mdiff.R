@@ -200,9 +200,13 @@ test_diff_base <- function(
     else
       glue::glue("At \U03B1 = {alpha}, {format(reference_value, nsmall=2)} remains a plausible value of {parameter}")
 
+    case_label_use <- "-99101"
+    if (!is.null(es$case_label)) case_label_use <- es$case_label
+
     nil_result <- list(
       test_type = "Nil Hypothesis Test",
       outcome_variable_name = es$outcome_variable_name,
+      case_label = case_label_use,
       effect = es$effect,
       null_words = null_words,
       confidence = confidence,
@@ -226,6 +230,8 @@ test_diff_base <- function(
         sep = " - "
       )
     }
+
+    if (is.null(es$case_label)) nil_result$case_label <- NULL
 
     res$point_null <- rbind(
       res$point_null,
@@ -284,6 +290,7 @@ test_diff_base <- function(
       interval_result <- list(
         test_type = "Practical significance test",
         outcome_variable_name = es$outcome_variable_name,
+        case_label = case_label_use,
         effect = es$effect,
         rope = null_words,
         confidence = confidence,
@@ -303,6 +310,7 @@ test_diff_base <- function(
         )
       }
 
+      if (is.null(es$case_label)) interval_result$case_label <- NULL
 
       res$interval_null <- rbind(
         res$interval_null,

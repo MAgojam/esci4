@@ -324,7 +324,7 @@ The contrast passed was: {passed_contrast}.
     contrast = weights,
     conf_level = conf_level
   )
-  estimate$es_mean_difference_properties <- list(
+  estimate$es_proportion_difference_properties <- list(
     effect_size_name = "P_Diff",
     effect_size_name_html = "<i>P</i><sub>diff</sub>",
     effect_size_category = "difference",
@@ -378,8 +378,9 @@ The contrast passed was: {passed_contrast}.
   estimate$es_proportion_difference <- cbind(
     type = c("Comparison", "Reference", "Difference"),
     outcome_variable_name = outcome_variable_name,
+    case_label = paste("P_", case_label, sep = ""),
     grouping_variable_name = grouping_variable_name,
-    effect = paste(contrast_labels, paste(": P_", case_label, sep = ""), sep = ""),
+    effect = contrast_labels,
     estimate$es_proportion_difference
   )
 
@@ -409,7 +410,8 @@ The contrast passed was: {passed_contrast}.
     estimate$es_odds_ratio$ta_UL <- res_2a$UL
 
     estimate$es_odds_ratio <- cbind(
-      outcome_variable_name = paste(outcome_variable_name, paste(": P_", case_label, sep = ""), sep = ""),
+      outcome_variable_name = outcome_variable_name,
+      case_label = paste("P_", case_label, sep = ""),
       grouping_variable_name = grouping_variable_name,
       effect = paste(contrast_labels[[1]], " / ", contrast_labels[[2]], sep = ""),
       effect_size = estimate$es_odds_ratio$Estimate,

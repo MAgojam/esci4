@@ -844,7 +844,7 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 rows=3,
                 columns=list(
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text"),
                     list(
@@ -877,7 +877,7 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 visible="(evaluate_hypotheses & null_boundary == 0)",
                 columns=list(
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),
@@ -917,7 +917,7 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 visible="(evaluate_hypotheses & null_boundary != 0)",
                 columns=list(
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),

@@ -169,7 +169,7 @@ estimate_pdiff_two <- function(
   }
 
 
-  contrast <- c(1, -1)
+  contrast <- c(-1, 1)
 
   if (analysis_type != "summary") {
 
@@ -250,8 +250,8 @@ estimate_pdiff_two <- function(
     }
 
     estimate <- estimate_pdiff_ind_contrast.summary(
-        cases = c(comparison_cases, reference_cases),
-        ns = c(comparison_n, reference_n),
+        cases = c(reference_cases, comparison_cases),
+        ns = c(reference_n, comparison_n),
         contrast = contrast,
         case_label = case_label,
         grouping_variable_levels = grouping_variable_levels,

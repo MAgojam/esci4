@@ -159,6 +159,15 @@ estimate_proportion <- function(
     "ta_UL"
   )
 
+  estimate$es_proportion$case_label <- paste(
+    "P_",
+    estimate$es_proportion$effect
+  )
+
+  estimate$es_proportion <- estimate$es_proportion[
+    , c(1, ncol(estimate$es_proportion), 2:(ncol(estimate$es_proportion)-1))
+  ]
+
 
   estimate$es_proportion$cases <- estimate$es_proportion$cases_temp
   estimate$es_proportion$n <- estimate$es_proportion$n_temp

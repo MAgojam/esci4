@@ -886,7 +886,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text"),
                     list(
@@ -929,7 +929,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="Outcome variable", 
                         `type`="text"),
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text"),
                     list(
@@ -958,7 +958,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),
@@ -1004,7 +1004,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="effect", 
+                        `name`="effect_plus", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),

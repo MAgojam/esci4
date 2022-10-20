@@ -464,8 +464,8 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
         }
 
         args$grouping_variable_levels <- c(
-            args$grouping_variable_level1,
-            args$grouping_variable_level2
+            args$grouping_variable_level2,
+            args$grouping_variable_level1
         )
 
         args$grouping_variable_level1 <- NULL

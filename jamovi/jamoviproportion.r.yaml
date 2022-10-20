@@ -54,7 +54,7 @@ items:
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
       columns:
-        - name: effect
+        - name: effect_plus
           title: 'Effect'
           type: text
           combineBelow: false
@@ -85,7 +85,7 @@ items:
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
       columns:
-        - name: effect
+        - name: effect_plus
           title: 'Effect'
           type: text
           combineBelow: false
