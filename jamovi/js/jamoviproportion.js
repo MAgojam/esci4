@@ -28,6 +28,10 @@
             ui.show_calculations.setValue(false);
         },
 
+        case_label_changed: function(ui, event) {
+            ui.not_case_label.setValue("Not " + ui.case_label.value());
+        },
+
 
         // this is an example of an auxiliary function
         setPanels: function(ui, event) {

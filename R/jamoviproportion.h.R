@@ -9,9 +9,10 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             switch = "from_raw",
             outcome_variable = NULL,
             cases = " ",
-            observations = " ",
+            not_cases = " ",
             case_label = "Affected",
-            outcome_variable_name = "Outcome variable",
+            not_case_label = "Not Affected",
+            outcome_variable_name = "My outcome variable",
             count_NA = FALSE,
             conf_level = 95,
             show_details = FALSE,
@@ -57,18 +58,22 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 "cases",
                 cases,
                 default=" ")
-            private$..observations <- jmvcore::OptionString$new(
-                "observations",
-                observations,
+            private$..not_cases <- jmvcore::OptionString$new(
+                "not_cases",
+                not_cases,
                 default=" ")
             private$..case_label <- jmvcore::OptionString$new(
                 "case_label",
                 case_label,
                 default="Affected")
+            private$..not_case_label <- jmvcore::OptionString$new(
+                "not_case_label",
+                not_case_label,
+                default="Not Affected")
             private$..outcome_variable_name <- jmvcore::OptionString$new(
                 "outcome_variable_name",
                 outcome_variable_name,
-                default="Outcome variable")
+                default="My outcome variable")
             private$..count_NA <- jmvcore::OptionBool$new(
                 "count_NA",
                 count_NA,
@@ -313,8 +318,9 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..cases)
-            self$.addOption(private$..observations)
+            self$.addOption(private$..not_cases)
             self$.addOption(private$..case_label)
+            self$.addOption(private$..not_case_label)
             self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..count_NA)
             self$.addOption(private$..conf_level)
@@ -345,8 +351,9 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         switch = function() private$..switch$value,
         outcome_variable = function() private$..outcome_variable$value,
         cases = function() private$..cases$value,
-        observations = function() private$..observations$value,
+        not_cases = function() private$..not_cases$value,
         case_label = function() private$..case_label$value,
+        not_case_label = function() private$..not_case_label$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
         count_NA = function() private$..count_NA$value,
         conf_level = function() private$..conf_level$value,
@@ -376,8 +383,9 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         ..switch = NA,
         ..outcome_variable = NA,
         ..cases = NA,
-        ..observations = NA,
+        ..not_cases = NA,
         ..case_label = NA,
+        ..not_case_label = NA,
         ..outcome_variable_name = NA,
         ..count_NA = NA,
         ..conf_level = NA,
@@ -591,8 +599,9 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
 #' @param data .
 #' @param outcome_variable .
 #' @param cases .
-#' @param observations .
+#' @param not_cases .
 #' @param case_label .
+#' @param not_case_label .
 #' @param outcome_variable_name .
 #' @param count_NA .
 #' @param conf_level .
@@ -641,9 +650,10 @@ jamoviproportion <- function(
     data,
     outcome_variable,
     cases = " ",
-    observations = " ",
+    not_cases = " ",
     case_label = "Affected",
-    outcome_variable_name = "Outcome variable",
+    not_case_label = "Not Affected",
+    outcome_variable_name = "My outcome variable",
     count_NA = FALSE,
     conf_level = 95,
     show_details = FALSE,
@@ -683,8 +693,9 @@ jamoviproportion <- function(
         switch = switch,
         outcome_variable = outcome_variable,
         cases = cases,
-        observations = observations,
+        not_cases = not_cases,
         case_label = case_label,
+        not_case_label = not_case_label,
         outcome_variable_name = outcome_variable_name,
         count_NA = count_NA,
         conf_level = conf_level,

@@ -252,6 +252,22 @@ estimate_pdiff_one <- function(
       error_distribution = "norm"
     )
 
+    if ("Missing" %in% estimate$overview$outcome_variable_level) {
+      estimate$es_proportion_difference_properties$message <- if (count_NA)
+        "Missing values were present; these were counted as part of the total sample size."
+      else
+        "Missing values were present; these were *not* counted as part of the total sample size."
+
+      estimate$es_proportion_difference_properties$message_html <- if (count_NA)
+        "Missing values were present; these were counted as part of the total sample size."
+      else
+        "Missing values were present; these were <b>not</b> counted as part of the total sample size."
+
+      estimate$overview_properties <- list()
+      estimate$overview_properties$message <- estimate$es_proportion_difference_properties$message
+      estimate$overview_properties$message_html <- estimate$es_proportion_difference_properties$message_html
+
+    }
 
     return(estimate)
   }

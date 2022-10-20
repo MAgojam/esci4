@@ -413,7 +413,7 @@ children:
                   column: 3
                   row: 9
   - type: CollapseBox
-    label: Evaluate hypotheses
+    label: Hypothesis evaluation
     name: hpanel
     collapsed: true
     children:

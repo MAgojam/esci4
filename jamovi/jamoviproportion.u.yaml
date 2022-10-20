@@ -1,4 +1,4 @@
-title: Single Group
+title: 'Proportions: Single Group'
 name: jamoviproportion
 jus: '3.0'
 stage: 0
@@ -34,32 +34,61 @@ children:
   - type: CollapseBox
     label: Work with summary data
     name: spanel
-    stretchFactor: 3
+    stretchFactor: 5
     collapsed: true
     children:
       - type: Label
         label: Summary data
         enable: '(switch:from_summary)'
-      - type: TextBox
-        name: cases
-        format: string
-        enable: '(switch:from_summary)'
-        stretchFactor: 2
-      - type: TextBox
-        name: observations
-        format: string
-        enable: '(switch:from_summary)'
-        stretchFactor: 2
-      - type: TextBox
-        name: case_label
-        format: string
-        enable: '(switch:from_summary)'
+        cell:
+          column: 0
+          row: 0
         stretchFactor: 3
       - type: TextBox
         name: outcome_variable_name
         format: string
         enable: '(switch:from_summary)'
         stretchFactor: 3
+        suffix: '  '
+        cell:
+          column: 0
+          row: 1
+      - type: TextBox
+        name: case_label
+        format: string
+        enable: '(switch:from_summary)'
+        suffix: '  '
+        stretchFactor: 2
+        cell:
+          column: 0
+          row: 2
+      - type: TextBox
+        name: cases
+        format: string
+        enable: '(switch:from_summary)'
+        stretchFactor: 2
+        horizontalAlignment: left
+        cell:
+          column: 1
+          row: 2
+      - type: TextBox
+        name: not_case_label
+        format: string
+        enable: '(switch:never)'
+        stretchFactor: 2
+        suffix: '  '
+        cell:
+          column: 0
+          row: 3
+      - type: TextBox
+        name: not_cases
+        format: string
+        enable: '(switch:from_summary)'
+        horizontalAlignment: left
+        stretchFactor: 2
+        cell:
+          column: 1
+          row: 3
   - type: Label
     label: <hr>Analysis options
     stretchFactor: 1

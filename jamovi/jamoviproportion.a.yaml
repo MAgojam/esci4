@@ -23,24 +23,29 @@ options:
       type: Variables
 
     - name: cases
-      title: Cases
+      title: ''
       type: String
       default: ' '
 
-    - name: observations
-      title: Observations
+    - name: not_cases
+      title: ''
       type: String
       default: ' '
 
     - name: case_label
-      title: Case label
+      title: ''
       type: String
       default: 'Affected'
 
-    - name: outcome_variable_name
-      title: Outcome variable name
+    - name: not_case_label
+      title: ''
       type: String
-      default: Outcome variable
+      default: 'Not Affected'
+
+    - name: outcome_variable_name
+      title: ''
+      type: String
+      default: My outcome variable
 
     - name: count_NA
       title: Count missing cases?

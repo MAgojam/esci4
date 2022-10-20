@@ -380,6 +380,8 @@ plot_proportion <- function(
   clevel <- estimate$overview$outcome_variable_level[[1]]
 
   gdata <- estimate$overview
+  gdata <- gdata[!is.na(gdata$P), ]
+  gdata <- gdata[!is.null(gdata$P), ]
 
   if (plot_null & !is.null(clevel)) {
     gdata <- gdata[gdata$outcome_variable_level == clevel, ]

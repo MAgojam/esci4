@@ -427,13 +427,16 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
       self$options$cases,
       lower = 0,
       lower_inclusive = TRUE,
-      integer_required = TRUE
-    )
-    args$comparison_n <- jamovi_required_numeric(
-      self$options$observations,
       integer_required = TRUE,
-      lower =  args$comparison_cases,
-      lower_inclusive = TRUE
+      my_value_name = "Cases"
+    )
+
+    args$not_cases <- jamovi_required_numeric(
+      self$options$not_cases,
+      lower = 0,
+      lower_inclusive = TRUE,
+      integer_required = TRUE,
+      my_value_name = "Not cases"
     )
 
     unfilled <- names(args[which(is.na(args))])
@@ -447,12 +450,30 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     if (length(unfilled) > 0) {
       notes <- c(
         paste(
-          "For summary data, please specify: ",
-          paste0(unfilled, collapse = ", ")
+          "For summary data, please specify ",
+          length(unfilled),
+          " more counts (must be numeric).",
+          sep = ""
         ),
         notes
       )
+    } else {
+      if (args$comparison_cases < 0 | args$not_cases < 0) {
+        notes <- c(
+          "Error: Summary data counts must be >= 0",
+          notes
+        )
+      }
+
+      if (args$comparison_cases + args$not_cases < 3) {
+        notes <- c(
+          "Error: For summary data, counts must add up to > 2",
+          notes
+        )
+      }
+
     }
+
 
     if (length(notes) > 0) {
       self$results$help$setState(notes)
@@ -502,6 +523,9 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     }
 
   } else {
+    args$comparison_n <- args$comparison_cases + args$not_cases
+    args$not_cases <- NULL
+
     args$case_label <- jamovi_sanitize(
       self$options$case_label,
       return_value = "Affected",
