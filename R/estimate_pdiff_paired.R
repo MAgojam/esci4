@@ -319,15 +319,15 @@ estimate_pdiff_paired.summary <- function(
 
   estimate$overview <- rbind(
     overview_nominal.summary(
-      cases = c(comparison_cases, n-comparison_cases),
-      outcome_variable_levels = c(case_label, not_case_label),
-      outcome_variable_name = comparison_measure_name,
-      conf_level = conf_level
-    ),
-    overview_nominal.summary(
       cases = c(reference_cases, n-reference_cases),
       outcome_variable_levels = c(case_label, not_case_label),
       outcome_variable_name = reference_measure_name,
+      conf_level = conf_level
+    ),
+    overview_nominal.summary(
+      cases = c(comparison_cases, n-comparison_cases),
+      outcome_variable_levels = c(case_label, not_case_label),
+      outcome_variable_name = comparison_measure_name,
       conf_level = conf_level
     )
   )
@@ -536,13 +536,13 @@ case_label must be either a numeric or a valid level from data[[reference_measur
   estimate$overview <- rbind(
     overview_nominal.data.frame(
       data = data,
-      outcome_variable = comparison_measure,
+      outcome_variable = reference_measure,
       conf_level = conf_level,
       count_NA = FALSE
     ),
     overview_nominal.data.frame(
       data = data,
-      outcome_variable = reference_measure,
+      outcome_variable = comparison_measure,
       conf_level = conf_level,
       count_NA = FALSE
     )

@@ -105,7 +105,7 @@ children:
           column: 1
           row: 3
       - type: TextBox
-        name: not_cases_inconsistent
+        name: cases_inconsistent
         stretchFactor: 2
         format: string
         enable: '(switch:from_summary)'
@@ -122,7 +122,7 @@ children:
           column: 0
           row: 4
       - type: TextBox
-        name: cases_inconsistent
+        name: not_cases_inconsistent
         stretchFactor: 2
         format: string
         enable: '(switch:from_summary)'
@@ -403,7 +403,7 @@ children:
                   column: 3
                   row: 9
   - type: CollapseBox
-    label: Evaluate hypotheses
+    label: Hypothesis evaluation
     name: hpanel
     collapsed: true
     children:

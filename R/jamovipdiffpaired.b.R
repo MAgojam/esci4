@@ -138,6 +138,22 @@ jamovi_pdiff_paired <- function(self) {
             is.null(self$options$reference_measure)
         ) return(NULL)
 
+      clevels <- levels(self$data[[self$options$comparison_measure]])
+      rlevels <- levels(self$data[[self$options$reference_measure]])
+
+      if (!identical(clevels, rlevels)) {
+        note <- glue::glue("
+For this analysis the Reference and Comparison measures must have the exact same levels.
+Instead, {self$options$comparison_measure} has {length(clevels)}
+  ({paste0(clevels, collapse = '; ')})
+  and {self$options$reference_measure} has {length(rlevels)}
+  ({paste0(rlevels, collapse = '; ')})
+    ")
+
+        self$results$help$setState(c(notes, note))
+        return(NULL)
+      }
+
     } else {
       case_label <- jamovi_sanitize(
         self$options$case_label,
@@ -185,11 +201,11 @@ jamovi_pdiff_paired <- function(self) {
             lower_inclusive = TRUE,
             my_value_name = paste(
               "Observations of ",
-              not_case_label,
+              case_label,
               " at ",
               reference_measure_name,
               " that became ",
-              case_label,
+              not_case_label,
               " at ",
               comparison_measure_name,
               sep = ""
@@ -219,11 +235,11 @@ jamovi_pdiff_paired <- function(self) {
             lower_inclusive = TRUE,
             my_value_name = paste(
               "Observations of ",
-              case_label,
+              not_case_label,
               " at ",
               reference_measure_name,
               " that became ",
-              not_case_label,
+              case_label,
               " at ",
               comparison_measure_name,
               sep = ""

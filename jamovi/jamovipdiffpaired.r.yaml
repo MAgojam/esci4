@@ -29,7 +29,7 @@ items:
           title: Cases
           type: integer
         - name: n
-          title: <i>n</i>
+          title: <i>N</i>
           type: integer
         - name: P
           title: <i>P</i>
