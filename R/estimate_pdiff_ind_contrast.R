@@ -664,6 +664,19 @@ case_label must be either a numeric or a valid level from outcome_variable.
     count_NA = count_NA
   )
 
+  message <- NULL
+  message_html <- NULL
+  if ("Missing" %in% all_overview$outcome_variable_level) {
+    message <- if (count_NA)
+      "Missing values were present; these were counted as part of the total sample size."
+    else
+      "Missing values were present; these were *not* counted as part of the total sample size."
+
+    message_html <- if (count_NA)
+      "Missing values were present; these were counted as part of the total sample size."
+    else
+      "Missing values were present; these were <b>not</b> counted as part of the total sample size."
+  }
 
   # If no contrast, job is done
   if (is.null(contrast)) {
@@ -677,6 +690,11 @@ case_label must be either a numeric or a valid level from outcome_variable.
       count_NA = count_NA
     )
     estimate$overview <- all_overview
+    if (!is.null(message)) {
+      estimate$overview_properties <- list()
+      estimate$overview_properties$message <- message
+      estimate$overview_properties$message_html <- message_html
+    }
     class(estimate) <- "esci_estimate"
     return(estimate)
   }
@@ -740,8 +758,15 @@ Invalid groups are those with n < 2.
 
 
   estimate$overview <- all_overview
+  if (!is.null(message)) {
+    estimate$overview_properties <- list()
+    estimate$overview_properties$message <- message
+    estimate$overview_properties$message_html <- message_html
+  }
   estimate$properties$data_type <- "vector"
   estimate$properties$data_source <- NULL
+  estimate$es_proportion_difference_properties$message <- message
+  estimate$es_proportion_difference_properties$message_html <- message_html
 
 
   # Raise warnings if needed ------------------------------------------------
