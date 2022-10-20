@@ -77,10 +77,10 @@ test_diff_base <- function(
     )
     parameter <- switch(
       effect_size,
-      "mean" = "<i>&mu;</i>",
-      "median" = "<i>&eta;</i>",
-      "P" = "<i>&Pi;</i>",
-      "r" = "<i>&rho;</i>"
+      "mean" = "&mu;",
+      "median" = "&eta;",
+      "P" = "&Pi;",
+      "r" = "&rho;"
     )
     difference_marker <- "<sub>diff</sub>"
   } else {
@@ -171,7 +171,7 @@ test_diff_base <- function(
     # null_words <- glue::glue("{parameter} is exactly 0")
     null_words <- glue::glue("{format(reference_value, nsmall=2)}")
 
-    rope_words <- glue::glue("[{format(reference_value, nsmall=2)}, {format(reference_value, nsmall=2)}]")
+    rope_words <- glue::glue("({format(reference_value, nsmall=2)}, {format(reference_value, nsmall=2)})")
 
     CI <- glue::glue("{confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]")
 
@@ -238,7 +238,7 @@ test_diff_base <- function(
 
       significant <- (eq_significant | me_significant)
 
-      null_words <- glue::glue("[{format(this_rope_lower+reference_value, nsmall = 2)}, {format(this_rope_upper+reference_value, nsmall = 2)}]")
+      null_words <- glue::glue("({format(this_rope_lower+reference_value, nsmall = 2)}, {format(this_rope_upper+reference_value, nsmall = 2)})")
 
 
       if(output_html) {
