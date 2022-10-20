@@ -66,6 +66,7 @@ children:
         name: reference_measure_name
         stretchFactor: 2
         format: string
+        suffix: '  '
         enable: '(switch:from_summary)'
         cell:
           column: 0
@@ -90,6 +91,7 @@ children:
         name: case_label_repeat
         format: string
         stretchFactor: 2
+        suffix: '  '
         enable: '(switch:nope)'
         cell:
           column: 0
@@ -114,6 +116,7 @@ children:
         name: not_case_label_repeat
         format: string
         stretchFactor: 2
+        suffix: '  '
         enable: '(switch:nope)'
         cell:
           column: 0

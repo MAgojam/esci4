@@ -139,29 +139,95 @@ jamovi_pdiff_paired <- function(self) {
         ) return(NULL)
 
     } else {
+      case_label <- jamovi_sanitize(
+        self$options$case_label,
+        return_value = "Affected",
+        na_ok = FALSE
+      )
+      not_case_label <- jamovi_sanitize(
+        self$options$not_case_label,
+        return_value = "Not affected",
+        na_ok = FALSE
+      )
+      comparison_measure_name <- jamovi_sanitize(
+        self$options$comparison_measure_name,
+        return_value = "Comparison measure",
+        na_ok = FALSE
+      )
+      reference_measure_name <- jamovi_sanitize(
+        self$options$reference_measure_name,
+        return_value = "Reference measure",
+        na_ok = FALSE
+      )
+
+
         args$cases_consistent <- jamovi_required_numeric(
             self$options$cases_consistent,
             lower = 0,
             lower_inclusive = TRUE,
-            integer_required = TRUE
+            integer_required = TRUE,
+            my_value_name = paste(
+              "Observations of ",
+              case_label,
+              " at ",
+              reference_measure_name,
+              " that were also ",
+              case_label,
+              " at ",
+              comparison_measure_name,
+              sep = ""
+            )
         )
         args$cases_inconsistent <- jamovi_required_numeric(
             self$options$cases_inconsistent,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = TRUE
+            lower_inclusive = TRUE,
+            my_value_name = paste(
+              "Observations of ",
+              not_case_label,
+              " at ",
+              reference_measure_name,
+              " that became ",
+              case_label,
+              " at ",
+              comparison_measure_name,
+              sep = ""
+            )
         )
         args$not_cases_consistent <- jamovi_required_numeric(
             self$options$not_cases_consistent,
             lower = 0,
             lower_inclusive = TRUE,
-            integer_required = TRUE
+            integer_required = TRUE,
+            my_value_name = paste(
+              "Observations of ",
+              not_case_label,
+              " at ",
+              reference_measure_name,
+              " that were also ",
+              not_case_label,
+              " at ",
+              comparison_measure_name,
+              sep = ""
+            )
         )
         args$not_cases_inconsistent <- jamovi_required_numeric(
             self$options$not_cases_inconsistent,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = TRUE
+            lower_inclusive = TRUE,
+            my_value_name = paste(
+              "Observations of ",
+              case_label,
+              " at ",
+              reference_measure_name,
+              " that became ",
+              not_case_label,
+              " at ",
+              comparison_measure_name,
+              sep = ""
+            )
         )
 
         unfilled <- names(args[which(is.na(args))])
@@ -173,13 +239,33 @@ jamovi_pdiff_paired <- function(self) {
         }
 
         if (length(unfilled) > 0) {
+          notes <- c(
+            paste(
+              "For summary data, please specify ",
+              length(unfilled),
+              " more counts (must be numeric).",
+              sep = ""
+            ),
+            notes
+          )
+        } else {
+          if (args$cases_consistent < 0 | args$cases_inconsistent < 0 | args$not_cases_consistent < 0 | args$not_cases_inconsistent < 0) {
             notes <- c(
-                paste(
-                    "For summary data, please specify: ",
-                    paste0(unfilled, collapse = ", ")
-                ),
-                notes
+              "Error: For summary data, all counts must be >= 0",
+              notes
             )
+          }
+
+          if (args$cases_consistent + args$cases_inconsistent + args$not_cases_consistent + args$not_cases_inconsistent < 3) {
+            notes <- c(
+              paste(
+                "Error: Sum of all counts must add up to > 2",
+                sep = ""
+              ),
+              notes
+            )
+          }
+
         }
 
         if (length(notes) > 0) {

@@ -228,12 +228,58 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
         is.null(self$options$grouping_variable)
       ) return(NULL)
     } else {
+      case_label <- jamovi_sanitize(
+        self$options$case_label,
+        return_value = "Affected",
+        na_ok = FALSE,
+        my_value_name = "Label for cases"
+      )
+      not_case_label <- jamovi_sanitize(
+        self$options$not_case_label,
+        return_value = "Not affected",
+        na_ok = FALSE,
+        my_value_name = "Label for not cases"
+      )
+      grouping_variable_level1 <- jamovi_sanitize(
+        self$options$grouping_variable_level1,
+        return_value = "Comparison Level",
+        na_ok = FALSE,
+        my_value_name = "Comparison group label"
+      )
+      grouping_variable_level2 <- jamovi_sanitize(
+        self$options$grouping_variable_level2,
+        return_value = "Reference Level",
+        na_ok = FALSE,
+        my_value_name = "Reference group label"
+      )
+
+      outcome_variable_name <- jamovi_sanitize(
+        self$options$outcome_variable_name,
+        return_value = "My outcome variable",
+        na_ok = FALSE,
+        my_value_name = "Outcome variable name"
+      )
+      grouping_variable_name <- jamovi_sanitize(
+        self$options$grouping_variable_name,
+        return_value = "My grouping variable",
+        na_ok = FALSE,
+        my_value_name = "Grouping variable name"
+      )
+
+
         args$comparison_cases <- jamovi_required_numeric(
             self$options$comparison_cases,
             lower = 0,
             lower_inclusive = TRUE,
             integer_required = TRUE,
-            my_value_name = "Comparison group cases"
+            my_value_name = paste(
+              "Observations of ",
+              case_label,
+              " in the ",
+              grouping_variable_level1,
+              " group",
+              sep = ""
+            )
         )
 
         args$comparison_not_cases <- jamovi_required_numeric(
@@ -241,7 +287,14 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
           lower = 0,
           lower_inclusive = TRUE,
           integer_required = TRUE,
-          my_value_name = "Comparison group not cases"
+          my_value_name = paste(
+            "Observations of ",
+            not_case_label,
+            " in the ",
+            grouping_variable_level1,
+            " group",
+            sep = ""
+          )
         )
 
         args$reference_cases <- jamovi_required_numeric(
@@ -249,7 +302,14 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
             lower = 0,
             lower_inclusive = TRUE,
             integer_required = TRUE,
-            my_value_name = "Reference group cases"
+            my_value_name = paste(
+              "Observations of ",
+              case_label,
+              " in the ",
+              grouping_variable_level2,
+              " group",
+              sep = ""
+            )
         )
 
         args$reference_not_cases <- jamovi_required_numeric(
@@ -257,7 +317,14 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
           lower = 0,
           lower_inclusive = TRUE,
           integer_required = TRUE,
-          my_value_name = "Reference group not cases"
+          my_value_name = paste(
+            "Observations of ",
+            not_case_label,
+            " in the ",
+            grouping_variable_level2,
+            " group",
+            sep = ""
+          )
         )
 
         unfilled <- names(args[which(is.na(args))])
@@ -269,13 +336,48 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
         }
 
         if (length(unfilled) > 0) {
+          notes <- c(
+            paste(
+              "For summary data, please specify ",
+              length(unfilled),
+              " more counts (must be numeric).",
+              sep = ""
+            ),
+            notes
+          )
+        } else {
+          if (args$comparison_cases < 0 | args$comparison_not_cases < 0 | args$reference_cases < 0 | args$reference_not_cases < 0) {
             notes <- c(
-                paste(
-                    "For summary data, please specify: ",
-                    paste0(unfilled, collapse = ", ")
-                ),
-                notes
+              "Error: For summary data, all counts must be >= 0",
+              notes
             )
+          }
+
+          if (args$comparison_cases + args$comparison_not_cases < 3) {
+            notes <- c(
+              paste(
+                "Error: Counts in the ",
+                grouping_variable_level1,
+                "group must add up to > 2",
+                sep = ""
+              ),
+              notes
+            )
+          }
+
+          if (args$reference_cases + args$reference_not_cases < 3) {
+            notes <- c(
+              paste(
+                "Error: Counts in the ",
+                grouping_variable_level2,
+                "group must add up to > 2",
+                sep = ""
+              ),
+              notes
+            )
+          }
+
+
         }
 
         if (length(notes) > 0) {

@@ -67,6 +67,7 @@ children:
       - type: TextBox
         name: outcome_variable_name
         format: string
+        suffix: '  '
         stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
@@ -93,6 +94,7 @@ children:
       - type: TextBox
         name: case_label
         format: string
+        suffix: '  '
         stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
@@ -119,6 +121,7 @@ children:
       - type: TextBox
         name: not_case_label
         format: string
+        suffix: '  '
         stretchFactor: 3
         enable: '(switch:from_summary)'
         cell:
