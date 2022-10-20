@@ -2205,7 +2205,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `type`="text"),
                     list(
                         `name`="p_result", 
-                        `title`="<i>p</i>", 
+                        `title`="<i>p</i>, two tailed", 
                         `type`="text"),
                     list(
                         `name`="conclusion", 

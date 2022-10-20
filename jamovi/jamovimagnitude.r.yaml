@@ -181,7 +181,7 @@ items:
           type: integer
           visible: (effect_size == 'mean')
         - name: p
-          title: "<i>p</i>"
+          title: "<i>p</i>, two tailed"
           type: number
           format: zto,pvalue
           visible: (effect_size == 'mean')
@@ -216,7 +216,7 @@ items:
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: p_result
-          title: "<i>p</i>"
+          title: "<i>p</i>, two tailed"
           type: text
         - name: conclusion
           title: 'Conclusion'

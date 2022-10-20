@@ -127,7 +127,7 @@ items:
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: p_result
-          title: "<i>p</i>"
+          title: "<i>p</i>, two tailed"
           type: text
         - name: conclusion
           title: 'Conclusion'

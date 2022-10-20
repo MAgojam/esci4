@@ -980,7 +980,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="p", 
-                        `title`="<i>p</i>", 
+                        `title`="<i>p</i>, two tailed", 
                         `type`="number", 
                         `format`="zto,pvalue", 
                         `visible`="(effect_size == 'mean')"),
@@ -1022,7 +1022,7 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="text"),
                     list(
                         `name`="p_result", 
-                        `title`="<i>p</i>", 
+                        `title`="<i>p</i>, two tailed", 
                         `type`="text"),
                     list(
                         `name`="conclusion", 
