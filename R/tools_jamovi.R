@@ -81,8 +81,18 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     )
   }
 
-  if (!is.null(result_table$grouping_variable_name) & !is.null(result_table$effect)) {
+  effect <- NULL
+  try(effect <- result_table$effect)
+  if (!is.null(result_table$grouping_variable_name) & !is.null(effect)) {
     jmv_table$getColumn("effect")$setTitle(
+      paste(result_table$grouping_variable_name[[1]], "<br>Effect")
+    )
+  }
+
+  effect_plus <- NULL
+  try(effect_plus <- result_table$effect_plus)
+  if (!is.null(effect_plus)) {
+    jmv_table$getColumn("effect_plus")$setTitle(
       paste(result_table$grouping_variable_name[[1]], "<br>Effect")
     )
   }

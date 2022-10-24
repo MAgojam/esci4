@@ -850,23 +850,14 @@ plot_pdiff <- function(
   reference_groups <- names(contrast[which(contrast < 0)])
   comparison_groups <- names(contrast[which(contrast > 0)])
   simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
-  plot_paired <- !is.null(estimate$es_phi)
+  plot_paired <- is.null(estimate$es_proportion_difference$grouping_variable_name[[1]])
   rdata <- NULL
   effect_size <- "P"
   difference_es_name <- "<i>Proportion</i><sub>diff</sub>"
 
   gdata <- estimate$es_proportion_difference
   outcome_var <- estimate$overview$outcome_variable_name[[1]]
-  if (plot_paired) {
-    clevel <- estimate$es_proportion_difference$case_label[[1]]
-  } else {
-    clevel <- gsub(
-      paste(outcome_var, ": P_", sep = ""),
-      "",
-      estimate$es_proportion_difference$outcome_variable_name[[1]]
-    )
-
-  }
+  clevel <- estimate$es_proportion_difference$case_label[[1]]
 
   gdata$y_value <- gdata$effect_size
   gdata$x_label <- gsub(paste(" P_", clevel, sep = ""), "", gdata$effect)
@@ -935,18 +926,24 @@ plot_pdiff <- function(
 
 
   # Labels -----------------------------
+  clevel <- paste(
+    gsub("P_", "P[", clevel),
+    "]",
+    sep = ""
+  )
+
   if (plot_paired) {
     vname <- " "
     xlab <- NULL
+    ylab <- glue::glue("{clevel}~' and {conf_level*100}% Confidence Interval'")
+    myplot <- myplot + ggplot2::ylab(parse(text = ylab)) + ggplot2::xlab(NULL)
   } else {
     vname <- outcome_var
     xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
+    ylab <- glue::glue("'{vname}:'~{clevel}~'and {conf_level*100}% Confidence Interval'")
+
+    myplot <- myplot + ggplot2::xlab(parse(text = xlab)) + ggplot2::ylab(parse(text = ylab))
   }
-  ylab <- glue::glue("{vname}\nProportion {clevel} and {conf_level*100}% Confidence Interval")
-
-
-
-  myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
 
   # Attach warnings and return    -------------------

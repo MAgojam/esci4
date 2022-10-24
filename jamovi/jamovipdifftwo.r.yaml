@@ -71,6 +71,10 @@ items:
           title: 'Outcome variable'
           type: text
           combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+          visible: false
         - name: effect_plus
           title: 'Effect'
           type: text
@@ -106,6 +110,10 @@ items:
         - name: outcome_variable_name
           title: 'Outcome variable'
           type: text
+        - name: effect
+          title: 'Effect'
+          type: text
+          visible: false
         - name: effect_plus
           title: 'Effect'
           type: text
@@ -130,6 +138,11 @@ items:
           visible: true
           type: text
           combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+          visible: false
+          combineBelow: false
         - name: effect_plus
           title: 'Effect'
           type: text
