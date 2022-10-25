@@ -2125,7 +2125,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     list(
                         `name`="outcome_variable_name", 
                         `title`="Outcome variable", 
-                        `visible`=TRUE, 
+                        `visible`=FALSE, 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -2183,7 +2183,7 @@ jamovimdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     list(
                         `name`="outcome_variable_name", 
                         `title`="Outcome variable", 
-                        `visible`=TRUE, 
+                        `visible`=FALSE, 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(

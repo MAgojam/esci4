@@ -345,7 +345,7 @@ items:
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
-          visible: true
+          visible: false
           type: text
           combineBelow: true
         - name: effect
@@ -392,7 +392,7 @@ items:
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
-          visible: true
+          visible: false
           type: text
           combineBelow: true
         - name: effect

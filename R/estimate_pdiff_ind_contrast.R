@@ -384,10 +384,13 @@ The contrast passed was: {passed_contrast}.
     estimate$es_proportion_difference
   )
 
-  try(estimate$es_proportion_difference[estimate$es_proportion_difference$LL < 0, ]$LL <- 0)
-  try(estimate$es_proportion_difference[estimate$es_proportion_difference$ta_LL < 0, ]$ta_LL <- 0)
-  try(estimate$es_proportion_difference[estimate$es_proportion_difference$UL > 1, ]$UL <- 1)
-  try(estimate$es_proportion_difference[estimate$es_proportion_difference$ta_UL > 1, ]$ta_UL <- 1)
+  for (frow in c(1, 2)) {
+    if (estimate$es_proportion_difference$LL[frow] < 0) estimate$es_proportion_difference$LL[frow] <- 0
+    if (estimate$es_proportion_difference$ta_LL[frow] < 0) estimate$es_proportion_difference$ta_LL[frow] <- 0
+    if (estimate$es_proportion_difference$UL[frow] < 0) estimate$es_proportion_difference$UL[frow] <- 0
+    if (estimate$es_proportion_difference$ta_UL[frow] < 0) estimate$es_proportion_difference$ta_UL[frow] <- 0
+
+  }
 
   # Odds ratio?
   if (length(cases) < 20) {

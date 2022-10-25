@@ -2306,14 +2306,14 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
-                        `name`="null_words", 
-                        `title`="<i>H</i><sub>0</sub>", 
-                        `type`="text"),
-                    list(
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text", 
                         `combineBelow`=FALSE),
+                    list(
+                        `name`="null_words", 
+                        `title`="<i>H</i><sub>0</sub>", 
+                        `type`="text"),
                     list(
                         `name`="CI", 
                         `title`="CI", 
