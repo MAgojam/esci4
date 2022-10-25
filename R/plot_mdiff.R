@@ -942,7 +942,7 @@ plot_pdiff <- function(
     xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
     ylab <- glue::glue("'{vname}:'~{clevel}~'and {conf_level*100}% Confidence Interval'")
 
-    myplot <- myplot + ggplot2::xlab(parse(text = xlab)) + ggplot2::ylab(parse(text = ylab))
+    myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(parse(text = ylab))
   }
 
 

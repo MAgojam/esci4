@@ -384,6 +384,11 @@ The contrast passed was: {passed_contrast}.
     estimate$es_proportion_difference
   )
 
+  estimate$es_proportion_difference[estimate$es_proportion_difference$LL < 0, ] <- 0
+  estimate$es_proportion_difference[estimate$es_proportion_difference$ta_LL < 0, ] <- 0
+  estimate$es_proportion_difference[estimate$es_proportion_difference$UL > 1, ] <- 1
+  estimate$es_proportion_difference[estimate$es_proportion_difference$UL > 1, ] <- 1
+
   # Odds ratio?
   if (length(cases) < 20) {
     estimate$es_odds_ratio <- as.data.frame(
