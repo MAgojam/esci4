@@ -338,7 +338,7 @@ items:
           type: number
 
     - name:  point_null
-      title: Hypothesis evaluation
+      title: Hypothesis Evaluation
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
@@ -385,7 +385,7 @@ items:
           type: text
 
     - name:  interval_null
-      title: Hypothesis evaluation
+      title: Hypothesis Evaluation
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)

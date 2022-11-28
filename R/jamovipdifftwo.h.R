@@ -957,7 +957,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="point_null",
-                title="Hypothesis evaluation",
+                title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary == 0)",
                 columns=list(
@@ -1009,7 +1009,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="interval_null",
-                title="Hypothesis evaluation",
+                title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary != 0)",
                 columns=list(

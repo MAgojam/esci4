@@ -527,7 +527,7 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     lower_inclusive = TRUE,
     upper = 1,
     upper_inclusive = TRUE,
-    my_value_name = "Hypothesis evaluation: <i>H</i><sub>0</sub> value"
+    my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> value"
   )
   notes <- c(notes, names(args$reference_p))
 

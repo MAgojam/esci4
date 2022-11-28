@@ -58,7 +58,7 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
       upper = 1,
       upper_inclusive = TRUE,
       convert_to_number = TRUE,
-      my_value_name = "Hypothesis evaluation: <i>H</i><sub>0</sub> boundary"
+      my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> boundary"
     )
 
     test_results <- test_pdiff(
