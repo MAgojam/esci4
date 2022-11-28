@@ -74,6 +74,12 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
 
     estimate$point_null <- jamovi_peffect_html(test_results$point_null)
     estimate$interval_null <- jamovi_peffect_html(test_results$interval_null)
+
+    if (!is.null(names(rope_upper))) {
+      self$results$point_null$setVisible(TRUE)
+      self$results$interval_null$setVisible(FALSE)
+    }
+
   }
 
   return(estimate)

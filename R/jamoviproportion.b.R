@@ -529,7 +529,7 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     upper_inclusive = TRUE,
     my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> value"
   )
-  notes <- c(notes, names(args$reference_p))
+  #notes <- c(notes, names(args$reference_p))
 
   args$count_NA <- self$options$count_NA
   args$conf_level <- jamovi_sanitize(
