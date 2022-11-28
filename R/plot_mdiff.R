@@ -709,8 +709,8 @@ plot_mdiff_base <- function(
                                            linetype="solid",
                                            ggplot2::aes(x=daxis_x,
                                                         xend=daxis_x,
-                                                        y=saxisStart,
-                                                        yend=saxisEnd
+                                                        y=max(c(saxisStart, ylim[1]), na.rm = TRUE),
+                                                        yend=min(c(saxisEnd, ylim[2]), na.rm = TRUE)
                                            ),
                                            size=1
   )
