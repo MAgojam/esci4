@@ -10,10 +10,15 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             try(tbl_overview <- self$results$overview)
 
             conf_level <- jamovi_sanitize(
-                my_value = self$options$conf_level,
-                return_value = 95,
-                na_ok = FALSE,
-                convert_to_number = TRUE
+              my_value = self$options$conf_level,
+              return_value = 95,
+              na_ok = FALSE,
+              convert_to_number = TRUE,
+              lower = 75,
+              lower_inclusive = FALSE,
+              upper = 100,
+              upper_inclusive = FALSE,
+              my_value_name = "Confidence level"
             )
 
             jamovi_set_confidence(tbl_overview, conf_level)
@@ -550,15 +555,15 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
 
     args$save_raw_data <- save_raw_data
     args$conf_level <- jamovi_sanitize(
-        my_value = self$options$conf_level,
-        return_value = 95,
-        na_ok = FALSE,
-        convert_to_number = TRUE,
-        lower = 0,
-        lower_inclusive = FALSE,
-        upper = 100,
-        upper_inclusive = FALSE,
-        my_value_name = "Confidence level"
+      my_value = self$options$conf_level,
+      return_value = 95,
+      na_ok = FALSE,
+      convert_to_number = TRUE,
+      lower = 75,
+      lower_inclusive = FALSE,
+      upper = 100,
+      upper_inclusive = FALSE,
+      my_value_name = "Confidence level"
     )/100
 
 

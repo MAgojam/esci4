@@ -11,12 +11,17 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             tbl_es_meta <- self$results$es_meta
             tbl_es_meta_difference <- self$results$es_meta_difference
 
-            conf_level <- jamovi_sanitize(
-                my_value = self$options$conf_level,
-                return_value = 95,
-                na_ok = FALSE,
-                convert_to_number = TRUE
-            )
+            conf_level <<- jamovi_sanitize(
+              my_value = self$options$conf_level,
+              return_value = 95,
+              na_ok = FALSE,
+              convert_to_number = TRUE,
+              lower = 75,
+              lower_inclusive = FALSE,
+              upper = 100,
+              upper_inclusive = FALSE,
+              my_value_name = "Confidence level"
+            )/100
 
             jamovi_set_confidence(tbl_raw_data, conf_level)
             jamovi_set_confidence(tbl_es_meta, conf_level)
@@ -101,15 +106,15 @@ jamovi_meta_mean <- function(self) {
     )
 
     args$conf_level <- jamovi_sanitize(
-        my_value = self$options$conf_level,
-        return_value = 95,
-        na_ok = FALSE,
-        convert_to_number = TRUE,
-        lower = 0,
-        lower_inclusive = FALSE,
-        upper = 100,
-        upper_inclusive = FALSE,
-        my_value_name = "Confidence level"
+      my_value = self$options$conf_level,
+      return_value = 95,
+      na_ok = FALSE,
+      convert_to_number = TRUE,
+      lower = 75,
+      lower_inclusive = FALSE,
+      upper = 100,
+      upper_inclusive = FALSE,
+      my_value_name = "Confidence level"
     )/100
 
 

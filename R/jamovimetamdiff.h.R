@@ -76,8 +76,6 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
-                min=1,
-                max=99.999999,
                 default=95)
             private$..random_effects <- jmvcore::OptionBool$new(
                 "random_effects",

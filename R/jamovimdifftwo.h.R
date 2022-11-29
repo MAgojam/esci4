@@ -161,8 +161,6 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
-                min=1,
-                max=99.999999,
                 default=95)
             private$..assume_equal_variance <- jmvcore::OptionBool$new(
                 "assume_equal_variance",
@@ -213,9 +211,7 @@ jamovimdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..alpha <- jmvcore::OptionNumber$new(
                 "alpha",
                 alpha,
-                default=0.05,
-                min=0,
-                max=1)
+                default=0.05)
             private$..null_color <- jmvcore::OptionList$new(
                 "null_color",
                 null_color,

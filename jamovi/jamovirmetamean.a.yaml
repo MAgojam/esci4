@@ -54,8 +54,6 @@ options:
     - name: conf_level
       type: Number
       title: Confidence level
-      min: 1
-      max: 99.999999
       default: 95
 
     - name: random_effects

@@ -89,8 +89,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
-                min=1,
-                max=99.999999,
                 default=95)
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",

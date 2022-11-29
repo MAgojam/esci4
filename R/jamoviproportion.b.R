@@ -17,7 +17,12 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
             my_value = self$options$conf_level,
             return_value = 95,
             na_ok = FALSE,
-            convert_to_number = TRUE
+            convert_to_number = TRUE,
+            lower = 75,
+            lower_inclusive = FALSE,
+            upper = 100,
+            upper_inclusive = FALSE,
+            my_value_name = "Confidence level"
           )
 
           jamovi_set_confidence(tbl_overview, conf_level)
@@ -537,12 +542,13 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     return_value = 95,
     na_ok = FALSE,
     convert_to_number = TRUE,
-    lower = 0,
+    lower = 75,
     lower_inclusive = FALSE,
     upper = 100,
     upper_inclusive = FALSE,
     my_value_name = "Confidence level"
   )/100
+
 
 
   if(from_raw) {

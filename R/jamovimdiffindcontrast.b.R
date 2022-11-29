@@ -223,7 +223,7 @@ jamovi_mdiff_contrastindependent <- function(
     return_value = 95,
     na_ok = FALSE,
     convert_to_number = TRUE,
-    lower = 0,
+    lower = 75,
     lower_inclusive = FALSE,
     upper = 100,
     upper_inclusive = FALSE,

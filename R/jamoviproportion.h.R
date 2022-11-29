@@ -81,8 +81,6 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
-                min=1,
-                max=99.999999,
                 default=95)
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
@@ -145,9 +143,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             private$..alpha <- jmvcore::OptionNumber$new(
                 "alpha",
                 alpha,
-                default=0.05,
-                min=0,
-                max=1)
+                default=0.05)
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
