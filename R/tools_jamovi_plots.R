@@ -181,6 +181,9 @@ jamovi_plot_mdiff <- function(
 
         if (plot_median) {
           try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary_difference)
+          try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_summarydifference)/divider*1.3)
+          try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_summary_difference))
+          try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$self$options$linetype_summary_difference)
         }
 
       }

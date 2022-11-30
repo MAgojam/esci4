@@ -454,6 +454,9 @@ jamovimagnitudeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
                 if (self$options$effect_size == "median") {
                   try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary)
+                  try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_summary)/divider*2)
+                  try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_summary))
+                  try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$linetype_summary)
                 }
 
               }
