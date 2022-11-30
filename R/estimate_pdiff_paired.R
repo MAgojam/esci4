@@ -277,8 +277,8 @@ estimate_pdiff_paired.summary <- function(
     case_label = case_label,
     not_case_label = not_case_label,
     grouping_variable_levels = c(
-      comparison_measure_name,
-      reference_measure_name
+      reference_measure_name,
+      comparison_measure_name
     ),
     conf_level = conf_level
   )
@@ -323,34 +323,6 @@ estimate_pdiff_paired.summary <- function(
       conf_level = conf_level
     )
   )
-
-
-  # Phi
-  # estimate$es_phi <- as.data.frame(
-  #   statpsych::ci.phi(
-  #     alpha = 1 - conf_level,
-  #     f00 = cases_consistent,
-  #     f01 = cases_inconsistent,
-  #     f10 = not_cases_inconsistent,
-  #     f11 = not_cases_consistent
-  #   )
-  # )
-  #
-  # colnames(estimate$es_phi) <- c("effect_size", "SE_temp", "LL", "UL")
-  # estimate$es_phi$SE <- estimate$es_phi$SE_temp
-  # estimate$es_phi$SE_temp <- NULL
-  #
-  # estimate$es_phi <- cbind(
-  #   "outcome_variable_1" = comparison_measure_name,
-  #   "outcome_variable_2" = reference_measure_name,
-  #   effect = paste(
-  #     comparison_measure_name,
-  #     " related to ",
-  #     reference_measure_name,
-  #     sep = ""
-  #   ),
-  #   estimate$es_phi
-  # )
 
 
   # output prep -----------------------------------------

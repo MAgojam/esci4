@@ -380,15 +380,10 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
             myplot$layers[["null_line"]]$aes_params$colour <- self$options$null_color
             if (interval_null) {
               try(myplot$layers[["null_interval"]]$aes_params$fill <- self$options$null_color)
-              try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_interval)/divider+1)
-              try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_interval))
-              try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_interval)
+              try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_summary)/divider+1)
+              try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_summary))
+              try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary)
               try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$linetype_summary)
-
-              # if (self$options$effect_size == "median") {
-              #  try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_summary)
-              # }
-
             }
           }
 
