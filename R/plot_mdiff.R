@@ -297,6 +297,9 @@ plot_mdiff_base <- function(
   if (nrow(overview[is.na(overview$df), ]) > 0) {
     overview[is.na(overview$df), "df"] <- 1
   }
+  if (nrow(overview[overview$df < 1, ]) > 0) {
+    overview[overview$df < 1, "df"] <- 1
+  }
 
   # If complex contrast, add overview data -----------------
 
@@ -492,19 +495,19 @@ plot_mdiff_base <- function(
     rdata_min <- min(rdata$outcome_variable, na.rm = TRUE)
     rdata_range <- rdata_max - rdata_min
     axis_range <- rawEnd - rawStart
-    if (axis_range / rdata_range < .36) {
-      ref_percent <- (reference_es -  rdata_min) / rdata_range
-      rangeEnd <- reference_es + (0.36 * (1-ref_percent) * rdata_range)
-      rangeStart <- reference_es - (0.36 * (ref_percent) * rdata_range)
-
-      if (rangeEnd > rawEnd) rawEnd <- rangeEnd
-      if (rangeStart < rawStart) rawStart <- rangeStart
-
-      saxisEnd <- ceiling(difference_UL/pooled_sd)
-      if (saxisEnd < 1) saxisEnd = 1
-      saxisStart <- floor(difference_LL/pooled_sd)
-      if (saxisStart > -1) saxisStart = -1
-    }
+    # if (axis_range / rdata_range < .36) {
+    #   ref_percent <- (reference_es -  rdata_min) / rdata_range
+    #   rangeEnd <- reference_es + (0.36 * (1-ref_percent) * rdata_range)
+    #   rangeStart <- reference_es - (0.36 * (ref_percent) * rdata_range)
+    #
+    #   if (rangeEnd > rawEnd) rawEnd <- rangeEnd
+    #   if (rangeStart < rawStart) rawStart <- rangeStart
+    #
+    #   saxisEnd <- ceiling(difference_UL/pooled_sd)
+    #   if (saxisEnd < 1) saxisEnd = 1
+    #   saxisStart <- floor(difference_LL/pooled_sd)
+    #   if (saxisStart > -1) saxisStart = -1
+    # }
     # Adjust floating axis points for cases where small % of raw data range
   }
 
@@ -1113,6 +1116,14 @@ plot_nocontrast <- function(
   orows <- nrow(overview)
   overview$x_value <- seq(from = 1, to = orows, by = 1)
   overview$nudge <- nudge
+
+  if (nrow(overview[is.na(overview$df), ]) > 0) {
+    overview[is.na(overview$df), "df"] <- 1
+  }
+  if (nrow(overview[overview$df < 1, ]) > 0) {
+    overview[overview$df < 1, "df"] <- 1
+  }
+
 
   gdata <- overview
   gdata$type <- paste(gdata$type, "_summary", sep = "")
