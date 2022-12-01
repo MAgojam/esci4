@@ -294,10 +294,10 @@ plot_mdiff_base <- function(
   if (nrow(gdata[gdata$SE <= 0, ]) > 0) {
     gdata[gdata$SE <= 0, ]$SE <- .Machine$double.xmin
   }
-  if (nrow(overview[is.na(overview$df), ]) > 0) {
+  if (!is.null(overview[is.na(overview$df), ])) {
     overview[is.na(overview$df), "df"] <- 1
   }
-  if (nrow(overview[overview$df < 1, ]) > 0) {
+  if (!is.null(overview[overview$df < 1, ])) {
     overview[overview$df < 1, "df"] <- 1
   }
 
@@ -1117,10 +1117,10 @@ plot_nocontrast <- function(
   overview$x_value <- seq(from = 1, to = orows, by = 1)
   overview$nudge <- nudge
 
-  if (nrow(overview[is.na(overview$df), ]) > 0) {
+  if (!is.null(overview[is.na(overview$df), ])) {
     overview[is.na(overview$df), "df"] <- 1
   }
-  if (nrow(overview[overview$df < 1, ]) > 0) {
+  if (!is.null(overview[overview$df < 1, ])) {
     overview[overview$df < 1, "df"] <- 1
   }
 
