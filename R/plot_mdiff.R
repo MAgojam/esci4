@@ -294,6 +294,9 @@ plot_mdiff_base <- function(
   if (nrow(gdata[gdata$SE <= 0, ]) > 0) {
     gdata[gdata$SE <= 0, ]$SE <- .Machine$double.xmin
   }
+  if (nrow(overview[is.na(overview$df), ]) > 0) {
+    overview[is.na(overview$df), "df"] <- 1
+  }
 
   # If complex contrast, add overview data -----------------
 
