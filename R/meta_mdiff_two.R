@@ -358,6 +358,7 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
     yi = "yi",
     vi = "vi",
     moderator = !!if (moderator) "moderator" else NULL,
+    contrast = contrast,
     labels = "label",
     effect_label = effect_label,
     effect_size_name = reported_effect_size,
