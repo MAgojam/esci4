@@ -1,97 +1,410 @@
+#' @export
 plot_meta <- function(
-    estimate
+    estimate,
+    mark_zero = TRUE,
+    report_CIs = FALSE,
+    meta_diamond_height = 0.35,
+    ggtheme = ggplot2::theme_classic()
 ) {
 
+  # ------------------------------------
+  # Basic plot
+  myplot <- ggplot2::ggplot() + ggtheme
 
-  myplot <- ggplot2::ggplot()
+  # Mark 0 ?
+  if (mark_zero) {
+    myplot <- myplot + ggplot2::geom_vline(
+      xintercept = 0,
+      color = "black",
+      linetype = "dashed"
+    )
+    myplot <- esci_plot_layers(myplot, "ref_zero")
+  }
 
+  # --------------------------------------
   # Raw data prep
   rdata <- estimate$raw_data
+
+  # Match moderator levels to contrast levels
   if (is.null(rdata$moderator)) {
-    rdata$moderator <- "None"
+    rdata$type <- "Reference"
+  } else {
+    contrast <- estimate$properties$contrast
+    reference_levels <- names(contrast[contrast < 0])
+    comparison_levels <- names(contrast[contrast > 0])
+    unused_levels <- names(contrast[contrast == 0])
+
+    rdata[rdata$moderator %in% reference_levels, "type"] <- "Reference"
+    rdata[rdata$moderator %in% comparison_levels, "type"] <- "Comparison"
+    if (length(unused_levels) > 0) {
+      rdata[rdata$moderator %in% unused_levels, "type"] <- "Unused"
+    }
   }
+
   rows_raw <- nrow(rdata)
   rdata$line <- -seq(1:rows_raw)
-
+  rdata$CI_label <- paste(
+    "[",
+    format(rdata$LL, digits = 2),
+    ", ",
+    format(rdata$UL, digits = 2),
+    "]",
+    sep = ""
+  )
 
   # Raw data plot
-  myplot <- myplot + ggplot2::geom_errorbarh(
-    data = rdata,
-    ggplot2::aes(
-      xmin = LL,
-      xmax = UL,
-      y = line,
-      colour = moderator
-    ),
-    height = 0
+  plot_levels <- c(
+    "Red" = "Reference",
+    "Green" = "Comparison",
+    "Gray" = "Unused"
   )
+  for (x in 1:length(plot_levels)) {
+    next_up <- plot_levels[x]
+    this_data <- rdata[rdata$type == next_up, ]
+    if (nrow(this_data) > 0) {
+      myplot <- myplot + ggplot2::geom_errorbarh(
+        data = this_data,
+        ggplot2::aes(
+          xmin = LL,
+          xmax = UL,
+          y = line
+        ),
+        height = 0
+      )
+      myplot <- esci_plot_layers(myplot, paste("raw_", next_up, "_error", sep = ""))
 
-  myplot <- myplot + ggplot2::geom_point(
-    data = rdata,
-    ggplot2::aes(
-      x = effect_size,
-      y = line,
-      colour = moderator,
-      size = weight
-    )
-  )
+      myplot <- myplot + ggplot2::geom_point(
+        data = this_data,
+        ggplot2::aes(
+          x = effect_size,
+          y = line,
+          size = weight
+        ),
+        shape = 22,
+        colour = "black",
+        fill = names(plot_levels[x])
+      )
+      myplot <- esci_plot_layers(myplot, paste("raw_", next_up, "_point", sep = ""))
+    }
+  }
 
 
+
+  # -------------------------------------------
   # Group data
   gdata <- estimate$es_meta
-  rows_total <- rows_raw + nrow(gdata)
+  if (is.null(gdata$moderator_variable_level)) {
+    gdata$type <- "Reference"
+    gdata$moderator_variable_level <- "Overall"
+  } else {
+    gdata$type <- "Overall"
+    gdata[gdata$moderator_variable_level %in% reference_levels, "type"] <- "Reference"
+    gdata[gdata$moderator_variable_level %in% comparison_levels, "type"] <- "Comparison"
+    if (length(unused_levels) > 0) {
+      gdata[gdata$moderator_variable_level %in% unused_levels, "type"] <- "Unused"
+    }
+  }
+
+  # Set lines of the meta-analysis for group data
+  #   Ordering overall first, unused next, reference, and then comparison
   rows_start <- rows_raw+1
-  gdata$line <- -seq(from = rows_start, to = row_total)
+  rows_total <- rows_raw
+  line_groups <- c("Overall", "Unused", "Reference", "Comparison")
+  for (up_next in line_groups) {
+    if (nrow(gdata[gdata$type == up_next, ]) > 0) {
+      rows_total <- rows_total + nrow(gdata[gdata$type == up_next, ])
+      gdata[gdata$type == up_next, "line"] <- -seq(from = rows_start, to = rows_total)
+      rows_start <- rows_total + 1
+    }
+  }
+
+  gdata$CI_label <- paste(
+    "[",
+    format(gdata$LL, digits = 2),
+    ", ",
+    format(gdata$UL, digits = 2),
+    "]",
+    sep = ""
+  )
+
+  # Connecting lines
+  # Connecting lines for differences
+  # Prep connecting lines
+  if (!is.null(estimate$es_meta_difference)) {
+    plot_levels <- c(
+      "dashed" = "Reference",
+      "dotted" = "Comparison"
+    )
+    for (x in 1:length(plot_levels)) {
+      next_up <- plot_levels[x]
+      dline <- gdata[gdata$type == next_up, ]
+      if (nrow(dline) > 0) {
+        myplot <- myplot + ggplot2::geom_segment(
+          data = dline,
+          ggplot2::aes(
+            x = effect_size,
+            xend = effect_size,
+            y = line,
+            yend = -Inf
+          ),
+          colour = "black",
+          linetype = names(plot_levels[x])
+        )
+        myplot <- esci_plot_layers(myplot, paste("ref_", next_up, "_lines", sep = ""))
+      }
+    }
+  }
 
   # Plot group data
-  myplot <- myplot + ggplot2::geom_errorbarh(
-    data = gdata,
-    ggplot2::aes(
-      xmin = LL,
-      xmax = UL,
-      y = line,
-      colour = moderator_variable_level
-    ),
-    height = 0
+  plot_levels <- c(
+    "Black" = "Overall",
+    "Red" = "Reference",
+    "Green" = "Comparison",
+    "Gray" = "Unused"
   )
+  for (x in 1:length(plot_levels)) {
+    next_up <- plot_levels[x]
+    this_data <- gdata[gdata$type == next_up, ]
+    if (nrow(this_data) > 0) {
+      myplot <- myplot + geom_meta_diamond_h(
+        data = this_data,
+        ggplot2::aes(
+          x = effect_size,
+          xmin = LL,
+          xmax = UL,
+          y = line
+        ),
+        height = meta_diamond_height,
+        color = "black",
+        fill = names(plot_levels[x]),
+      )
+      myplot <- esci_plot_layers(myplot, paste("group_", next_up, "_diamond", sep = ""))
+    }
+  }
+
 
   # Difference data
   dlabel <- NULL
-  if (!is.null(estimate$es_meta_difference) & nrow(gdata) == 3) {
+  difference_CI_label <- NULL
+  if (!is.null(estimate$es_meta_difference)) {
+    # Prep difference data
     ddata <- estimate$es_meta_difference["Difference", ]
+    difference_CI_label <- paste(
+      "[",
+      format(ddata$LL, digits = 2),
+      ", ",
+      format(ddata$UL, digits = 2),
+      "]",
+      sep = ""
+    )
+
     reference <- estimate$es_meta_difference["Reference", "effect_size"]
+    ddata$effect_size <- ddata$effect_size + reference
+    ddata$LL <- ddata$LL + reference
+    ddata$UL <- ddata$UL + reference
 
     rows_total <- rows_total + 1
     ddata$line <- -rows_total
 
-    myplot <- myplot + ggplot2::geom_errorbarh(
+    # Plot reference data
+    myplot <- myplot + geom_meta_diamond_h(
       data = ddata,
       ggplot2::aes(
+        x = effect_size,
         xmin = LL,
         xmax = UL,
-        y = line,
-        colour = moderator_level
+        y = line
       ),
-      height = 0
+      height = meta_diamond_height,
+      colour = "Black",
+      fill = "White"
     )
+    myplot <- esci_plot_layers(myplot, "group_Difference_diamond")
 
     dlabel <- ddata$moderator_level
   }
 
-  # Clean up
+  # ----------------------------------------------
+  # Axis
+  # X axis labels and setup
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    name = estimate$properties$effect_size_name,
+    position = "top",
+  )
+
+  # If needed, difference axis
+  if (!is.null(estimate$es_meta_difference)) {
+    myplot <- esci_plot_difference_axis_x(
+      myplot,
+      estimate$es_meta_difference
+    )
+  }
+
+  # Y axis labels and setup
   all_labels <- c(
     rdata$label,
     gdata$moderator_variable_level,
     dlabel
   )
-  myplot <- myplot + ggplot2::scale_y_continuous(
-    breaks = -seq(1:rows_total),
-    labels = all_labels
+
+  if (report_CIs) {
+    all_CI_labels <- c(
+      rdata$CI_label,
+      gdata$CI_label,
+      difference_CI_label
+    )
+
+    sec_axis_CIs <- ggplot2::sec_axis(
+      name = NULL,
+      breaks = -seq(1:rows_total),
+      trans = ~.-0,
+      labels = all_CI_labels
+    )
+
+    myplot$sec_axis_CIs <- sec_axis_CIs
+
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      name = NULL,
+      breaks = -seq(1:rows_total),
+      labels = all_labels,
+      sec.axis = sec_axis_CIs,
+      expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
+    )
+
+  } else {
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      name = NULL,
+      breaks = -seq(1:rows_total),
+      labels = all_labels,
+      expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
+    )
+  }
+
+  # -------------------------------
+  # Theme tweaks
+  myplot <- myplot + ggplot2::theme(
+    legend.position = "none",
+    axis.line.y.right = element_blank(),
+    axis.ticks.y.right = element_blank()
   )
 
-  myplot <- myplot + ggplot2::ylab(NULL)
-  myplot <- myplot + ggplot2::xlab(estimate$properties$effect_size_name)
-  myplot <- myplot + ggplot2::theme(legend.position = "none")
+  return(myplot)
+}
 
-  myplot
+
+#' @export
+esci_plot_difference_axis_x <- function(
+    myplot,
+    difference_table,
+    dlim = c(NA, NA),
+    d_n.breaks = NULL
+) {
+
+  # From debugging
+  # myplot <- plot_meta(estimate)
+  # difference_table <- estimate$es_meta_difference
+
+  # If previous difference axis exists, remove it
+  if (!is.null(myplot$layers$ref_difference_axis)) {
+    myplot$layers$ref_difference_axis <- NULL
+  }
+
+  # Store y axis info
+  y_labels <- ggplot2::ggplot_build(myplot)$layout$panel_params[[1]]$y$get_labels()
+  y_breaks <- ggplot2::ggplot_build(myplot)$layout$panel_params[[1]]$y$get_breaks()
+  y_min <- min(ggplot2::layer_scales(myplot)$y$range$range)
+  y_max <- max(ggplot2::layer_scales(myplot)$y$range$range)
+
+  # Get reference value and center LL, UL, and effect size on it
+  reference_value <- difference_table["Reference", "effect_size"]
+  adj_r <- c("Comparison", "Reference")
+  adj_c <- c("effect_size", "LL", "UL")
+  difference_table[adj_r, adj_c] <- difference_table[adj_r, adj_c] - reference_value
+
+  # Get initial lower and upper, either specified or based on difference table
+  if (is.na(dlim[[1]])) {
+    lower <- min(0, difference_table$LL, na.rm = TRUE)
+  } else {
+    lower <- dlim[[1]]
+  }
+
+  if (is.na(dlim[[2]])) {
+    upper <- max(0, difference_table$UL, na.rm = TRUE)
+  } else {
+    upper <- dlim[[2]]
+  }
+
+  # Get initial distance between breaks, either for set number of based on SE
+  if (is.null(d_n.breaks)) {
+    bdist <- difference_table["Difference", "SE"]
+  } else {
+    bdist <- (upper - lower) / d_n.breaks
+  }
+
+  # Adjust upper and lower to ensure 0 is included
+  new_upper <- ceiling(upper/bdist) * bdist
+  new_lower <- floor(lower/bdist) * bdist
+
+  # Make difference axis breaks and labels
+  d_breaks <- seq(from = new_lower, to = new_upper, by = bdist)
+  d_labels <- format(d_breaks, digits = 2)
+
+  # Assemble and apply difference axis
+  my_sec_axis <- ggplot2::sec_axis(
+    trans = ~.-reference_value,
+    breaks = d_breaks,
+    labels = d_labels
+  )
+
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    position = "top",
+    sec.axis = my_sec_axis
+  )
+
+  # Remove the difference axis border
+  myplot <- myplot + ggplot2::theme(
+    axis.line.x.bottom = element_blank()
+  )
+
+  # Instead, draw line just from new lower to new upper
+  mydf <- data.frame(
+    x = new_lower + reference_value,
+    xend = new_upper + reference_value,
+    y = y_min -1,
+    yend = y_min -1
+  )
+
+  myplot <- myplot + ggplot2::geom_segment(
+    data = mydf,
+    ggplot2::aes(
+      x = x,
+      xend = xend,
+      y = y,
+      yend = yend
+    ),
+    colour = "black",
+    linetype = "solid"
+  )
+  myplot <- esci_plot_layers(myplot, "ref_difference_axis")
+
+  if (is.null(myplot$sec_axis_CIs)) {
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      name = NULL,
+      breaks = y_breaks,
+      labels = y_labels,
+      expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
+    )
+  } else {
+    myplot <- myplot + ggplot2::scale_y_continuous(
+      name = NULL,
+      breaks = y_breaks,
+      labels = y_labels,
+      sec.axis = myplot$sec_axis_CIs,
+      expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
+    )
+  }
+
+
+  return(myplot)
+
 }

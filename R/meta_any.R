@@ -500,7 +500,8 @@ After dropping any NA rows, current data has:
   properties <- list(
     conf_level = conf_level,
     data_type = "meta",
-    effect_size_name = effect_size_name
+    effect_size_name = effect_size_name,
+    contrast = contrast
   )
 
 

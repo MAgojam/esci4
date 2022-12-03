@@ -10,9 +10,9 @@ jamovipdifftwo(
   outcome_variable,
   grouping_variable,
   comparison_cases = " ",
-  comparison_n = " ",
+  comparison_not_cases = " ",
   reference_cases = " ",
-  reference_n = " ",
+  reference_not_cases = " ",
   case_label = "Sick",
   not_case_label = "Well",
   grouping_variable_level1 = "Treated",
@@ -49,9 +49,9 @@ jamovipdifftwo(
   fill_summary_reference = "#008DF9",
   fill_summary_comparison = "#009F81",
   fill_summary_difference = "black",
-  size_summary_reference = "1",
-  size_summary_comparison = "1",
-  size_summary_difference = "1",
+  size_summary_reference = "4",
+  size_summary_comparison = "4",
+  size_summary_difference = "4",
   alpha_summary_reference = "1",
   alpha_summary_comparison = "1",
   alpha_summary_difference = "1",
@@ -71,11 +71,11 @@ jamovipdifftwo(
 
 \item{comparison_cases}{.}
 
-\item{comparison_n}{.}
+\item{comparison_not_cases}{.}
 
 \item{reference_cases}{.}
 
-\item{reference_n}{.}
+\item{reference_not_cases}{.}
 
 \item{case_label}{.}
 

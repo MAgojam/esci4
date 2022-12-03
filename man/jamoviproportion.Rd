@@ -9,13 +9,34 @@ jamoviproportion(
   data,
   outcome_variable,
   cases = " ",
-  observations = " ",
+  not_cases = " ",
   case_label = "Affected",
   not_case_label = "Not Affected",
-  outcome_variable_name = "Outcome variable",
+  outcome_variable_name = "My outcome variable",
   count_NA = FALSE,
   conf_level = 95,
-  show_details = FALSE
+  show_details = FALSE,
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  null_color = "#A40122",
+  alpha = 0.05,
+  es_plot_width = "300",
+  es_plot_height = "400",
+  breaks = "auto",
+  ylab = "auto",
+  xlab = "auto",
+  axis.text.y = "14",
+  axis.title.y = "15",
+  axis.text.x = "14",
+  axis.title.x = "15",
+  error_layout = "none",
+  shape_summary = "circle filled",
+  color_summary = "#008DF9",
+  fill_summary = "#008DF9",
+  size_summary = "4",
+  alpha_summary = "1",
+  linetype_summary = "solid"
 )
 }
 \arguments{
@@ -27,7 +48,7 @@ jamoviproportion(
 
 \item{cases}{.}
 
-\item{observations}{.}
+\item{not_cases}{.}
 
 \item{case_label}{.}
 
@@ -40,6 +61,48 @@ jamoviproportion(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{null_color}{.}
+
+\item{alpha}{.}
+
+\item{es_plot_width}{.}
+
+\item{es_plot_height}{.}
+
+\item{breaks}{.}
+
+\item{ylab}{.}
+
+\item{xlab}{.}
+
+\item{axis.text.y}{.}
+
+\item{axis.title.y}{.}
+
+\item{axis.text.x}{.}
+
+\item{axis.title.x}{.}
+
+\item{error_layout}{.}
+
+\item{shape_summary}{.}
+
+\item{color_summary}{.}
+
+\item{fill_summary}{.}
+
+\item{size_summary}{.}
+
+\item{alpha_summary}{.}
+
+\item{linetype_summary}{.}
 }
 \value{
 A results object containing:
@@ -47,6 +110,10 @@ A results object containing:
 \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$magnitude_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

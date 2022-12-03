@@ -15,10 +15,47 @@ jamovipdiffpaired(
   not_cases_inconsistent = " ",
   case_label = "Sick",
   not_case_label = "Well",
-  comparison_measure_name = "Pretest",
-  reference_measure_name = "Posttest",
+  case_label_repeat = "Sick",
+  not_case_label_repeat = "Well",
+  comparison_measure_name = "Post-test",
+  reference_measure_name = "Pre-test",
   conf_level = 95,
-  show_details = FALSE
+  show_details = FALSE,
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  alpha = 0.05,
+  null_color = "#A40122",
+  es_plot_width = "400",
+  es_plot_height = "450",
+  ybreaks = "auto",
+  ylab = "auto",
+  xlab = "auto",
+  axis.text.y = "14",
+  axis.title.y = "15",
+  axis.text.x = "14",
+  axis.title.x = "15",
+  simple_contrast_labels = TRUE,
+  error_layout = "none",
+  difference_axis_breaks = "auto",
+  shape_summary_reference = "circle filled",
+  shape_summary_comparison = "circle filled",
+  shape_summary_difference = "triangle filled",
+  color_summary_reference = "#008DF9",
+  color_summary_comparison = "#009F81",
+  color_summary_difference = "black",
+  fill_summary_reference = "#008DF9",
+  fill_summary_comparison = "#009F81",
+  fill_summary_difference = "black",
+  size_summary_reference = "4",
+  size_summary_comparison = "4",
+  size_summary_difference = "4",
+  alpha_summary_reference = "1",
+  alpha_summary_comparison = "1",
+  alpha_summary_difference = "1",
+  linetype_summary_reference = "solid",
+  linetype_summary_comparison = "solid",
+  linetype_summary_difference = "solid"
 )
 }
 \arguments{
@@ -42,6 +79,10 @@ jamovipdiffpaired(
 
 \item{not_case_label}{.}
 
+\item{case_label_repeat}{.}
+
+\item{not_case_label_repeat}{.}
+
 \item{comparison_measure_name}{.}
 
 \item{reference_measure_name}{.}
@@ -49,6 +90,76 @@ jamovipdiffpaired(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{alpha}{.}
+
+\item{null_color}{.}
+
+\item{es_plot_width}{.}
+
+\item{es_plot_height}{.}
+
+\item{ybreaks}{.}
+
+\item{ylab}{.}
+
+\item{xlab}{.}
+
+\item{axis.text.y}{.}
+
+\item{axis.title.y}{.}
+
+\item{axis.text.x}{.}
+
+\item{axis.title.x}{.}
+
+\item{simple_contrast_labels}{.}
+
+\item{error_layout}{.}
+
+\item{difference_axis_breaks}{.}
+
+\item{shape_summary_reference}{.}
+
+\item{shape_summary_comparison}{.}
+
+\item{shape_summary_difference}{.}
+
+\item{color_summary_reference}{.}
+
+\item{color_summary_comparison}{.}
+
+\item{color_summary_difference}{.}
+
+\item{fill_summary_reference}{.}
+
+\item{fill_summary_comparison}{.}
+
+\item{fill_summary_difference}{.}
+
+\item{size_summary_reference}{.}
+
+\item{size_summary_comparison}{.}
+
+\item{size_summary_difference}{.}
+
+\item{alpha_summary_reference}{.}
+
+\item{alpha_summary_comparison}{.}
+
+\item{alpha_summary_difference}{.}
+
+\item{linetype_summary_reference}{.}
+
+\item{linetype_summary_comparison}{.}
+
+\item{linetype_summary_difference}{.}
 }
 \value{
 A results object containing:
@@ -57,7 +168,10 @@ A results object containing:
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
-\code{results$es_phi} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
