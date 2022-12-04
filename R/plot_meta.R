@@ -228,7 +228,7 @@ plot_meta <- function(
   # Axis
   # X axis labels and setup
   myplot <- myplot + ggplot2::scale_x_continuous(
-    name = estimate$properties$effect_size_name,
+    name = estimate$properties$effect_size_name_ggplot,
     position = "top",
   )
 
