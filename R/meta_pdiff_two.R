@@ -334,6 +334,11 @@ These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), col
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 
+  # Effect size labels
+  res$properties$effect_size_name <- "P_diff"
+  res$properties$effect_size_name_html <- "<i>P</i><sub>diff</sub>"
+  res$properties$effect_size_name_ggplot <- "italic(P)[diff]"
+
   return(res)
 }
 

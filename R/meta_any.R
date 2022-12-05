@@ -501,7 +501,10 @@ After dropping any NA rows, current data has:
     conf_level = conf_level,
     data_type = "meta",
     effect_size_name = effect_size_name,
-    contrast = contrast
+    contrast = contrast,
+    effect_size_name = "effect_size",
+    effect_size_name_html = "effect_size",
+    effect_size_name_ggplot = "effect_size"
   )
 
 

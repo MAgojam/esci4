@@ -235,6 +235,11 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 
+  # Effect size labels
+  res$properties$effect_size_name <- "r"
+  res$properties$effect_size_name_html <- "<i>r</i>"
+  res$properties$effect_size_name_ggplot <- "italic(r)"
+
   return(res)
 }
 
