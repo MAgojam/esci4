@@ -21,7 +21,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
               upper = 100,
               upper_inclusive = FALSE,
               my_value_name = "Confidence level"
-            )/100
+            )
 
             jamovi_set_confidence(tbl_raw_data, conf_level)
             jamovi_set_confidence(tbl_es_meta, conf_level)
@@ -69,6 +69,90 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          # Redo analysis
+          estimate <- jamovi_meta_mean(self)
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          myplot <- plot_meta(
+            estimate,
+            mark_zero = TRUE,
+            report_CIs = FALSE,
+            meta_diamond_height = .35,
+            ggtheme = ggtheme
+          )
+
+          if (!is.null(myplot$layers$raw_Reference_point)) {
+            myplot$layers$raw_Reference_point$aes_params$shape <- self$options$shape_raw_reference
+            myplot$layers$raw_Reference_point$aes_params$colour <- self$options$color_raw_reference
+            myplot$layers$raw_Reference_point$aes_params$fill <- self$options$fill_raw_reference
+            myplot$layers$raw_Reference_point$aes_params$alpha <- as.numeric(self$options$alpha_raw_reference)
+
+            myplot$layers$raw_Reference_error$aes_params$colour <- self$options$color_interval_reference
+            myplot$layers$raw_Reference_error$aes_params$size <- as.numeric(self$options$size_interval_reference)
+            myplot$layers$raw_Reference_error$aes_params$alpha <- as.numeric(self$options$alpha_interval_reference)
+            myplot$layers$raw_Reference_error$aes_params$linetype <- self$options$linetype_raw_reference
+          }
+          if (!is.null(myplot$layers$raw_Comparison_point)){
+            myplot$layers$raw_Comparison_point$aes_params$shape <- self$options$shape_raw_comparison
+            myplot$layers$raw_Comparison_point$aes_params$colour <- self$options$color_raw_comparison
+            myplot$layers$raw_Comparison_point$aes_params$fill <- self$options$fill_raw_comparison
+            myplot$layers$raw_Comparison_point$aes_params$alpha <- as.numeric(self$options$alpha_raw_comparison)
+
+            myplot$layers$raw_Comparison_error$aes_params$colour <- self$options$color_interval_comparison
+            myplot$layers$raw_Comparison_error$aes_params$size <- as.numeric(self$options$size_interval_comparison)
+            myplot$layers$raw_Comparison_error$aes_params$alpha <- as.numeric(self$options$alpha_interval_comparison)
+            myplot$layers$raw_Comparison_error$aes_params$linetype <- self$options$linetype_raw_comparison
+          }
+          if (!is.null(myplot$layers$raw_Unused_point)) {
+            myplot$layers$raw_Unused_point$aes_params$shape <- self$options$shape_raw_unused
+            myplot$layers$raw_Unused_point$aes_params$colour <- self$options$color_raw_unused
+            myplot$layers$raw_Unused_point$aes_params$fill <- self$options$fill_raw_unused
+            myplot$layers$raw_Unused_point$aes_params$alpha <- as.numeric(self$options$alpha_raw_unused)
+
+            myplot$layers$raw_Unused_error$aes_params$colour <- self$options$color_interval_unused
+            myplot$layers$raw_Unused_error$aes_params$size <- as.numeric(self$options$size_interval_unused)
+            myplot$layers$raw_Unused_error$aes_params$alpha <- as.numeric(self$options$alpha_interval_unused)
+            myplot$layers$raw_Unused_error$aes_params$linetype <- self$options$linetype_raw_unused
+          }
+
+          if (!is.null(myplot$layers$group_Overall_diamond)) {
+            myplot$layers$group_Overall_diamond$aes_params$colour <- self$options$color_summary_overall
+            myplot$layers$group_Overall_diamond$aes_params$fill <- self$options$fill_summary_overall
+            myplot$layers$group_Overall_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_overall)
+          }
+
+          if (!is.null(myplot$layers$group_Comparison_diamond)) {
+            myplot$layers$group_Comparison_diamond$aes_params$colour <- self$options$color_summary_comparison
+            myplot$layers$group_Comparison_diamond$aes_params$fill <- self$options$fill_summary_comparison
+            myplot$layers$group_Comparison_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
+          }
+
+          if (!is.null(myplot$layers$group_Reference_diamond)) {
+            myplot$layers$group_Reference_diamond$aes_params$colour <- self$options$color_summary_reference
+            myplot$layers$group_Reference_diamond$aes_params$fill <- self$options$fill_summary_reference
+            myplot$layers$group_Reference_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_reference)
+          }
+
+          if (!is.null(myplot$layers$group_Difference_diamond)) {
+            myplot$layers$group_Difference_diamond$aes_params$colour <- self$options$color_summary_difference
+            myplot$layers$group_Difference_diamond$aes_params$fill <- self$options$fill_summary_difference
+            myplot$layers$group_Difference_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_difference)
+          }
+
+          if (!is.null(myplot$layers$group_Unused_diamond)) {
+            myplot$layers$group_Unused_diamond$aes_params$colour <- self$options$color_summary_unused
+            myplot$layers$group_Unused_diamond$aes_params$fill <- self$options$fill_summary_unused
+            myplot$layers$group_Unused_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
+          }
+
+          print(myplot)
+          TRUE
 
         })
 )

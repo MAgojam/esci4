@@ -73,3 +73,273 @@ children:
         name: random_effects
       - type: CheckBox
         name: show_details
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: es_plot_width
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: es_plot_height
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: dmin
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: dmax
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: dbreaks
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: dlab
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: xlab
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.text.y
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.text.x
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: axis.title.x
+        format: string
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: shape_raw_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: shape_raw_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: shape_raw_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_raw_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_raw_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_raw_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_summary_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_summary_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_summary_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_summary_difference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_summary_overall
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_raw_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_raw_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_raw_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_summary_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_summary_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_summary_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_summary_difference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: fill_summary_overall
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: size_raw_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: size_raw_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: size_raw_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_raw_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_raw_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_raw_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_summary_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_summary_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_summary_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_summary_difference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_summary_overall
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: linetype_raw_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: linetype_raw_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: linetype_raw_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_interval_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_interval_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: color_interval_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: size_interval_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: size_interval_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: size_interval_unused
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_interval_reference
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_interval_comparison
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: alpha_interval_unused

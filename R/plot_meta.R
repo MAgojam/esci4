@@ -247,7 +247,7 @@ plot_meta <- function(
   # Y axis labels and setup
   all_labels <- c(
     rdata$label,
-    gdata[order(gdata$line), ]$moderator_variable_level,
+    gdata[order(-gdata$line), ]$moderator_variable_level,
     dlabel
   )
 
