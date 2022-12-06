@@ -390,9 +390,9 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   )
   res$properties$effect_size_name_ggplot <- switch(
     reported_effect_size,
-    "mean_difference" = "italic(M)[diff]",
-    "smd" = if(assume_equal_variance) "italic(d)[s.biased]" else "italic(d)[avg.biased]",
-    "smd_unbiased" = if(assume_equal_variance) "italic(d)[s]" else "italic(d)[avg]"
+    "mean_difference" = "*M*<sub>diff</sub>",
+    "smd" = if(assume_equal_variance) "*d*<sub>s</sub>" else "*d*<sub>avg</sub>",
+    "smd_unbiased" = if(assume_equal_variance) "*d*<sub>s.biased</sub>" else "*d*<sub>avg.biased</sub>"
   )
 
 

@@ -238,7 +238,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   # Effect size labels
   res$properties$effect_size_name <- "r"
   res$properties$effect_size_name_html <- "<i>r</i>"
-  res$properties$effect_size_name_ggplot <- "italic(r)"
+  res$properties$effect_size_name_ggplot <- "*r*"
 
   return(res)
 }

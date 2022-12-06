@@ -25,6 +25,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
             jamovi_set_confidence(tbl_raw_data, conf_level)
             jamovi_set_confidence(tbl_es_meta, conf_level)
+            jamovi_set_confidence(tbl_es_meta_difference, conf_level)
 
 
             moderator <- !is.null(self$options$moderator)
@@ -103,8 +104,8 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
               note = meta_note
             )
 
-            self$results$debug$setVisible(TRUE)
-            self$results$debug$setContent(print(estimate$es_meta))
+            # self$results$debug$setVisible(TRUE)
+            # self$results$debug$setContent(print(estimate$es_meta))
 
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
@@ -302,23 +303,30 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
 
           # Axis labels
+          xlab_replace <- paste(
+            estimate$properties$effect_size_name_ggplot,
+            ": ",
+            estimate$es_meta$effect_label[[1]],
+            sep = ""
+          )
+
           xlab <- jamovi_sanitize(
             my_value = self$options$xlab,
-            return_value = NULL,
-            na_ok = FALSE,
+            return_value = xlab_replace,
+            na_ok = TRUE,
             my_value_name = "X axis: Title"
           )
 
           dlab <- jamovi_sanitize(
             my_value = self$options$dlab,
             return_value = NULL,
-            na_ok = FALSE,
+            na_ok = TRUE,
             my_value_name = "Difference axis: Title"
           )
 
           # Apply axis labels and scales
           myplot <- myplot + ggplot2::scale_x_continuous(
-            name = "Something",
+            name = xlab,
             limits = c(xmin, xmax),
             n.breaks = xbreaks,
             position = "top"
@@ -327,10 +335,10 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
           if (!is.null(self$options$moderator)) {
             myplot <- esci_plot_difference_axis_x(
               myplot,
-              estimate$es_meta,
+              estimate$es_meta_difference,
               dlim = c(dmin, dmax),
               d_n.breaks = dbreaks,
-              xlab = xlab
+              d_lab = dlab
             )
           }
 
@@ -358,6 +366,14 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             names(axis.text.y),
             names(axis.text.x),
             names(axis.title.x),
+            names(xlab),
+            names(xmin),
+            names(xmax),
+            names(xbreaks),
+            names(dlab),
+            names(dmin),
+            names(dmax),
+            names(dbreaks),
             names(width),
             names(height)
           )

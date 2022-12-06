@@ -289,9 +289,9 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   )
   res$properties$effect_size_name_ggplot <- switch(
     reported_effect_size,
-    "mean_difference" = "Mean",
-    "smd" = "italic(d)[1]",
-    "smd_unbiased" = "italic(d)[1*.biased]"
+    "mean_difference" = "*M*",
+    "smd" = "*d*<sub>1</sub>",
+    "smd_unbiased" = "*d*<sub>1.biased</sub>"
   )
 
   return(res)

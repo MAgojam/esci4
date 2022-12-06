@@ -230,17 +230,23 @@ plot_meta <- function(
   # ----------------------------------------------
   # Axis
   # X axis labels and setup
+  xlab <- paste(
+    estimate$properties$effect_size_name_ggplot,
+    ": ",
+    estimate$es_meta$effect_label[[1]],
+    sep = ""
+  )
   myplot <- myplot + ggplot2::scale_x_continuous(
-    name = parse(text = estimate$properties$effect_size_name_ggplot),
+    name = xlab,
     position = "top"
   )
+  myplot$esci_xlab <- xlab
 
   # If needed, difference axis
   if (!is.null(estimate$es_meta_difference)) {
     myplot <- esci_plot_difference_axis_x(
       myplot,
-      estimate$es_meta_difference,
-      xlab = estimate$properties$effect_size_name_ggplot
+      estimate$es_meta_difference
     )
   }
 
@@ -271,7 +277,7 @@ plot_meta <- function(
       labels = all_CI_labels
     )
 
-    myplot$sec_axis_CIs <- sec_axis_CIs
+    myplot$esci_sec_axis_CIs <- sec_axis_CIs
 
     myplot <- myplot + ggplot2::scale_y_continuous(
       name = NULL,
@@ -295,7 +301,9 @@ plot_meta <- function(
   myplot <- myplot + ggplot2::theme(
     legend.position = "none",
     axis.line.y.right = element_blank(),
-    axis.ticks.y.right = element_blank()
+    axis.ticks.y.right = element_blank(),
+    axis.title.x.top = ggtext::element_markdown(),
+    axis.title.x.bottom = ggtext::element_markdown()
   )
 
   return(myplot)
@@ -308,7 +316,7 @@ esci_plot_difference_axis_x <- function(
     difference_table,
     dlim = c(NA, NA),
     d_n.breaks = NULL,
-    xlab = NULL
+    d_lab = NULL
 ) {
 
   # From debugging
@@ -362,24 +370,19 @@ esci_plot_difference_axis_x <- function(
 
   # Assemble and apply difference axis
   my_sec_axis <- ggplot2::sec_axis(
+    name = d_lab,
     trans = ~.-reference_value,
     breaks = d_breaks,
     labels = d_labels
   )
 
 
-  if (is.null(xlab)) {
-    myplot <- myplot + ggplot2::scale_x_continuous(
-      position = "top",
-      sec.axis = my_sec_axis
-    )
-  } else {
-    myplot <- myplot + ggplot2::scale_x_continuous(
-      position = "top",
-      name = parse(text = xlab),
-      sec.axis = my_sec_axis
-    )
-  }
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    position = "top",
+    name = myplot$esci_xlab,
+    sec.axis = my_sec_axis
+  )
+
 
   # Remove the difference axis border
   myplot <- myplot + ggplot2::theme(
@@ -407,7 +410,7 @@ esci_plot_difference_axis_x <- function(
   )
   myplot <- esci_plot_layers(myplot, "ref_difference_axis")
 
-  if (is.null(myplot$sec_axis_CIs)) {
+  if (is.null(myplot$esci_sec_axis_CIs)) {
     myplot <- myplot + ggplot2::scale_y_continuous(
       name = NULL,
       breaks = y_breaks,
@@ -419,7 +422,7 @@ esci_plot_difference_axis_x <- function(
       name = NULL,
       breaks = y_breaks,
       labels = y_labels,
-      sec.axis = myplot$sec_axis_CIs,
+      sec.axis = myplot$esci_sec_axis_CIs,
       expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
     )
   }

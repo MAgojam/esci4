@@ -99,18 +99,25 @@ items:
           visible: (show_details)
         - name: k
           type: integer
+          title: <i>k</i>
         - name: diamond_ratio
           type: number
+          title: Diamond ratio
         - name: diamond_ratio_LL
+          title: LL
           type: number
         - name: diamond_ratio_UL
           type: number
+          title: UL
         - name: I2
           type: number
+          title: <i>I</i><sup>2</sup>
         - name: I2_LL
           type: number
+          title: LL
         - name: I2_UL
           type: number
+          title: UL
         - name: FE_effect_size
           type: number
           title: Fixed effects effect size

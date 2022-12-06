@@ -1581,25 +1581,32 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(show_details)"),
                     list(
                         `name`="k", 
-                        `type`="integer"),
+                        `type`="integer", 
+                        `title`="<i>k</i>"),
                     list(
                         `name`="diamond_ratio", 
-                        `type`="number"),
+                        `type`="number", 
+                        `title`="Diamond ratio"),
                     list(
                         `name`="diamond_ratio_LL", 
+                        `title`="LL", 
                         `type`="number"),
                     list(
                         `name`="diamond_ratio_UL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `title`="UL"),
                     list(
                         `name`="I2", 
-                        `type`="number"),
+                        `type`="number", 
+                        `title`="<i>I</i><sup>2</sup>"),
                     list(
                         `name`="I2_LL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `title`="LL"),
                     list(
                         `name`="I2_UL", 
-                        `type`="number"),
+                        `type`="number", 
+                        `title`="UL"),
                     list(
                         `name`="FE_effect_size", 
                         `type`="number", 
