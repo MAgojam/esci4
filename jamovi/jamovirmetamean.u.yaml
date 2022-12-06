@@ -194,87 +194,333 @@ children:
             stretchFactor: 1
             collapsed: true
             children:
+              - type: Label
+                label: '<b>Reference</b>'
+                cell:
+                  column: 1
+                  row: 1
+              - type: Label
+                label: '<b>Comparison</b>'
+                cell:
+                  column: 2
+                  row: 1
+              - type: Label
+                label: '<b>Unused</b>'
+                cell:
+                  column: 3
+                  row: 1
+              - type: Label
+                label: '<b>Study Markers</b>'
+                cell:
+                  column: 0
+                  row: 2
+              - type: Label
+                label: '<span style="font-weight:normal">Shape</span>'
+                cell:
+                  column: 0
+                  row: 3
               - type: ComboBox
                 name: shape_raw_reference
+                cell:
+                  column: 1
+                  row: 3
               - type: ComboBox
                 name: shape_raw_comparison
+                cell:
+                  column: 2
+                  row: 3
               - type: ComboBox
                 name: shape_raw_unused
-              - type: ComboBox
-                name: color_raw_reference
-              - type: ComboBox
-                name: color_raw_comparison
-              - type: ComboBox
-                name: color_raw_unused
-              - type: ComboBox
-                name: color_summary_reference
-              - type: ComboBox
-                name: color_summary_comparison
-              - type: ComboBox
-                name: color_summary_unused
-              - type: ComboBox
-                name: color_summary_difference
-              - type: ComboBox
-                name: color_summary_overall
-              - type: ComboBox
-                name: fill_raw_reference
-              - type: ComboBox
-                name: fill_raw_comparison
-              - type: ComboBox
-                name: fill_raw_unused
-              - type: ComboBox
-                name: fill_summary_reference
-              - type: ComboBox
-                name: fill_summary_comparison
-              - type: ComboBox
-                name: fill_summary_unused
-              - type: ComboBox
-                name: fill_summary_difference
-              - type: ComboBox
-                name: fill_summary_overall
+                cell:
+                  column: 3
+                  row: 3
+              - type: Label
+                label: '<span style="font-weight:normal">Size</span>'
+                cell:
+                  column: 0
+                  row: 4
               - type: ComboBox
                 name: size_raw_reference
+                cell:
+                  column: 1
+                  row: 4
               - type: ComboBox
                 name: size_raw_comparison
+                cell:
+                  column: 2
+                  row: 4
               - type: ComboBox
                 name: size_raw_unused
+                cell:
+                  column: 3
+                  row: 4
+              - type: Label
+                label: '<span style="font-weight:normal">Outline</span>'
+                cell:
+                  column: 0
+                  row: 5
+              - type: ComboBox
+                name: color_raw_reference
+                cell:
+                  column: 1
+                  row: 5
+              - type: ComboBox
+                name: color_raw_comparison
+                cell:
+                  column: 2
+                  row: 5
+              - type: ComboBox
+                name: color_raw_unused
+                cell:
+                  column: 3
+                  row: 5
+              - type: Label
+                label: '<span style="font-weight:normal">Fill</span>'
+                cell:
+                  column: 0
+                  row: 6
+              - type: ComboBox
+                name: fill_raw_reference
+                cell:
+                  column: 1
+                  row: 6
+              - type: ComboBox
+                name: fill_raw_comparison
+                cell:
+                  column: 2
+                  row: 6
+              - type: ComboBox
+                name: fill_raw_unused
+                cell:
+                  column: 3
+                  row: 6
+              - type: Label
+                label: '<span style="font-weight:normal">Transparency</span>'
+                cell:
+                  column: 0
+                  row: 7
               - type: ComboBox
                 name: alpha_raw_reference
+                cell:
+                  column: 1
+                  row: 7
               - type: ComboBox
                 name: alpha_raw_comparison
+                cell:
+                  column: 2
+                  row: 7
               - type: ComboBox
                 name: alpha_raw_unused
-              - type: ComboBox
-                name: alpha_summary_reference
-              - type: ComboBox
-                name: alpha_summary_comparison
-              - type: ComboBox
-                name: alpha_summary_unused
-              - type: ComboBox
-                name: alpha_summary_difference
-              - type: ComboBox
-                name: alpha_summary_overall
+                cell:
+                  column: 3
+                  row: 7
+              - type: Label
+                label: '<b>Study CIs</b>'
+                cell:
+                  column: 0
+                  row: 8
+              - type: Label
+                label: '<span style="font-weight:normal">Style</span>'
+                cell:
+                  column: 0
+                  row: 9
               - type: ComboBox
                 name: linetype_raw_reference
+                cell:
+                  column: 1
+                  row: 9
               - type: ComboBox
                 name: linetype_raw_comparison
+                cell:
+                  column: 2
+                  row: 9
               - type: ComboBox
                 name: linetype_raw_unused
-              - type: ComboBox
-                name: color_interval_reference
-              - type: ComboBox
-                name: color_interval_comparison
-              - type: ComboBox
-                name: color_interval_unused
+                cell:
+                  column: 3
+                  row: 9
+              - type: Label
+                label: '<span style="font-weight:normal">Thickness</span>'
+                cell:
+                  column: 0
+                  row: 10
               - type: ComboBox
                 name: size_interval_reference
+                cell:
+                  column: 1
+                  row: 10
               - type: ComboBox
                 name: size_interval_comparison
+                cell:
+                  column: 2
+                  row: 10
               - type: ComboBox
                 name: size_interval_unused
+                cell:
+                  column: 3
+                  row: 10
+              - type: Label
+                label: '<span style="font-weight:normal">Color</span>'
+                cell:
+                  column: 0
+                  row: 11
+              - type: ComboBox
+                name: color_interval_reference
+                cell:
+                  column: 1
+                  row: 11
+              - type: ComboBox
+                name: color_interval_comparison
+                cell:
+                  column: 2
+                  row: 11
+              - type: ComboBox
+                name: color_interval_unused
+                cell:
+                  column: 3
+                  row: 11
+              - type: Label
+                label: '<span style="font-weight:normal">Transparency</span>'
+                cell:
+                  column: 0
+                  row: 12
               - type: ComboBox
                 name: alpha_interval_reference
+                cell:
+                  column: 1
+                  row: 12
               - type: ComboBox
                 name: alpha_interval_comparison
+                cell:
+                  column: 2
+                  row: 12
               - type: ComboBox
                 name: alpha_interval_unused
+                cell:
+                  column: 3
+                  row: 12
+              - type: Label
+                label: ' '
+                cell:
+                  column: 0
+                  row: 13
+              - type: Label
+                label: '<b>Diamonds</b>'
+                cell:
+                  column: 0
+                  row: 14
+              - type: Label
+                label: Outline
+                cell:
+                  column: 1
+                  row: 15
+              - type: Label
+                label: Fill
+                cell:
+                  column: 2
+                  row: 15
+              - type: Label
+                label: Transparency
+                cell:
+                  column: 3
+                  row: 15
+              - type: Label
+                label: '<span style="font-weight:normal">Overall</span>'
+                cell:
+                  column: 0
+                  row: 16
+              - type: ComboBox
+                name: color_summary_overall
+                cell:
+                  column: 1
+                  row: 16
+              - type: ComboBox
+                name: fill_summary_overall
+                cell:
+                  column: 2
+                  row: 16
+              - type: ComboBox
+                name: alpha_summary_overall
+                cell:
+                  column: 3
+                  row: 16
+              - type: Label
+                label: '<span style="font-weight:normal">Reference</span>'
+                cell:
+                  column: 0
+                  row: 17
+              - type: ComboBox
+                name: color_summary_reference
+                cell:
+                  column: 1
+                  row: 17
+              - type: ComboBox
+                name: fill_summary_reference
+                cell:
+                  column: 2
+                  row: 17
+              - type: ComboBox
+                name: alpha_summary_reference
+                cell:
+                  column: 3
+                  row: 17
+              - type: Label
+                label: '<span style="font-weight:normal">Comparison</span>'
+                cell:
+                  column: 0
+                  row: 18
+              - type: ComboBox
+                name: color_summary_comparison
+                cell:
+                  column: 1
+                  row: 18
+              - type: ComboBox
+                name: fill_summary_comparison
+                cell:
+                  column: 2
+                  row: 18
+              - type: ComboBox
+                name: alpha_summary_comparison
+                cell:
+                  column: 3
+                  row: 18
+              - type: Label
+                label: '<span style="font-weight:normal">Difference</span>'
+                cell:
+                  column: 0
+                  row: 19
+              - type: ComboBox
+                name: color_summary_difference
+                cell:
+                  column: 1
+                  row: 19
+              - type: ComboBox
+                name: fill_summary_difference
+                cell:
+                  column: 2
+                  row: 19
+              - type: ComboBox
+                name: alpha_summary_difference
+                cell:
+                  column: 3
+                  row: 19
+              - type: Label
+                label: '<span style="font-weight:normal">Unused</span>'
+                cell:
+                  column: 0
+                  row: 20
+              - type: ComboBox
+                name: color_summary_unused
+                cell:
+                  column: 1
+                  row: 20
+              - type: ComboBox
+                name: fill_summary_unused
+                cell:
+                  column: 2
+                  row: 20
+              - type: ComboBox
+                name: alpha_summary_unused
+                cell:
+                  column: 3
+                  row: 20

@@ -17,8 +17,8 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             reported_effect_size = "mean_difference",
             random_effects = "random_effects",
             show_details = FALSE,
-            es_plot_width = "500",
-            es_plot_height = "400",
+            es_plot_width = "600",
+            es_plot_height = "750",
             axis.text.y = "14",
             report_CIs = FALSE,
             meta_diamond_height = ".35",
@@ -33,27 +33,27 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             dmin = "auto",
             dmax = "auto",
             dbreaks = "auto",
-            shape_raw_reference = "square filled",
-            shape_raw_comparison = "square filled",
+            shape_raw_reference = "circle filled",
+            shape_raw_comparison = "circle filled",
             shape_raw_unused = "circle filled",
             color_raw_reference = "#008DF9",
             color_raw_comparison = "#009F81",
-            color_raw_unused = "#009F81",
+            color_raw_unused = "gray65",
             color_summary_reference = "#008DF9",
             color_summary_comparison = "#009F81",
-            color_summary_unused = "#009F81",
+            color_summary_unused = "gray75",
             color_summary_difference = "black",
-            color_summary_overall = "black",
-            fill_raw_reference = "NA",
-            fill_raw_comparison = "NA",
-            fill_raw_unused = "NA",
+            color_summary_overall = "white",
+            fill_raw_reference = "#008DF9",
+            fill_raw_comparison = "#009F81",
+            fill_raw_unused = "gray65",
             fill_summary_reference = "#008DF9",
             fill_summary_comparison = "#009F81",
-            fill_summary_unused = "#009F81",
+            fill_summary_unused = "gray75",
             fill_summary_difference = "black",
-            fill_summary_overall = "#009F81",
-            size_raw_reference = "2",
-            size_raw_comparison = "2",
+            fill_summary_overall = "white",
+            size_raw_reference = "4",
+            size_raw_comparison = "4",
             size_raw_unused = "2",
             alpha_raw_reference = "1",
             alpha_raw_comparison = "1",
@@ -69,9 +69,9 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             color_interval_reference = "black",
             color_interval_comparison = "black",
             color_interval_unused = "black",
-            size_interval_reference = "3",
-            size_interval_comparison = "3",
-            size_interval_unused = "3",
+            size_interval_reference = ".50",
+            size_interval_comparison = ".50",
+            size_interval_unused = ".50",
             alpha_interval_reference = "1",
             alpha_interval_comparison = "1",
             alpha_interval_unused = "1", ...) {
@@ -136,11 +136,11 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="500")
+                default="600")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
-                default="400")
+                default="750")
             private$..axis.text.y <- jmvcore::OptionString$new(
                 "axis.text.y",
                 axis.text.y,
@@ -200,7 +200,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..shape_raw_reference <- jmvcore::OptionList$new(
                 "shape_raw_reference",
                 shape_raw_reference,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -209,7 +209,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..shape_raw_comparison <- jmvcore::OptionList$new(
                 "shape_raw_comparison",
                 shape_raw_comparison,
-                default="square filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -311,7 +311,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..color_raw_unused <- jmvcore::OptionList$new(
                 "color_raw_unused",
                 color_raw_unused,
-                default="#009F81",
+                default="gray65",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -437,7 +437,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..color_summary_unused <- jmvcore::OptionList$new(
                 "color_summary_unused",
                 color_summary_unused,
-                default="#009F81",
+                default="gray75",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -521,7 +521,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..color_summary_overall <- jmvcore::OptionList$new(
                 "color_summary_overall",
                 color_summary_overall,
-                default="black",
+                default="white",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -563,7 +563,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..fill_raw_reference <- jmvcore::OptionList$new(
                 "fill_raw_reference",
                 fill_raw_reference,
-                default="NA",
+                default="#008DF9",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -605,7 +605,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..fill_raw_comparison <- jmvcore::OptionList$new(
                 "fill_raw_comparison",
                 fill_raw_comparison,
-                default="NA",
+                default="#009F81",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -647,7 +647,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..fill_raw_unused <- jmvcore::OptionList$new(
                 "fill_raw_unused",
                 fill_raw_unused,
-                default="NA",
+                default="gray65",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -773,7 +773,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..fill_summary_unused <- jmvcore::OptionList$new(
                 "fill_summary_unused",
                 fill_summary_unused,
-                default="#009F81",
+                default="gray75",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -857,7 +857,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..fill_summary_overall <- jmvcore::OptionList$new(
                 "fill_summary_overall",
                 fill_summary_overall,
-                default="#009F81",
+                default="white",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -899,7 +899,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..size_raw_reference <- jmvcore::OptionList$new(
                 "size_raw_reference",
                 size_raw_reference,
-                default="2",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -910,7 +910,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..size_raw_comparison <- jmvcore::OptionList$new(
                 "size_raw_comparison",
                 size_raw_comparison,
-                default="2",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -1168,8 +1168,11 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..size_interval_reference <- jmvcore::OptionList$new(
                 "size_interval_reference",
                 size_interval_reference,
-                default="3",
+                default=".50",
                 options=list(
+                    ".25",
+                    ".50",
+                    ".75",
                     "1",
                     "2",
                     "3",
@@ -1181,8 +1184,11 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..size_interval_comparison <- jmvcore::OptionList$new(
                 "size_interval_comparison",
                 size_interval_comparison,
-                default="3",
+                default=".50",
                 options=list(
+                    ".25",
+                    ".50",
+                    ".75",
                     "1",
                     "2",
                     "3",
@@ -1194,8 +1200,11 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..size_interval_unused <- jmvcore::OptionList$new(
                 "size_interval_unused",
                 size_interval_unused,
-                default="3",
+                default=".50",
                 options=list(
+                    ".25",
+                    ".50",
+                    ".75",
                     "1",
                     "2",
                     "3",
@@ -1809,8 +1818,8 @@ jamovirmetamean <- function(
     reported_effect_size = "mean_difference",
     random_effects = "random_effects",
     show_details = FALSE,
-    es_plot_width = "500",
-    es_plot_height = "400",
+    es_plot_width = "600",
+    es_plot_height = "750",
     axis.text.y = "14",
     report_CIs = FALSE,
     meta_diamond_height = ".35",
@@ -1825,27 +1834,27 @@ jamovirmetamean <- function(
     dmin = "auto",
     dmax = "auto",
     dbreaks = "auto",
-    shape_raw_reference = "square filled",
-    shape_raw_comparison = "square filled",
+    shape_raw_reference = "circle filled",
+    shape_raw_comparison = "circle filled",
     shape_raw_unused = "circle filled",
     color_raw_reference = "#008DF9",
     color_raw_comparison = "#009F81",
-    color_raw_unused = "#009F81",
+    color_raw_unused = "gray65",
     color_summary_reference = "#008DF9",
     color_summary_comparison = "#009F81",
-    color_summary_unused = "#009F81",
+    color_summary_unused = "gray75",
     color_summary_difference = "black",
-    color_summary_overall = "black",
-    fill_raw_reference = "NA",
-    fill_raw_comparison = "NA",
-    fill_raw_unused = "NA",
+    color_summary_overall = "white",
+    fill_raw_reference = "#008DF9",
+    fill_raw_comparison = "#009F81",
+    fill_raw_unused = "gray65",
     fill_summary_reference = "#008DF9",
     fill_summary_comparison = "#009F81",
-    fill_summary_unused = "#009F81",
+    fill_summary_unused = "gray75",
     fill_summary_difference = "black",
-    fill_summary_overall = "#009F81",
-    size_raw_reference = "2",
-    size_raw_comparison = "2",
+    fill_summary_overall = "white",
+    size_raw_reference = "4",
+    size_raw_comparison = "4",
     size_raw_unused = "2",
     alpha_raw_reference = "1",
     alpha_raw_comparison = "1",
@@ -1861,9 +1870,9 @@ jamovirmetamean <- function(
     color_interval_reference = "black",
     color_interval_comparison = "black",
     color_interval_unused = "black",
-    size_interval_reference = "3",
-    size_interval_comparison = "3",
-    size_interval_unused = "3",
+    size_interval_reference = ".50",
+    size_interval_comparison = ".50",
+    size_interval_unused = ".50",
     alpha_interval_reference = "1",
     alpha_interval_comparison = "1",
     alpha_interval_unused = "1") {

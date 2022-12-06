@@ -75,12 +75,12 @@ options:
     - name: es_plot_width
       title: Width
       type: String
-      default: '500'
+      default: '600'
 
     - name: es_plot_height
       title: Height
       type: String
-      default: '400'
+      default: '750'
 
     - name: axis.text.y
       title: 'Tick font size'
@@ -154,7 +154,7 @@ options:
 
     - name: shape_raw_reference
       type: List
-      default: 'square filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -167,7 +167,7 @@ options:
 
     - name: shape_raw_comparison
       type: List
-      default: 'square filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -351,7 +351,7 @@ options:
 
     - name: color_raw_unused
       type: List
-      default: '#009F81'
+      default: 'gray65'
       options:
          - name: 'black'
            title: 'Black'
@@ -588,7 +588,7 @@ options:
 
     - name: color_summary_unused
       type: List
-      default: '#009F81'
+      default: 'gray75'
       options:
          - name: 'black'
            title: 'Black'
@@ -746,7 +746,7 @@ options:
 
     - name: color_summary_overall
       type: List
-      default: 'black'
+      default: 'white'
       options:
          - name: 'black'
            title: 'Black'
@@ -825,7 +825,7 @@ options:
 
     - name: fill_raw_reference
       type: List
-      default: 'NA'
+      default: '#008DF9'
       options:
          - name: 'black'
            title: 'Black'
@@ -904,7 +904,7 @@ options:
 
     - name: fill_raw_comparison
       type: List
-      default: 'NA'
+      default: '#009F81'
       options:
          - name: 'black'
            title: 'Black'
@@ -983,7 +983,7 @@ options:
 
     - name: fill_raw_unused
       type: List
-      default: 'NA'
+      default: 'gray65'
       options:
          - name: 'black'
            title: 'Black'
@@ -1220,7 +1220,7 @@ options:
 
     - name: fill_summary_unused
       type: List
-      default: '#009F81'
+      default: 'gray75'
       options:
          - name: 'black'
            title: 'Black'
@@ -1378,7 +1378,7 @@ options:
 
     - name: fill_summary_overall
       type: List
-      default: '#009F81'
+      default: 'white'
       options:
          - name: 'black'
            title: 'Black'
@@ -1457,7 +1457,7 @@ options:
 
     - name: size_raw_reference
       type: List
-      default: '2'
+      default: '4'
       options:
         - name: '1'
           title: '1'
@@ -1474,7 +1474,7 @@ options:
 
     - name: size_raw_comparison
       type: List
-      default: '2'
+      default: '4'
       options:
         - name: '1'
           title: '1'
@@ -1910,8 +1910,14 @@ options:
 
     - name: size_interval_reference
       type: List
-      default: '3'
+      default: '.50'
       options:
+        - name: '.25'
+          title: '.25'
+        - name: '.50'
+          title: '.50'
+        - name: '.75'
+          title: '.75'
         - name: '1'
           title: '1'
         - name: '2'
@@ -1931,8 +1937,14 @@ options:
 
     - name: size_interval_comparison
       type: List
-      default: '3'
+      default: '.50'
       options:
+        - name: '.25'
+          title: '.25'
+        - name: '.50'
+          title: '.50'
+        - name: '.75'
+          title: '.75'
         - name: '1'
           title: '1'
         - name: '2'
@@ -1952,8 +1964,14 @@ options:
 
     - name: size_interval_unused
       type: List
-      default: '3'
+      default: '.50'
       options:
+        - name: '.25'
+          title: '.25'
+        - name: '.50'
+          title: '.50'
+        - name: '.75'
+          title: '.75'
         - name: '1'
           title: '1'
         - name: '2'

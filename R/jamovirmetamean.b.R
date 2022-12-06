@@ -37,7 +37,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
             width <- jamovi_sanitize(
               my_value = self$options$es_plot_width,
-              return_value = 500,
+              return_value = 600,
               convert_to_number = TRUE,
               lower = 10,
               lower_inclusive = TRUE,
@@ -46,7 +46,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
             height <- jamovi_sanitize(
               my_value = self$options$es_plot_height,
-              return_value = 400,
+              return_value = 750,
               convert_to_number = TRUE,
               lower = 176,
               lower_inclusive = TRUE,
@@ -344,7 +344,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
-            return_value = 500,
+            return_value = 600,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -353,7 +353,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
           )
           height <- jamovi_sanitize(
             my_value = self$options$es_plot_height,
-            return_value = 400,
+            return_value = 750,
             convert_to_number = TRUE,
             lower = 176,
             lower_inclusive = TRUE,
