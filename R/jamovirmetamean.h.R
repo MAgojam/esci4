@@ -11,22 +11,28 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             ns = NULL,
             labels = NULL,
             moderator = NULL,
-            reference_mean = "0",
-            effect_label = "My effect",
-            reported_effect_size = "mean_difference",
             conf_level = 95,
-            random_effects = TRUE,
+            effect_label = "My effect",
+            reference_mean = "0",
+            reported_effect_size = "mean_difference",
+            random_effects = "random_effects",
             show_details = FALSE,
-            es_plot_width = "600",
+            es_plot_width = "500",
             es_plot_height = "400",
+            axis.text.y = "14",
+            report_CIs = FALSE,
+            meta_diamond_height = ".35",
+            xlab = "auto",
+            xmin = "auto",
+            xmax = "auto",
+            xbreaks = "auto",
+            mark_zero = TRUE,
+            axis.text.x = "14",
+            axis.title.x = "15",
+            dlab = "auto",
             dmin = "auto",
             dmax = "auto",
             dbreaks = "auto",
-            dlab = "auto",
-            xlab = "auto",
-            axis.text.y = "14",
-            axis.text.x = "14",
-            axis.title.x = "15",
             shape_raw_reference = "square filled",
             shape_raw_comparison = "square filled",
             shape_raw_unused = "circle filled",
@@ -97,14 +103,18 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..moderator <- jmvcore::OptionVariable$new(
                 "moderator",
                 moderator)
-            private$..reference_mean <- jmvcore::OptionString$new(
-                "reference_mean",
-                reference_mean,
-                default="0")
+            private$..conf_level <- jmvcore::OptionNumber$new(
+                "conf_level",
+                conf_level,
+                default=95)
             private$..effect_label <- jmvcore::OptionString$new(
                 "effect_label",
                 effect_label,
                 default="My effect")
+            private$..reference_mean <- jmvcore::OptionString$new(
+                "reference_mean",
+                reference_mean,
+                default="0")
             private$..reported_effect_size <- jmvcore::OptionList$new(
                 "reported_effect_size",
                 reported_effect_size,
@@ -112,14 +122,13 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 options=list(
                     "mean_difference",
                     "smd"))
-            private$..conf_level <- jmvcore::OptionNumber$new(
-                "conf_level",
-                conf_level,
-                default=95)
-            private$..random_effects <- jmvcore::OptionBool$new(
+            private$..random_effects <- jmvcore::OptionList$new(
                 "random_effects",
                 random_effects,
-                default=TRUE)
+                default="random_effects",
+                options=list(
+                    "random_effects",
+                    "fixed_effects"))
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
@@ -127,11 +136,55 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="600")
+                default="500")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
                 default="400")
+            private$..axis.text.y <- jmvcore::OptionString$new(
+                "axis.text.y",
+                axis.text.y,
+                default="14")
+            private$..report_CIs <- jmvcore::OptionBool$new(
+                "report_CIs",
+                report_CIs,
+                default=FALSE)
+            private$..meta_diamond_height <- jmvcore::OptionString$new(
+                "meta_diamond_height",
+                meta_diamond_height,
+                default=".35")
+            private$..xlab <- jmvcore::OptionString$new(
+                "xlab",
+                xlab,
+                default="auto")
+            private$..xmin <- jmvcore::OptionString$new(
+                "xmin",
+                xmin,
+                default="auto")
+            private$..xmax <- jmvcore::OptionString$new(
+                "xmax",
+                xmax,
+                default="auto")
+            private$..xbreaks <- jmvcore::OptionString$new(
+                "xbreaks",
+                xbreaks,
+                default="auto")
+            private$..mark_zero <- jmvcore::OptionBool$new(
+                "mark_zero",
+                mark_zero,
+                default=TRUE)
+            private$..axis.text.x <- jmvcore::OptionString$new(
+                "axis.text.x",
+                axis.text.x,
+                default="14")
+            private$..axis.title.x <- jmvcore::OptionString$new(
+                "axis.title.x",
+                axis.title.x,
+                default="15")
+            private$..dlab <- jmvcore::OptionString$new(
+                "dlab",
+                dlab,
+                default="auto")
             private$..dmin <- jmvcore::OptionString$new(
                 "dmin",
                 dmin,
@@ -144,26 +197,6 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 "dbreaks",
                 dbreaks,
                 default="auto")
-            private$..dlab <- jmvcore::OptionString$new(
-                "dlab",
-                dlab,
-                default="auto")
-            private$..xlab <- jmvcore::OptionString$new(
-                "xlab",
-                xlab,
-                default="auto")
-            private$..axis.text.y <- jmvcore::OptionString$new(
-                "axis.text.y",
-                axis.text.y,
-                default="14")
-            private$..axis.text.x <- jmvcore::OptionString$new(
-                "axis.text.x",
-                axis.text.x,
-                default="14")
-            private$..axis.title.x <- jmvcore::OptionString$new(
-                "axis.title.x",
-                axis.title.x,
-                default="15")
             private$..shape_raw_reference <- jmvcore::OptionList$new(
                 "shape_raw_reference",
                 shape_raw_reference,
@@ -1207,22 +1240,28 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..ns)
             self$.addOption(private$..labels)
             self$.addOption(private$..moderator)
-            self$.addOption(private$..reference_mean)
-            self$.addOption(private$..effect_label)
-            self$.addOption(private$..reported_effect_size)
             self$.addOption(private$..conf_level)
+            self$.addOption(private$..effect_label)
+            self$.addOption(private$..reference_mean)
+            self$.addOption(private$..reported_effect_size)
             self$.addOption(private$..random_effects)
             self$.addOption(private$..show_details)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..axis.text.y)
+            self$.addOption(private$..report_CIs)
+            self$.addOption(private$..meta_diamond_height)
+            self$.addOption(private$..xlab)
+            self$.addOption(private$..xmin)
+            self$.addOption(private$..xmax)
+            self$.addOption(private$..xbreaks)
+            self$.addOption(private$..mark_zero)
+            self$.addOption(private$..axis.text.x)
+            self$.addOption(private$..axis.title.x)
+            self$.addOption(private$..dlab)
             self$.addOption(private$..dmin)
             self$.addOption(private$..dmax)
             self$.addOption(private$..dbreaks)
-            self$.addOption(private$..dlab)
-            self$.addOption(private$..xlab)
-            self$.addOption(private$..axis.text.y)
-            self$.addOption(private$..axis.text.x)
-            self$.addOption(private$..axis.title.x)
             self$.addOption(private$..shape_raw_reference)
             self$.addOption(private$..shape_raw_comparison)
             self$.addOption(private$..shape_raw_unused)
@@ -1272,22 +1311,28 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ns = function() private$..ns$value,
         labels = function() private$..labels$value,
         moderator = function() private$..moderator$value,
-        reference_mean = function() private$..reference_mean$value,
-        effect_label = function() private$..effect_label$value,
-        reported_effect_size = function() private$..reported_effect_size$value,
         conf_level = function() private$..conf_level$value,
+        effect_label = function() private$..effect_label$value,
+        reference_mean = function() private$..reference_mean$value,
+        reported_effect_size = function() private$..reported_effect_size$value,
         random_effects = function() private$..random_effects$value,
         show_details = function() private$..show_details$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
+        axis.text.y = function() private$..axis.text.y$value,
+        report_CIs = function() private$..report_CIs$value,
+        meta_diamond_height = function() private$..meta_diamond_height$value,
+        xlab = function() private$..xlab$value,
+        xmin = function() private$..xmin$value,
+        xmax = function() private$..xmax$value,
+        xbreaks = function() private$..xbreaks$value,
+        mark_zero = function() private$..mark_zero$value,
+        axis.text.x = function() private$..axis.text.x$value,
+        axis.title.x = function() private$..axis.title.x$value,
+        dlab = function() private$..dlab$value,
         dmin = function() private$..dmin$value,
         dmax = function() private$..dmax$value,
         dbreaks = function() private$..dbreaks$value,
-        dlab = function() private$..dlab$value,
-        xlab = function() private$..xlab$value,
-        axis.text.y = function() private$..axis.text.y$value,
-        axis.text.x = function() private$..axis.text.x$value,
-        axis.title.x = function() private$..axis.title.x$value,
         shape_raw_reference = function() private$..shape_raw_reference$value,
         shape_raw_comparison = function() private$..shape_raw_comparison$value,
         shape_raw_unused = function() private$..shape_raw_unused$value,
@@ -1336,22 +1381,28 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..ns = NA,
         ..labels = NA,
         ..moderator = NA,
-        ..reference_mean = NA,
-        ..effect_label = NA,
-        ..reported_effect_size = NA,
         ..conf_level = NA,
+        ..effect_label = NA,
+        ..reference_mean = NA,
+        ..reported_effect_size = NA,
         ..random_effects = NA,
         ..show_details = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
+        ..axis.text.y = NA,
+        ..report_CIs = NA,
+        ..meta_diamond_height = NA,
+        ..xlab = NA,
+        ..xmin = NA,
+        ..xmax = NA,
+        ..xbreaks = NA,
+        ..mark_zero = NA,
+        ..axis.text.x = NA,
+        ..axis.title.x = NA,
+        ..dlab = NA,
         ..dmin = NA,
         ..dmax = NA,
         ..dbreaks = NA,
-        ..dlab = NA,
-        ..xlab = NA,
-        ..axis.text.y = NA,
-        ..axis.text.x = NA,
-        ..axis.title.x = NA,
         ..shape_raw_reference = NA,
         ..shape_raw_comparison = NA,
         ..shape_raw_unused = NA,
@@ -1444,7 +1495,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
-                        `title`="<i>d</i><sub>1 - corrected</sub>", 
+                        `title`="<i>d</i><sub>1</sub>", 
                         `visible`="(reported_effect_size == \"smd\")"),
                     list(
                         `name`="LL", 
@@ -1513,7 +1564,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
-                        `title`="<i>d</i><sub>1 - corrected</sub>", 
+                        `title`="<i>d</i><sub>1</sub>", 
                         `visible`="(reported_effect_size == \"smd\")"),
                     list(
                         `name`="LL", 
@@ -1598,7 +1649,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
-                        `title`="<i>d</i><sub>1 - corrected</sub>", 
+                        `title`="<i>d</i><sub>1</sub>", 
                         `visible`="(reported_effect_size == \"smd\")"),
                     list(
                         `name`="LL", 
@@ -1656,22 +1707,28 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param ns .
 #' @param labels .
 #' @param moderator .
-#' @param reference_mean .
-#' @param effect_label .
-#' @param reported_effect_size .
 #' @param conf_level .
+#' @param effect_label .
+#' @param reference_mean .
+#' @param reported_effect_size .
 #' @param random_effects .
 #' @param show_details .
 #' @param es_plot_width .
 #' @param es_plot_height .
+#' @param axis.text.y .
+#' @param report_CIs .
+#' @param meta_diamond_height .
+#' @param xlab .
+#' @param xmin .
+#' @param xmax .
+#' @param xbreaks .
+#' @param mark_zero .
+#' @param axis.text.x .
+#' @param axis.title.x .
+#' @param dlab .
 #' @param dmin .
 #' @param dmax .
 #' @param dbreaks .
-#' @param dlab .
-#' @param xlab .
-#' @param axis.text.y .
-#' @param axis.text.x .
-#' @param axis.title.x .
 #' @param shape_raw_reference .
 #' @param shape_raw_comparison .
 #' @param shape_raw_unused .
@@ -1739,22 +1796,28 @@ jamovirmetamean <- function(
     ns,
     labels,
     moderator,
-    reference_mean = "0",
-    effect_label = "My effect",
-    reported_effect_size = "mean_difference",
     conf_level = 95,
-    random_effects = TRUE,
+    effect_label = "My effect",
+    reference_mean = "0",
+    reported_effect_size = "mean_difference",
+    random_effects = "random_effects",
     show_details = FALSE,
-    es_plot_width = "600",
+    es_plot_width = "500",
     es_plot_height = "400",
+    axis.text.y = "14",
+    report_CIs = FALSE,
+    meta_diamond_height = ".35",
+    xlab = "auto",
+    xmin = "auto",
+    xmax = "auto",
+    xbreaks = "auto",
+    mark_zero = TRUE,
+    axis.text.x = "14",
+    axis.title.x = "15",
+    dlab = "auto",
     dmin = "auto",
     dmax = "auto",
     dbreaks = "auto",
-    dlab = "auto",
-    xlab = "auto",
-    axis.text.y = "14",
-    axis.text.x = "14",
-    axis.title.x = "15",
     shape_raw_reference = "square filled",
     shape_raw_comparison = "square filled",
     shape_raw_unused = "circle filled",
@@ -1822,22 +1885,28 @@ jamovirmetamean <- function(
         ns = ns,
         labels = labels,
         moderator = moderator,
-        reference_mean = reference_mean,
-        effect_label = effect_label,
-        reported_effect_size = reported_effect_size,
         conf_level = conf_level,
+        effect_label = effect_label,
+        reference_mean = reference_mean,
+        reported_effect_size = reported_effect_size,
         random_effects = random_effects,
         show_details = show_details,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
+        axis.text.y = axis.text.y,
+        report_CIs = report_CIs,
+        meta_diamond_height = meta_diamond_height,
+        xlab = xlab,
+        xmin = xmin,
+        xmax = xmax,
+        xbreaks = xbreaks,
+        mark_zero = mark_zero,
+        axis.text.x = axis.text.x,
+        axis.title.x = axis.title.x,
+        dlab = dlab,
         dmin = dmin,
         dmax = dmax,
         dbreaks = dbreaks,
-        dlab = dlab,
-        xlab = xlab,
-        axis.text.y = axis.text.y,
-        axis.text.x = axis.text.x,
-        axis.title.x = axis.title.x,
         shape_raw_reference = shape_raw_reference,
         shape_raw_comparison = shape_raw_comparison,
         shape_raw_unused = shape_raw_unused,

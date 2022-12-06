@@ -379,20 +379,20 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   res$properties$effect_size_name <- switch(
     reported_effect_size,
     "mean_difference" = "Mean_diff",
-    "smd_unbiased" = if(assume_equal_variance) "d_s.biased" else "d_avg.biased",
-    "smd" = if(assume_equal_variance)"d_s" else "d_avg"
+    "smd" = if(assume_equal_variance) "d_s.biased" else "d_avg.biased",
+    "smd_unbiased" = if(assume_equal_variance)"d_s" else "d_avg"
   )
   res$properties$effect_size_name_html <- switch(
     reported_effect_size,
     "mean_difference" = "Mean<sub>diff</sub>",
-    "smd_unbiased" = if(assume_equal_variance) "<i>d</i><sub>s.biased</sub>" else "<i>d</i><sub>avg.biased</sub>",
-    "smd" = if(assume_equal_variance) "<i>d</i><sub>s</sub>" else "<i>d</i><sub>avg</sub>"
+    "smd" = if(assume_equal_variance) "<i>d</i><sub>s.biased</sub>" else "<i>d</i><sub>avg.biased</sub>",
+    "smd_unbiased" = if(assume_equal_variance) "<i>d</i><sub>s</sub>" else "<i>d</i><sub>avg</sub>"
   )
   res$properties$effect_size_name_ggplot <- switch(
     reported_effect_size,
     "mean_difference" = "italic(M)[diff]",
-    "smd_unbiased" = if(assume_equal_variance) "italic(d)[s.biased]" else "italic(d)[avg.biased]",
-    "smd" = if(assume_equal_variance) "italic(d)[s]" else "italic(d)[avg]"
+    "smd" = if(assume_equal_variance) "italic(d)[s.biased]" else "italic(d)[avg.biased]",
+    "smd_unbiased" = if(assume_equal_variance) "italic(d)[s]" else "italic(d)[avg]"
   )
 
 

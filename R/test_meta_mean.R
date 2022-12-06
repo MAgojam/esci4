@@ -141,7 +141,7 @@ test_estimate_meta_mdiff_two <- function() {
     rt_sd,
     rt_n,
     study_name,
-    reported_effect_size = "smd_unbiased",
+    reported_effect_size = "smd",
     reference_mean = 300
   )
   estimate$raw_data

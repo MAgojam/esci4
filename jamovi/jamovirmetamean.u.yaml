@@ -2,7 +2,7 @@ title: Means
 name: jamovirmetamean
 jus: '3.0'
 stage: 0
-compilerMode: aggressive
+compilerMode: tame
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -43,303 +43,238 @@ children:
             name: moderator
             maxItemCount: 1
             isTarget: true
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: reference_mean
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: effect_label
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: reported_effect_size
-  - type: LayoutBox
-    margin: large
+  - type: Label
+    label: <hr>Analysis options
+    stretchFactor: 3
     children:
       - type: TextBox
         name: conf_level
         format: number
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: CheckBox
+        suffix: '%'
+      - type: TextBox
+        name: effect_label
+        format: string
+        stretchFactor: 3
+      - type: TextBox
+        name: reference_mean
+        format: string
+      - type: ComboBox
+        name: reported_effect_size
+      - type: ComboBox
         name: random_effects
       - type: CheckBox
         name: show_details
-  - type: LayoutBox
-    margin: large
+  - type: CollapseBox
+    label: Figure options
+    stretchFactor: 1
+    collapsed: true
     children:
-      - type: TextBox
-        name: es_plot_width
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: es_plot_height
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: dmin
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: dmax
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: dbreaks
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: dlab
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: xlab
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.text.y
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.text.x
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: axis.title.x
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: shape_raw_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: shape_raw_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: shape_raw_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_raw_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_raw_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_raw_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_summary_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_summary_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_summary_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_summary_difference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_summary_overall
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_raw_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_raw_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_raw_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_summary_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_summary_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_summary_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_summary_difference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: fill_summary_overall
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: size_raw_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: size_raw_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: size_raw_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_raw_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_raw_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_raw_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_summary_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_summary_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_summary_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_summary_difference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_summary_overall
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: linetype_raw_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: linetype_raw_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: linetype_raw_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_interval_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_interval_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: color_interval_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: size_interval_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: size_interval_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: size_interval_unused
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_interval_reference
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_interval_comparison
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: alpha_interval_unused
+      - type: LayoutBox
+        stretchFactor: 1
+        margin: none
+        children:
+          - type: Label
+            label: 'Dimensions:'
+            cell:
+              column: 0
+              row: 1
+          - type: TextBox
+            name: es_plot_width
+            format: string
+            cell:
+              column: 1
+              row: 1
+          - type: TextBox
+            name: es_plot_height
+            format: string
+            cell:
+              column: 2
+              row: 1
+          - type: Label
+            label: '<i>Y</i> axis:'
+            cell:
+              column: 0
+              row: 2
+          - type: TextBox
+            name: meta_diamond_height
+            format: string
+            cell:
+              column: 1
+              row: 2
+          - type: CheckBox
+            name: report_CIs
+            cell:
+              column: 2
+              row: 2
+          - type: TextBox
+            name: axis.text.y
+            format: string
+            cell:
+              column: 1
+              row: 3
+          - type: Label
+            label: '<i>X</i> axis:'
+            cell:
+              column: 0
+              row: 4
+          - type: TextBox
+            name: xlab
+            stretchFactor: 2
+            format: string
+            cell:
+              column: 1
+              row: 4
+          - type: TextBox
+            name: axis.text.x
+            format: string
+            cell:
+              column: 1
+              row: 5
+          - type: TextBox
+            name: axis.title.x
+            format: string
+            cell:
+              column: 2
+              row: 5
+          - type: TextBox
+            name: xmin
+            format: string
+            cell:
+              column: 1
+              row: 6
+          - type: TextBox
+            name: xmax
+            format: string
+            cell:
+              column: 2
+              row: 6
+          - type: TextBox
+            name: xbreaks
+            format: string
+            cell:
+              column: 1
+              row: 7
+          - type: CheckBox
+            name: mark_zero
+            cell:
+              column: 2
+              row: 7
+          - type: Label
+            label: 'Difference axis: '
+            cell:
+              column: 0
+              row: 8
+          - type: TextBox
+            name: dlab
+            stretchFactor: 2
+            format: string
+            cell:
+              column: 1
+              row: 9
+          - type: TextBox
+            name: dmin
+            format: string
+            cell:
+              column: 1
+              row: 10
+          - type: TextBox
+            name: dmax
+            format: string
+            cell:
+              column: 2
+              row: 10
+          - type: TextBox
+            name: dbreaks
+            format: string
+            cell:
+              column: 1
+              row: 11
+          - type: CollapseBox
+            label: Aesthetics
+            stretchFactor: 1
+            collapsed: true
+            children:
+              - type: ComboBox
+                name: shape_raw_reference
+              - type: ComboBox
+                name: shape_raw_comparison
+              - type: ComboBox
+                name: shape_raw_unused
+              - type: ComboBox
+                name: color_raw_reference
+              - type: ComboBox
+                name: color_raw_comparison
+              - type: ComboBox
+                name: color_raw_unused
+              - type: ComboBox
+                name: color_summary_reference
+              - type: ComboBox
+                name: color_summary_comparison
+              - type: ComboBox
+                name: color_summary_unused
+              - type: ComboBox
+                name: color_summary_difference
+              - type: ComboBox
+                name: color_summary_overall
+              - type: ComboBox
+                name: fill_raw_reference
+              - type: ComboBox
+                name: fill_raw_comparison
+              - type: ComboBox
+                name: fill_raw_unused
+              - type: ComboBox
+                name: fill_summary_reference
+              - type: ComboBox
+                name: fill_summary_comparison
+              - type: ComboBox
+                name: fill_summary_unused
+              - type: ComboBox
+                name: fill_summary_difference
+              - type: ComboBox
+                name: fill_summary_overall
+              - type: ComboBox
+                name: size_raw_reference
+              - type: ComboBox
+                name: size_raw_comparison
+              - type: ComboBox
+                name: size_raw_unused
+              - type: ComboBox
+                name: alpha_raw_reference
+              - type: ComboBox
+                name: alpha_raw_comparison
+              - type: ComboBox
+                name: alpha_raw_unused
+              - type: ComboBox
+                name: alpha_summary_reference
+              - type: ComboBox
+                name: alpha_summary_comparison
+              - type: ComboBox
+                name: alpha_summary_unused
+              - type: ComboBox
+                name: alpha_summary_difference
+              - type: ComboBox
+                name: alpha_summary_overall
+              - type: ComboBox
+                name: linetype_raw_reference
+              - type: ComboBox
+                name: linetype_raw_comparison
+              - type: ComboBox
+                name: linetype_raw_unused
+              - type: ComboBox
+                name: color_interval_reference
+              - type: ComboBox
+                name: color_interval_comparison
+              - type: ComboBox
+                name: color_interval_unused
+              - type: ComboBox
+                name: size_interval_reference
+              - type: ComboBox
+                name: size_interval_comparison
+              - type: ComboBox
+                name: size_interval_unused
+              - type: ComboBox
+                name: alpha_interval_reference
+              - type: ComboBox
+                name: alpha_interval_comparison
+              - type: ComboBox
+                name: alpha_interval_unused

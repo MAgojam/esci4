@@ -29,7 +29,7 @@ items:
           visible: (reported_effect_size == "mean_difference")
         - name: effect_size_smd
           type: number
-          title: <i>d</i><sub>1 - corrected</sub>
+          title: <i>d</i><sub>1</sub>
           visible: (reported_effect_size == "smd")
         - name: LL
           title: LL
@@ -85,7 +85,7 @@ items:
           visible: (reported_effect_size == "mean_difference")
         - name: effect_size_smd
           type: number
-          title: <i>d</i><sub>1 - corrected</sub>
+          title: <i>d</i><sub>1</sub>
           visible: (reported_effect_size == "smd")
         - name: LL
           title: LL
@@ -151,7 +151,7 @@ items:
           visible: (reported_effect_size == "mean_difference")
         - name: effect_size_smd
           type: number
-          title: <i>d</i><sub>1 - corrected</sub>
+          title: <i>d</i><sub>1</sub>
           visible: (reported_effect_size == "smd")
         - name: LL
           title: LL

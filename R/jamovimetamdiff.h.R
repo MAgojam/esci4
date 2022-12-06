@@ -176,7 +176,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
-                        `title`="<i>d</i><sub>? - corrected</sub>", 
+                        `title`="<i>d</i><sub>s</sub>", 
                         `visible`="(reported_effect_size == \"smd\")"),
                     list(
                         `name`="LL", 

@@ -34,22 +34,26 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
             tbl_raw_data$getColumn("moderator")$setVisible(moderator)
 
-            meta_note <- if(self$options$random_effects)
-                "Estimate is based on a random effects model."
-            else
-                "Estimate is based on a fixed effects model."
-
-            if (self$options$reported_effect_size == "smd") {
-                meta_note <- paste(
-                    meta_note,
-                    "  This standardized mean difference has been corrected for sampling bias."
-                )
-            }
-
-            tbl_es_meta$setNote(
-                key = "meta_note",
-                note = meta_note
+            width <- jamovi_sanitize(
+              my_value = self$options$es_plot_width,
+              return_value = 500,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 2000,
+              upper_inclusive = TRUE
             )
+            height <- jamovi_sanitize(
+              my_value = self$options$es_plot_height,
+              return_value = 400,
+              convert_to_number = TRUE,
+              lower = 176,
+              lower_inclusive = TRUE,
+              upper = 4000,
+              upper_inclusive = TRUE
+            )
+            image <- self$results$estimation_plots
+            image$setSize(width, height)
 
 
         },
@@ -70,6 +74,38 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
 
+
+            # Tbl note
+            tbl_es_meta <- self$results$es_meta
+            tbl_es_meta_difference <- self$results$es_meta_difference
+            meta_note <- if(self$options$random_effects == "random_effects")
+              "Estimate is based on a random effects model."
+            else
+              "Estimate is based on a fixed effects model."
+
+
+            if (self$options$reported_effect_size == "smd") {
+              meta_note <- paste(
+                meta_note,
+                "  This standardized mean difference (",
+                estimate$properties$effect_size_name_html,
+                ") has been corrected for sampling bias.",
+                sep = ""
+              )
+            }
+
+            tbl_es_meta$setNote(
+              key = "meta_note",
+              note = meta_note
+            )
+            tbl_es_meta_difference$setNote(
+              key = "meta_note",
+              note = meta_note
+            )
+
+            self$results$debug$setVisible(TRUE)
+            self$results$debug$setContent(print(estimate$es_meta))
+
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
 
@@ -79,13 +115,28 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
 
+          meta_diamond_height <- jamovi_sanitize(
+            my_value = self$options$meta_diamond_height,
+            return_value = .35,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 0,
+            lower_inclusive = TRUE,
+            upper = 2,
+            my_value_name = "Y axis: Diamond height"
+          )
+
+
           myplot <- plot_meta(
             estimate,
-            mark_zero = TRUE,
-            report_CIs = FALSE,
-            meta_diamond_height = .35,
+            mark_zero = self$options$mark_zero,
+            report_CIs = self$options$report_CIs,
+            meta_diamond_height = meta_diamond_height,
             ggtheme = ggtheme
           )
+
+          notes <- NULL
+
 
           if (!is.null(myplot$layers$raw_Reference_point)) {
             myplot$layers$raw_Reference_point$aes_params$shape <- self$options$shape_raw_reference
@@ -150,6 +201,169 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             myplot$layers$group_Unused_diamond$aes_params$fill <- self$options$fill_summary_unused
             myplot$layers$group_Unused_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
           }
+
+
+          # Basic graph options --------------------
+          # Axis font sizes
+          axis.text.y <- jamovi_sanitize(
+            my_value = self$options$axis.text.y,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Y axis: Tick font size"
+          )
+          axis.text.x <- jamovi_sanitize(
+            my_value = self$options$axis.text.x,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "X axis: Tick font size"
+          )
+          axis.title.x <- jamovi_sanitize(
+            my_value = self$options$axis.title.x,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "X axis: Label font size"
+          )
+
+
+          myplot <- myplot + ggplot2::theme(
+            axis.text.y = element_text(size = axis.text.y),
+            axis.text.x = element_text(size = axis.text.x),
+            axis.title.x = element_text(size = axis.title.x)
+          )
+
+          # Axis limits
+          xmin <- jamovi_sanitize(
+            my_value = self$options$xmin,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "X axis: Minimum"
+          )
+
+          xmax <- jamovi_sanitize(
+            my_value = self$options$xmax,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "X axis: Maximum"
+          )
+
+          xbreaks <- jamovi_sanitize(
+            my_value = self$options$xbreaks,
+            return_value = 5,
+            na_ok = FALSE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 50,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "X axis: Number of tick marks"
+          )
+
+          dmin <- jamovi_sanitize(
+            my_value = self$options$dmin,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Difference axis: Minimum"
+          )
+
+          dmax <- jamovi_sanitize(
+            my_value = self$options$dmax,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Difference axis: Maxmimum"
+          )
+
+          dbreaks <- jamovi_sanitize(
+            my_value = self$options$dbreaks,
+            return_value = 5,
+            na_ok = FALSE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 50,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "X axis: Number of tick marks"
+          )
+
+
+          # Axis labels
+          xlab <- jamovi_sanitize(
+            my_value = self$options$xlab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "X axis: Title"
+          )
+
+          dlab <- jamovi_sanitize(
+            my_value = self$options$dlab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "Difference axis: Title"
+          )
+
+          # Apply axis labels and scales
+          myplot <- myplot + ggplot2::scale_x_continuous(
+            name = "Something",
+            limits = c(xmin, xmax),
+            n.breaks = xbreaks,
+            position = "top"
+          )
+
+          if (!is.null(self$options$moderator)) {
+            myplot <- esci_plot_difference_axis_x(
+              myplot,
+              estimate$es_meta,
+              dlim = c(dmin, dmax),
+              d_n.breaks = dbreaks,
+              xlab = xlab
+            )
+          }
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 500,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 2000,
+            upper_inclusive = TRUE
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 400,
+            convert_to_number = TRUE,
+            lower = 176,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE
+          )
+
+          notes <- c(
+            notes,
+            names(axis.text.y),
+            names(axis.text.x),
+            names(axis.title.x),
+            names(width),
+            names(height)
+          )
+
+          self$results$estimation_plot_warnings$setState(notes)
+          jamovi_set_notes(self$results$estimation_plot_warnings)
 
           print(myplot)
           TRUE
@@ -222,7 +436,7 @@ jamovi_meta_mean <- function(self) {
 
     args$reported_effect_size <- self$options$reported_effect_size
 
-    args$random_effects <- self$options$random_effects
+    args$random_effects <- self$options$random_effects == "random_effects"
 
 
 

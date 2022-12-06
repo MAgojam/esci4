@@ -278,20 +278,20 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   res$properties$effect_size_name <- switch(
     reported_effect_size,
     "mean_difference" = "Mean",
-    "smd_unbiased" = "d1",
-    "smd" = "d1_biased"
+    "smd" = "d1",
+    "smd_unbiased" = "d1_biased"
   )
   res$properties$effect_size_name_html <- switch(
     reported_effect_size,
     "mean_difference" = "Mean",
-    "smd_unbiased" = "<i>d</i><sub>1</sub>",
-    "smd" = "<i>d</i><sub>1.biased</sub>"
+    "smd" = "<i>d</i><sub>1</sub>",
+    "smd_unbiased" = "<i>d</i><sub>1.biased</sub>"
   )
   res$properties$effect_size_name_ggplot <- switch(
     reported_effect_size,
     "mean_difference" = "Mean",
-    "smd_unbiased" = "italic(d)[1]",
-    "smd" = "italic(d)[1*.biased]"
+    "smd" = "italic(d)[1]",
+    "smd_unbiased" = "italic(d)[1*.biased]"
   )
 
   return(res)
