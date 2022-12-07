@@ -19,6 +19,8 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             show_details = FALSE,
             es_plot_width = "600",
             es_plot_height = "750",
+            size_base = "2",
+            size_multiplier = "3",
             axis.text.y = "14",
             report_CIs = FALSE,
             meta_diamond_height = ".35",
@@ -141,6 +143,39 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 "es_plot_height",
                 es_plot_height,
                 default="750")
+            private$..size_base <- jmvcore::OptionList$new(
+                "size_base",
+                size_base,
+                default="2",
+                options=list(
+                    ".25",
+                    ".50",
+                    ".75",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..size_multiplier <- jmvcore::OptionList$new(
+                "size_multiplier",
+                size_multiplier,
+                default="3",
+                options=list(
+                    "1.1",
+                    "1.2",
+                    "1.3",
+                    "1.5",
+                    "1.75",
+                    "2",
+                    "2.5",
+                    "3",
+                    "3.5",
+                    "4",
+                    "4.5",
+                    "5"))
             private$..axis.text.y <- jmvcore::OptionString$new(
                 "axis.text.y",
                 axis.text.y,
@@ -1257,6 +1292,8 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..show_details)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..size_base)
+            self$.addOption(private$..size_multiplier)
             self$.addOption(private$..axis.text.y)
             self$.addOption(private$..report_CIs)
             self$.addOption(private$..meta_diamond_height)
@@ -1328,6 +1365,8 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         show_details = function() private$..show_details$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
+        size_base = function() private$..size_base$value,
+        size_multiplier = function() private$..size_multiplier$value,
         axis.text.y = function() private$..axis.text.y$value,
         report_CIs = function() private$..report_CIs$value,
         meta_diamond_height = function() private$..meta_diamond_height$value,
@@ -1398,6 +1437,8 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..show_details = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
+        ..size_base = NA,
+        ..size_multiplier = NA,
         ..axis.text.y = NA,
         ..report_CIs = NA,
         ..meta_diamond_height = NA,
@@ -1520,20 +1561,20 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
-                        `name`="sample_variance", 
-                        `title`="v2", 
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `name`="sample_variance", 
+                        `title`="<i>SE</i><sup>2</sup>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
                         `name`="mean", 
                         `title`="<i>M</i>", 
                         `type`="number", 
-                        `visible`="(show_details)"),
+                        `visible`="(show_details & reported_effect_size != \"mean_difference\")"),
                     list(
                         `name`="sd", 
                         `title`="<i>s</i>", 
@@ -1731,6 +1772,8 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param show_details .
 #' @param es_plot_width .
 #' @param es_plot_height .
+#' @param size_base .
+#' @param size_multiplier .
 #' @param axis.text.y .
 #' @param report_CIs .
 #' @param meta_diamond_height .
@@ -1820,6 +1863,8 @@ jamovirmetamean <- function(
     show_details = FALSE,
     es_plot_width = "600",
     es_plot_height = "750",
+    size_base = "2",
+    size_multiplier = "3",
     axis.text.y = "14",
     report_CIs = FALSE,
     meta_diamond_height = ".35",
@@ -1909,6 +1954,8 @@ jamovirmetamean <- function(
         show_details = show_details,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
+        size_base = size_base,
+        size_multiplier = size_multiplier,
         axis.text.y = axis.text.y,
         report_CIs = report_CIs,
         meta_diamond_height = meta_diamond_height,

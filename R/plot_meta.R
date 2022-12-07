@@ -54,9 +54,9 @@ plot_meta <- function(
 
   # Raw data plot
   plot_levels <- c(
-    "Red" = "Reference",
-    "Green" = "Comparison",
-    "Gray" = "Unused"
+    "#008DF9" = "Reference",
+    "#009F81" = "Comparison",
+    "gray65" = "Unused"
   )
   for (x in 1:length(plot_levels)) {
     next_up <- plot_levels[x]
@@ -158,9 +158,9 @@ plot_meta <- function(
   # Plot group data
   plot_levels <- c(
     "Black" = "Overall",
-    "Red" = "Reference",
-    "Green" = "Comparison",
-    "Gray" = "Unused"
+    "#008DF9" = "Reference",
+    "#009F81" = "Comparison",
+    "gray65" = "Unused"
   )
   for (x in 1:length(plot_levels)) {
     next_up <- plot_levels[x]

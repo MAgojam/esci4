@@ -41,18 +41,18 @@ items:
           title: weight
           type: number
           visible: (show_details)
-        - name: sample_variance
-          title: v2
-          type: number
-          visible: (show_details)
         - name: SE
           title: <i>SE</i>
+          type: number
+          visible: (show_details)
+        - name: sample_variance
+          title: <i>SE</i><sup>2</sup>
           type: number
           visible: (show_details)
         - name: mean
           title: <i>M</i>
           type: number
-          visible: (show_details)
+          visible: (show_details & reported_effect_size != "mean_difference")
         - name: sd
           title: <i>s</i>
           type: number

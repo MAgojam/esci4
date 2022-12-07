@@ -138,6 +138,12 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
           notes <- NULL
 
+          myplot <- myplot + ggplot2::scale_size_continuous(
+            range = c(
+              as.numeric(self$options$size_base),
+              as.numeric(self$options$size_base) * as.numeric(self$options$size_multiplier)
+            )
+          )
 
           if (!is.null(myplot$layers$raw_Reference_point)) {
             myplot$layers$raw_Reference_point$aes_params$shape <- self$options$shape_raw_reference
