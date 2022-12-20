@@ -67,6 +67,11 @@ options:
           - name: fixed_effects
             title: Fixed effects
 
+    - name: show_PIs
+      title: Report predictin intervals
+      type: Bool
+      default: false
+
     - name: show_details
       title: Show details
       type: Bool

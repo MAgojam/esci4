@@ -220,7 +220,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     if (moderator) "moderator"
   )
 
-  # reduce data down to just needed columns with cannonical names
+  # reduce data down to just needed columns with canonical names
   data <- data[just_cols]
   colnames(data) <- col_names
 
@@ -271,6 +271,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
 
   data$label <- NULL
   data$moderator <- NULL
+  data$p <- es_data$p
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 

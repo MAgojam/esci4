@@ -542,6 +542,16 @@ meta_to_table <- function(
 ) {
   rowcount <- length(meta$b[, 1])
 
+  if (rowcount > 1) {
+    nmod <- diag(nrow = rowcount, ncol = rowcount)
+    pi <- metafor::predict.rma(meta, newmods = nmod)
+  } else {
+    pi <- metafor::predict.rma(meta)
+  }
+  if (is.null(pi$pi.lb)) pi$pi.lb <- NA
+  if (is.null(pi$pi.ub)) pi$pi.ub <- NA
+
+
   if(fixed_effects) {
     I2 <- rep(NA, rowcount)
     I2_LL <- rep(NA, rowcount)
@@ -579,10 +589,13 @@ meta_to_table <- function(
     diamond_ratio_UL = dr_res$UL,
     I2 = I2,
     I2_LL = I2_LL,
-    I2_UL = I2_UL
+    I2_UL = I2_UL,
+    PI_LL = pi$pi.lb,
+    PI_UL = pi$pi.ub,
+    p = meta$pval
   )
 
-  return(result_table)
+    return(result_table)
 }
 
 
@@ -619,7 +632,8 @@ anova_to_table <- function(
       effect_size = c_es,
       LL = c_LL,
       UL = c_UL,
-      SE = c_se
+      SE = c_se,
+      p = cres$pvalues[[1]]
     )
   )
 }

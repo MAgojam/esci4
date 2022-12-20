@@ -22,9 +22,10 @@ apply_ci_mdiff <- function(
     res[res_row, "Estimate"],
     res[res_row, "SE"]^2,
     res[res_row, "LL"],
-    res[res_row, "UL"]
+    res[res_row, "UL"],
+    res[res_row, "p"]
   )
-  names(res) <- c("yi", "vi", "LL", "UL")
+  names(res) <- c("yi", "vi", "LL", "UL", "p")
 
   return(res)
 }
@@ -59,14 +60,30 @@ apply_ci_stdmean_two <- function(
     vi_alt <- J^2 * vi_alt
   }
 
+
+  res_raw <- as.data.frame(
+    statpsych::ci.mean2(
+      alpha = 1 - conf_level,
+      m1 = myrow[["comparison_mean"]],
+      m2 = myrow[["reference_mean"]],
+      sd1 = myrow[["comparison_sd"]],
+      sd2 = myrow[["reference_sd"]],
+      n1 = myrow[["comparison_n"]],
+      n2 = myrow[["reference_n"]]
+    )
+  )
+
+  res_raw_row <- if(assume_equal_variance) 1 else 2
+
   res <- c(
     res[1, "effect_size"],
     res[1, "SE"]^2,
     res[1, "LL"],
     res[1, "UL"],
-    vi_alt
+    vi_alt,
+    p = res_raw[res_raw_row, "p"]
   )
-  names(res) <- c("yi", "vi", "LL", "UL", "vi_alt")
+  names(res) <- c("yi", "vi", "LL", "UL", "vi_alt", "p")
 
   return(res)
 }
@@ -170,13 +187,22 @@ apply_ci_mean1 <- function(
 
   res_row <- 1
 
+
+  t <- abs((myrow[["mean"]] - reference_mean) / res[res_row, "SE"])
+  p <- 2*pt(
+    q = t,
+    df = myrow[["n"]] -1,
+    lower.tail = FALSE
+  )
+
   res <- c(
     res[res_row, "Estimate"],
     res[res_row, "SE"]^2,
     res[res_row, "LL"],
-    res[res_row, "UL"]
+    res[res_row, "UL"],
+    p
   )
-  names(res) <- c("yi", "vi", "LL", "UL")
+  names(res) <- c("yi", "vi", "LL", "UL", "p")
 
   return(res)
 }
@@ -200,14 +226,22 @@ apply_ci_stdmean1 <- function(
     )
   )
 
+  sem <- myrow[["sd"]] / sqrt(myrow[["n"]])
+  t <- abs((myrow[["mean"]] - reference_mean) / sem)
+  p <- 2*pt(
+    q = t,
+    df = myrow[["n"]] -1,
+    lower.tail = FALSE
+  )
 
   res <- c(
     res[1, "effect_size"],
     res[1, "SE"]^2,
     res[1, "LL"],
-    res[1, "UL"]
+    res[1, "UL"],
+    p
   )
-  names(res) <- c("yi", "vi", "LL", "UL")
+  names(res) <- c("yi", "vi", "LL", "UL", "p")
 
 
   return(res)

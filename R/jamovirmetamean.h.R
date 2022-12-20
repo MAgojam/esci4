@@ -1584,7 +1584,13 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="n", 
                         `title`="<i>N</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"))))
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="p", 
+                        `title`="<i>p</i>, two tailed", 
+                        `visible`="(show_details)", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
@@ -1648,15 +1654,18 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="I2", 
                         `type`="number", 
-                        `title`="<i>I</i><sup>2</sup>"),
+                        `title`="<i>I</i><sup>2</sup>", 
+                        `visible`="(random_effects == 'random_effects')"),
                     list(
                         `name`="I2_LL", 
                         `type`="number", 
-                        `title`="LL"),
+                        `title`="LL", 
+                        `visible`="(random_effects == 'random_effects')"),
                     list(
                         `name`="I2_UL", 
                         `type`="number", 
-                        `title`="UL"),
+                        `title`="UL", 
+                        `visible`="(random_effects == 'random_effects')"),
                     list(
                         `name`="FE_effect_size", 
                         `type`="number", 
@@ -1676,7 +1685,13 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="RE_CI_width", 
                         `type`="number", 
                         `title`="Random effects CI width", 
-                        `visible`="(show_details)"))))
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta_difference",
@@ -1720,7 +1735,13 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
-                        `visible`="(show_details)"))))
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="estimation_plot_warnings",

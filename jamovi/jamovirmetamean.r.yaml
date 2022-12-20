@@ -61,6 +61,11 @@ items:
           title: <i>N</i>
           type: integer
           visible: (show_details)
+        - name: p
+          title: "<i>p</i>, two tailed"
+          visible: (show_details)
+          type: number
+          format: zto,pvalue
 
     - name:  es_meta
       title: Meta-analysis
@@ -112,12 +117,15 @@ items:
         - name: I2
           type: number
           title: <i>I</i><sup>2</sup>
+          visible: (random_effects == 'random_effects')
         - name: I2_LL
           type: number
           title: LL
+          visible: (random_effects == 'random_effects')
         - name: I2_UL
           type: number
           title: UL
+          visible: (random_effects == 'random_effects')
         - name: FE_effect_size
           type: number
           title: Fixed effects effect size
@@ -134,6 +142,11 @@ items:
           type: number
           title: Random effects CI width
           visible: (show_details)
+        - name: p
+          visible: (show_details)
+          title: "<i>p</i>, two tailed"
+          type: number
+          format: zto,pvalue
 
     - name:  es_meta_difference
       title: Moderator Analysis
@@ -170,6 +183,11 @@ items:
           title: <i>SE</i>
           type: number
           visible: (show_details)
+        - name: p
+          visible: (show_details)
+          title: "<i>p</i>, two tailed"
+          type: number
+          format: zto,pvalue
 
     - name: estimation_plot_warnings
       title: Estimation Figure Warnings

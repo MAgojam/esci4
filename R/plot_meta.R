@@ -2,10 +2,25 @@
 plot_meta <- function(
     estimate,
     mark_zero = TRUE,
+    include_PIs = FALSE,
     report_CIs = FALSE,
+    explain_DR = FALSE,
     meta_diamond_height = 0.35,
     ggtheme = ggplot2::theme_classic()
 ) {
+
+  if (include_PIs & is.na(estimate$es_meta$PI_LL[[1]])) {
+    include_PIs <- FALSE
+    warning("No prediction intervals present, ignoring include_PIs = TRUE")
+  }
+  if (explain_DR & include_PIs) {
+    explain_DR <- FALSE
+    warning("Prediction intervals requested; ignoring explain_DR = TRUE")
+  }
+  if (explain_DR & !is.null(estimate$raw_data$moderator)) {
+    warning("Meta-analysis has a moderator; ignoring explain_DR = TRUE")
+    explain_DR <- FALSE
+  }
 
   # ------------------------------------
   # Basic plot
@@ -96,6 +111,21 @@ plot_meta <- function(
   if (is.null(gdata$moderator_variable_level)) {
     gdata$type <- "Reference"
     gdata$moderator_variable_level <- "Overall"
+
+    if (explain_DR) {
+      gdata <- rbind(gdata, gdata)
+      gdata$moderator_variable_level <- c(
+        "RE: Overall",
+        "FE: Overall"
+      )
+      gdata$effect_size[[1]] <- gdata$RE_effect_size[[1]]
+      gdata$effect_size[[2]] <- gdata$FE_effect_size[[1]]
+      gdata$LL[[1]] <- gdata$RE_effect_size[[1]] - gdata$RE_CI_width[[1]]/2
+      gdata$UL[[1]] <- gdata$RE_effect_size[[1]] + gdata$RE_CI_width[[1]]/2
+      gdata$LL[[2]] <- gdata$FE_effect_size[[1]] - gdata$FE_CI_width[[1]]/2
+      gdata$UL[[2]] <- gdata$FE_effect_size[[1]] + gdata$FE_CI_width[[1]]/2
+    }
+
   } else {
     gdata$type <- "Overall"
     gdata[gdata$moderator_variable_level %in% reference_levels, "type"] <- "Reference"
@@ -112,8 +142,13 @@ plot_meta <- function(
   line_groups <- c("Overall", "Unused", "Reference", "Comparison")
   for (up_next in line_groups) {
     if (nrow(gdata[gdata$type == up_next, ]) > 0) {
-      rows_total <- rows_total + nrow(gdata[gdata$type == up_next, ])
-      gdata[gdata$type == up_next, "line"] <- -seq(from = rows_start, to = rows_total)
+      increment <- if(include_PIs) 2 else 1
+      rows_total <- rows_total + nrow(gdata[gdata$type == up_next, ]) * increment
+      gdata[gdata$type == up_next, "line"] <- -seq(
+        from = rows_start,
+        to = rows_total,
+        by = increment
+      )
       rows_start <- rows_total + 1
     }
   }
@@ -126,6 +161,26 @@ plot_meta <- function(
     "]",
     sep = ""
   )
+
+  if (explain_DR) {
+    gdata$CI_label <- paste(
+      "Width: ",
+      format(gdata$UL - gdata$LL, digits = 2)
+    )
+  }
+
+  gdata$PI_label <- paste(
+    "[",
+    format(gdata$PI_LL, digits = 2),
+    ", ",
+    format(gdata$PI_UL, digits = 2),
+    "]",
+    sep = ""
+  )
+
+  if (include_PIs) {
+    gdata$pline <- gdata$line - 1
+  }
 
   # Connecting lines
   # Connecting lines for differences
@@ -179,6 +234,21 @@ plot_meta <- function(
         fill = names(plot_levels[x]),
       )
       myplot <- esci_plot_layers(myplot, paste("group_", next_up, "_diamond", sep = ""))
+
+      if(include_PIs) {
+        myplot <- myplot + geom_segment(
+          data = this_data,
+          ggplot2::aes(
+            x = PI_LL,
+            xend = PI_UL,
+            y = pline,
+            yend = pline
+          ),
+          color = names(plot_levels[x])
+        )
+        myplot <- esci_plot_layers(myplot, paste("group_", next_up, "_PI", sep = ""))
+      }
+
     }
   }
 
@@ -251,9 +321,28 @@ plot_meta <- function(
   }
 
   # Y axis labels and setup
+  gdata_labels <- gdata[order(-gdata$line), ]$moderator_variable_level
+  if (include_PIs) {
+    cils <- paste(
+      gdata_labels,
+      " ",
+      estimate$properties$conf_level * 100,
+      "% CI",
+      sep = ""
+    )
+    pils <- paste(
+      gdata_labels,
+      " ",
+      estimate$properties$conf_level * 100,
+      "% PI",
+      sep = ""
+    )
+    gdata_labels <- c(rbind(cils, pils))
+  }
+
   all_labels <- c(
     rdata$label,
-    gdata[order(-gdata$line), ]$moderator_variable_level,
+    gdata_labels,
     dlabel
   )
 
@@ -264,9 +353,14 @@ plot_meta <- function(
   }
 
   if (report_CIs) {
+    glabel <- gdata$CI_label
+    if (include_PIs) {
+      glabel <- c(rbind(gdata$CI_label, gdata$PI_label))
+    }
+
     all_CI_labels <- c(
       rdata$CI_label,
-      gdata$CI_label,
+      glabel,
       difference_CI_label
     )
 

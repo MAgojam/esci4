@@ -369,6 +369,8 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
 
   data$label <- NULL
   data$moderator <- NULL
+  data$p <- es_data$p
+
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 
