@@ -1640,6 +1640,11 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="PI_LL", 
                         `title`="LL", 
                         `type`="number", 
@@ -1649,11 +1654,6 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="UL", 
                         `type`="number", 
                         `visible`="(include_PIs & random_effects == 'random_effects')"),
-                    list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
-                        `type`="number", 
-                        `visible`="(show_details)"),
                     list(
                         `name`="k", 
                         `type`="integer", 

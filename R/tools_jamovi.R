@@ -175,36 +175,30 @@ jamovi_set_confidence <- function(jmv_table = NULL, CI) {
     "LL", "UL",
     "P_LL", "P_UL",
     "I2_LL", "I2_UL",
-    "diamond_ratio_LL", "diamond_ratio_UL",
+    "diamond_ratio_LL", "diamond_ratio_UL"
+  )
+
+  PI_columns <- c(
     "PI_LL", "PI_UL"
   )
-  # MoE_columns <- c(
-  #
-  # )
-
 
 
   for (column_name in CI_columns) {
-    prefix <- switch(
-      column_name,
-      PI_LL = "PI: ",
-      PI_UL = "PI: ",
-      ""
-    )
     try(
       jmv_table$getColumn(column_name)$setSuperTitle(
-        paste(prefix, CI, "% CI", sep = "")
+        paste(CI, "% CI", sep = "")
       )
     )
   }
 
-  # for (column_name in MoE_columns) {
-  #   try(
-  #     jmv_table$getColumn(column_name)$setTitle(
-  #       paste(CI, "% <i>", jmv_table$getColumn(column_name)$title, "</i>", sep = "")
-  #     )
-  #   )
-  # }
+  for (column_name in PI_columns) {
+    try(
+      jmv_table$getColumn(column_name)$setSuperTitle(
+        paste(CI, "% PI", sep = "")
+      )
+    )
+  }
+
 
   return(TRUE)
 }

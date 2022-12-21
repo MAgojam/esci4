@@ -98,6 +98,10 @@ items:
         - name: UL
           title: UL
           type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
         - name: PI_LL
           title: LL
           type: number
@@ -106,10 +110,6 @@ items:
           title: UL
           type: number
           visible: (include_PIs & random_effects == 'random_effects')
-        - name: SE
-          title: <i>SE</i>
-          type: number
-          visible: (show_details)
         - name: k
           type: integer
           title: <i>k</i>

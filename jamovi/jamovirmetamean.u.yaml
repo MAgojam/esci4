@@ -64,6 +64,7 @@ children:
         name: random_effects
       - type: CheckBox
         name: include_PIs
+        enable: '(random_effects:random_effects)'
       - type: CheckBox
         name: show_details
   - type: CollapseBox
