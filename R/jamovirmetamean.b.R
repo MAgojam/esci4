@@ -213,6 +213,22 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             myplot$layers$group_Unused_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
           }
 
+          if (!is.null(myplot$layers$group_Overall_PI)) {
+            myplot$layers$group_Overall_PI$aes_params$colour <- self$options$color_summary_overall
+          }
+
+          if (!is.null(myplot$layers$group_Comparison_PI)) {
+            myplot$layers$group_Comparison_PI$aes_params$colour <- self$options$color_summary_comparison
+          }
+
+          if (!is.null(myplot$layers$group_Reference_PI)) {
+            myplot$layers$group_Reference_PI$aes_params$colour <- self$options$color_summary_reference
+          }
+
+          if (!is.null(myplot$layers$group_Unused_PI)) {
+            myplot$layers$group_Unused_P$aes_params$colourI <- self$options$color_summary_unused
+          }
+
 
           # Basic graph options --------------------
           # Axis font sizes

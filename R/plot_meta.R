@@ -109,7 +109,7 @@ plot_meta <- function(
   # Group data
   gdata <- estimate$es_meta
   if (is.null(gdata$moderator_variable_level)) {
-    gdata$type <- "Reference"
+    gdata$type <- "Overall"
     gdata$moderator_variable_level <- "Overall"
 
     if (explain_DR) {
