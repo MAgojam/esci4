@@ -47,6 +47,15 @@ test_estimate_meta_mdiff_two <- function() {
         "00s",
         "00s"
       )
+    ),
+    d1_unbiased = c(
+      3.091587,
+      1.742751,
+      3.012857,
+      1.793487,
+      3.130074,
+      2.195209,
+      2.17667
     )
   )
 
@@ -59,6 +68,29 @@ test_estimate_meta_mdiff_two <- function() {
   )
   estimate$raw_data
   estimate
+
+
+  estimate <- meta_mean(
+    original_7,
+    rt_mean,
+    rt_sd,
+    rt_n,
+    study_name,
+    subset,
+    reported_effect_size = "smd_unbiased"
+  )
+  destimate <- meta_d1(
+    original_7,
+    d1_unbiased,
+    rt_n,
+    moderator = "subset",
+    study_name
+  )
+  estimate$raw_data
+  destimate$raw_data
+  estimate
+  destimate
+
 
   means <- "rt_mean"
   sds <- "rt_sd"

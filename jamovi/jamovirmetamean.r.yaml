@@ -13,7 +13,7 @@ items:
       visible: false
 
     - name:  raw_data
-      title: Overview
+      title: Table of studies
       type: Table
       rows:  1
       columns:
@@ -26,11 +26,11 @@ items:
         - name: effect_size
           type: number
           title: <i>M</i>
-          visible: (reported_effect_size == "mean_difference")
+          visible: (reported_effect_size == "mean_difference" | switch == "from_d")
         - name: effect_size_smd
           type: number
           title: <i>d</i><sub>1</sub>
-          visible: (reported_effect_size == "smd")
+          visible: (reported_effect_size == "smd_unbiased" & switch == "from_raw")
         - name: LL
           title: LL
           type: number
@@ -68,7 +68,7 @@ items:
           format: zto,pvalue
 
     - name:  es_meta
-      title: Meta-analysis
+      title: Meta-analytic effect sizes
       type: Table
       rows:  1
       columns:
@@ -91,7 +91,7 @@ items:
         - name: effect_size_smd
           type: number
           title: <i>d</i><sub>1</sub>
-          visible: (reported_effect_size == "smd")
+          visible: (reported_effect_size == "smd_unbiased")
         - name: LL
           title: LL
           type: number
@@ -102,6 +102,9 @@ items:
           title: <i>SE</i>
           type: number
           visible: (show_details)
+        - name: k
+          type: integer
+          title: <i>k</i>
         - name: PI_LL
           title: LL
           type: number
@@ -110,38 +113,11 @@ items:
           title: UL
           type: number
           visible: (include_PIs & random_effects == 'random_effects')
-        - name: k
-          type: integer
-          title: <i>k</i>
-        - name: diamond_ratio
-          type: number
-          title: Diamond ratio
-        - name: diamond_ratio_LL
-          title: LL
-          type: number
-        - name: diamond_ratio_UL
-          type: number
-          title: UL
-        - name: I2
-          type: number
-          title: <i>I</i><sup>2</sup>
-          visible: (random_effects == 'random_effects')
-        - name: I2_LL
-          type: number
-          title: LL
-          visible: (random_effects == 'random_effects')
-        - name: I2_UL
-          type: number
-          title: UL
-          visible: (random_effects == 'random_effects')
-        - name: FE_effect_size
-          type: number
-          title: Fixed effects effect size
+        - name: p
           visible: (show_details)
-        - name: RE_effect_size
+          title: "<i>p</i>, two tailed"
           type: number
-          title: Random effects effect size
-          visible: (show_details)
+          format: zto,pvalue
         - name: FE_CI_width
           type: number
           title: Fixed effects CI width
@@ -150,11 +126,66 @@ items:
           type: number
           title: Random effects CI width
           visible: (show_details)
-        - name: p
-          visible: (show_details)
-          title: "<i>p</i>, two tailed"
+        - name: diamond_ratio
           type: number
-          format: zto,pvalue
+          title: Diamond ratio
+          visible: false
+        - name: diamond_ratio_LL
+          title: LL
+          type: number
+          visible: false
+        - name: diamond_ratio_UL
+          type: number
+          title: UL
+          visible: false
+        - name: I2
+          type: number
+          title: <i>I</i><sup>2</sup>
+          visible: false
+        - name: I2_LL
+          type: number
+          title: LL
+          visible: false
+        - name: I2_UL
+          type: number
+          title: UL
+          visible: false
+        - name: FE_effect_size
+          type: number
+          title: Fixed effects effect size
+          visible: false
+        - name: RE_effect_size
+          type: number
+          title: Random effects effect size
+          visible: false
+
+    - name:  es_heterogeneity
+      title: Effect size heterogeneity
+      type: Table
+      rows:  1
+      columns:
+        - name: measure
+          title: 'Measure'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: measure_html
+          title: 'Measure'
+          type: text
+          combineBelow: true
+        - name: moderator_level
+          title: 'Level'
+          type: text
+          combineBelow: true
+        - name: estimate
+          type: number
+          title: Estimate
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
 
     - name:  es_meta_difference
       title: Moderator Analysis
@@ -180,7 +211,7 @@ items:
         - name: effect_size_smd
           type: number
           title: <i>d</i><sub>1</sub>
-          visible: (reported_effect_size == "smd")
+          visible: (reported_effect_size == "smd_unbiased")
         - name: LL
           title: LL
           type: number
@@ -198,12 +229,12 @@ items:
           format: zto,pvalue
 
     - name: estimation_plot_warnings
-      title: Estimation Figure Warnings
+      title: Forest Plot Warnings
       type: Html
       visible: true
 
     - name: estimation_plots
-      title: Estimation Figure
+      title: Forest Plot
       type: Image
       requiresData: true
       width:  400

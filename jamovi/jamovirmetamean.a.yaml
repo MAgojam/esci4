@@ -6,6 +6,15 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: switch
+      type: List
+      default: from_raw
+      options:
+          - name: from_raw
+            title: Enter raw scores
+          - name: from_d
+            title: Enter Cohen's d
+
     - name: data
       type: Data
 
@@ -32,6 +41,24 @@ options:
       title: Moderator (optional)
       type: Variable
 
+    - name: ds
+      title: Cohen's d unbiased
+      type: Variable
+      permitted: [numeric]
+
+    - name: dns
+      title: Sample sizes
+      type: Variable
+      permitted: [numeric]
+
+    - name: dlabels
+      title: Labels (optional)
+      type: Variable
+
+    - name: dmoderator
+      title: Moderator (optional)
+      type: Variable
+
     - name: conf_level
       type: Number
       title: Confidence level
@@ -54,7 +81,7 @@ options:
       options:
           - name: mean_difference
             title: Raw score
-          - name: smd
+          - name: smd_unbiased
             title: Standardized mean difference
 
     - name: random_effects
@@ -811,7 +838,7 @@ options:
 
     - name: color_summary_overall
       type: List
-      default: 'white'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'

@@ -264,6 +264,17 @@ After dropping any NA rows, current data has:
     level = conf_level * 100
   )
 
+  # Heterogeneity
+  es_heterogeneity <- meta_to_heterogeneity(
+    RE = RE,
+    FE = FE,
+    effect_label = effect_label,
+    moderator_variable_name = moderator_variable_name,
+    moderator_level = "Overall",
+    vi = data$vi,
+    conf_level = conf_level
+  )
+
   # Calculate diamond ratio and handles for results
   dr_res <- CI_diamond_ratio(RE, FE, data$vi, conf_level = conf_level)
   diamond_ratio <- dr_res$diamond_ratio
@@ -370,6 +381,21 @@ After dropping any NA rows, current data has:
         moderator_level = lev,
         conf_level = conf_level
       )
+
+      es_heterogeneity <- rbind(
+        es_heterogeneity,
+        meta_to_heterogeneity(
+          RE = REjustl,
+          FE = FEjustl,
+          effect_label = effect_label,
+          moderator_variable_name = moderator_variable_name,
+          moderator_level = lev,
+          vi = data[data$moderator == lev, ]$vi,
+          conf_level = conf_level
+        )
+      )
+
+
       replabels <- c(replabels, lev)
       REgtable[x, "k"] <- REjustltbl$k
       FEgtable[x, "k"] <- REjustltbl$k
@@ -493,6 +519,7 @@ After dropping any NA rows, current data has:
   }  else {
     es_meta <- FEtbl
     es_meta_difference = if (moderator) FE_contrast else NULL
+    es_heterogeneity <- es_heterogeneity[es_heterogeneity$measure == "Diamond Ratio", ]
   }
 
 
@@ -518,6 +545,7 @@ After dropping any NA rows, current data has:
   res <- list(
     properties = properties,
     es_meta = es_meta,
+    es_heterogeneity = es_heterogeneity[order(es_heterogeneity$measure), ],
     raw_data = data,
     warnings = warnings
   )
@@ -637,3 +665,51 @@ anova_to_table <- function(
     )
   )
 }
+
+meta_to_heterogeneity <- function(
+    RE,
+    FE,
+    effect_label = NULL,
+    moderator_variable_name,
+    moderator_level = NULL,
+    vi,
+    conf_level
+) {
+
+
+  RE_het <- as.data.frame(confint(RE)$random)
+  RE_het <- cbind(
+    data.frame(measure = row.names(RE_het)),
+    RE_het
+  )
+  colnames(RE_het) <- c("measure", "estimate", "LL", "UL")
+
+  dr_res <- CI_diamond_ratio(RE, FE, vi, conf_level = conf_level)
+
+  RE_het <- rbind(
+    RE_het,
+    data.frame(
+      measure = "Diamond Ratio",
+      estimate = dr_res$diamond_ratio,
+      LL = dr_res$LL,
+      UL = dr_res$UL
+    )
+  )
+
+  if(is.null(moderator_level)) {
+    moderator_level <- names(RE$b[ ,1])
+  }
+
+  effect_label <- rep(effect_label, times = nrow(RE_het))
+  moderator_variable_name <- rep(moderator_variable_name, times = nrow(RE_het))
+  moderator_level <- rep(moderator_level, times = nrow(RE_het))
+
+  RE_het <- cbind(
+    effect_label,
+    moderator_variable_name,
+    moderator_level,
+    RE_het
+  )
+
+}
+

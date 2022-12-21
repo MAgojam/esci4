@@ -6,11 +6,16 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
+            switch = "from_raw",
             means = NULL,
             sds = NULL,
             ns = NULL,
             labels = NULL,
             moderator = NULL,
+            ds = NULL,
+            dns = NULL,
+            dlabels = NULL,
+            dmoderator = NULL,
             conf_level = 95,
             effect_label = "My effect",
             reference_mean = "0",
@@ -46,7 +51,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             color_summary_comparison = "#009F81",
             color_summary_unused = "gray75",
             color_summary_difference = "black",
-            color_summary_overall = "white",
+            color_summary_overall = "black",
             fill_raw_reference = "#008DF9",
             fill_raw_comparison = "#009F81",
             fill_raw_unused = "gray65",
@@ -85,6 +90,13 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 requiresData=TRUE,
                 ...)
 
+            private$..switch <- jmvcore::OptionList$new(
+                "switch",
+                switch,
+                default="from_raw",
+                options=list(
+                    "from_raw",
+                    "from_d"))
             private$..means <- jmvcore::OptionVariable$new(
                 "means",
                 means,
@@ -106,6 +118,22 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..moderator <- jmvcore::OptionVariable$new(
                 "moderator",
                 moderator)
+            private$..ds <- jmvcore::OptionVariable$new(
+                "ds",
+                ds,
+                permitted=list(
+                    "numeric"))
+            private$..dns <- jmvcore::OptionVariable$new(
+                "dns",
+                dns,
+                permitted=list(
+                    "numeric"))
+            private$..dlabels <- jmvcore::OptionVariable$new(
+                "dlabels",
+                dlabels)
+            private$..dmoderator <- jmvcore::OptionVariable$new(
+                "dmoderator",
+                dmoderator)
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -124,7 +152,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 default="mean_difference",
                 options=list(
                     "mean_difference",
-                    "smd"))
+                    "smd_unbiased"))
             private$..random_effects <- jmvcore::OptionList$new(
                 "random_effects",
                 random_effects,
@@ -562,7 +590,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..color_summary_overall <- jmvcore::OptionList$new(
                 "color_summary_overall",
                 color_summary_overall,
-                default="white",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -1285,11 +1313,16 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".25",
                     "0"))
 
+            self$.addOption(private$..switch)
             self$.addOption(private$..means)
             self$.addOption(private$..sds)
             self$.addOption(private$..ns)
             self$.addOption(private$..labels)
             self$.addOption(private$..moderator)
+            self$.addOption(private$..ds)
+            self$.addOption(private$..dns)
+            self$.addOption(private$..dlabels)
+            self$.addOption(private$..dmoderator)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..effect_label)
             self$.addOption(private$..reference_mean)
@@ -1359,11 +1392,16 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..alpha_interval_unused)
         }),
     active = list(
+        switch = function() private$..switch$value,
         means = function() private$..means$value,
         sds = function() private$..sds$value,
         ns = function() private$..ns$value,
         labels = function() private$..labels$value,
         moderator = function() private$..moderator$value,
+        ds = function() private$..ds$value,
+        dns = function() private$..dns$value,
+        dlabels = function() private$..dlabels$value,
+        dmoderator = function() private$..dmoderator$value,
         conf_level = function() private$..conf_level$value,
         effect_label = function() private$..effect_label$value,
         reference_mean = function() private$..reference_mean$value,
@@ -1432,11 +1470,16 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         alpha_interval_comparison = function() private$..alpha_interval_comparison$value,
         alpha_interval_unused = function() private$..alpha_interval_unused$value),
     private = list(
+        ..switch = NA,
         ..means = NA,
         ..sds = NA,
         ..ns = NA,
         ..labels = NA,
         ..moderator = NA,
+        ..ds = NA,
+        ..dns = NA,
+        ..dlabels = NA,
+        ..dmoderator = NA,
         ..conf_level = NA,
         ..effect_label = NA,
         ..reference_mean = NA,
@@ -1514,6 +1557,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         help = function() private$.items[["help"]],
         raw_data = function() private$.items[["raw_data"]],
         es_meta = function() private$.items[["es_meta"]],
+        es_heterogeneity = function() private$.items[["es_heterogeneity"]],
         es_meta_difference = function() private$.items[["es_meta_difference"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         estimation_plots = function() private$.items[["estimation_plots"]]),
@@ -1535,7 +1579,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Table$new(
                 options=options,
                 name="raw_data",
-                title="Overview",
+                title="Table of studies",
                 rows=1,
                 columns=list(
                     list(
@@ -1550,12 +1594,12 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i>", 
-                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" | switch == \"from_d\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
                         `title`="<i>d</i><sub>1</sub>", 
-                        `visible`="(reported_effect_size == \"smd\")"),
+                        `visible`="(reported_effect_size == \"smd_unbiased\" & switch == \"from_raw\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -1603,7 +1647,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
-                title="Meta-analysis",
+                title="Meta-analytic effect sizes",
                 rows=1,
                 columns=list(
                     list(
@@ -1630,7 +1674,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="effect_size_smd", 
                         `type`="number", 
                         `title`="<i>d</i><sub>1</sub>", 
-                        `visible`="(reported_effect_size == \"smd\")"),
+                        `visible`="(reported_effect_size == \"smd_unbiased\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -1645,6 +1689,10 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
+                        `name`="k", 
+                        `type`="integer", 
+                        `title`="<i>k</i>"),
+                    list(
                         `name`="PI_LL", 
                         `title`="LL", 
                         `type`="number", 
@@ -1655,46 +1703,11 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="number", 
                         `visible`="(include_PIs & random_effects == 'random_effects')"),
                     list(
-                        `name`="k", 
-                        `type`="integer", 
-                        `title`="<i>k</i>"),
-                    list(
-                        `name`="diamond_ratio", 
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
                         `type`="number", 
-                        `title`="Diamond ratio"),
-                    list(
-                        `name`="diamond_ratio_LL", 
-                        `title`="LL", 
-                        `type`="number"),
-                    list(
-                        `name`="diamond_ratio_UL", 
-                        `type`="number", 
-                        `title`="UL"),
-                    list(
-                        `name`="I2", 
-                        `type`="number", 
-                        `title`="<i>I</i><sup>2</sup>", 
-                        `visible`="(random_effects == 'random_effects')"),
-                    list(
-                        `name`="I2_LL", 
-                        `type`="number", 
-                        `title`="LL", 
-                        `visible`="(random_effects == 'random_effects')"),
-                    list(
-                        `name`="I2_UL", 
-                        `type`="number", 
-                        `title`="UL", 
-                        `visible`="(random_effects == 'random_effects')"),
-                    list(
-                        `name`="FE_effect_size", 
-                        `type`="number", 
-                        `title`="Fixed effects effect size", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="RE_effect_size", 
-                        `type`="number", 
-                        `title`="Random effects effect size", 
-                        `visible`="(show_details)"),
+                        `format`="zto,pvalue"),
                     list(
                         `name`="FE_CI_width", 
                         `type`="number", 
@@ -1706,11 +1719,79 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="Random effects CI width", 
                         `visible`="(show_details)"),
                     list(
-                        `name`="p", 
-                        `visible`="(show_details)", 
-                        `title`="<i>p</i>, two tailed", 
+                        `name`="diamond_ratio", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))
+                        `title`="Diamond ratio", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="diamond_ratio_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="diamond_ratio_UL", 
+                        `type`="number", 
+                        `title`="UL", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="I2", 
+                        `type`="number", 
+                        `title`="<i>I</i><sup>2</sup>", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="I2_LL", 
+                        `type`="number", 
+                        `title`="LL", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="I2_UL", 
+                        `type`="number", 
+                        `title`="UL", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="FE_effect_size", 
+                        `type`="number", 
+                        `title`="Fixed effects effect size", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="RE_effect_size", 
+                        `type`="number", 
+                        `title`="Random effects effect size", 
+                        `visible`=FALSE))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_heterogeneity",
+                title="Effect size heterogeneity",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="measure", 
+                        `title`="Measure", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="measure_html", 
+                        `title`="Measure", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_level", 
+                        `title`="Level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="estimate", 
+                        `type`="number", 
+                        `title`="Estimate"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta_difference",
@@ -1741,7 +1822,7 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="effect_size_smd", 
                         `type`="number", 
                         `title`="<i>d</i><sub>1</sub>", 
-                        `visible`="(reported_effect_size == \"smd\")"),
+                        `visible`="(reported_effect_size == \"smd_unbiased\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -1764,12 +1845,12 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$add(jmvcore::Html$new(
                 options=options,
                 name="estimation_plot_warnings",
-                title="Estimation Figure Warnings",
+                title="Forest Plot Warnings",
                 visible=TRUE))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="estimation_plots",
-                title="Estimation Figure",
+                title="Forest Plot",
                 requiresData=TRUE,
                 width=400,
                 height=300,
@@ -1798,12 +1879,17 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' Means
 #'
 #' 
+#' @param switch .
 #' @param data .
 #' @param means .
 #' @param sds .
 #' @param ns .
 #' @param labels .
 #' @param moderator .
+#' @param ds .
+#' @param dns .
+#' @param dlabels .
+#' @param dmoderator .
 #' @param conf_level .
 #' @param effect_label .
 #' @param reference_mean .
@@ -1877,6 +1963,7 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$raw_data} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_meta} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_heterogeneity} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_meta_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
@@ -1890,12 +1977,17 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #'
 #' @export
 jamovirmetamean <- function(
+    switch = "from_raw",
     data,
     means,
     sds,
     ns,
     labels,
     moderator,
+    ds,
+    dns,
+    dlabels,
+    dmoderator,
     conf_level = 95,
     effect_label = "My effect",
     reference_mean = "0",
@@ -1931,7 +2023,7 @@ jamovirmetamean <- function(
     color_summary_comparison = "#009F81",
     color_summary_unused = "gray75",
     color_summary_difference = "black",
-    color_summary_overall = "white",
+    color_summary_overall = "black",
     fill_raw_reference = "#008DF9",
     fill_raw_comparison = "#009F81",
     fill_raw_unused = "gray65",
@@ -1972,6 +2064,10 @@ jamovirmetamean <- function(
     if ( ! missing(ns)) ns <- jmvcore::resolveQuo(jmvcore::enquo(ns))
     if ( ! missing(labels)) labels <- jmvcore::resolveQuo(jmvcore::enquo(labels))
     if ( ! missing(moderator)) moderator <- jmvcore::resolveQuo(jmvcore::enquo(moderator))
+    if ( ! missing(ds)) ds <- jmvcore::resolveQuo(jmvcore::enquo(ds))
+    if ( ! missing(dns)) dns <- jmvcore::resolveQuo(jmvcore::enquo(dns))
+    if ( ! missing(dlabels)) dlabels <- jmvcore::resolveQuo(jmvcore::enquo(dlabels))
+    if ( ! missing(dmoderator)) dmoderator <- jmvcore::resolveQuo(jmvcore::enquo(dmoderator))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
@@ -1979,15 +2075,24 @@ jamovirmetamean <- function(
             `if`( ! missing(sds), sds, NULL),
             `if`( ! missing(ns), ns, NULL),
             `if`( ! missing(labels), labels, NULL),
-            `if`( ! missing(moderator), moderator, NULL))
+            `if`( ! missing(moderator), moderator, NULL),
+            `if`( ! missing(ds), ds, NULL),
+            `if`( ! missing(dns), dns, NULL),
+            `if`( ! missing(dlabels), dlabels, NULL),
+            `if`( ! missing(dmoderator), dmoderator, NULL))
 
 
     options <- jamovirmetameanOptions$new(
+        switch = switch,
         means = means,
         sds = sds,
         ns = ns,
         labels = labels,
         moderator = moderator,
+        ds = ds,
+        dns = dns,
+        dlabels = dlabels,
+        dmoderator = dmoderator,
         conf_level = conf_level,
         effect_label = effect_label,
         reference_mean = reference_mean,

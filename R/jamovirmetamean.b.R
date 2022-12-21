@@ -10,6 +10,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             tbl_raw_data <- self$results$raw_data
             tbl_es_meta <- self$results$es_meta
             tbl_es_meta_difference <- self$results$es_meta_difference
+            tbl_es_heterogeneity <- self$results$es_heterogeneity
 
             conf_level <<- jamovi_sanitize(
               my_value = self$options$conf_level,
@@ -26,9 +27,13 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             jamovi_set_confidence(tbl_raw_data, conf_level)
             jamovi_set_confidence(tbl_es_meta, conf_level)
             jamovi_set_confidence(tbl_es_meta_difference, conf_level)
+            jamovi_set_confidence(tbl_es_heterogeneity, conf_level)
 
 
             moderator <- !is.null(self$options$moderator)
+            if (self$options$switch != "from_raw") {
+              moderator <- !is.null(self$options$dmoderator)
+            }
 
             tbl_es_meta_difference$setVisible(moderator)
             tbl_es_meta$getColumn("moderator_variable_name")$setVisible(moderator)
@@ -73,24 +78,37 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is(estimate, "try-error")) stop(estimate[1])
 
             # Fill tables
+            estimate$es_heterogeneity$measure_html <- jamovi_heterogeneity_to_html(
+              estimate$es_heterogeneity$measure
+            )
             jamovi_estimate_filler(self, estimate, TRUE)
 
 
             # Tbl note
             tbl_es_meta <- self$results$es_meta
             tbl_es_meta_difference <- self$results$es_meta_difference
-            meta_note <- if(self$options$random_effects == "random_effects")
+            meta_note <- if(self$options$random_effects != "fixed_effects")
               "Estimate is based on a random effects model."
             else
               "Estimate is based on a fixed effects model."
 
 
-            if (self$options$reported_effect_size == "smd") {
+            if (self$options$switch == "from_raw") {
+              if (self$options$reported_effect_size == "smd_unbiased") {
+                meta_note <- paste(
+                  meta_note,
+                  "  This standardized mean difference (",
+                  estimate$properties$effect_size_name_html,
+                  ") has been corrected for sampling bias.",
+                  sep = ""
+                )
+              }
+            } else {
               meta_note <- paste(
                 meta_note,
-                "  This standardized mean difference (",
+                "  This analysis expected the inputted Cohen's d values to already be corrected for bias (",
                 estimate$properties$effect_size_name_html,
-                ") has been corrected for sampling bias.",
+                ").",
                 sep = ""
               )
             }
@@ -105,11 +123,10 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             )
 
             # self$results$debug$setVisible(TRUE)
-            # self$results$debug$setContent(print(estimate$es_meta))
+            # self$results$debug$setContent(estimate$es_heterogeneity)
 
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
-
           # Redo analysis
           estimate <- jamovi_meta_mean(self)
 
@@ -225,12 +242,12 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
           if (!is.null(myplot$layers$group_Reference_PI)) {
             myplot$layers$group_Reference_PI$aes_params$colour <- self$options$color_summary_reference
-            myplot$layers$group_Reference_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
+            myplot$layers$group_Reference_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_reference)
           }
 
           if (!is.null(myplot$layers$group_Unused_PI)) {
-            myplot$layers$group_Unused_P$aes_params$colourI <- self$options$color_summary_unused
-            myplot$layers$group_Unused_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
+            myplot$layers$group_Unused_P$aes_params$colour <- self$options$color_summary_unused
+            myplot$layers$group_Unused_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
           }
 
 
@@ -362,7 +379,12 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             position = "top"
           )
 
-          if (!is.null(self$options$moderator)) {
+          moderator <- !is.null(self$options$moderator)
+          if (self$options$switch != "from_raw") {
+            moderator <- !is.null(self$options$dmoderator)
+          }
+
+          if (moderator) {
             myplot <- esci_plot_difference_axis_x(
               myplot,
               estimate$es_meta_difference,
@@ -422,31 +444,32 @@ jamovi_meta_mean <- function(self) {
 
     # Prelim -----------------------------------------------------
     notes <- c(NULL)
+    from_raw <- self$options$switch == "from_raw"
 
     # Step 1 - Check if analysis basics are defined ---------------
     args <- list()
 
-    if (
+    if (from_raw) {
+      if (
         is.null(self$options$means) |
         is.null(self$options$sds) |
         is.null(self$options$ns)
-    ) return(NULL)
+      ) return(NULL)
+      call <- esci4::meta_mean
+    } else {
+      if (
+        is.null(self$options$ds) |
+        is.null(self$options$dns)
+      ) return(NULL)
+      call <- esci4::meta_d1
+    }
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::meta_mean
-
     args$effect_label <- jamovi_sanitize(
         self$options$effect_label,
         return_value = "My effect",
         na_ok = FALSE
-    )
-
-    args$reference_mean <- jamovi_sanitize(
-        self$options$reference_mean,
-        return_value = 0,
-        na_ok = FALSE,
-        convert_to_number = TRUE
     )
 
     args$conf_level <- jamovi_sanitize(
@@ -462,35 +485,64 @@ jamovi_meta_mean <- function(self) {
     )/100
 
 
+    if (from_raw) {
+      args$reference_mean <- jamovi_sanitize(
+        self$options$reference_mean,
+        return_value = 0,
+        na_ok = FALSE,
+        convert_to_number = TRUE
+      )
+    }
+
     for (element in args) {
         notes <- c(notes, names(element))
     }
 
+    if (from_raw) {
+      args$data <- self$data
+      args$means <- self$options$means
+      args$sds <- self$options$sds
+      args$ns <- self$options$ns
+      args$reported_effect_size <- self$options$reported_effect_size
 
-    if (!is.null(self$options$moderator)) {
+      if (!is.null(self$options$moderator)) {
         args$moderator <- self$options$moderator
-    }
+      }
 
-    if (!is.null(self$options$labels)) {
+      if (!is.null(self$options$labels)) {
         args$labels <- self$options$labels
+      }
+    } else {
+      args$data <- self$data
+      args$ds <- self$options$ds
+      args$ns <- self$options$dns
+
+      if (!is.null(self$options$dmoderator)) {
+        args$moderator <- self$options$dmoderator
+      }
+
+      if (!is.null(self$options$dlabels)) {
+        args$labels <- self$options$dlabels
+      }
+
     }
-
-    args$data <- self$data
-    args$means <- self$options$means
-    args$sds <- self$options$sds
-    args$ns <- self$options$ns
-
-    args$reported_effect_size <- self$options$reported_effect_size
 
     args$random_effects <- self$options$random_effects %in% c("random_effects", "compare")
 
-
-
     # Do analysis, then post any notes that have emerged
     estimate <- try(do.call(what = call, args = args))
+
+
     estimate$raw_data$label <- as.character(estimate$raw_data$label)
-    if (!is.null(self$options$moderator)) {
+
+    if (from_raw) {
+      if (!is.null(self$options$moderator)) {
         estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)
+      }
+    } else {
+      if (!is.null(self$options$dmoderator)) {
+        estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)
+      }
     }
 
     if (!is(estimate, "try-error")) {
