@@ -63,7 +63,7 @@ children:
       - type: ComboBox
         name: random_effects
       - type: CheckBox
-        name: show_PIs
+        name: include_PIs
       - type: CheckBox
         name: show_details
   - type: CollapseBox

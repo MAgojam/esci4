@@ -16,6 +16,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             reference_mean = "0",
             reported_effect_size = "mean_difference",
             random_effects = "random_effects",
+            include_PIs = FALSE,
             show_details = FALSE,
             es_plot_width = "600",
             es_plot_height = "750",
@@ -130,7 +131,12 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 default="random_effects",
                 options=list(
                     "random_effects",
-                    "fixed_effects"))
+                    "fixed_effects",
+                    "compare"))
+            private$..include_PIs <- jmvcore::OptionBool$new(
+                "include_PIs",
+                include_PIs,
+                default=FALSE)
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
@@ -1289,6 +1295,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..reference_mean)
             self$.addOption(private$..reported_effect_size)
             self$.addOption(private$..random_effects)
+            self$.addOption(private$..include_PIs)
             self$.addOption(private$..show_details)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
@@ -1362,6 +1369,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         reference_mean = function() private$..reference_mean$value,
         reported_effect_size = function() private$..reported_effect_size$value,
         random_effects = function() private$..random_effects$value,
+        include_PIs = function() private$..include_PIs$value,
         show_details = function() private$..show_details$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
@@ -1434,6 +1442,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..reference_mean = NA,
         ..reported_effect_size = NA,
         ..random_effects = NA,
+        ..include_PIs = NA,
         ..show_details = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
@@ -1631,6 +1640,16 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="PI_LL", 
+                        `title`="LL", 
+                        `type`="number", 
+                        `visible`="(include_PIs & random_effects == 'random_effects')"),
+                    list(
+                        `name`="PI_UL", 
+                        `title`="UL", 
+                        `type`="number", 
+                        `visible`="(include_PIs & random_effects == 'random_effects')"),
+                    list(
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
@@ -1790,6 +1809,7 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param reference_mean .
 #' @param reported_effect_size .
 #' @param random_effects .
+#' @param include_PIs .
 #' @param show_details .
 #' @param es_plot_width .
 #' @param es_plot_height .
@@ -1881,6 +1901,7 @@ jamovirmetamean <- function(
     reference_mean = "0",
     reported_effect_size = "mean_difference",
     random_effects = "random_effects",
+    include_PIs = FALSE,
     show_details = FALSE,
     es_plot_width = "600",
     es_plot_height = "750",
@@ -1972,6 +1993,7 @@ jamovirmetamean <- function(
         reference_mean = reference_mean,
         reported_effect_size = reported_effect_size,
         random_effects = random_effects,
+        include_PIs = include_PIs,
         show_details = show_details,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,

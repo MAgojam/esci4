@@ -127,12 +127,16 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             my_value_name = "Y axis: Diamond height"
           )
 
+          explain_DR <- self$options$random_effects == "compare"
+          include_PIs <- self$options$include_PIs & self$options$random_effects == "random_effects"
 
           myplot <- plot_meta(
             estimate,
             mark_zero = self$options$mark_zero,
+            include_PIs = include_PIs,
             report_CIs = self$options$report_CIs,
             meta_diamond_height = meta_diamond_height,
+            explain_DR = explain_DR,
             ggtheme = ggtheme
           )
 
@@ -458,7 +462,7 @@ jamovi_meta_mean <- function(self) {
 
     args$reported_effect_size <- self$options$reported_effect_size
 
-    args$random_effects <- self$options$random_effects == "random_effects"
+    args$random_effects <- self$options$random_effects %in% c("random_effects", "compare")
 
 
 

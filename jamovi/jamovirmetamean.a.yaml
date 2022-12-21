@@ -66,9 +66,11 @@ options:
             title: Random effects
           - name: fixed_effects
             title: Fixed effects
+          - name: compare
+            title: Compare fixed and random effects
 
-    - name: show_PIs
-      title: Report predictin intervals
+    - name: include_PIs
+      title: Report prediction intervals
       type: Bool
       default: false
 

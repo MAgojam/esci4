@@ -98,6 +98,14 @@ items:
         - name: UL
           title: UL
           type: number
+        - name: PI_LL
+          title: LL
+          type: number
+          visible: (include_PIs & random_effects == 'random_effects')
+        - name: PI_UL
+          title: UL
+          type: number
+          visible: (include_PIs & random_effects == 'random_effects')
         - name: SE
           title: <i>SE</i>
           type: number
