@@ -4,19 +4,42 @@ apply_ci_mdiff <- function(
   conf_level
 ) {
 
+  has_r <- FALSE
+  if ("r" %in% names(myrow)) {
+    has_r <- !is.na(myrow[["r"]])
+  }
+
+  if (!has_r) {
+      res <- as.data.frame(
+        statpsych::ci.mean2(
+          alpha = 1 - conf_level,
+          m1 = myrow[["comparison_mean"]],
+          m2 = myrow[["reference_mean"]],
+          sd1 = myrow[["comparison_sd"]],
+          sd2 = myrow[["reference_sd"]],
+          n1 = myrow[["comparison_n"]],
+          n2 = myrow[["reference_n"]]
+        )
+      )
+
+    res_row <- if(assume_equal_variance) 1 else 2
+
+  } else {
+
     res <- as.data.frame(
-      statpsych::ci.mean2(
+      statpsych::ci.mean.ps(
         alpha = 1 - conf_level,
         m1 = myrow[["comparison_mean"]],
         m2 = myrow[["reference_mean"]],
         sd1 = myrow[["comparison_sd"]],
         sd2 = myrow[["reference_sd"]],
-        n1 = myrow[["comparison_n"]],
-        n2 = myrow[["reference_n"]]
+        n = myrow[["reference_n"]],
+        cor = myrow[["r"]]
       )
     )
 
-  res_row <- if(assume_equal_variance) 1 else 2
+    res_row <- 1
+  }
 
   res <- c(
     res[res_row, "Estimate"],
@@ -39,44 +62,83 @@ apply_ci_stdmean_two <- function(
   conf_level
 ) {
 
-  res <- as.data.frame(
-    CI_smd_ind_contrast(
-      means = c(myrow[["comparison_mean"]], myrow[["reference_mean"]]),
-      sds = c(myrow[["comparison_sd"]], myrow[["reference_sd"]]),
-      ns = c(myrow[["comparison_n"]], myrow[["reference_n"]]),
-      contrast = c(1, -1),
-      assume_equal_variance = assume_equal_variance,
-      correct_bias = correct_bias,
-      conf_level = conf_level
+  has_r <- FALSE
+  if ("r" %in% names(myrow)) {
+    has_r <- !is.na(myrow[["r"]])
+  }
+
+  if (!has_r) {
+    res <- as.data.frame(
+      CI_smd_ind_contrast(
+        means = c(myrow[["comparison_mean"]], myrow[["reference_mean"]]),
+        sds = c(myrow[["comparison_sd"]], myrow[["reference_sd"]]),
+        ns = c(myrow[["comparison_n"]], myrow[["reference_n"]]),
+        contrast = c(1, -1),
+        assume_equal_variance = assume_equal_variance,
+        correct_bias = correct_bias,
+        conf_level = conf_level
+      )
     )
-  )
 
-  n_sum <- myrow[["comparison_n"]] + myrow[["reference_n"]]
-  n_prod <- myrow[["comparison_n"]] * myrow[["reference_n"]]
-  vi_alt <- ( n_sum/n_prod + res$d_biased^2 / (2*n_sum)  )
+    n_sum <- myrow[["comparison_n"]] + myrow[["reference_n"]]
+    n_prod <- myrow[["comparison_n"]] * myrow[["reference_n"]]
+    vi_alt <- ( n_sum/n_prod + res$d_biased^2 / (2*n_sum)  )
 
-  if (correct_bias) {
-    J <- res$effect_size / res$d_biased
-    vi_alt <- J^2 * vi_alt
+    if (correct_bias) {
+      J <- res$effect_size / res$d_biased
+      vi_alt <- J^2 * vi_alt
+    }
+
+    res_raw <- as.data.frame(
+      statpsych::ci.mean2(
+        alpha = 1 - conf_level,
+        m1 = myrow[["comparison_mean"]],
+        m2 = myrow[["reference_mean"]],
+        sd1 = myrow[["comparison_sd"]],
+        sd2 = myrow[["reference_sd"]],
+        n1 = myrow[["comparison_n"]],
+        n2 = myrow[["reference_n"]]
+      )
+    )
+
+    res_raw_row <- if(assume_equal_variance) 1 else 2
+
+
+  } else {
+
+
+    res <- as.data.frame(
+      statpsych::ci.stdmean.ps(
+        alpha = 1 - conf_level,
+        m1 = myrow[["comparison_mean"]],
+        m2 = myrow[["reference_mean"]],
+        sd1 = myrow[["comparison_sd"]],
+        sd2 = myrow[["reference_sd"]],
+        cor= myrow[["r"]],
+        n = myrow[["reference_n"]]
+      )
+    )
+
+    res_raw <- as.data.frame(
+      statpsych::ci.mean.ps(
+        alpha = 1 - conf_level,
+        m1 = myrow[["comparison_mean"]],
+        m2 = myrow[["reference_mean"]],
+        sd1 = myrow[["comparison_sd"]],
+        sd2 = myrow[["reference_sd"]],
+        cor= myrow[["r"]],
+        n = myrow[["reference_n"]]
+      )
+    )
+
+    res_raw_row <- 1
+    vi_alt <- NA
+
   }
 
 
-  res_raw <- as.data.frame(
-    statpsych::ci.mean2(
-      alpha = 1 - conf_level,
-      m1 = myrow[["comparison_mean"]],
-      m2 = myrow[["reference_mean"]],
-      sd1 = myrow[["comparison_sd"]],
-      sd2 = myrow[["reference_sd"]],
-      n1 = myrow[["comparison_n"]],
-      n2 = myrow[["reference_n"]]
-    )
-  )
-
-  res_raw_row <- if(assume_equal_variance) 1 else 2
-
   res <- c(
-    res[1, "effect_size"],
+    res[1, if (has_r) "Estimate" else "effect_size"],
     res[1, "SE"]^2,
     res[1, "LL"],
     res[1, "UL"],
@@ -84,6 +146,7 @@ apply_ci_stdmean_two <- function(
     p = res_raw[res_raw_row, "p"]
   )
   names(res) <- c("yi", "vi", "LL", "UL", "vi_alt", "p")
+
 
   return(res)
 }

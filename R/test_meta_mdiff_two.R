@@ -59,7 +59,8 @@ test_estimate_meta_mdiff_two <- function() {
     bN = c(26, 28, 99, 33, 21, 184, 255, 55, 34, 95),
     mod = as.factor(
       c("Simple", "Critique", "Simple","Simple","Simple","Simple","Simple","Critique","Critique","Critique")
-    )
+    ),
+    ds = c(0.31217944,  0.56073138, -0.06693802,  0.41136192,  0.23581389, -0.06652995,  0.08958082,  0.11892778,  0.49506069,  0.26765910)
   )
 
   estimate <- meta_mdiff_two(
@@ -107,6 +108,8 @@ test_estimate_meta_mdiff_two <- function() {
     conf_level = 0.99
   )
 
+
+  # From raw to smd
   estimate <- meta_mdiff_two(
     data = esci_test,
     comparison_means = bM,
@@ -122,6 +125,23 @@ test_estimate_meta_mdiff_two <- function() {
     assume_equal_variance = TRUE,
     random_effects = TRUE,
   )
+
+  esci_test$ds <- estimate$raw_data$effect_size
+
+  destimate <- meta_d2(
+    data = esci_test,
+    ds = ds,
+    comparison_ns = bN,
+    reference_ns = nbN,
+    moderator = mod,
+    labels = study_name,
+    effect_label = "Brain Photo Rating - No Brain Photo Rating",
+    random_effects = TRUE
+  )
+  estimate$raw_data
+  destimate$raw_data
+
+  # Take smd results and enter those to meta_d2 for same outcome
 
   # Currently matches esci example perfectly *except* diamond ratios for
   #  moderator groups
