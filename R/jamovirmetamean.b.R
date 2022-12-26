@@ -40,6 +40,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
             tbl_raw_data$getColumn("moderator")$setVisible(moderator)
 
+
             width <- jamovi_sanitize(
               my_value = self$options$es_plot_width,
               return_value = 600,
@@ -77,6 +78,12 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            # table handles
+            tbl_raw_data <- self$results$raw_data
+            tbl_es_meta <- self$results$es_meta
+            tbl_es_meta_difference <- self$results$es_meta_difference
+            tbl_es_heterogeneity <- self$results$es_heterogeneity
+
             # Fill tables
             estimate$es_heterogeneity$measure_html <- jamovi_heterogeneity_to_html(
               estimate$es_heterogeneity$measure
@@ -84,20 +91,45 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             jamovi_estimate_filler(self, estimate, TRUE)
 
 
+            # Update column headings if reference mean was used
+            reference_mean <- jamovi_sanitize(
+              self$options$reference_mean,
+              return_value = 0,
+              na_ok = FALSE,
+              convert_to_number = TRUE
+            )
+            reference_used <- is.null(names(reference_mean))
+
+            if (reference_used) {
+              new_title <- "<i>M</i> - <i>M</i><sub>Reference</sub>"
+              tbl_raw_data$getColumn("effect_size")$setTitle(new_title)
+              tbl_es_meta$getColumn("effect_size")$setTitle(new_title)
+              tbl_es_meta_difference$getColumn("effect_size")$setTitle(new_title)
+              ref_note <- paste(
+                "Effect sizes are relative to a reference value of ",
+                format(reference_mean, digits = 2),
+                ".<br>",
+                sep = ""
+              )
+              tbl_raw_data$setNote(
+                key = "ref_note",
+                note = ref_note
+              )
+            }
+
+
             # Tbl note
-            tbl_es_meta <- self$results$es_meta
-            tbl_es_meta_difference <- self$results$es_meta_difference
             meta_note <- if(self$options$random_effects != "fixed_effects")
-              "Estimate is based on a random effects model."
+              "Estimate is based on a random effects (RE) model.<br>"
             else
-              "Estimate is based on a fixed effects model."
+              "Estimate is based on a fixed effect (FE) model.</br>"
 
 
             if (self$options$switch == "from_raw") {
               if (self$options$reported_effect_size == "smd_unbiased") {
                 meta_note <- paste(
                   meta_note,
-                  "  This standardized mean difference (",
+                  "  The standardized mean difference (",
                   estimate$properties$effect_size_name_html,
                   ") has been corrected for sampling bias.",
                   sep = ""
@@ -110,6 +142,14 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
                 estimate$properties$effect_size_name_html,
                 ").",
                 sep = ""
+              )
+            }
+
+            if (reference_used) {
+              meta_note <- paste(
+                ref_note,
+                meta_note,
+                sep = "  "
               )
             }
 
@@ -139,7 +179,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             na_ok = FALSE,
             convert_to_number = TRUE,
             lower = 0,
-            lower_inclusive = TRUE,
+            lower_inclusive = FALSE,
             upper = 2,
             my_value_name = "Y axis: Diamond height"
           )
@@ -415,6 +455,7 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
 
           notes <- c(
             notes,
+            names(meta_diamond_height),
             names(axis.text.y),
             names(axis.text.x),
             names(axis.title.x),
@@ -486,12 +527,19 @@ jamovi_meta_mean <- function(self) {
 
 
     if (from_raw) {
-      args$reference_mean <- jamovi_sanitize(
-        self$options$reference_mean,
-        return_value = 0,
-        na_ok = FALSE,
-        convert_to_number = TRUE
-      )
+      if (length(trimws(as.character(self$options$reference_mean))) == 0) {
+      } else {
+        if (trimws(as.character(self$options$reference_mean)) %in% c("")) {
+
+        } else {
+          args$reference_mean <- jamovi_sanitize(
+            self$options$reference_mean,
+            return_value = 0,
+            na_ok = FALSE,
+            convert_to_number = TRUE
+          )
+        }
+      }
     }
 
     for (element in args) {

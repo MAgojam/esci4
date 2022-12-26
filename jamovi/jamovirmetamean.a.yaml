@@ -70,29 +70,29 @@ options:
       default: My effect
 
     - name: reference_mean
-      title: Compare to reference mean
+      title: Compare to reference value
       type: String
-      default: '0'
+      default: ''
 
     - name: reported_effect_size
       type: List
-      title: Report effect size as
+      title: Effect size
       default: mean_difference
       options:
           - name: mean_difference
-            title: Raw score
+            title: Original Units
           - name: smd_unbiased
             title: Standardized mean difference
 
     - name: random_effects
-      title: Effect size model?
+      title: Model
       type: List
       default: random_effects
       options:
           - name: random_effects
-            title: Random effects
+            title: Random effects (RE)
           - name: fixed_effects
-            title: Fixed effects
+            title: Fixed effect (FE)
           - name: compare
             title: Compare fixed and random effects
 
@@ -118,7 +118,7 @@ options:
 
     - name: size_base
       type: List
-      title: 'Minimum Size'
+      title: 'Minumum'
       default: '2'
       options:
         - name: '.25'
@@ -146,9 +146,11 @@ options:
 
     - name: size_multiplier
       type: List
-      title: 'Size multiplier'
+      title: 'Multiplier'
       default: '3'
       options:
+        - name: '1'
+          title: '1'
         - name: '1.1'
           title: '1.1'
         - name: '1.2'
@@ -246,7 +248,7 @@ options:
 
     - name: shape_raw_reference
       type: List
-      default: 'circle filled'
+      default: 'square filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -259,7 +261,7 @@ options:
 
     - name: shape_raw_comparison
       type: List
-      default: 'circle filled'
+      default: 'square filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -272,7 +274,7 @@ options:
 
     - name: shape_raw_unused
       type: List
-      default: 'circle filled'
+      default: 'square filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -1546,57 +1548,6 @@ options:
            title: 'Gray95'
          - name: 'gray100'
            title: 'Gray100'
-
-    - name: size_raw_reference
-      type: List
-      default: '4'
-      options:
-        - name: '1'
-          title: '1'
-        - name: '2'
-          title: '2'
-        - name: '3'
-          title: '3'
-        - name: '4'
-          title: '4'
-        - name: '5'
-          title: '5'
-        - name: '6'
-          title: '6'
-
-    - name: size_raw_comparison
-      type: List
-      default: '4'
-      options:
-        - name: '1'
-          title: '1'
-        - name: '2'
-          title: '2'
-        - name: '3'
-          title: '3'
-        - name: '4'
-          title: '4'
-        - name: '5'
-          title: '5'
-        - name: '6'
-          title: '6'
-
-    - name: size_raw_unused
-      type: List
-      default: '2'
-      options:
-        - name: '1'
-          title: '1'
-        - name: '2'
-          title: '2'
-        - name: '3'
-          title: '3'
-        - name: '4'
-          title: '4'
-        - name: '5'
-          title: '5'
-        - name: '6'
-          title: '6'
 
     - name: alpha_raw_reference
       type: List

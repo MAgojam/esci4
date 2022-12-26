@@ -14,6 +14,7 @@
 #' @param contrast contrast
 #' @param effect_label el
 #' @param random_effects re
+#' @param assume_equal_variance aev
 #' @param conf_level The confidence level for the confidence interval.  Given in
 #'   decimal form.  Defaults to 0.95.
 #'
@@ -31,6 +32,7 @@ meta_d2 <- function(
   moderator = NULL,
   contrast = NULL,
   effect_label = "My effect",
+  assume_equal_variance = TRUE,
   random_effects = TRUE,
   conf_level = .95
 )  {
@@ -80,7 +82,7 @@ meta_d2 <- function(
   # * conf_level must be a numeric >0 and < 1, checked in meta_any
 
   # Check that data is a data.frame
-  assume_equal_variance <- TRUE
+  # assume_equal_variance <- TRUE
 
 
   esci_assert_type(data, "is.data.frame")
@@ -320,6 +322,8 @@ The rows with r but mismatching n are:
   data$comparison_mean <- NULL
   data$reference_sd <- NULL
   data$comparison_sd <- NULL
+  if (is.null(r_quoname)) data$r <- NA
+  data$df <- es_data$df
   data$p <- es_data$p
 
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
@@ -334,7 +338,7 @@ The rows with r but mismatching n are:
 
   res$properties$effect_size_name_html <- if(assume_equal_variance) "<i>d</i><sub>s</sub>" else "<i>d</i><sub>avg</sub>"
 
-  res$properties$effect_size_name_ggplot <- if(assume_equal_variance) "*d*<sub>s.biased</sub>" else "*d*<sub>avg.biased</sub>"
+  res$properties$effect_size_name_ggplot <- if(assume_equal_variance) "*d*<sub>s</sub>" else "*d*<sub>avg</sub>"
 
   return(res)
 }

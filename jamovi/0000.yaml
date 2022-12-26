@@ -90,31 +90,31 @@ analyses:
     name: jamovirmetamean
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Meta-analysis
+    menuSubgroup: Meta-Analysis
     menuTitle: Means
   - title: Difference in Means
     name: jamovimetamdiff
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Meta-analysis
+    menuSubgroup: Meta-Analysis
     menuTitle: Difference in Means
   - title: Proportions
     name: jamovirmetaproportion
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Meta-analysis
+    menuSubgroup: Meta-Analysis
     menuTitle: Proportions
   - title: Difference in Proportions
     name: jamovimetapdiff
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Meta-analysis
+    menuSubgroup: Meta-Analysis
     menuTitle: Difference in Proportions
   - title: Correlations
     name: jamovirmetar
     ns: esci4
     menuGroup: esci4
-    menuSubgroup: Meta-analysis
+    menuSubgroup: Meta-Analysis
     menuTitle: Correlations
 usesNative: true
 minApp: 1.0.8

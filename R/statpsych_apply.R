@@ -46,9 +46,10 @@ apply_ci_mdiff <- function(
     res[res_row, "SE"]^2,
     res[res_row, "LL"],
     res[res_row, "UL"],
+    res[res_row, "df"],
     res[res_row, "p"]
   )
-  names(res) <- c("yi", "vi", "LL", "UL", "p")
+  names(res) <- c("yi", "vi", "LL", "UL", "df", "p")
 
   return(res)
 }
@@ -106,18 +107,34 @@ apply_ci_stdmean_two <- function(
 
   } else {
 
+    m1 <- myrow[["comparison_mean"]]
+    m2 <- myrow[["reference_mean"]]
+    df <- myrow[["reference_n"]] - 1
+    s <- sqrt((myrow[["comparison_sd"]]^2 + myrow[["reference_sd"]]^2)/2)
+
+    if(!correct_bias) {
+      adj1 <- sqrt((df-1)/df)
+      est1 <- (m1 - m2)/s
+      desired_est1 <- est1/adj1
+      desired_diff <- desired_est1*s
+      m1 <- desired_diff
+      m2 <- 0
+    }
+
 
     res <- as.data.frame(
       statpsych::ci.stdmean.ps(
         alpha = 1 - conf_level,
-        m1 = myrow[["comparison_mean"]],
-        m2 = myrow[["reference_mean"]],
+        m1 = m1,
+        m2 = m2,
         sd1 = myrow[["comparison_sd"]],
         sd2 = myrow[["reference_sd"]],
         cor= myrow[["r"]],
         n = myrow[["reference_n"]]
       )
     )
+
+    res$df <- df
 
     res_raw <- as.data.frame(
       statpsych::ci.mean.ps(
@@ -143,9 +160,10 @@ apply_ci_stdmean_two <- function(
     res[1, "LL"],
     res[1, "UL"],
     vi_alt,
+    res[1, "df"],
     p = res_raw[res_raw_row, "p"]
   )
-  names(res) <- c("yi", "vi", "LL", "UL", "vi_alt", "p")
+  names(res) <- c("yi", "vi", "LL", "UL", "vi_alt", "df", "p")
 
 
   return(res)

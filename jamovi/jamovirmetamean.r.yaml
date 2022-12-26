@@ -120,12 +120,12 @@ items:
           format: zto,pvalue
         - name: FE_CI_width
           type: number
-          title: Fixed effects CI width
-          visible: (show_details)
+          title: FE CI width
+          visible: (random_effects == 'compare' | show_details)
         - name: RE_CI_width
           type: number
-          title: Random effects CI width
-          visible: (show_details)
+          title: RE CI width
+          visible: (random_effects == 'compare' | show_details)
         - name: diamond_ratio
           type: number
           title: Diamond ratio
@@ -152,12 +152,12 @@ items:
           visible: false
         - name: FE_effect_size
           type: number
-          title: Fixed effects effect size
-          visible: false
+          title: FE effect size
+          visible: (random_effects == 'compare')
         - name: RE_effect_size
           type: number
-          title: Random effects effect size
-          visible: false
+          title: RE effect size
+          visible: (random_effects == 'compare')
 
     - name:  es_heterogeneity
       title: Effect size heterogeneity

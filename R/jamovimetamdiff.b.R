@@ -7,50 +7,10 @@ jamovimetamdiffClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
     private = list(
         .init = function() {
 
-            tbl_raw_data <- self$results$raw_data
-            tbl_es_meta <- self$results$es_meta
-            tbl_es_meta_difference <- self$results$es_meta_difference
-
-            conf_level <- jamovi_sanitize(
-              my_value = self$options$conf_level,
-              return_value = 95,
-              na_ok = FALSE,
-              convert_to_number = TRUE,
-              lower = 75,
-              lower_inclusive = FALSE,
-              upper = 100,
-              upper_inclusive = FALSE,
-              my_value_name = "Confidence level"
+            jamovi_meta_initialize(
+              self = self,
+              has_switch = TRUE
             )
-
-            jamovi_set_confidence(tbl_raw_data, conf_level)
-            jamovi_set_confidence(tbl_es_meta, conf_level)
-
-
-            moderator <- !is.null(self$options$moderator)
-
-            tbl_es_meta_difference$setVisible(moderator)
-            tbl_es_meta$getColumn("moderator_variable_name")$setVisible(moderator)
-            tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
-            tbl_raw_data$getColumn("moderator")$setVisible(moderator)
-
-            meta_note <- if(self$options$random_effects)
-                "Estimate is based on a random effects model."
-            else
-                "Estimate is based on a fixed effects model."
-
-            if (self$options$reported_effect_size == "smd") {
-                meta_note <- paste(
-                    meta_note,
-                    "  This standardized mean difference has been corrected for sampling bias."
-                )
-            }
-
-            tbl_es_meta$setNote(
-                key = "meta_note",
-                note = meta_note
-            )
-
 
         },
         .run = function() {
@@ -68,7 +28,34 @@ jamovimetamdiffClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is(estimate, "try-error")) stop(estimate[1])
 
             # Fill tables
-            jamovi_estimate_filler(self, estimate, TRUE)
+            jamovi_meta_run(
+              estimate = estimate,
+              self = self,
+              has_reference = FALSE,
+              has_switch = TRUE,
+              has_aev = TRUE
+            )
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+          # Redo analysis
+          estimate <- jamovi_meta_mdiff_two(self)
+
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          myplot <- jamovi_meta_forest_plot(
+            estimate = estimate,
+            self = self,
+            ggtheme = ggtheme,
+            theme = theme
+          )
+
+          print(myplot)
+
+          return(TRUE)
 
         })
 )
@@ -81,19 +68,30 @@ jamovi_meta_mdiff_two <- function(self) {
 
     # Step 1 - Check if analysis basics are defined ---------------
     args <- list()
+    from_raw <- self$options$switch == "from_raw"
 
-    if (
+    if (from_raw) {
+      if (
         is.null(self$options$reference_means) |
         is.null(self$options$reference_sds) |
         is.null(self$options$reference_ns) |
         is.null(self$options$comparison_means) |
         is.null(self$options$comparison_sds) |
         is.null(self$options$comparison_ns)
-    ) return(NULL)
+      ) return(NULL)
+      call <- esci4::meta_mdiff_two
+    } else {
+      if (
+        is.null(self$options$d) |
+        is.null(self$options$dreference_ns) |
+        is.null(self$options$dcomparison_ns)
+      ) return(NULL)
+      call <- esci4::meta_d2
+    }
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::meta_mdiff_two
+
 
     args$effect_label <- jamovi_sanitize(
         self$options$effect_label,
@@ -113,44 +111,85 @@ jamovi_meta_mdiff_two <- function(self) {
       my_value_name = "Confidence level"
     )/100
 
+    args$assume_equal_variance <- self$options$assume_equal_variance
 
     for (element in args) {
         notes <- c(notes, names(element))
     }
 
 
-    if (!is.null(self$options$moderator)) {
+
+    if (from_raw) {
+      args$data <- self$data
+      args$reference_means <- self$options$reference_means
+      args$reference_sds <- self$options$reference_sds
+      args$reference_ns <- self$options$reference_ns
+      args$comparison_means <- self$options$comparison_means
+      args$comparison_sds <- self$options$comparison_sds
+      args$comparison_ns <- self$options$comparison_ns
+      args$reported_effect_size <- self$options$reported_effect_size
+
+      if (!is.null(self$options$r)) {
+        args$r <- self$options$r
+      }
+
+
+      if (!is.null(self$options$moderator)) {
         args$moderator <- self$options$moderator
-    }
+      }
 
-    if (!is.null(self$options$labels)) {
+      if (!is.null(self$options$labels)) {
         args$labels <- self$options$labels
+      }
+
+    } else {
+
+      args$data <- self$data
+      args$ds <- self$options$d
+      args$reference_ns <- self$options$dreference_ns
+      args$comparison_ns <- self$options$dcomparison_ns
+
+      if (!is.null(self$options$dr)) {
+        args$r <- self$options$dr
+      }
+
+
+      if (!is.null(self$options$dmoderator)) {
+        args$moderator <- self$options$dmoderator
+      }
+
+      if (!is.null(self$options$dlabels)) {
+        args$labels <- self$options$dlabels
+      }
+
+
     }
 
-    args$data <- self$data
-    args$reference_means <- self$options$reference_means
-    args$reference_sds <- self$options$reference_sds
-    args$reference_ns <- self$options$reference_ns
-    args$comparison_means <- self$options$comparison_means
-    args$comparison_sds <- self$options$comparison_sds
-    args$comparison_ns <- self$options$comparison_ns
-
-    args$reported_effect_size <- self$options$reported_effect_size
-
-    args$random_effects <- self$options$random_effects
+    args$random_effects <- self$options$random_effects %in% c("random_effects", "compare")
 
     # Do analysis, then post any notes that have emerged
     estimate <- try(do.call(what = call, args = args))
-    estimate$raw_data$label <- as.character(estimate$raw_data$label)
-    if (!is.null(self$options$moderator)) {
-        estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)
-    }
 
     if (!is(estimate, "try-error")) {
-        if (length(estimate$warnings) > 0) {
-            notes <- c(notes, estimate$warnings)
-        }
+      if (length(estimate$warnings) > 0) {
+        notes <- c(notes, estimate$warnings)
+      }
     }
+
+    estimate$raw_data$label <- as.character(estimate$raw_data$label)
+    estimate$raw_data$df_i <- estimate$raw_data$df
+
+    if (from_raw) {
+      if (!is.null(self$options$moderator)) {
+        estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)
+      }
+
+    } else {
+      if (!is.null(self$options$dmoderator)) {
+        estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)
+      }
+    }
+
 
     self$results$help$setState(notes)
 

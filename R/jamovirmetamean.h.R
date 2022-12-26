@@ -18,7 +18,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             dmoderator = NULL,
             conf_level = 95,
             effect_label = "My effect",
-            reference_mean = "0",
+            reference_mean = "",
             reported_effect_size = "mean_difference",
             random_effects = "random_effects",
             include_PIs = FALSE,
@@ -41,9 +41,9 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             dmin = "auto",
             dmax = "auto",
             dbreaks = "auto",
-            shape_raw_reference = "circle filled",
-            shape_raw_comparison = "circle filled",
-            shape_raw_unused = "circle filled",
+            shape_raw_reference = "square filled",
+            shape_raw_comparison = "square filled",
+            shape_raw_unused = "square filled",
             color_raw_reference = "#008DF9",
             color_raw_comparison = "#009F81",
             color_raw_unused = "gray65",
@@ -60,9 +60,6 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             fill_summary_unused = "gray75",
             fill_summary_difference = "black",
             fill_summary_overall = "white",
-            size_raw_reference = "4",
-            size_raw_comparison = "4",
-            size_raw_unused = "2",
             alpha_raw_reference = "1",
             alpha_raw_comparison = "1",
             alpha_raw_unused = "1",
@@ -145,7 +142,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..reference_mean <- jmvcore::OptionString$new(
                 "reference_mean",
                 reference_mean,
-                default="0")
+                default="")
             private$..reported_effect_size <- jmvcore::OptionList$new(
                 "reported_effect_size",
                 reported_effect_size,
@@ -198,6 +195,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 size_multiplier,
                 default="3",
                 options=list(
+                    "1",
                     "1.1",
                     "1.2",
                     "1.3",
@@ -269,7 +267,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..shape_raw_reference <- jmvcore::OptionList$new(
                 "shape_raw_reference",
                 shape_raw_reference,
-                default="circle filled",
+                default="square filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -278,7 +276,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..shape_raw_comparison <- jmvcore::OptionList$new(
                 "shape_raw_comparison",
                 shape_raw_comparison,
-                default="circle filled",
+                default="square filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -287,7 +285,7 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..shape_raw_unused <- jmvcore::OptionList$new(
                 "shape_raw_unused",
                 shape_raw_unused,
-                default="circle filled",
+                default="square filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -965,39 +963,6 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..size_raw_reference <- jmvcore::OptionList$new(
-                "size_raw_reference",
-                size_raw_reference,
-                default="4",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"))
-            private$..size_raw_comparison <- jmvcore::OptionList$new(
-                "size_raw_comparison",
-                size_raw_comparison,
-                default="4",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"))
-            private$..size_raw_unused <- jmvcore::OptionList$new(
-                "size_raw_unused",
-                size_raw_unused,
-                default="2",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"))
             private$..alpha_raw_reference <- jmvcore::OptionList$new(
                 "alpha_raw_reference",
                 alpha_raw_reference,
@@ -1367,9 +1332,6 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..fill_summary_unused)
             self$.addOption(private$..fill_summary_difference)
             self$.addOption(private$..fill_summary_overall)
-            self$.addOption(private$..size_raw_reference)
-            self$.addOption(private$..size_raw_comparison)
-            self$.addOption(private$..size_raw_unused)
             self$.addOption(private$..alpha_raw_reference)
             self$.addOption(private$..alpha_raw_comparison)
             self$.addOption(private$..alpha_raw_unused)
@@ -1446,9 +1408,6 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         fill_summary_unused = function() private$..fill_summary_unused$value,
         fill_summary_difference = function() private$..fill_summary_difference$value,
         fill_summary_overall = function() private$..fill_summary_overall$value,
-        size_raw_reference = function() private$..size_raw_reference$value,
-        size_raw_comparison = function() private$..size_raw_comparison$value,
-        size_raw_unused = function() private$..size_raw_unused$value,
         alpha_raw_reference = function() private$..alpha_raw_reference$value,
         alpha_raw_comparison = function() private$..alpha_raw_comparison$value,
         alpha_raw_unused = function() private$..alpha_raw_unused$value,
@@ -1524,9 +1483,6 @@ jamovirmetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..fill_summary_unused = NA,
         ..fill_summary_difference = NA,
         ..fill_summary_overall = NA,
-        ..size_raw_reference = NA,
-        ..size_raw_comparison = NA,
-        ..size_raw_unused = NA,
         ..alpha_raw_reference = NA,
         ..alpha_raw_comparison = NA,
         ..alpha_raw_unused = NA,
@@ -1711,13 +1667,13 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="FE_CI_width", 
                         `type`="number", 
-                        `title`="Fixed effects CI width", 
-                        `visible`="(show_details)"),
+                        `title`="FE CI width", 
+                        `visible`="(random_effects == 'compare' | show_details)"),
                     list(
                         `name`="RE_CI_width", 
                         `type`="number", 
-                        `title`="Random effects CI width", 
-                        `visible`="(show_details)"),
+                        `title`="RE CI width", 
+                        `visible`="(random_effects == 'compare' | show_details)"),
                     list(
                         `name`="diamond_ratio", 
                         `type`="number", 
@@ -1751,13 +1707,13 @@ jamovirmetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     list(
                         `name`="FE_effect_size", 
                         `type`="number", 
-                        `title`="Fixed effects effect size", 
-                        `visible`=FALSE),
+                        `title`="FE effect size", 
+                        `visible`="(random_effects == 'compare')"),
                     list(
                         `name`="RE_effect_size", 
                         `type`="number", 
-                        `title`="Random effects effect size", 
-                        `visible`=FALSE))))
+                        `title`="RE effect size", 
+                        `visible`="(random_effects == 'compare')"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_heterogeneity",
@@ -1934,9 +1890,6 @@ jamovirmetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param fill_summary_unused .
 #' @param fill_summary_difference .
 #' @param fill_summary_overall .
-#' @param size_raw_reference .
-#' @param size_raw_comparison .
-#' @param size_raw_unused .
 #' @param alpha_raw_reference .
 #' @param alpha_raw_comparison .
 #' @param alpha_raw_unused .
@@ -1990,7 +1943,7 @@ jamovirmetamean <- function(
     dmoderator,
     conf_level = 95,
     effect_label = "My effect",
-    reference_mean = "0",
+    reference_mean = "",
     reported_effect_size = "mean_difference",
     random_effects = "random_effects",
     include_PIs = FALSE,
@@ -2013,9 +1966,9 @@ jamovirmetamean <- function(
     dmin = "auto",
     dmax = "auto",
     dbreaks = "auto",
-    shape_raw_reference = "circle filled",
-    shape_raw_comparison = "circle filled",
-    shape_raw_unused = "circle filled",
+    shape_raw_reference = "square filled",
+    shape_raw_comparison = "square filled",
+    shape_raw_unused = "square filled",
     color_raw_reference = "#008DF9",
     color_raw_comparison = "#009F81",
     color_raw_unused = "gray65",
@@ -2032,9 +1985,6 @@ jamovirmetamean <- function(
     fill_summary_unused = "gray75",
     fill_summary_difference = "black",
     fill_summary_overall = "white",
-    size_raw_reference = "4",
-    size_raw_comparison = "4",
-    size_raw_unused = "2",
     alpha_raw_reference = "1",
     alpha_raw_comparison = "1",
     alpha_raw_unused = "1",
@@ -2137,9 +2087,6 @@ jamovirmetamean <- function(
         fill_summary_unused = fill_summary_unused,
         fill_summary_difference = fill_summary_difference,
         fill_summary_overall = fill_summary_overall,
-        size_raw_reference = size_raw_reference,
-        size_raw_comparison = size_raw_comparison,
-        size_raw_unused = size_raw_unused,
         alpha_raw_reference = alpha_raw_reference,
         alpha_raw_comparison = alpha_raw_comparison,
         alpha_raw_unused = alpha_raw_unused,

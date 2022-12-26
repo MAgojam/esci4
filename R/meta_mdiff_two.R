@@ -342,8 +342,8 @@ The rows with r but mismatching n are:
     comparison_means_quoname,
     comparison_sds_quoname,
     comparison_ns_quoname,
-    if (moderator) moderator_quoname,
-    if (!is.null(r_quoname)) r_quoname
+    if (!is.null(r_quoname)) r_quoname,
+    if (moderator) moderator_quoname
   )
 
   # vector of cannonical column names
@@ -414,7 +414,12 @@ The rows with r but mismatching n are:
 
   data$label <- NULL
   data$moderator <- NULL
+  data$df <- es_data$df
   data$p <- es_data$p
+  if (is.null(r_quoname)) data$r <- NA
+
+  es_data_include <- c("LL", "UL")
+
 
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
@@ -438,8 +443,8 @@ The rows with r but mismatching n are:
   res$properties$effect_size_name_ggplot <- switch(
     reported_effect_size,
     "mean_difference" = "*M*<sub>diff</sub>",
-    "smd" = if(assume_equal_variance) "*d*<sub>s</sub>" else "*d*<sub>avg</sub>",
-    "smd_unbiased" = if(assume_equal_variance) "*d*<sub>s.biased</sub>" else "*d*<sub>avg.biased</sub>"
+    "smd_unbiased" = if(assume_equal_variance) "*d*<sub>s</sub>" else "*d*<sub>avg</sub>",
+    "smd" = if(assume_equal_variance) "*d*<sub>s.biased</sub>" else "*d*<sub>avg.biased</sub>"
   )
 
 
