@@ -7,61 +7,66 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
     private = list(
         .init = function() {
 
-            tbl_raw_data <- self$results$raw_data
-            tbl_es_meta <- self$results$es_meta
-            tbl_es_meta_difference <- self$results$es_meta_difference
-            tbl_es_heterogeneity <- self$results$es_heterogeneity
+          jamovi_meta_initialize(
+            self = self,
+            has_switch = TRUE
+          )
 
-            conf_level <<- jamovi_sanitize(
-              my_value = self$options$conf_level,
-              return_value = 95,
-              na_ok = FALSE,
-              convert_to_number = TRUE,
-              lower = 75,
-              lower_inclusive = FALSE,
-              upper = 100,
-              upper_inclusive = FALSE,
-              my_value_name = "Confidence level"
-            )
-
-            jamovi_set_confidence(tbl_raw_data, conf_level)
-            jamovi_set_confidence(tbl_es_meta, conf_level)
-            jamovi_set_confidence(tbl_es_meta_difference, conf_level)
-            jamovi_set_confidence(tbl_es_heterogeneity, conf_level)
-
-
-            moderator <- !is.null(self$options$moderator)
-            if (self$options$switch != "from_raw") {
-              moderator <- !is.null(self$options$dmoderator)
-            }
-
-            tbl_es_meta_difference$setVisible(moderator)
-            tbl_es_meta$getColumn("moderator_variable_name")$setVisible(moderator)
-            tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
-            tbl_raw_data$getColumn("moderator")$setVisible(moderator)
-
-
-            width <- jamovi_sanitize(
-              my_value = self$options$es_plot_width,
-              return_value = 600,
-              convert_to_number = TRUE,
-              lower = 10,
-              lower_inclusive = TRUE,
-              upper = 2000,
-              upper_inclusive = TRUE
-            )
-            height <- jamovi_sanitize(
-              my_value = self$options$es_plot_height,
-              return_value = 750,
-              convert_to_number = TRUE,
-              lower = 176,
-              lower_inclusive = TRUE,
-              upper = 4000,
-              upper_inclusive = TRUE
-            )
-            image <- self$results$estimation_plots
-            image$setSize(width, height)
-
+            # tbl_raw_data <- self$results$raw_data
+            # tbl_es_meta <- self$results$es_meta
+            # tbl_es_meta_difference <- self$results$es_meta_difference
+            # tbl_es_heterogeneity <- self$results$es_heterogeneity
+            #
+            # conf_level <<- jamovi_sanitize(
+            #   my_value = self$options$conf_level,
+            #   return_value = 95,
+            #   na_ok = FALSE,
+            #   convert_to_number = TRUE,
+            #   lower = 75,
+            #   lower_inclusive = FALSE,
+            #   upper = 100,
+            #   upper_inclusive = FALSE,
+            #   my_value_name = "Confidence level"
+            # )
+            #
+            # jamovi_set_confidence(tbl_raw_data, conf_level)
+            # jamovi_set_confidence(tbl_es_meta, conf_level)
+            # jamovi_set_confidence(tbl_es_meta_difference, conf_level)
+            # jamovi_set_confidence(tbl_es_heterogeneity, conf_level)
+            #
+            #
+            # moderator <- !is.null(self$options$moderator)
+            # if (self$options$switch != "from_raw") {
+            #   moderator <- !is.null(self$options$dmoderator)
+            # }
+            #
+            # tbl_es_meta_difference$setVisible(moderator)
+            # tbl_es_meta$getColumn("moderator_variable_name")$setVisible(moderator)
+            # tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
+            # tbl_raw_data$getColumn("moderator")$setVisible(moderator)
+            #
+            #
+            # width <- jamovi_sanitize(
+            #   my_value = self$options$es_plot_width,
+            #   return_value = 600,
+            #   convert_to_number = TRUE,
+            #   lower = 10,
+            #   lower_inclusive = TRUE,
+            #   upper = 2000,
+            #   upper_inclusive = TRUE
+            # )
+            # height <- jamovi_sanitize(
+            #   my_value = self$options$es_plot_height,
+            #   return_value = 750,
+            #   convert_to_number = TRUE,
+            #   lower = 176,
+            #   lower_inclusive = TRUE,
+            #   upper = 4000,
+            #   upper_inclusive = TRUE
+            # )
+            # image <- self$results$estimation_plots
+            # image$setSize(width, height)
+            #
 
         },
         .run = function() {
@@ -78,92 +83,16 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
-            # table handles
-            tbl_raw_data <- self$results$raw_data
-            tbl_es_meta <- self$results$es_meta
-            tbl_es_meta_difference <- self$results$es_meta_difference
-            tbl_es_heterogeneity <- self$results$es_heterogeneity
-
             # Fill tables
-            estimate$es_heterogeneity$measure_html <- jamovi_heterogeneity_to_html(
-              estimate$es_heterogeneity$measure
-            )
-            jamovi_estimate_filler(self, estimate, TRUE)
-
-
-            # Update column headings if reference mean was used
-            reference_mean <- jamovi_sanitize(
-              self$options$reference_mean,
-              return_value = 0,
-              na_ok = FALSE,
-              convert_to_number = TRUE
-            )
-            reference_used <- is.null(names(reference_mean))
-
-            if (reference_used) {
-              new_title <- "<i>M</i> - <i>M</i><sub>Reference</sub>"
-              tbl_raw_data$getColumn("effect_size")$setTitle(new_title)
-              tbl_es_meta$getColumn("effect_size")$setTitle(new_title)
-              tbl_es_meta_difference$getColumn("effect_size")$setTitle(new_title)
-              ref_note <- paste(
-                "Effect sizes are relative to a reference value of ",
-                format(reference_mean, digits = 2),
-                ".<br>",
-                sep = ""
-              )
-              tbl_raw_data$setNote(
-                key = "ref_note",
-                note = ref_note
-              )
-            }
-
-
-            # Tbl note
-            meta_note <- if(self$options$random_effects != "fixed_effects")
-              "Estimate is based on a random effects (RE) model.<br>"
-            else
-              "Estimate is based on a fixed effect (FE) model.</br>"
-
-
-            if (self$options$switch == "from_raw") {
-              if (self$options$reported_effect_size == "smd_unbiased") {
-                meta_note <- paste(
-                  meta_note,
-                  "  The standardized mean difference (",
-                  estimate$properties$effect_size_name_html,
-                  ") has been corrected for sampling bias.",
-                  sep = ""
-                )
-              }
-            } else {
-              meta_note <- paste(
-                meta_note,
-                "  This analysis expected the inputted Cohen's d values to already be corrected for bias (",
-                estimate$properties$effect_size_name_html,
-                ").",
-                sep = ""
-              )
-            }
-
-            if (reference_used) {
-              meta_note <- paste(
-                ref_note,
-                meta_note,
-                sep = "  "
-              )
-            }
-
-            tbl_es_meta$setNote(
-              key = "meta_note",
-              note = meta_note
-            )
-            tbl_es_meta_difference$setNote(
-              key = "meta_note",
-              note = meta_note
+            jamovi_meta_run(
+              estimate = estimate,
+              self = self,
+              has_reference = TRUE,
+              has_switch = TRUE,
+              has_aev = FALSE
             )
 
-            # self$results$debug$setVisible(TRUE)
-            # self$results$debug$setContent(estimate$es_heterogeneity)
+
 
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
@@ -173,306 +102,12 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
 
-          meta_diamond_height <- jamovi_sanitize(
-            my_value = self$options$meta_diamond_height,
-            return_value = .35,
-            na_ok = FALSE,
-            convert_to_number = TRUE,
-            lower = 0,
-            lower_inclusive = FALSE,
-            upper = 2,
-            my_value_name = "Y axis: Diamond height"
+          myplot <- jamovi_meta_forest_plot(
+            estimate = estimate,
+            self = self,
+            ggtheme = ggtheme,
+            theme = theme
           )
-
-          explain_DR <- self$options$random_effects == "compare"
-          include_PIs <- self$options$include_PIs & self$options$random_effects == "random_effects"
-
-          myplot <- plot_meta(
-            estimate,
-            mark_zero = self$options$mark_zero,
-            include_PIs = include_PIs,
-            report_CIs = self$options$report_CIs,
-            meta_diamond_height = meta_diamond_height,
-            explain_DR = explain_DR,
-            ggtheme = ggtheme
-          )
-
-          notes <- NULL
-
-          myplot <- myplot + ggplot2::scale_size_continuous(
-            range = c(
-              as.numeric(self$options$size_base),
-              as.numeric(self$options$size_base) * as.numeric(self$options$size_multiplier)
-            )
-          )
-
-          if (!is.null(myplot$layers$raw_Reference_point)) {
-            myplot$layers$raw_Reference_point$aes_params$shape <- self$options$shape_raw_reference
-            myplot$layers$raw_Reference_point$aes_params$colour <- self$options$color_raw_reference
-            myplot$layers$raw_Reference_point$aes_params$fill <- self$options$fill_raw_reference
-            myplot$layers$raw_Reference_point$aes_params$alpha <- as.numeric(self$options$alpha_raw_reference)
-
-            myplot$layers$raw_Reference_error$aes_params$colour <- self$options$color_interval_reference
-            myplot$layers$raw_Reference_error$aes_params$size <- as.numeric(self$options$size_interval_reference)
-            myplot$layers$raw_Reference_error$aes_params$alpha <- as.numeric(self$options$alpha_interval_reference)
-            myplot$layers$raw_Reference_error$aes_params$linetype <- self$options$linetype_raw_reference
-          }
-          if (!is.null(myplot$layers$raw_Comparison_point)){
-            myplot$layers$raw_Comparison_point$aes_params$shape <- self$options$shape_raw_comparison
-            myplot$layers$raw_Comparison_point$aes_params$colour <- self$options$color_raw_comparison
-            myplot$layers$raw_Comparison_point$aes_params$fill <- self$options$fill_raw_comparison
-            myplot$layers$raw_Comparison_point$aes_params$alpha <- as.numeric(self$options$alpha_raw_comparison)
-
-            myplot$layers$raw_Comparison_error$aes_params$colour <- self$options$color_interval_comparison
-            myplot$layers$raw_Comparison_error$aes_params$size <- as.numeric(self$options$size_interval_comparison)
-            myplot$layers$raw_Comparison_error$aes_params$alpha <- as.numeric(self$options$alpha_interval_comparison)
-            myplot$layers$raw_Comparison_error$aes_params$linetype <- self$options$linetype_raw_comparison
-          }
-          if (!is.null(myplot$layers$raw_Unused_point)) {
-            myplot$layers$raw_Unused_point$aes_params$shape <- self$options$shape_raw_unused
-            myplot$layers$raw_Unused_point$aes_params$colour <- self$options$color_raw_unused
-            myplot$layers$raw_Unused_point$aes_params$fill <- self$options$fill_raw_unused
-            myplot$layers$raw_Unused_point$aes_params$alpha <- as.numeric(self$options$alpha_raw_unused)
-
-            myplot$layers$raw_Unused_error$aes_params$colour <- self$options$color_interval_unused
-            myplot$layers$raw_Unused_error$aes_params$size <- as.numeric(self$options$size_interval_unused)
-            myplot$layers$raw_Unused_error$aes_params$alpha <- as.numeric(self$options$alpha_interval_unused)
-            myplot$layers$raw_Unused_error$aes_params$linetype <- self$options$linetype_raw_unused
-          }
-
-          if (!is.null(myplot$layers$group_Overall_diamond)) {
-            myplot$layers$group_Overall_diamond$aes_params$colour <- self$options$color_summary_overall
-            myplot$layers$group_Overall_diamond$aes_params$fill <- self$options$fill_summary_overall
-            myplot$layers$group_Overall_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_overall)
-          }
-
-          if (!is.null(myplot$layers$group_Comparison_diamond)) {
-            myplot$layers$group_Comparison_diamond$aes_params$colour <- self$options$color_summary_comparison
-            myplot$layers$group_Comparison_diamond$aes_params$fill <- self$options$fill_summary_comparison
-            myplot$layers$group_Comparison_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
-          }
-
-          if (!is.null(myplot$layers$group_Reference_diamond)) {
-            myplot$layers$group_Reference_diamond$aes_params$colour <- self$options$color_summary_reference
-            myplot$layers$group_Reference_diamond$aes_params$fill <- self$options$fill_summary_reference
-            myplot$layers$group_Reference_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_reference)
-          }
-
-          if (!is.null(myplot$layers$group_Difference_diamond)) {
-            myplot$layers$group_Difference_diamond$aes_params$colour <- self$options$color_summary_difference
-            myplot$layers$group_Difference_diamond$aes_params$fill <- self$options$fill_summary_difference
-            myplot$layers$group_Difference_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_difference)
-          }
-
-          if (!is.null(myplot$layers$group_Unused_diamond)) {
-            myplot$layers$group_Unused_diamond$aes_params$colour <- self$options$color_summary_unused
-            myplot$layers$group_Unused_diamond$aes_params$fill <- self$options$fill_summary_unused
-            myplot$layers$group_Unused_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
-          }
-
-          if (!is.null(myplot$layers$group_Overall_PI)) {
-            myplot$layers$group_Overall_PI$aes_params$colour <- self$options$color_summary_overall
-            myplot$layers$group_Overall_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_overall)
-          }
-
-          if (!is.null(myplot$layers$group_Comparison_PI)) {
-            myplot$layers$group_Comparison_PI$aes_params$colour <- self$options$color_summary_comparison
-            myplot$layers$group_Comparison_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
-          }
-
-          if (!is.null(myplot$layers$group_Reference_PI)) {
-            myplot$layers$group_Reference_PI$aes_params$colour <- self$options$color_summary_reference
-            myplot$layers$group_Reference_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_reference)
-          }
-
-          if (!is.null(myplot$layers$group_Unused_PI)) {
-            myplot$layers$group_Unused_P$aes_params$colour <- self$options$color_summary_unused
-            myplot$layers$group_Unused_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
-          }
-
-
-          # Basic graph options --------------------
-          # Axis font sizes
-          axis.text.y <- jamovi_sanitize(
-            my_value = self$options$axis.text.y,
-            return_value = 14,
-            na_ok = FALSE,
-            convert_to_number = TRUE,
-            lower = 1,
-            lower_inclusive = TRUE,
-            upper = 97,
-            my_value_name = "Y axis: Tick font size"
-          )
-          axis.text.x <- jamovi_sanitize(
-            my_value = self$options$axis.text.x,
-            return_value = 14,
-            na_ok = FALSE,
-            convert_to_number = TRUE,
-            lower = 1,
-            lower_inclusive = TRUE,
-            upper = 97,
-            my_value_name = "X axis: Tick font size"
-          )
-          axis.title.x <- jamovi_sanitize(
-            my_value = self$options$axis.title.x,
-            return_value = 15,
-            na_ok = FALSE,
-            convert_to_number = TRUE,
-            lower = 1,
-            lower_inclusive = TRUE,
-            upper = 97,
-            my_value_name = "X axis: Label font size"
-          )
-
-
-          myplot <- myplot + ggplot2::theme(
-            axis.text.y = element_text(size = axis.text.y),
-            axis.text.x = element_text(size = axis.text.x),
-            axis.title.x = element_text(size = axis.title.x)
-          )
-
-          # Axis limits
-          xmin <- jamovi_sanitize(
-            my_value = self$options$xmin,
-            return_value = NA,
-            na_ok = TRUE,
-            convert_to_number = TRUE,
-            my_value_name = "X axis: Minimum"
-          )
-
-          xmax <- jamovi_sanitize(
-            my_value = self$options$xmax,
-            return_value = NA,
-            na_ok = TRUE,
-            convert_to_number = TRUE,
-            my_value_name = "X axis: Maximum"
-          )
-
-          xbreaks <- jamovi_sanitize(
-            my_value = self$options$xbreaks,
-            return_value = 5,
-            na_ok = FALSE,
-            lower = 1,
-            lower_inclusive = TRUE,
-            upper = 50,
-            upper_inclusive = TRUE,
-            convert_to_number = TRUE,
-            my_value_name = "X axis: Number of tick marks"
-          )
-
-          dmin <- jamovi_sanitize(
-            my_value = self$options$dmin,
-            return_value = NA,
-            na_ok = TRUE,
-            convert_to_number = TRUE,
-            my_value_name = "Difference axis: Minimum"
-          )
-
-          dmax <- jamovi_sanitize(
-            my_value = self$options$dmax,
-            return_value = NA,
-            na_ok = TRUE,
-            convert_to_number = TRUE,
-            my_value_name = "Difference axis: Maxmimum"
-          )
-
-          dbreaks <- jamovi_sanitize(
-            my_value = self$options$dbreaks,
-            return_value = 5,
-            na_ok = FALSE,
-            lower = 1,
-            lower_inclusive = TRUE,
-            upper = 50,
-            upper_inclusive = TRUE,
-            convert_to_number = TRUE,
-            my_value_name = "X axis: Number of tick marks"
-          )
-
-
-          # Axis labels
-          xlab_replace <- paste(
-            estimate$properties$effect_size_name_ggplot,
-            ": ",
-            estimate$es_meta$effect_label[[1]],
-            sep = ""
-          )
-
-          xlab <- jamovi_sanitize(
-            my_value = self$options$xlab,
-            return_value = xlab_replace,
-            na_ok = TRUE,
-            my_value_name = "X axis: Title"
-          )
-
-          dlab <- jamovi_sanitize(
-            my_value = self$options$dlab,
-            return_value = NULL,
-            na_ok = TRUE,
-            my_value_name = "Difference axis: Title"
-          )
-
-          # Apply axis labels and scales
-          myplot <- myplot + ggplot2::scale_x_continuous(
-            name = xlab,
-            limits = c(xmin, xmax),
-            n.breaks = xbreaks,
-            position = "top"
-          )
-
-          moderator <- !is.null(self$options$moderator)
-          if (self$options$switch != "from_raw") {
-            moderator <- !is.null(self$options$dmoderator)
-          }
-
-          if (moderator) {
-            myplot <- esci_plot_difference_axis_x(
-              myplot,
-              estimate$es_meta_difference,
-              dlim = c(dmin, dmax),
-              d_n.breaks = dbreaks,
-              d_lab = dlab
-            )
-          }
-
-          width <- jamovi_sanitize(
-            my_value = self$options$es_plot_width,
-            return_value = 600,
-            convert_to_number = TRUE,
-            lower = 10,
-            lower_inclusive = TRUE,
-            upper = 2000,
-            upper_inclusive = TRUE
-          )
-          height <- jamovi_sanitize(
-            my_value = self$options$es_plot_height,
-            return_value = 750,
-            convert_to_number = TRUE,
-            lower = 176,
-            lower_inclusive = TRUE,
-            upper = 4000,
-            upper_inclusive = TRUE
-          )
-
-          notes <- c(
-            notes,
-            names(meta_diamond_height),
-            names(axis.text.y),
-            names(axis.text.x),
-            names(axis.title.x),
-            names(xlab),
-            names(xmin),
-            names(xmax),
-            names(xbreaks),
-            names(dlab),
-            names(dmin),
-            names(dmax),
-            names(dbreaks),
-            names(width),
-            names(height)
-          )
-
-          self$results$estimation_plot_warnings$setState(notes)
-          jamovi_set_notes(self$results$estimation_plot_warnings)
 
           print(myplot)
           TRUE
