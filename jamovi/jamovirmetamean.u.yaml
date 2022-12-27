@@ -115,7 +115,7 @@ children:
       - type: TextBox
         name: reference_mean
         format: string
-        suffix: '(blank for none)'
+        suffix: ' (blank for none)'
         enable: '(switch:from_raw)'
       - type: ComboBox
         name: reported_effect_size
