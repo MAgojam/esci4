@@ -130,6 +130,17 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     data <- data[-row_report$NA_rows, ]
   }
 
+  tdata <- data[ , c(cases_quoname, ns_quoname)]
+  tdata <- tdata[complete.cases(tdata), ]
+  if (!all(tdata[[ns_quoname]] >= tdata[[cases_quoname]])) {
+    stop(
+      glue::glue("
+  Some sample sizes in {ns_quoname} are smaller than case counts in {cases_quoname}.
+  These are rows {paste(which(tdata[[ns_quoname]] < tdata[[cases_quoname]]), collapse = ', ')}.
+        ")
+    )
+  }
+
   # labels
   if (is.null(labels_quoname)) {
     data$esci_label <- paste("Study", seq(1:nrow(data)))
@@ -232,6 +243,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     "moderator"
   )
   data[ , clear_cols] <- NULL
+  data$P_adjusted <- es_data$P_adjusted
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 

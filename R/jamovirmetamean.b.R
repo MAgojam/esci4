@@ -12,62 +12,6 @@ jamovirmetameanClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             has_switch = TRUE
           )
 
-            # tbl_raw_data <- self$results$raw_data
-            # tbl_es_meta <- self$results$es_meta
-            # tbl_es_meta_difference <- self$results$es_meta_difference
-            # tbl_es_heterogeneity <- self$results$es_heterogeneity
-            #
-            # conf_level <<- jamovi_sanitize(
-            #   my_value = self$options$conf_level,
-            #   return_value = 95,
-            #   na_ok = FALSE,
-            #   convert_to_number = TRUE,
-            #   lower = 75,
-            #   lower_inclusive = FALSE,
-            #   upper = 100,
-            #   upper_inclusive = FALSE,
-            #   my_value_name = "Confidence level"
-            # )
-            #
-            # jamovi_set_confidence(tbl_raw_data, conf_level)
-            # jamovi_set_confidence(tbl_es_meta, conf_level)
-            # jamovi_set_confidence(tbl_es_meta_difference, conf_level)
-            # jamovi_set_confidence(tbl_es_heterogeneity, conf_level)
-            #
-            #
-            # moderator <- !is.null(self$options$moderator)
-            # if (self$options$switch != "from_raw") {
-            #   moderator <- !is.null(self$options$dmoderator)
-            # }
-            #
-            # tbl_es_meta_difference$setVisible(moderator)
-            # tbl_es_meta$getColumn("moderator_variable_name")$setVisible(moderator)
-            # tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
-            # tbl_raw_data$getColumn("moderator")$setVisible(moderator)
-            #
-            #
-            # width <- jamovi_sanitize(
-            #   my_value = self$options$es_plot_width,
-            #   return_value = 600,
-            #   convert_to_number = TRUE,
-            #   lower = 10,
-            #   lower_inclusive = TRUE,
-            #   upper = 2000,
-            #   upper_inclusive = TRUE
-            # )
-            # height <- jamovi_sanitize(
-            #   my_value = self$options$es_plot_height,
-            #   return_value = 750,
-            #   convert_to_number = TRUE,
-            #   lower = 176,
-            #   lower_inclusive = TRUE,
-            #   upper = 4000,
-            #   upper_inclusive = TRUE
-            # )
-            # image <- self$results$estimation_plots
-            # image$setSize(width, height)
-            #
-
         },
         .run = function() {
 

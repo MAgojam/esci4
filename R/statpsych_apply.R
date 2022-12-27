@@ -213,9 +213,10 @@ apply_ci_prop1 <- function(
     res[2, "Estimate"],
     res[1, "SE"]^2,
     res[1, "LL"],
-    res[1, "UL"]
+    res[1, "UL"],
+    res[1, "Estimate"]
   )
-  names(res) <- c("yi", "vi", "LL", "UL")
+  names(res) <- c("yi", "vi", "LL", "UL", "P_adjusted")
 
   return(res)
 }

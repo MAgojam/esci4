@@ -207,7 +207,8 @@ jamovi_meta_forest_plot <- function(
     estimate,
     self,
     ggtheme,
-    theme
+    theme,
+    has_switch = TRUE
 ) {
 
   meta_diamond_height <- jamovi_sanitize(
@@ -457,8 +458,11 @@ jamovi_meta_forest_plot <- function(
   )
 
   moderator <- !is.null(self$options$moderator)
-  if (self$options$switch != "from_raw") {
-    moderator <- !is.null(self$options$dmoderator)
+
+  if (has_switch) {
+    if (self$options$switch != "from_raw") {
+      moderator <- !is.null(self$options$dmoderator)
+    }
   }
 
   if (moderator) {

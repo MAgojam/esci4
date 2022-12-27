@@ -378,7 +378,7 @@ plot_meta <- function(
       breaks = -seq(1:rows_total),
       labels = all_labels,
       sec.axis = sec_axis_CIs,
-      expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(0, 0))
+      expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(meta_diamond_height, 0))
     )
 
   } else {
@@ -386,7 +386,7 @@ plot_meta <- function(
       name = NULL,
       breaks = -seq(1:rows_total),
       labels = all_labels,
-      expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(0, 0))
+      expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(meta_diamond_height, 0))
     )
   }
 
