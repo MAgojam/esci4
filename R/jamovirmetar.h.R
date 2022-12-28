@@ -12,8 +12,66 @@ jamovirmetarOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             moderator = NULL,
             effect_label = "My effect",
             conf_level = 95,
-            random_effects = TRUE,
-            show_details = FALSE, ...) {
+            random_effects = "random_effects",
+            include_PIs = FALSE,
+            show_details = FALSE,
+            es_plot_width = "600",
+            es_plot_height = "750",
+            size_base = "2",
+            size_multiplier = "3",
+            axis.text.y = "14",
+            report_CIs = FALSE,
+            meta_diamond_height = ".35",
+            xlab = "auto",
+            xmin = "-1",
+            xmax = "1",
+            xbreaks = "auto",
+            mark_zero = FALSE,
+            axis.text.x = "14",
+            axis.title.x = "15",
+            dlab = "auto",
+            dmin = "auto",
+            dmax = "auto",
+            dbreaks = "auto",
+            shape_raw_reference = "square filled",
+            shape_raw_comparison = "square filled",
+            shape_raw_unused = "square filled",
+            color_raw_reference = "#008DF9",
+            color_raw_comparison = "#009F81",
+            color_raw_unused = "gray65",
+            color_summary_reference = "#008DF9",
+            color_summary_comparison = "#009F81",
+            color_summary_unused = "gray75",
+            color_summary_difference = "black",
+            color_summary_overall = "black",
+            fill_raw_reference = "#008DF9",
+            fill_raw_comparison = "#009F81",
+            fill_raw_unused = "gray65",
+            fill_summary_reference = "#008DF9",
+            fill_summary_comparison = "#009F81",
+            fill_summary_unused = "gray75",
+            fill_summary_difference = "black",
+            fill_summary_overall = "white",
+            alpha_raw_reference = "1",
+            alpha_raw_comparison = "1",
+            alpha_raw_unused = "1",
+            alpha_summary_reference = "1",
+            alpha_summary_comparison = "1",
+            alpha_summary_unused = "1",
+            alpha_summary_difference = "1",
+            alpha_summary_overall = "1",
+            linetype_raw_reference = "solid",
+            linetype_raw_comparison = "solid",
+            linetype_raw_unused = "solid",
+            color_interval_reference = "black",
+            color_interval_comparison = "black",
+            color_interval_unused = "black",
+            size_interval_reference = ".50",
+            size_interval_comparison = ".50",
+            size_interval_unused = ".50",
+            alpha_interval_reference = "1",
+            alpha_interval_comparison = "1",
+            alpha_interval_unused = "1", ...) {
 
             super$initialize(
                 package="esci4",
@@ -45,14 +103,1132 @@ jamovirmetarOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 "conf_level",
                 conf_level,
                 default=95)
-            private$..random_effects <- jmvcore::OptionBool$new(
+            private$..random_effects <- jmvcore::OptionList$new(
                 "random_effects",
                 random_effects,
-                default=TRUE)
+                default="random_effects",
+                options=list(
+                    "random_effects",
+                    "fixed_effects"))
+            private$..include_PIs <- jmvcore::OptionBool$new(
+                "include_PIs",
+                include_PIs,
+                default=FALSE)
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..es_plot_width <- jmvcore::OptionString$new(
+                "es_plot_width",
+                es_plot_width,
+                default="600")
+            private$..es_plot_height <- jmvcore::OptionString$new(
+                "es_plot_height",
+                es_plot_height,
+                default="750")
+            private$..size_base <- jmvcore::OptionList$new(
+                "size_base",
+                size_base,
+                default="2",
+                options=list(
+                    ".25",
+                    ".50",
+                    ".75",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..size_multiplier <- jmvcore::OptionList$new(
+                "size_multiplier",
+                size_multiplier,
+                default="3",
+                options=list(
+                    "1",
+                    "1.1",
+                    "1.2",
+                    "1.3",
+                    "1.5",
+                    "1.75",
+                    "2",
+                    "2.5",
+                    "3",
+                    "3.5",
+                    "4",
+                    "4.5",
+                    "5"))
+            private$..axis.text.y <- jmvcore::OptionString$new(
+                "axis.text.y",
+                axis.text.y,
+                default="14")
+            private$..report_CIs <- jmvcore::OptionBool$new(
+                "report_CIs",
+                report_CIs,
+                default=FALSE)
+            private$..meta_diamond_height <- jmvcore::OptionString$new(
+                "meta_diamond_height",
+                meta_diamond_height,
+                default=".35")
+            private$..xlab <- jmvcore::OptionString$new(
+                "xlab",
+                xlab,
+                default="auto")
+            private$..xmin <- jmvcore::OptionString$new(
+                "xmin",
+                xmin,
+                default="-1")
+            private$..xmax <- jmvcore::OptionString$new(
+                "xmax",
+                xmax,
+                default="1")
+            private$..xbreaks <- jmvcore::OptionString$new(
+                "xbreaks",
+                xbreaks,
+                default="auto")
+            private$..mark_zero <- jmvcore::OptionBool$new(
+                "mark_zero",
+                mark_zero,
+                default=FALSE)
+            private$..axis.text.x <- jmvcore::OptionString$new(
+                "axis.text.x",
+                axis.text.x,
+                default="14")
+            private$..axis.title.x <- jmvcore::OptionString$new(
+                "axis.title.x",
+                axis.title.x,
+                default="15")
+            private$..dlab <- jmvcore::OptionString$new(
+                "dlab",
+                dlab,
+                default="auto")
+            private$..dmin <- jmvcore::OptionString$new(
+                "dmin",
+                dmin,
+                default="auto")
+            private$..dmax <- jmvcore::OptionString$new(
+                "dmax",
+                dmax,
+                default="auto")
+            private$..dbreaks <- jmvcore::OptionString$new(
+                "dbreaks",
+                dbreaks,
+                default="auto")
+            private$..shape_raw_reference <- jmvcore::OptionList$new(
+                "shape_raw_reference",
+                shape_raw_reference,
+                default="square filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "triangle filled",
+                    "diamond filled"))
+            private$..shape_raw_comparison <- jmvcore::OptionList$new(
+                "shape_raw_comparison",
+                shape_raw_comparison,
+                default="square filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "square filled",
+                    "diamond filled"))
+            private$..shape_raw_unused <- jmvcore::OptionList$new(
+                "shape_raw_unused",
+                shape_raw_unused,
+                default="square filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "square filled",
+                    "diamond filled"))
+            private$..color_raw_reference <- jmvcore::OptionList$new(
+                "color_raw_reference",
+                color_raw_reference,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_raw_comparison <- jmvcore::OptionList$new(
+                "color_raw_comparison",
+                color_raw_comparison,
+                default="#009F81",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_raw_unused <- jmvcore::OptionList$new(
+                "color_raw_unused",
+                color_raw_unused,
+                default="gray65",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_summary_reference <- jmvcore::OptionList$new(
+                "color_summary_reference",
+                color_summary_reference,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_summary_comparison <- jmvcore::OptionList$new(
+                "color_summary_comparison",
+                color_summary_comparison,
+                default="#009F81",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_summary_unused <- jmvcore::OptionList$new(
+                "color_summary_unused",
+                color_summary_unused,
+                default="gray75",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_summary_difference <- jmvcore::OptionList$new(
+                "color_summary_difference",
+                color_summary_difference,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_summary_overall <- jmvcore::OptionList$new(
+                "color_summary_overall",
+                color_summary_overall,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_raw_reference <- jmvcore::OptionList$new(
+                "fill_raw_reference",
+                fill_raw_reference,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_raw_comparison <- jmvcore::OptionList$new(
+                "fill_raw_comparison",
+                fill_raw_comparison,
+                default="#009F81",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_raw_unused <- jmvcore::OptionList$new(
+                "fill_raw_unused",
+                fill_raw_unused,
+                default="gray65",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_summary_reference <- jmvcore::OptionList$new(
+                "fill_summary_reference",
+                fill_summary_reference,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_summary_comparison <- jmvcore::OptionList$new(
+                "fill_summary_comparison",
+                fill_summary_comparison,
+                default="#009F81",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_summary_unused <- jmvcore::OptionList$new(
+                "fill_summary_unused",
+                fill_summary_unused,
+                default="gray75",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_summary_difference <- jmvcore::OptionList$new(
+                "fill_summary_difference",
+                fill_summary_difference,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..fill_summary_overall <- jmvcore::OptionList$new(
+                "fill_summary_overall",
+                fill_summary_overall,
+                default="white",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..alpha_raw_reference <- jmvcore::OptionList$new(
+                "alpha_raw_reference",
+                alpha_raw_reference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_raw_comparison <- jmvcore::OptionList$new(
+                "alpha_raw_comparison",
+                alpha_raw_comparison,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_raw_unused <- jmvcore::OptionList$new(
+                "alpha_raw_unused",
+                alpha_raw_unused,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_summary_reference <- jmvcore::OptionList$new(
+                "alpha_summary_reference",
+                alpha_summary_reference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_summary_comparison <- jmvcore::OptionList$new(
+                "alpha_summary_comparison",
+                alpha_summary_comparison,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_summary_unused <- jmvcore::OptionList$new(
+                "alpha_summary_unused",
+                alpha_summary_unused,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_summary_difference <- jmvcore::OptionList$new(
+                "alpha_summary_difference",
+                alpha_summary_difference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_summary_overall <- jmvcore::OptionList$new(
+                "alpha_summary_overall",
+                alpha_summary_overall,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..linetype_raw_reference <- jmvcore::OptionList$new(
+                "linetype_raw_reference",
+                linetype_raw_reference,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..linetype_raw_comparison <- jmvcore::OptionList$new(
+                "linetype_raw_comparison",
+                linetype_raw_comparison,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..linetype_raw_unused <- jmvcore::OptionList$new(
+                "linetype_raw_unused",
+                linetype_raw_unused,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..color_interval_reference <- jmvcore::OptionList$new(
+                "color_interval_reference",
+                color_interval_reference,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_interval_comparison <- jmvcore::OptionList$new(
+                "color_interval_comparison",
+                color_interval_comparison,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_interval_unused <- jmvcore::OptionList$new(
+                "color_interval_unused",
+                color_interval_unused,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..size_interval_reference <- jmvcore::OptionList$new(
+                "size_interval_reference",
+                size_interval_reference,
+                default=".50",
+                options=list(
+                    ".25",
+                    ".50",
+                    ".75",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..size_interval_comparison <- jmvcore::OptionList$new(
+                "size_interval_comparison",
+                size_interval_comparison,
+                default=".50",
+                options=list(
+                    ".25",
+                    ".50",
+                    ".75",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..size_interval_unused <- jmvcore::OptionList$new(
+                "size_interval_unused",
+                size_interval_unused,
+                default=".50",
+                options=list(
+                    ".25",
+                    ".50",
+                    ".75",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..alpha_interval_reference <- jmvcore::OptionList$new(
+                "alpha_interval_reference",
+                alpha_interval_reference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_interval_comparison <- jmvcore::OptionList$new(
+                "alpha_interval_comparison",
+                alpha_interval_comparison,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_interval_unused <- jmvcore::OptionList$new(
+                "alpha_interval_unused",
+                alpha_interval_unused,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
 
             self$.addOption(private$..rs)
             self$.addOption(private$..ns)
@@ -61,7 +1237,65 @@ jamovirmetarOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..effect_label)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..random_effects)
+            self$.addOption(private$..include_PIs)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..es_plot_width)
+            self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..size_base)
+            self$.addOption(private$..size_multiplier)
+            self$.addOption(private$..axis.text.y)
+            self$.addOption(private$..report_CIs)
+            self$.addOption(private$..meta_diamond_height)
+            self$.addOption(private$..xlab)
+            self$.addOption(private$..xmin)
+            self$.addOption(private$..xmax)
+            self$.addOption(private$..xbreaks)
+            self$.addOption(private$..mark_zero)
+            self$.addOption(private$..axis.text.x)
+            self$.addOption(private$..axis.title.x)
+            self$.addOption(private$..dlab)
+            self$.addOption(private$..dmin)
+            self$.addOption(private$..dmax)
+            self$.addOption(private$..dbreaks)
+            self$.addOption(private$..shape_raw_reference)
+            self$.addOption(private$..shape_raw_comparison)
+            self$.addOption(private$..shape_raw_unused)
+            self$.addOption(private$..color_raw_reference)
+            self$.addOption(private$..color_raw_comparison)
+            self$.addOption(private$..color_raw_unused)
+            self$.addOption(private$..color_summary_reference)
+            self$.addOption(private$..color_summary_comparison)
+            self$.addOption(private$..color_summary_unused)
+            self$.addOption(private$..color_summary_difference)
+            self$.addOption(private$..color_summary_overall)
+            self$.addOption(private$..fill_raw_reference)
+            self$.addOption(private$..fill_raw_comparison)
+            self$.addOption(private$..fill_raw_unused)
+            self$.addOption(private$..fill_summary_reference)
+            self$.addOption(private$..fill_summary_comparison)
+            self$.addOption(private$..fill_summary_unused)
+            self$.addOption(private$..fill_summary_difference)
+            self$.addOption(private$..fill_summary_overall)
+            self$.addOption(private$..alpha_raw_reference)
+            self$.addOption(private$..alpha_raw_comparison)
+            self$.addOption(private$..alpha_raw_unused)
+            self$.addOption(private$..alpha_summary_reference)
+            self$.addOption(private$..alpha_summary_comparison)
+            self$.addOption(private$..alpha_summary_unused)
+            self$.addOption(private$..alpha_summary_difference)
+            self$.addOption(private$..alpha_summary_overall)
+            self$.addOption(private$..linetype_raw_reference)
+            self$.addOption(private$..linetype_raw_comparison)
+            self$.addOption(private$..linetype_raw_unused)
+            self$.addOption(private$..color_interval_reference)
+            self$.addOption(private$..color_interval_comparison)
+            self$.addOption(private$..color_interval_unused)
+            self$.addOption(private$..size_interval_reference)
+            self$.addOption(private$..size_interval_comparison)
+            self$.addOption(private$..size_interval_unused)
+            self$.addOption(private$..alpha_interval_reference)
+            self$.addOption(private$..alpha_interval_comparison)
+            self$.addOption(private$..alpha_interval_unused)
         }),
     active = list(
         rs = function() private$..rs$value,
@@ -71,7 +1305,65 @@ jamovirmetarOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         effect_label = function() private$..effect_label$value,
         conf_level = function() private$..conf_level$value,
         random_effects = function() private$..random_effects$value,
-        show_details = function() private$..show_details$value),
+        include_PIs = function() private$..include_PIs$value,
+        show_details = function() private$..show_details$value,
+        es_plot_width = function() private$..es_plot_width$value,
+        es_plot_height = function() private$..es_plot_height$value,
+        size_base = function() private$..size_base$value,
+        size_multiplier = function() private$..size_multiplier$value,
+        axis.text.y = function() private$..axis.text.y$value,
+        report_CIs = function() private$..report_CIs$value,
+        meta_diamond_height = function() private$..meta_diamond_height$value,
+        xlab = function() private$..xlab$value,
+        xmin = function() private$..xmin$value,
+        xmax = function() private$..xmax$value,
+        xbreaks = function() private$..xbreaks$value,
+        mark_zero = function() private$..mark_zero$value,
+        axis.text.x = function() private$..axis.text.x$value,
+        axis.title.x = function() private$..axis.title.x$value,
+        dlab = function() private$..dlab$value,
+        dmin = function() private$..dmin$value,
+        dmax = function() private$..dmax$value,
+        dbreaks = function() private$..dbreaks$value,
+        shape_raw_reference = function() private$..shape_raw_reference$value,
+        shape_raw_comparison = function() private$..shape_raw_comparison$value,
+        shape_raw_unused = function() private$..shape_raw_unused$value,
+        color_raw_reference = function() private$..color_raw_reference$value,
+        color_raw_comparison = function() private$..color_raw_comparison$value,
+        color_raw_unused = function() private$..color_raw_unused$value,
+        color_summary_reference = function() private$..color_summary_reference$value,
+        color_summary_comparison = function() private$..color_summary_comparison$value,
+        color_summary_unused = function() private$..color_summary_unused$value,
+        color_summary_difference = function() private$..color_summary_difference$value,
+        color_summary_overall = function() private$..color_summary_overall$value,
+        fill_raw_reference = function() private$..fill_raw_reference$value,
+        fill_raw_comparison = function() private$..fill_raw_comparison$value,
+        fill_raw_unused = function() private$..fill_raw_unused$value,
+        fill_summary_reference = function() private$..fill_summary_reference$value,
+        fill_summary_comparison = function() private$..fill_summary_comparison$value,
+        fill_summary_unused = function() private$..fill_summary_unused$value,
+        fill_summary_difference = function() private$..fill_summary_difference$value,
+        fill_summary_overall = function() private$..fill_summary_overall$value,
+        alpha_raw_reference = function() private$..alpha_raw_reference$value,
+        alpha_raw_comparison = function() private$..alpha_raw_comparison$value,
+        alpha_raw_unused = function() private$..alpha_raw_unused$value,
+        alpha_summary_reference = function() private$..alpha_summary_reference$value,
+        alpha_summary_comparison = function() private$..alpha_summary_comparison$value,
+        alpha_summary_unused = function() private$..alpha_summary_unused$value,
+        alpha_summary_difference = function() private$..alpha_summary_difference$value,
+        alpha_summary_overall = function() private$..alpha_summary_overall$value,
+        linetype_raw_reference = function() private$..linetype_raw_reference$value,
+        linetype_raw_comparison = function() private$..linetype_raw_comparison$value,
+        linetype_raw_unused = function() private$..linetype_raw_unused$value,
+        color_interval_reference = function() private$..color_interval_reference$value,
+        color_interval_comparison = function() private$..color_interval_comparison$value,
+        color_interval_unused = function() private$..color_interval_unused$value,
+        size_interval_reference = function() private$..size_interval_reference$value,
+        size_interval_comparison = function() private$..size_interval_comparison$value,
+        size_interval_unused = function() private$..size_interval_unused$value,
+        alpha_interval_reference = function() private$..alpha_interval_reference$value,
+        alpha_interval_comparison = function() private$..alpha_interval_comparison$value,
+        alpha_interval_unused = function() private$..alpha_interval_unused$value),
     private = list(
         ..rs = NA,
         ..ns = NA,
@@ -80,7 +1372,65 @@ jamovirmetarOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..effect_label = NA,
         ..conf_level = NA,
         ..random_effects = NA,
-        ..show_details = NA)
+        ..include_PIs = NA,
+        ..show_details = NA,
+        ..es_plot_width = NA,
+        ..es_plot_height = NA,
+        ..size_base = NA,
+        ..size_multiplier = NA,
+        ..axis.text.y = NA,
+        ..report_CIs = NA,
+        ..meta_diamond_height = NA,
+        ..xlab = NA,
+        ..xmin = NA,
+        ..xmax = NA,
+        ..xbreaks = NA,
+        ..mark_zero = NA,
+        ..axis.text.x = NA,
+        ..axis.title.x = NA,
+        ..dlab = NA,
+        ..dmin = NA,
+        ..dmax = NA,
+        ..dbreaks = NA,
+        ..shape_raw_reference = NA,
+        ..shape_raw_comparison = NA,
+        ..shape_raw_unused = NA,
+        ..color_raw_reference = NA,
+        ..color_raw_comparison = NA,
+        ..color_raw_unused = NA,
+        ..color_summary_reference = NA,
+        ..color_summary_comparison = NA,
+        ..color_summary_unused = NA,
+        ..color_summary_difference = NA,
+        ..color_summary_overall = NA,
+        ..fill_raw_reference = NA,
+        ..fill_raw_comparison = NA,
+        ..fill_raw_unused = NA,
+        ..fill_summary_reference = NA,
+        ..fill_summary_comparison = NA,
+        ..fill_summary_unused = NA,
+        ..fill_summary_difference = NA,
+        ..fill_summary_overall = NA,
+        ..alpha_raw_reference = NA,
+        ..alpha_raw_comparison = NA,
+        ..alpha_raw_unused = NA,
+        ..alpha_summary_reference = NA,
+        ..alpha_summary_comparison = NA,
+        ..alpha_summary_unused = NA,
+        ..alpha_summary_difference = NA,
+        ..alpha_summary_overall = NA,
+        ..linetype_raw_reference = NA,
+        ..linetype_raw_comparison = NA,
+        ..linetype_raw_unused = NA,
+        ..color_interval_reference = NA,
+        ..color_interval_comparison = NA,
+        ..color_interval_unused = NA,
+        ..size_interval_reference = NA,
+        ..size_interval_comparison = NA,
+        ..size_interval_unused = NA,
+        ..alpha_interval_reference = NA,
+        ..alpha_interval_comparison = NA,
+        ..alpha_interval_unused = NA)
 )
 
 jamovirmetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -91,14 +1441,17 @@ jamovirmetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         help = function() private$.items[["help"]],
         raw_data = function() private$.items[["raw_data"]],
         es_meta = function() private$.items[["es_meta"]],
-        es_meta_difference = function() private$.items[["es_meta_difference"]]),
+        es_heterogeneity = function() private$.items[["es_heterogeneity"]],
+        es_meta_difference = function() private$.items[["es_meta_difference"]],
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
             super$initialize(
                 options=options,
                 name="",
-                title="Meta-Analysis: Correlations")
+                title="Meta-analysis: Correlations")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
@@ -200,43 +1553,65 @@ jamovirmetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                         `name`="k", 
                         `type`="integer"),
                     list(
-                        `name`="diamond_ratio", 
-                        `type`="number"),
-                    list(
-                        `name`="diamond_ratio_LL", 
-                        `type`="number"),
-                    list(
-                        `name`="diamond_ratio_UL", 
-                        `type`="number"),
-                    list(
-                        `name`="I2", 
-                        `type`="number"),
-                    list(
-                        `name`="I2_LL", 
-                        `type`="number"),
-                    list(
-                        `name`="I2_UL", 
-                        `type`="number"),
-                    list(
-                        `name`="FE_effect_size", 
+                        `name`="PI_LL", 
+                        `title`="LL", 
                         `type`="number", 
-                        `title`="Fixed effects effect size", 
-                        `visible`="(show_details)"),
+                        `visible`="(include_PIs & random_effects == 'random_effects')"),
                     list(
-                        `name`="RE_effect_size", 
+                        `name`="PI_UL", 
+                        `title`="UL", 
                         `type`="number", 
-                        `title`="Random effects effect size", 
-                        `visible`="(show_details)"),
+                        `visible`="(include_PIs & random_effects == 'random_effects')"),
+                    list(
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
                     list(
                         `name`="FE_CI_width", 
                         `type`="number", 
-                        `title`="Fixed effects CI width", 
+                        `title`="FE CI width", 
                         `visible`="(show_details)"),
                     list(
                         `name`="RE_CI_width", 
                         `type`="number", 
-                        `title`="Random effects CI width", 
+                        `title`="RE CI width", 
                         `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_heterogeneity",
+                title="Effect size heterogeneity",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="measure", 
+                        `title`="Measure", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="measure_html", 
+                        `title`="Measure", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="moderator_level", 
+                        `title`="Level", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="estimate", 
+                        `type`="number", 
+                        `title`="Estimate"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta_difference",
@@ -274,7 +1649,26 @@ jamovirmetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
-                        `visible`="(show_details)"))))}))
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Forest Plot Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="estimation_plots",
+                title="Forest Plot",
+                requiresData=TRUE,
+                width=400,
+                height=300,
+                renderFun=".estimation_plots"))}))
 
 jamovirmetarBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovirmetarBase",
@@ -307,14 +1701,75 @@ jamovirmetarBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param effect_label .
 #' @param conf_level .
 #' @param random_effects .
+#' @param include_PIs .
 #' @param show_details .
+#' @param es_plot_width .
+#' @param es_plot_height .
+#' @param size_base .
+#' @param size_multiplier .
+#' @param axis.text.y .
+#' @param report_CIs .
+#' @param meta_diamond_height .
+#' @param xlab .
+#' @param xmin .
+#' @param xmax .
+#' @param xbreaks .
+#' @param mark_zero .
+#' @param axis.text.x .
+#' @param axis.title.x .
+#' @param dlab .
+#' @param dmin .
+#' @param dmax .
+#' @param dbreaks .
+#' @param shape_raw_reference .
+#' @param shape_raw_comparison .
+#' @param shape_raw_unused .
+#' @param color_raw_reference .
+#' @param color_raw_comparison .
+#' @param color_raw_unused .
+#' @param color_summary_reference .
+#' @param color_summary_comparison .
+#' @param color_summary_unused .
+#' @param color_summary_difference .
+#' @param color_summary_overall .
+#' @param fill_raw_reference .
+#' @param fill_raw_comparison .
+#' @param fill_raw_unused .
+#' @param fill_summary_reference .
+#' @param fill_summary_comparison .
+#' @param fill_summary_unused .
+#' @param fill_summary_difference .
+#' @param fill_summary_overall .
+#' @param alpha_raw_reference .
+#' @param alpha_raw_comparison .
+#' @param alpha_raw_unused .
+#' @param alpha_summary_reference .
+#' @param alpha_summary_comparison .
+#' @param alpha_summary_unused .
+#' @param alpha_summary_difference .
+#' @param alpha_summary_overall .
+#' @param linetype_raw_reference .
+#' @param linetype_raw_comparison .
+#' @param linetype_raw_unused .
+#' @param color_interval_reference .
+#' @param color_interval_comparison .
+#' @param color_interval_unused .
+#' @param size_interval_reference .
+#' @param size_interval_comparison .
+#' @param size_interval_unused .
+#' @param alpha_interval_reference .
+#' @param alpha_interval_comparison .
+#' @param alpha_interval_unused .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$raw_data} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_meta} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_heterogeneity} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_meta_difference} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -332,8 +1787,66 @@ jamovirmetar <- function(
     moderator,
     effect_label = "My effect",
     conf_level = 95,
-    random_effects = TRUE,
-    show_details = FALSE) {
+    random_effects = "random_effects",
+    include_PIs = FALSE,
+    show_details = FALSE,
+    es_plot_width = "600",
+    es_plot_height = "750",
+    size_base = "2",
+    size_multiplier = "3",
+    axis.text.y = "14",
+    report_CIs = FALSE,
+    meta_diamond_height = ".35",
+    xlab = "auto",
+    xmin = "-1",
+    xmax = "1",
+    xbreaks = "auto",
+    mark_zero = FALSE,
+    axis.text.x = "14",
+    axis.title.x = "15",
+    dlab = "auto",
+    dmin = "auto",
+    dmax = "auto",
+    dbreaks = "auto",
+    shape_raw_reference = "square filled",
+    shape_raw_comparison = "square filled",
+    shape_raw_unused = "square filled",
+    color_raw_reference = "#008DF9",
+    color_raw_comparison = "#009F81",
+    color_raw_unused = "gray65",
+    color_summary_reference = "#008DF9",
+    color_summary_comparison = "#009F81",
+    color_summary_unused = "gray75",
+    color_summary_difference = "black",
+    color_summary_overall = "black",
+    fill_raw_reference = "#008DF9",
+    fill_raw_comparison = "#009F81",
+    fill_raw_unused = "gray65",
+    fill_summary_reference = "#008DF9",
+    fill_summary_comparison = "#009F81",
+    fill_summary_unused = "gray75",
+    fill_summary_difference = "black",
+    fill_summary_overall = "white",
+    alpha_raw_reference = "1",
+    alpha_raw_comparison = "1",
+    alpha_raw_unused = "1",
+    alpha_summary_reference = "1",
+    alpha_summary_comparison = "1",
+    alpha_summary_unused = "1",
+    alpha_summary_difference = "1",
+    alpha_summary_overall = "1",
+    linetype_raw_reference = "solid",
+    linetype_raw_comparison = "solid",
+    linetype_raw_unused = "solid",
+    color_interval_reference = "black",
+    color_interval_comparison = "black",
+    color_interval_unused = "black",
+    size_interval_reference = ".50",
+    size_interval_comparison = ".50",
+    size_interval_unused = ".50",
+    alpha_interval_reference = "1",
+    alpha_interval_comparison = "1",
+    alpha_interval_unused = "1") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovirmetar requires jmvcore to be installed (restart may be required)")
@@ -359,7 +1872,65 @@ jamovirmetar <- function(
         effect_label = effect_label,
         conf_level = conf_level,
         random_effects = random_effects,
-        show_details = show_details)
+        include_PIs = include_PIs,
+        show_details = show_details,
+        es_plot_width = es_plot_width,
+        es_plot_height = es_plot_height,
+        size_base = size_base,
+        size_multiplier = size_multiplier,
+        axis.text.y = axis.text.y,
+        report_CIs = report_CIs,
+        meta_diamond_height = meta_diamond_height,
+        xlab = xlab,
+        xmin = xmin,
+        xmax = xmax,
+        xbreaks = xbreaks,
+        mark_zero = mark_zero,
+        axis.text.x = axis.text.x,
+        axis.title.x = axis.title.x,
+        dlab = dlab,
+        dmin = dmin,
+        dmax = dmax,
+        dbreaks = dbreaks,
+        shape_raw_reference = shape_raw_reference,
+        shape_raw_comparison = shape_raw_comparison,
+        shape_raw_unused = shape_raw_unused,
+        color_raw_reference = color_raw_reference,
+        color_raw_comparison = color_raw_comparison,
+        color_raw_unused = color_raw_unused,
+        color_summary_reference = color_summary_reference,
+        color_summary_comparison = color_summary_comparison,
+        color_summary_unused = color_summary_unused,
+        color_summary_difference = color_summary_difference,
+        color_summary_overall = color_summary_overall,
+        fill_raw_reference = fill_raw_reference,
+        fill_raw_comparison = fill_raw_comparison,
+        fill_raw_unused = fill_raw_unused,
+        fill_summary_reference = fill_summary_reference,
+        fill_summary_comparison = fill_summary_comparison,
+        fill_summary_unused = fill_summary_unused,
+        fill_summary_difference = fill_summary_difference,
+        fill_summary_overall = fill_summary_overall,
+        alpha_raw_reference = alpha_raw_reference,
+        alpha_raw_comparison = alpha_raw_comparison,
+        alpha_raw_unused = alpha_raw_unused,
+        alpha_summary_reference = alpha_summary_reference,
+        alpha_summary_comparison = alpha_summary_comparison,
+        alpha_summary_unused = alpha_summary_unused,
+        alpha_summary_difference = alpha_summary_difference,
+        alpha_summary_overall = alpha_summary_overall,
+        linetype_raw_reference = linetype_raw_reference,
+        linetype_raw_comparison = linetype_raw_comparison,
+        linetype_raw_unused = linetype_raw_unused,
+        color_interval_reference = color_interval_reference,
+        color_interval_comparison = color_interval_comparison,
+        color_interval_unused = color_interval_unused,
+        size_interval_reference = size_interval_reference,
+        size_interval_comparison = size_interval_comparison,
+        size_interval_unused = size_interval_unused,
+        alpha_interval_reference = alpha_interval_reference,
+        alpha_interval_comparison = alpha_interval_comparison,
+        alpha_interval_unused = alpha_interval_unused)
 
     analysis <- jamovirmetarClass$new(
         options = options,

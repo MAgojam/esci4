@@ -1,6 +1,6 @@
 ---
 name:  jamovirmetar
-title: "Meta-Analysis: Correlations"
+title: "Meta-analysis: Correlations"
 jrs:   '1.1'
 
 items:
@@ -47,7 +47,7 @@ items:
         - name: r
           title: <i>r</i>
           type: number
-          visible: (show_details)
+          visible: (false)
         - name: N
           title: <i>N</i>
           type: integer
@@ -85,34 +85,55 @@ items:
           visible: (show_details)
         - name: k
           type: integer
-        - name: diamond_ratio
+        - name: PI_LL
+          title: LL
           type: number
-        - name: diamond_ratio_LL
+          visible: (include_PIs & random_effects == 'random_effects')
+        - name: PI_UL
+          title: UL
           type: number
-        - name: diamond_ratio_UL
-          type: number
-        - name: I2
-          type: number
-        - name: I2_LL
-          type: number
-        - name: I2_UL
-          type: number
-        - name: FE_effect_size
-          type: number
-          title: Fixed effects effect size
+          visible: (include_PIs & random_effects == 'random_effects')
+        - name: p
           visible: (show_details)
-        - name: RE_effect_size
+          title: "<i>p</i>, two tailed"
           type: number
-          title: Random effects effect size
-          visible: (show_details)
+          format: zto,pvalue
         - name: FE_CI_width
           type: number
-          title: Fixed effects CI width
+          title: FE CI width
           visible: (show_details)
         - name: RE_CI_width
           type: number
-          title: Random effects CI width
+          title: RE CI width
           visible: (show_details)
+
+    - name:  es_heterogeneity
+      title: Effect size heterogeneity
+      type: Table
+      rows:  1
+      columns:
+        - name: measure
+          title: 'Measure'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: measure_html
+          title: 'Measure'
+          type: text
+          combineBelow: true
+        - name: moderator_level
+          title: 'Level'
+          type: text
+          combineBelow: true
+        - name: estimate
+          type: number
+          title: Estimate
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
 
     - name:  es_meta_difference
       title: Moderator Analysis
@@ -144,5 +165,22 @@ items:
           title: <i>SE</i>
           type: number
           visible: (show_details)
+        - name: p
+          visible: (show_details)
+          title: "<i>p</i>, two tailed"
+          type: number
+          format: zto,pvalue
 
+    - name: estimation_plot_warnings
+      title: Forest Plot Warnings
+      type: Html
+      visible: true
+
+    - name: estimation_plots
+      title: Forest Plot
+      type: Image
+      requiresData: true
+      width:  400
+      height: 300
+      renderFun: .estimation_plots
 ...

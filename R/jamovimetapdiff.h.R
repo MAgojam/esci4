@@ -1483,7 +1483,7 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Meta-Analysis: Difference in Proportions")
+                title="Meta-Analysis: Difference in proportions")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
@@ -1552,7 +1552,13 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="comparison_N", 
                         `title`="<i>N</i><sub>Comparison</sub>", 
                         `type`="integer", 
-                        `visible`="(show_details)"))))
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",

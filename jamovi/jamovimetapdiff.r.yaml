@@ -1,6 +1,6 @@
 ---
 name:  jamovimetapdiff
-title: "Meta-Analysis: Difference in Proportions"
+title: "Meta-Analysis: Difference in proportions"
 jrs:   '1.1'
 
 items:
@@ -60,6 +60,11 @@ items:
           title: <i>N</i><sub>Comparison</sub>
           type: integer
           visible: (show_details)
+        - name: p
+          visible: (show_details)
+          title: "<i>p</i>, two tailed"
+          type: number
+          format: zto,pvalue
 
     - name:  es_meta
       title: Meta-analysis

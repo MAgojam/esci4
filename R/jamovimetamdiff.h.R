@@ -1576,7 +1576,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Meta-Analysis: Difference in Means")
+                title="Meta-Analysis: Difference in means")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",

@@ -7,42 +7,10 @@ jamovirmetarClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     private = list(
         .init = function() {
 
-            tbl_raw_data <- self$results$raw_data
-            tbl_es_meta <- self$results$es_meta
-            tbl_es_meta_difference <- self$results$es_meta_difference
-
-            conf_level <- jamovi_sanitize(
-              my_value = self$options$conf_level,
-              return_value = 95,
-              na_ok = FALSE,
-              convert_to_number = TRUE,
-              lower = 75,
-              lower_inclusive = FALSE,
-              upper = 100,
-              upper_inclusive = FALSE,
-              my_value_name = "Confidence level"
-            )
-
-            jamovi_set_confidence(tbl_raw_data, conf_level)
-            jamovi_set_confidence(tbl_es_meta, conf_level)
-
-
-            moderator <- !is.null(self$options$moderator)
-
-            tbl_es_meta_difference$setVisible(moderator)
-            tbl_es_meta$getColumn("moderator_variable_name")$setVisible(moderator)
-            tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
-            tbl_raw_data$getColumn("moderator")$setVisible(moderator)
-
-            meta_note <- if(self$options$random_effects)
-                "Estimate is based on a random effects model."
-            else
-                "Estimate is based on a fixed effects model."
-
-            tbl_es_meta$setNote(
-                key = "meta_note",
-                note = meta_note
-            )
+          jamovi_meta_initialize(
+            self = self,
+            has_switch = FALSE
+          )
 
 
         },
@@ -61,7 +29,32 @@ jamovirmetarClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             if(is(estimate, "try-error")) stop(estimate[1])
 
             # Fill tables
-            jamovi_estimate_filler(self, estimate, TRUE)
+            jamovi_meta_run(
+              estimate = estimate,
+              self = self,
+              has_reference = FALSE,
+              has_switch = FALSE,
+              has_aev = FALSE
+            )
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+          # Redo analysis
+          estimate <- jamovi_meta_r(self)
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          myplot <- jamovi_meta_forest_plot(
+            estimate = estimate,
+            self = self,
+            ggtheme = ggtheme,
+            theme = theme,
+            has_switch = FALSE
+          )
+
+          print(myplot)
+          TRUE
 
         })
 )
@@ -120,7 +113,7 @@ jamovi_meta_r <- function(self) {
     args$rs <- self$options$rs
     args$ns <- self$options$ns
 
-    args$random_effects <- self$options$random_effects
+    args$random_effects <- self$options$random_effects %in% c("random_effects", "compare")
 
 
 

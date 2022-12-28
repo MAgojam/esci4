@@ -1,6 +1,6 @@
 ---
 name:  jamovirmetaproportion
-title: "Meta-Analysis: Proportions"
+title: "Meta-analysis: Proportions"
 jrs:   '1.1'
 
 items:
@@ -34,10 +34,6 @@ items:
           type: number
         - name: weight
           title: weight
-          type: number
-          visible: (show_details)
-        - name: sample_variance
-          title: v2
           type: number
           visible: (show_details)
         - name: SE

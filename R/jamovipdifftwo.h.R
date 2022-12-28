@@ -799,7 +799,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Two Groups")
+                title="Proprtions: Two groups")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
