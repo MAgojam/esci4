@@ -68,7 +68,8 @@ jamovi_meta_run <- function(
     self,
     has_reference = FALSE,
     has_switch = TRUE,
-    has_aev = FALSE
+    has_aev = FALSE,
+    has_effect_size_names = FALSE
 ) {
 
   # table handles
@@ -168,6 +169,13 @@ jamovi_meta_run <- function(
     tbl_es_meta$getColumn("effect_size_smd")$setTitle(estimate$properties$effect_size_name_html)
     tbl_es_meta_difference$getColumn("effect_size_smd")$setTitle(estimate$properties$effect_size_name_html)
   }
+
+  if (has_effect_size_names) {
+    tbl_raw_data$getColumn("effect_size")$setTitle(estimate$properties$effect_size_name_html)
+    tbl_es_meta$getColumn("effect_size")$setTitle(estimate$properties$effect_size_name_html)
+    tbl_es_meta_difference$getColumn("effect_size")$setTitle(estimate$properties$effect_size_name_html)
+  }
+
 
 
   meta_note <- paste(

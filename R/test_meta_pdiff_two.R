@@ -48,10 +48,25 @@ test_estimate_meta_pdiff_two <- function() {
     control_egocentric,
     control_sample_size,
     studies,
+    reported_effect_size = "RD"
+  )
+  estimate$raw_data
+  estimate
+  estimate$properties$effect_size_name_html
+
+  estimate <- meta_pdiff_two(
+    esci_meta_pdiff_two,
+    power_egocentric,
+    power_sample_size,
+    control_egocentric,
+    control_sample_size,
+    studies,
     reported_effect_size = "OR"
   )
   estimate$raw_data
   estimate
+  estimate$properties$effect_size_name_html
+
 
 
   # Bad calls with good errors ----------------------

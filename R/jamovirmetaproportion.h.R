@@ -23,8 +23,8 @@ jamovirmetaproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             report_CIs = FALSE,
             meta_diamond_height = ".35",
             xlab = "auto",
-            xmin = "0",
-            xmax = "1",
+            xmin = "auto",
+            xmax = "auto",
             xbreaks = "auto",
             mark_zero = FALSE,
             axis.text.x = "14",
@@ -179,11 +179,11 @@ jamovirmetaproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             private$..xmin <- jmvcore::OptionString$new(
                 "xmin",
                 xmin,
-                default="0")
+                default="auto")
             private$..xmax <- jmvcore::OptionString$new(
                 "xmax",
                 xmax,
-                default="1")
+                default="auto")
             private$..xbreaks <- jmvcore::OptionString$new(
                 "xbreaks",
                 xbreaks,
@@ -1808,8 +1808,8 @@ jamovirmetaproportion <- function(
     report_CIs = FALSE,
     meta_diamond_height = ".35",
     xlab = "auto",
-    xmin = "0",
-    xmax = "1",
+    xmin = "auto",
+    xmax = "auto",
     xbreaks = "auto",
     mark_zero = FALSE,
     axis.text.x = "14",

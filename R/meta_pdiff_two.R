@@ -307,8 +307,15 @@ These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), col
     n1i = comparison_N,
     n2i = reference_N
   )
+  better_es_CIs <- metafor::summary.escalc(better_es)
   es_data$yi <- better_es$yi
   es_data$vi <- better_es$vi
+  es_data$p <- better_es_CIs$pval
+
+  if (reported_effect_size != "RD") {
+    es_data$LL <- better_es_CIs$ci.lb
+    es_data$UL <- better_es_CIs$ci.ub
+  }
 
 
   res <- meta_any(
@@ -331,13 +338,40 @@ These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), col
     "moderator"
   )
   data[ , clear_cols] <- NULL
+  data$p <- es_data$p
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 
   # Effect size labels
-  res$properties$effect_size_name <- "P_diff"
-  res$properties$effect_size_name_html <- "<i>P</i><sub>diff</sub>"
-  res$properties$effect_size_name_ggplot <- "*P*<sub>diff</sub>"
+  # res$properties$effect_size_name <- "P_diff"
+  # res$properties$effect_size_name_html <- "<i>P</i><sub>diff</sub>"
+  # res$properties$effect_size_name_ggplot <- "*P*<sub>diff</sub>"
+
+  # Effect size labels
+  res$properties$effect_size_name <- switch(
+    reported_effect_size,
+    "RD" = "P_diff",
+    "RR" = "log_risk_ratio",
+    "OR" = "log_odds_ratio",
+    "AS" = "arcsine(sqrt(P_diff))",
+    "PETO" = "log_odds_ratio_Peto_method"
+  )
+  res$properties$effect_size_name_html <- switch(
+    reported_effect_size,
+    "RD" = "<i>P</i><sub>diff</sub>",
+    "RR" = "ln(<i>RR</i>)",
+    "OR" = "ln(<i>OR</i>)",
+    "AS" = "1/2<i>d</i><sub>H</sub>",
+    "PETO" = "ln(<i>OR</i>)<sub>Peto</sub>"
+  )
+  res$properties$effect_size_name_ggplot <- switch(
+    reported_effect_size,
+    "RD" = "*P*<sub>diff</sub>",
+    "RR" = "Log Risk Ratio",
+    "OR" = "Log Odds Ratio",
+    "AS" = "Arcsine Square-Root Transformed Risk Difference",
+    "PETO" = "Log Odds Ratio, Peto's method"
+  )
 
   return(res)
 }
