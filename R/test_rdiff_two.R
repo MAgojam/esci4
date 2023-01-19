@@ -4,7 +4,7 @@ test_r <- function() {
   #  comparison r 95% CI [.286, .709]
   #  reference r 95% CI [.172, .603]
   #  difference .12 95% CI [-.191, .418]
-  rdiff_two <- estimate_rdiff_two(
+  estimate_rdiff_summary <- estimate_rdiff_two(
     comparison_r = .53,
     comparison_n = 45,
     reference_r = .41,
@@ -31,7 +31,7 @@ test_r <- function() {
     thegroup = as.factor(sample(x = c("Men", "Women"), size = 100, replace = TRUE))
   )
 
-  estimate <- estimate_rdiff_two(
+  estimate_rdiff_raw <- estimate_rdiff_two(
     myr2,
     thex,
     they,

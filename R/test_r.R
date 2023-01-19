@@ -1,7 +1,7 @@
 test_r <- function() {
 
   # Summary example from esci, should give .046 and .665
-  estimate_correlation(
+  estimate_r_summary <- estimate_correlation(
     r = 0.4,
     n = 30
   )
@@ -58,7 +58,7 @@ test_r <- function() {
   thomason1[11, "lsat_pre_missing"] <- NA
 
   # Should give r = .892 95% CI [.653, .97]
-  estimate_correlation(
+  estimate_r_raw <- estimate_correlation(
     thomason1,
     lsat_pre,
     lsat_post

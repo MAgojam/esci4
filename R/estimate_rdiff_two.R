@@ -336,7 +336,33 @@ estimate_rdiff_two.summary <- function(
   # Do analysis ------------------------------------
   estimate <- list()
   class(estimate) <- "esci_estimate"
-  estimate$es_r <- wrapper_ci.cor2(
+
+  es_r <- rbind(
+    estimate_correlation.summary(
+      r = reference_r,
+      n = reference_n,
+      x_variable_name = x_variable_name,
+      y_variable_name = y_variable_name,
+      conf_level = conf_level
+    )$es_r,
+    estimate_correlation.summary(
+      r = comparison_r,
+      n = comparison_n,
+      x_variable_name = x_variable_name,
+      y_variable_name = y_variable_name,
+      conf_level = conf_level
+    )$es_r
+  )
+  es_r <- cbind(
+    data.frame(
+      grouping_variable_name = c(grouping_variable_name, grouping_variable_name),
+      grouping_variable_levels = grouping_variable_levels
+    ),
+    es_r
+  )
+  estimate$es_r <- es_r
+
+  estimate$es_rdiff <- wrapper_ci.cor2(
     comparison_r = comparison_r,
     comparison_n = comparison_n,
     reference_r = reference_r,
@@ -419,7 +445,7 @@ estimate_rdiff_two.vector <- function(
     grouping_variable_name
   )
 
-  estimate <- estimate_correlation.data.frame(
+  estimate <- estimate_rdiff_two.data.frame(
     data = mydata,
     x = x_variable_name,
     y = y_variable_name,
@@ -478,18 +504,19 @@ estimate_rdiff_two.data.frame <- function(
     )
   )
 
+
   level1 <- levels(data[[grouping_variable]])[[1]]
   level2 <- levels(data[[grouping_variable]])[[2]]
 
   data1 <- data[data[[grouping_variable]] == level1, ]
   data2 <- data[data[[grouping_variable]] == level2, ]
 
-  comparison_r <- cor(data1[[x]], data1[[y]], use = "pairwise.complete.obs")
-  reference_r <- cor(data2[[x]], data2[[y]], use = "pairwise.complete.obs")
-  comparison_n <- crossprod(!is.na(data1[ , c(x, y)]))[1, 2]
-  reference_n <- crossprod(!is.na(data2[ , c(x, y)]))[1, 2]
+  reference_r <- cor(data1[[x]], data1[[y]], use = "pairwise.complete.obs")
+  comparison_r <- cor(data2[[x]], data2[[y]], use = "pairwise.complete.obs")
+  reference_n <- crossprod(!is.na(data1[ , c(x, y)]))[1, 2]
+  comparison_n <- crossprod(!is.na(data2[ , c(x, y)]))[1, 2]
 
-  estimate$es_r <- estimate_rdiff_two.summary(
+  estimate$es_rdiff <- estimate_rdiff_two.summary(
     comparison_r = comparison_r,
     comparison_n = comparison_n,
     reference_r = reference_r,
@@ -499,10 +526,33 @@ estimate_rdiff_two.data.frame <- function(
     y_variable_name = y_variable_name,
     grouping_variable_name = grouping_variable_name,
     conf_level = conf_level
-  )$es_r
+  )$es_rdiff
+
+
+  es_r <- NULL
+  for (mylevel in unique(data[[grouping_variable]])) {
+    es_r <- rbind(
+      es_r,
+      estimate_correlation.data.frame(
+        data = data[data[[grouping_variable]] == mylevel, ],
+        x = x_variable_name,
+        y = y_variable_name,
+        conf_level = conf_level,
+        save_raw_data = FALSE
+      )$es_r
+    )
+  }
+  estimate$es_r <- cbind(
+    data.frame(
+      grouping_variable_name = grouping_variable,
+      grouping_variable_levels = unique(data[[grouping_variable]])
+    ),
+    es_r
+  )
 
   if(save_raw_data) {
-
+    estimate$raw_data <- data[ , c(x, y, grouping_variable)]
+    colnames(estimate$raw_data) <- c("x", "y", "grouping_variable")
   }
 
   return(estimate)

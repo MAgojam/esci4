@@ -1505,7 +1505,7 @@ jamovirmetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                         `name`="r", 
                         `title`="<i>r</i>", 
                         `type`="number", 
-                        `visible`="(show_details)"),
+                        `visible`="(false)"),
                     list(
                         `name`="N", 
                         `title`="<i>N</i>", 

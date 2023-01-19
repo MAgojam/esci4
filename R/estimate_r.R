@@ -142,7 +142,7 @@ estimate_correlation <- function(
   # I put all the dispatches here, at the end, to make it easier to
   #   update in case the underlying function parameters change
 
-  if(analysis_type == "data.frame" | analysis_type == "jamovi") {
+  if(analysis_type == "jamovi") {
     return(
       estimate_correlation.jamovi(
         data = data,
@@ -177,6 +177,16 @@ estimate_correlation <- function(
         conf_level = conf_level,
         save_raw_data = save_raw_data
         )
+    )
+  } else if (analysis_type == "data.frame") {
+    return(
+      estimate_correlation.data.frame(
+        data = data,
+        x = x,
+        y = y,
+        conf_level = conf_level,
+        save_raw_data = save_raw_data
+      )
     )
   }
 
@@ -302,9 +312,10 @@ estimate_correlation.vector <- function(
     y_variable_name
   )
 
-  estimate <- estimate_correlation.jamovi(
+  estimate <- estimate_correlation.data.frame(
     data = mydata,
-    vars = c(x_variable_name, y_variable_name),
+    x = x_variable_name,
+    y = y_variable_name,
     conf_level = conf_level,
     save_raw_data = save_raw_data
   )
@@ -314,6 +325,161 @@ estimate_correlation.vector <- function(
   estimate$properties$data_source <- NULL
 
   return(estimate)
+}
+
+
+estimate_correlation.data.frame <- function(
+    data,
+    x,
+    y,
+    conf_level = 0.95,
+    save_raw_data = TRUE
+) {
+
+  # Input checks
+  # This function expects:
+  #   data to be a data frame
+  #   outcome_variable to be a numeric column in data, with more than 2 rows
+  esci_assert_type(data, "is.data.frame")
+
+  # Validate each variable name
+  esci_assert_valid_column_name(data, x)
+  esci_assert_column_type(data, x, "is.numeric")
+  esci_assert_column_has_valid_rows(
+    data,
+    x,
+    lower = 2,
+    na.rm = TRUE
+  )
+
+  esci_assert_valid_column_name(data, y)
+  esci_assert_column_type(data, y, "is.numeric")
+  esci_assert_column_has_valid_rows(
+    data,
+    y,
+    lower = 2,
+    na.rm = TRUE
+  )
+
+  # Check save_raw_data
+  esci_assert_type(save_raw_data, "is.logical")
+
+
+  # Data prep ------------------------------------------------
+  data_valid <- data[ , c(x, y)]
+  colnames(data_valid) <- c("x", "y")
+  na_count <- nrow(data_valid) - nrow(na.omit(data_valid))
+  data_valid <- na.omit(data_valid)
+
+
+  # Do the analysis ----------------------------------------------
+  estimate <- list()
+  class(estimate) <- "esci_estimate"
+  estimate$properties <- list(
+    data_type = "data.frame",
+    data_source = deparse(substitute(data)),
+    conf_level = conf_level
+  )
+
+
+  estimate$overview <- estimate_magnitude.jamovi(
+    data = data,
+    outcome_variables = c(x, y),
+    conf_level = conf_level,
+    save_raw_data = FALSE
+  )$overview
+
+
+  n <- nrow(data_valid)
+  r <- cor(data_valid$x, data_valid$y)
+
+  estimate$es_r <- estimate_correlation.summary(
+    r = r,
+    n = n,
+    x_variable_name = x,
+    y_variable_name = y,
+    conf_level = conf_level
+  )$es_r
+
+  # Regression model
+  lbf <- lm(y ~ x, data = data_valid)
+  b <- coefficients(lbf)[2]
+  a <- coefficients(lbf)[1]
+  cis <- confint(lbf, level = conf_level)
+  LL <- cis[, 1]
+  UL <- cis[, 2]
+
+  estimate$regression <- data.frame(
+    component = c("Intercept (a)", "Slope (b)"),
+    values = c(a, b),
+    LL = LL,
+    UL = UL
+  )
+  row.names(estimate$regression) <- NULL
+
+  estimate$regression_properties <- list()
+  estimate$regression_properties$message <- paste(
+    "Y' = ",
+    formatC(a, format = "fg", digits = 4),
+    " + ",
+    formatC(b, format="fg", digits=4),
+    "*X",
+    sep = ""
+  )
+
+  estimate$regression_properties$message_html <- paste(
+    "<i>Y</i>' = ",
+    formatC(a, format = "fg", digits = 4),
+    " + ",
+    formatC(b, format="fg", digits=4),
+    " * <i>X</i>",
+    sep = ""
+  )
+
+  # Prediction intervals
+  pinterval <- suppressWarnings(
+    predict(
+      lbf,
+      interval = "prediction",
+      level = conf_level
+    )
+  )
+  data_valid <- cbind(data_valid, pinterval)
+
+
+  if (na_count > 0) {
+    estimate$overview_properties$message <-
+      paste(
+        "N_pairs = ",
+        nrow(data_valid),
+        ".  There were ",
+        na_count,
+        " rows with incomplete data.  All analyses are based only on the ",
+        nrow(data_valid),
+        " rows with complete data.",
+        sep = ""
+      )
+    estimate$overview_properties$message_html <-
+      paste(
+        "<i>N</i><sub>pairs</sub> = ",
+        nrow(data_valid),
+        "<br>There were ",
+        na_count,
+        " rows with incomplete data.<br>All analyses are based only on the ",
+        nrow(data_valid),
+        " rows with complete data.",
+        sep = ""
+      )
+  }
+
+
+  if(save_raw_data) {
+    estimate$raw_data <- data_valid
+  }
+
+
+  return(estimate)
+
 }
 
 
