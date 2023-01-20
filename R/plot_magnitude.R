@@ -241,6 +241,7 @@ plot_correlation <- function(
   error_layout = c("halfeye", "eye", "gradient", "none"),
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
+  rope = c(NA, NA),
   ggtheme = NULL
 ) {
 
@@ -266,6 +267,34 @@ plot_correlation <- function(
   effect_size <- "r"
   nudge <- 0
 
+  # Initialize null information
+  plot_null <- FALSE
+  interval_null <- FALSE
+  null_symbol <- "rho"
+
+  if (length(rope) == 1) rope[[2]] = rope[[1]]
+
+  if (!is.na(rope[[1]])) {
+    plot_null <- TRUE
+    null_label <- paste(
+      "H[0]: ",
+      null_symbol,
+      " == ",
+      rope[[1]],
+      sep = ""
+    )
+  }
+
+  if (!is.na(rope[[1]]) & !is.na(rope[[2]])) {
+    if (rope[[1]] != rope[[2]]) {
+      plot_null <- TRUE
+      interval_null <- TRUE
+      null_label <- glue::glue(
+        "{rope[[1]]}*' < '*{null_symbol}*' < '*{rope[[2]]}"
+      )
+    }
+  }
+
   gdata <- estimate$es_r
   gdata$type <- as.factor("summary")
   gdata$x_label <- gdata$effect
@@ -275,9 +304,78 @@ plot_correlation <- function(
 
 
   # Build plot ------------------------------------
-  # Build plot ------------------------------------
   # Base plot
   myplot <- ggplot2::ggplot() + ggtheme
+
+
+  # Plot nulls
+  if (plot_null & !interval_null) {
+    myplot <- myplot + ggplot2::geom_hline(
+      yintercept = rope[[1]],
+      colour = "red",
+      size = 1,
+      linetype = "solid"
+    )
+    myplot <- esci_plot_layers(myplot, "null_line")
+
+    myplot <- myplot + ggplot2::annotate(
+      geom = "text",
+      label = null_label,
+      y = rope[[1]],
+      x = Inf,
+      vjust = 0,
+      hjust = "inward",
+      parse = TRUE
+    )
+  }
+
+  if (plot_null & interval_null) {
+    myplot <- myplot + ggplot2::geom_hline(
+      yintercept = rope[[2]] - ((rope[[2]] - rope[[1]])/2),
+      colour = "red",
+      size = 1,
+      linetype = "solid"
+    )
+    myplot <- esci_plot_layers(myplot, "null_line")
+
+    myplot <- myplot + ggplot2::geom_rect(
+      ggplot2::aes(
+        ymin = rope[[1]],
+        ymax = rope[[2]],
+        xmin = -Inf,
+        xmax = Inf
+      ),
+      alpha = 0.12,
+      fill = "red"
+    )
+    myplot <- esci_plot_layers(myplot, "null_interval")
+
+  }
+
+  # 90% CI
+  if (interval_null) {
+    alpha <- 1 - estimate$properties$conf_level
+    conf_level <- c(
+      1 - (alpha*2),
+      conf_level
+    )
+
+
+    myplot <- myplot + ggplot2::geom_segment(
+      data = gdata,
+      aes(
+        x = x_value + nudge,
+        xend = x_value + nudge,
+        y = ta_LL,
+        yend = ta_UL
+      ),
+      colour = "black",
+      size = 2
+    )
+
+    myplot <- esci_plot_layers(myplot, "ta_CI")
+  }
+
 
   # Group data
   error_glue <- esci_plot_group_data(effect_size = effect_size)
@@ -394,9 +492,6 @@ plot_proportion <- function(
   gdata$nudge <- nudge
   gdata$LL <- gdata$P_LL
   gdata$UL <- gdata$P_UL
-
-
-
 
 
   # Build plot ------------------------------------

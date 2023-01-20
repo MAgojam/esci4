@@ -9,10 +9,12 @@ meta_d2(
   ds,
   comparison_ns,
   reference_ns,
+  r = NULL,
   labels = NULL,
   moderator = NULL,
   contrast = NULL,
   effect_label = "My effect",
+  assume_equal_variance = TRUE,
   random_effects = TRUE,
   conf_level = 0.95
 )
@@ -26,6 +28,8 @@ meta_d2(
 
 \item{reference_ns}{reference}
 
+\item{r}{optional correlation between measures for w-s studies, NA otherwise}
+
 \item{labels}{labels}
 
 \item{moderator}{mod}
@@ -33,6 +37,8 @@ meta_d2(
 \item{contrast}{contrast}
 
 \item{effect_label}{el}
+
+\item{assume_equal_variance}{aev}
 
 \item{random_effects}{re}
 

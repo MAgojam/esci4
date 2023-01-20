@@ -18,7 +18,7 @@ jamovirmetamean(
   dmoderator,
   conf_level = 95,
   effect_label = "My effect",
-  reference_mean = "0",
+  reference_mean = "",
   reported_effect_size = "mean_difference",
   random_effects = "random_effects",
   include_PIs = FALSE,
@@ -41,9 +41,9 @@ jamovirmetamean(
   dmin = "auto",
   dmax = "auto",
   dbreaks = "auto",
-  shape_raw_reference = "circle filled",
-  shape_raw_comparison = "circle filled",
-  shape_raw_unused = "circle filled",
+  shape_raw_reference = "square filled",
+  shape_raw_comparison = "square filled",
+  shape_raw_unused = "square filled",
   color_raw_reference = "#008DF9",
   color_raw_comparison = "#009F81",
   color_raw_unused = "gray65",
@@ -60,9 +60,6 @@ jamovirmetamean(
   fill_summary_unused = "gray75",
   fill_summary_difference = "black",
   fill_summary_overall = "white",
-  size_raw_reference = "4",
-  size_raw_comparison = "4",
-  size_raw_unused = "2",
   alpha_raw_reference = "1",
   alpha_raw_comparison = "1",
   alpha_raw_unused = "1",
@@ -195,12 +192,6 @@ jamovirmetamean(
 \item{fill_summary_difference}{.}
 
 \item{fill_summary_overall}{.}
-
-\item{size_raw_reference}{.}
-
-\item{size_raw_comparison}{.}
-
-\item{size_raw_unused}{.}
 
 \item{alpha_raw_reference}{.}
 

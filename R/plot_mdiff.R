@@ -291,6 +291,12 @@ plot_mdiff_base <- function(
     gdata[is.na(gdata$df), "df"] <- 1
     gdata[is.na(gdata$SE), "SE"] <- .Machine$double.xmin
   }
+  if (sum(is.na(gdata$SE)) > 0) {
+    gdata[is.na(gdata$SE), ]$SE <- .Machine$double.xmin
+  }
+  if (sum(is.na(gdata$df)) > 0) {
+    gdata[is.na(gdata$df), ]$df <- 1
+  }
   if (nrow(gdata[gdata$SE <= 0, ]) > 0) {
     gdata[gdata$SE <= 0, ]$SE <- .Machine$double.xmin
   }
@@ -1004,7 +1010,7 @@ plot_rdiff <- function(
   effect_size <- "rdiff"
   difference_es_name <- "<i>r</i><sub>diff</sub>"
 
-  gdata <- estimate$es_rdiff
+  gdata <- estimate$es_r_difference
   if (is.null(gdata)) gdata <- estimate$es_r
   gdata$y_value <- gdata$effect_size
   gdata$x_label <- gdata$effect

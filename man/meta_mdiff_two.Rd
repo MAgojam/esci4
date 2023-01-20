@@ -12,6 +12,7 @@ meta_mdiff_two(
   reference_means,
   reference_sds,
   reference_ns,
+  r = NULL,
   labels = NULL,
   moderator = NULL,
   contrast = NULL,
@@ -34,6 +35,8 @@ meta_mdiff_two(
 \item{reference_sds}{reference}
 
 \item{reference_ns}{reference}
+
+\item{r}{optional correlation between measures for w-s studies, NA otherwise}
 
 \item{labels}{labels}
 

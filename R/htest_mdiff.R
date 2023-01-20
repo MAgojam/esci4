@@ -55,15 +55,22 @@ test_diff_base <- function(
     "mean" = "es_mean_difference",
     "median" = "es_median_difference",
     "P" = "es_proportion_difference",
-    "r" = "es_correlation_difference"
+    "r" = "es_r_difference"
   )
+
+
 
   reference_value <- 0
   effect_is_difference <- TRUE
-  if (is.na(estimate[[etable]][2, "LL"])) {
+  if (effect_size == "r" & is.null(estimate$es_r_difference)) {
+    etable <- "es_r"
+    effect_is_difference <- FALSE
+    estimate$es_r$type <- "Difference"
+  } else if (is.na(estimate[[etable]][2, "LL"])) {
     reference_value <- estimate[[etable]][2, "effect_size"]
     effect_is_difference <- FALSE
   }
+
 
   if (output_html) {
     null_symbol <- "<i>H</i><sub>0</sub>"
@@ -98,7 +105,7 @@ test_diff_base <- function(
       "mean" = "\U003BC",
       "median" = "\U003B7",
       "P" = "\U03A0",
-      "r" = "r"
+      "r" = "\U0370"
     )
     difference_marker <- "_diff"
   }
@@ -166,6 +173,10 @@ test_diff_base <- function(
       t <- NA
       p <- NA
       significant <- (0 < es$LL | 0 > es$UL)
+    }
+
+    if (effect_size == "r") {
+      es$outcome_variable_name <- paste(es$x_variable_name, " and ", es$y_variable_name, sep = "")
     }
 
     # null_words <- glue::glue("{parameter} is exactly 0")
@@ -432,6 +443,52 @@ test_pdiff <- function(
     test_diff_base(
       estimate = estimate,
       effect_size = "P",
+      rope = rope,
+      rope_units = "raw",
+      output_html = output_html
+    )
+  )
+
+}
+
+
+#' @export
+test_rdiff <- function(
+    estimate,
+    rope = c(0, 0),
+    output_html = FALSE
+)
+
+{
+
+
+  # Input Checks ---------------------
+  # This function expects:
+  #   estimate should be of class estimate
+  #   rope_lower <= 0
+  #   rope_upper >= 0
+  #   If rope_lower and rope_upper = 0, only traditional nil test returned
+  #   0 < alpha < 1
+  esci_assert_type(estimate, "is.estimate")
+  if (length(rope) == 1) rope[[2]] <- rope[[1]]
+  rope_lower <- rope[[1]]
+  rope_upper <- rope[[2]]
+  esci_assert_range(
+    var = rope_lower,
+    upper = 0,
+    upper_inclusive = TRUE
+  )
+  esci_assert_range(
+    var = rope_upper,
+    lower = 0,
+    lower_inclusive = TRUE
+  )
+
+
+  return(
+    test_diff_base(
+      estimate = estimate,
+      effect_size = "r",
       rope = rope,
       rope_units = "raw",
       output_html = output_html

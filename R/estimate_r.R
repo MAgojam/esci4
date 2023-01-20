@@ -416,6 +416,7 @@ estimate_correlation.data.frame <- function(
     UL = UL
   )
   row.names(estimate$regression) <- NULL
+  estimate$properties$lm <- lbf
 
   estimate$regression_properties <- list()
   estimate$regression_properties$message <- paste(

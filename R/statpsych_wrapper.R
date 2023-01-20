@@ -476,7 +476,15 @@ wrapper_ci.cor <- function(
     n = n
   )
 
+  res_ta <- statpsych::ci.cor(
+    alpha = (1 - conf_level)*2,
+    cor = r,
+    s = 0,
+    n = n
+  )
+
   res <- as.data.frame(res)
+  res_ta <- as.data.frame(res_ta)
 
   colnames(res)[1] <- "effect_size"
   colnames(res)[2] <- "SE_temp"
@@ -484,6 +492,8 @@ wrapper_ci.cor <- function(
   res$SE_temp <- NULL
   res$n = n
   res$df <- n - 2
+  res$ta_LL <- res_ta$LL
+  res$ta_UL <- res_ta$UL
 
   res <- cbind(
     x_variable_name = x_variable_name,
@@ -540,6 +550,16 @@ wrapper_ci.cor2 <- function(
     )
   )
 
+  res_difference_ta <- as.data.frame(
+    statpsych::ci.cor2(
+      alpha = (1 - conf_level)*2,
+      cor1 = comparison_r,
+      cor2 = reference_r,
+      n1 = comparison_n,
+      n2 = reference_n
+    )
+  )
+
   colnames(res_difference)[1] <- "effect_size"
   res_difference$SE <- NA
   res_difference$n <- NA
@@ -550,6 +570,8 @@ wrapper_ci.cor2 <- function(
     effect = "Difference",
     res_difference
   )
+  res_difference$ta_LL <- res_difference_ta$LL
+  res_difference$ta_UL <- res_difference_ta$UL
 
   res <- rbind(
     res_comparison,

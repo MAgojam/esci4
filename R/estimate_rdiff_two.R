@@ -362,7 +362,7 @@ estimate_rdiff_two.summary <- function(
   )
   estimate$es_r <- es_r
 
-  estimate$es_rdiff <- wrapper_ci.cor2(
+  estimate$es_r_difference <- wrapper_ci.cor2(
     comparison_r = comparison_r,
     comparison_n = comparison_n,
     reference_r = reference_r,
@@ -516,7 +516,7 @@ estimate_rdiff_two.data.frame <- function(
   reference_n <- crossprod(!is.na(data1[ , c(x, y)]))[1, 2]
   comparison_n <- crossprod(!is.na(data2[ , c(x, y)]))[1, 2]
 
-  estimate$es_rdiff <- estimate_rdiff_two.summary(
+  estimate$es_r_difference <- estimate_rdiff_two.summary(
     comparison_r = comparison_r,
     comparison_n = comparison_n,
     reference_r = reference_r,
@@ -526,7 +526,7 @@ estimate_rdiff_two.data.frame <- function(
     y_variable_name = y_variable_name,
     grouping_variable_name = grouping_variable_name,
     conf_level = conf_level
-  )$es_rdiff
+  )$es_r_difference
 
 
   es_r <- NULL
