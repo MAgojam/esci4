@@ -3,7 +3,6 @@
 plot_scatter <- function(
     estimate,
     show_line = FALSE,
-    show_mean_CI = FALSE,
     show_PI = FALSE,
     show_residuals = FALSE,
     predict_from_x = NULL,
@@ -23,12 +22,26 @@ plot_scatter <- function(
   }
 
   plotting_groups <- !is.null(estimate$overview$grouping_variable_name)
-
+  if (plotting_groups) {
+    if (!is.null(predict_from_x)) {
+      warning("Ignoring predict_from_x because the estimate passed is a difference in r; Not able to do predictions for that type of estimate yet.")
+      predict_from_x <- NULL
+    }
+    if (show_PI){
+      warning("Ignoring request to show prediction intervals (show_PI) because estimate passed is a difference in r; Not able to show prediction intervals for this type of estimate yet.")
+      show_PI <- FALSE
+    }
+    if (show_residuals){
+      warning("Ignoring request to show residuals (show_residuals) because estimate passed is a difference in r; Not able to show residuals for this type of estimate yet.")
+      show_residuals <- FALSE
+    }
+  }
 
   rdata <- estimate$raw_data
 
   # predict_from_x
   if(!is.null(predict_from_x)) {
+
     if(!is.numeric(predict_from_x)) {
       predict_from_x <- NULL
       warning_string <- stringr::str_interp("'predict_from_x' ignored because it is not numeric, instead it is = ${class(predict_from_x)}.")
@@ -53,34 +66,122 @@ plot_scatter <- function(
   ylab <- estimate$es_r$y_variable_name
   xlab <- estimate$es_r$x_variable_name
 
-  myslope <- estimate$regression$values[2]
-  myintercept <- estimate$regression$values[1]
-  rdata$predicted <- rdata$x * myslope + myintercept
+  if (!plotting_groups) {
+    myslope <- estimate$regression$values[2]
+    myintercept <- estimate$regression$values[1]
+    rdata$predicted <- rdata$x * myslope + myintercept
+  }
 
 
   # Build the plot
-  # Base and theme
-  myplot <- ggplot2::ggplot(
-    data = rdata,
-    ggplot2::aes(
-      x = x,
-      y = y
-    )
-  )
-  myplot <- myplot + ggtheme
 
   # Points and regression line
   if (plotting_groups) {
-    myplot <- myplot + ggplot2::geom_point(
+
+    rdata$type <- "Unused"
+    rdata[rdata$grouping_variable == estimate$es_r_difference$effect[[1]], ]$type <- "Comparison"
+    rdata[rdata$grouping_variable == estimate$es_r_difference$effect[[2]], ]$type <- "Reference"
+    my_labels <- c(
+      paste(estimate$es_r_difference$effect[[2]], ": r = ", format( estimate$es_r_difference$effect_size[[2]], digits = 2), sep = ""),
+      paste(estimate$es_r_difference$effect[[1]], ": r = ", format( estimate$es_r_difference$effect_size[[1]], digits = 2), sep = ""),
+      "All others"
+    )
+
+    my_fills <- c(
+      "Reference" =  "#008DF9",
+      "Comparison" = "#009F81",
+      "Unused" = "gray65"
+    )
+    my_shapes <- c(
+      "Reference" =  "square filled",
+      "Comparison" = "circle filled",
+      "Unused" = "diamond filled"
+    )
+    my_colour <- c(
+      "Reference" =  "black",
+      "Comparison" = "black",
+      "Unused" = "black"
+    )
+    my_alphas <- c(
+      "Reference" =  0.75,
+      "Comparison" = 0.75,
+      "Unused" = .2
+    )
+    my_sizes <- c(
+      "Reference" =  4,
+      "Comparison" = 4,
+      "Unused" = 1
+    )
+
+
+    # Base and theme
+    myplot <- ggplot2::ggplot(
+      data = rdata,
       ggplot2::aes(
-        shape = grouping_variable,
-        fill = grouping_variable,
-        color = grouping_variable
+        x = x,
+        y = y,
+        group = type
       )
     )
-    myplot <- esci_plot_layers(myplot, "points")
+
+    myplot <- myplot + ggplot2::geom_point(
+      ggplot2::aes(
+        color = type,
+        fill = type,
+        alpha = type,
+        size = type,
+        shape = type
+      )
+    )
+    myplot <- esci_plot_layers(myplot, "raw_point")
+
+    myplot <- myplot + ggtheme
+    myplot <- myplot + ggplot2::scale_color_manual(values = my_colour, labels = my_labels)
+    myplot <- myplot + ggplot2::scale_fill_manual(values = my_fills, labels = my_labels)
+    myplot <- myplot + ggplot2::scale_shape_manual(values = my_shapes, labels = my_labels)
+    myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels)
+    myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels)
+
+    myplot$esci_scale_labels <- my_labels
+
+
+    plot_levels <- c(
+      "#008DF9" = "Reference",
+      "#009F81" = "Comparison"
+    )
+
+    for (x in 1:length(plot_levels)) {
+      next_up <- plot_levels[x]
+      this_data <- rdata[rdata$type == next_up, ]
+      if (nrow(this_data) > 0) {
+
+        myplot <- myplot + ggplot2::geom_smooth(
+          data = this_data,
+          formula = y ~ x,
+          method='lm',
+          se = TRUE,
+          level = estimate$properties$conf_level,
+          color = names(plot_levels[x]),
+          fill = names(plot_levels[x]),
+          alpha = 0.25
+        )
+        myplot <- esci_plot_layers(myplot, paste("summary_", next_up, "_line", sep = ""))
+      }
+    }
+
 
   } else {
+    # Base and theme
+    myplot <- ggplot2::ggplot(
+      data = rdata,
+      ggplot2::aes(
+        x = x,
+        y = y
+      )
+    )
+    myplot <- myplot + ggtheme
+
+
     # Regression line
     if (show_line) {
       myplot <- myplot + ggplot2::geom_smooth(
@@ -93,7 +194,7 @@ plot_scatter <- function(
         fill = "blue",
         alpha = 0.25
       )
-      myplot <- esci_plot_layers(myplot, "Referenece_regression_line")
+      myplot <- esci_plot_layers(myplot, "summary_Reference_line")
     }
 
     # Points
@@ -103,7 +204,7 @@ plot_scatter <- function(
       colour = "blue",
       size = 3
     )
-    myplot <- esci_plot_layers(myplot, "Reference_points")
+    myplot <- esci_plot_layers(myplot, "raw_Reference_point")
   }
 
 
@@ -147,12 +248,6 @@ plot_scatter <- function(
   # Style options
   if (!plotting_groups) {
     myplot <- myplot + theme(legend.position="none")
-  } else {
-    myplot <- myplot + scale_fill_brewer(type = "qual")
-    myplot <- myplot + scale_color_brewer(type = "qual")
-    myplot <- myplot + guides(color=guide_legend(title=estimate$plot_info$group_name))
-    myplot <- myplot + guides(shape=guide_legend(title=estimate$plot_info$group_name))
-    myplot <- myplot + guides(fill=guide_legend(title=estimate$plot_info$group_name))
   }
   myplot <- myplot + theme(axis.line = element_line(size = 1, linetype = "solid"))
 

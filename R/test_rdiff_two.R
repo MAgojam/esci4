@@ -38,4 +38,33 @@ test_r <- function() {
     thegroup
   )
 
+
+  myr2 <- data.frame(
+    thex = rnorm(n = 150),
+    they = rnorm(n = 150),
+    thegroup = as.factor(sample(x = c("Men", "Women", "Other"), size = 150, replace = TRUE))
+  )
+
+  estimate_rdiff_raw <- estimate_rdiff_two(
+    myr2,
+    thex,
+    they,
+    thegroup
+  )
+
+  mystart <- rnorm(n = 50)
+  otherstart <- rnorm(n = 50)
+  myr2 <- data.frame(
+    thex = c(mystart, otherstart, rnorm(n = 50)),
+    they = c(mystart + rnorm(n = 50), 0 -  otherstart + rnorm(n = 50), rnorm(n = 50)),
+    thegroup = as.factor(c(rep("Men",50), rep("Other", 50), rep("Women", 50)))
+  )
+
+  estimate_rdiff_raw <- estimate_rdiff_two(
+    myr2,
+    thex,
+    they,
+    thegroup
+  )
+  plot_scatter(estimate_rdiff_raw)
 }
