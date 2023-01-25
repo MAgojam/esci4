@@ -48,6 +48,44 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
 
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+
+          return(FALSE)
+
+          # Redo analysis
+          estimate <- jamovi_rdiff_two(self)
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+
+          myplot <- plot_rdiff(
+            estimate
+          )
+
+          print(myplot)
+          TRUE
+
+        },
+        .scatter_plots = function(image, ggtheme, theme, ...) {
+
+          return(FALSE)
+
+          # Redo analysis
+          estimate <- jamovi_rdiff_two(self)
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          if (is.null(estimate$raw_data)) return(TRUE)
+
+          myplot <- plot_scatter(estimate)
+
+          print(myplot)
+          TRUE
+
         })
 )
 
