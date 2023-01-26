@@ -262,8 +262,8 @@ items:
     - name: estimation_plots
       title: Estimation Figure
       type: Image
-      width:  400
-      height: 500
+      width:  600
+      height: 400
       requiresData: true
       renderFun: .estimation_plots
 
@@ -275,7 +275,7 @@ items:
     - name: scatter_plots
       title: Scatter Plot
       type: Image
-      width:  650
+      width:  800
       height: 650
       requiresData: true
       renderFun: .scatter_plots

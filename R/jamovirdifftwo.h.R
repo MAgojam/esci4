@@ -28,6 +28,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             null_color = "#A40122",
             es_plot_width = "600",
             es_plot_height = "400",
+            sp_plot_width = "800",
+            sp_plot_height = "650",
             ymin = "auto",
             ymax = "auto",
             ybreaks = "auto",
@@ -37,13 +39,18 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             axis.title.y = "15",
             axis.text.x = "14",
             axis.title.x = "15",
-            simple_contrast_labels = TRUE,
-            error_layout = "halfeye",
-            error_scale = "0.25",
-            error_nudge = "0.5",
-            data_layout = "random",
-            data_spread = "0.20",
-            difference_axis_units = "raw",
+            sp_ymin = "auto",
+            sp_ymax = "auto",
+            sp_ybreaks = "auto",
+            sp_xmin = "auto",
+            sp_xmax = "auto",
+            sp_xbreaks = "auto",
+            sp_ylab = "auto",
+            sp_xlab = "auto",
+            sp_axis.text.y = "14",
+            sp_axis.title.y = "15",
+            sp_axis.text.x = "14",
+            sp_axis.title.x = "15",
             difference_axis_breaks = "auto",
             shape_raw_reference = "circle filled",
             shape_raw_comparison = "circle filled",
@@ -227,6 +234,14 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "es_plot_height",
                 es_plot_height,
                 default="400")
+            private$..sp_plot_width <- jmvcore::OptionString$new(
+                "sp_plot_width",
+                sp_plot_width,
+                default="800")
+            private$..sp_plot_height <- jmvcore::OptionString$new(
+                "sp_plot_height",
+                sp_plot_height,
+                default="650")
             private$..ymin <- jmvcore::OptionString$new(
                 "ymin",
                 ymin,
@@ -263,45 +278,54 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "axis.title.x",
                 axis.title.x,
                 default="15")
-            private$..simple_contrast_labels <- jmvcore::OptionBool$new(
-                "simple_contrast_labels",
-                simple_contrast_labels,
-                default=TRUE)
-            private$..error_layout <- jmvcore::OptionList$new(
-                "error_layout",
-                error_layout,
-                default="halfeye",
-                options=list(
-                    "halfeye",
-                    "eye",
-                    "none"))
-            private$..error_scale <- jmvcore::OptionString$new(
-                "error_scale",
-                error_scale,
-                default="0.25")
-            private$..error_nudge <- jmvcore::OptionString$new(
-                "error_nudge",
-                error_nudge,
-                default="0.5")
-            private$..data_layout <- jmvcore::OptionList$new(
-                "data_layout",
-                data_layout,
-                default="random",
-                options=list(
-                    "random",
-                    "swarm",
-                    "none"))
-            private$..data_spread <- jmvcore::OptionString$new(
-                "data_spread",
-                data_spread,
-                default="0.20")
-            private$..difference_axis_units <- jmvcore::OptionList$new(
-                "difference_axis_units",
-                difference_axis_units,
-                default="raw",
-                options=list(
-                    "raw",
-                    "sd"))
+            private$..sp_ymin <- jmvcore::OptionString$new(
+                "sp_ymin",
+                sp_ymin,
+                default="auto")
+            private$..sp_ymax <- jmvcore::OptionString$new(
+                "sp_ymax",
+                sp_ymax,
+                default="auto")
+            private$..sp_ybreaks <- jmvcore::OptionString$new(
+                "sp_ybreaks",
+                sp_ybreaks,
+                default="auto")
+            private$..sp_xmin <- jmvcore::OptionString$new(
+                "sp_xmin",
+                sp_xmin,
+                default="auto")
+            private$..sp_xmax <- jmvcore::OptionString$new(
+                "sp_xmax",
+                sp_xmax,
+                default="auto")
+            private$..sp_xbreaks <- jmvcore::OptionString$new(
+                "sp_xbreaks",
+                sp_xbreaks,
+                default="auto")
+            private$..sp_ylab <- jmvcore::OptionString$new(
+                "sp_ylab",
+                sp_ylab,
+                default="auto")
+            private$..sp_xlab <- jmvcore::OptionString$new(
+                "sp_xlab",
+                sp_xlab,
+                default="auto")
+            private$..sp_axis.text.y <- jmvcore::OptionString$new(
+                "sp_axis.text.y",
+                sp_axis.text.y,
+                default="14")
+            private$..sp_axis.title.y <- jmvcore::OptionString$new(
+                "sp_axis.title.y",
+                sp_axis.title.y,
+                default="15")
+            private$..sp_axis.text.x <- jmvcore::OptionString$new(
+                "sp_axis.text.x",
+                sp_axis.text.x,
+                default="14")
+            private$..sp_axis.title.x <- jmvcore::OptionString$new(
+                "sp_axis.title.x",
+                sp_axis.title.x,
+                default="15")
             private$..difference_axis_breaks <- jmvcore::OptionString$new(
                 "difference_axis_breaks",
                 difference_axis_breaks,
@@ -1280,6 +1304,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..null_color)
             self$.addOption(private$..es_plot_width)
             self$.addOption(private$..es_plot_height)
+            self$.addOption(private$..sp_plot_width)
+            self$.addOption(private$..sp_plot_height)
             self$.addOption(private$..ymin)
             self$.addOption(private$..ymax)
             self$.addOption(private$..ybreaks)
@@ -1289,13 +1315,18 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..axis.title.y)
             self$.addOption(private$..axis.text.x)
             self$.addOption(private$..axis.title.x)
-            self$.addOption(private$..simple_contrast_labels)
-            self$.addOption(private$..error_layout)
-            self$.addOption(private$..error_scale)
-            self$.addOption(private$..error_nudge)
-            self$.addOption(private$..data_layout)
-            self$.addOption(private$..data_spread)
-            self$.addOption(private$..difference_axis_units)
+            self$.addOption(private$..sp_ymin)
+            self$.addOption(private$..sp_ymax)
+            self$.addOption(private$..sp_ybreaks)
+            self$.addOption(private$..sp_xmin)
+            self$.addOption(private$..sp_xmax)
+            self$.addOption(private$..sp_xbreaks)
+            self$.addOption(private$..sp_ylab)
+            self$.addOption(private$..sp_xlab)
+            self$.addOption(private$..sp_axis.text.y)
+            self$.addOption(private$..sp_axis.title.y)
+            self$.addOption(private$..sp_axis.text.x)
+            self$.addOption(private$..sp_axis.title.x)
             self$.addOption(private$..difference_axis_breaks)
             self$.addOption(private$..shape_raw_reference)
             self$.addOption(private$..shape_raw_comparison)
@@ -1364,6 +1395,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         null_color = function() private$..null_color$value,
         es_plot_width = function() private$..es_plot_width$value,
         es_plot_height = function() private$..es_plot_height$value,
+        sp_plot_width = function() private$..sp_plot_width$value,
+        sp_plot_height = function() private$..sp_plot_height$value,
         ymin = function() private$..ymin$value,
         ymax = function() private$..ymax$value,
         ybreaks = function() private$..ybreaks$value,
@@ -1373,13 +1406,18 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         axis.title.y = function() private$..axis.title.y$value,
         axis.text.x = function() private$..axis.text.x$value,
         axis.title.x = function() private$..axis.title.x$value,
-        simple_contrast_labels = function() private$..simple_contrast_labels$value,
-        error_layout = function() private$..error_layout$value,
-        error_scale = function() private$..error_scale$value,
-        error_nudge = function() private$..error_nudge$value,
-        data_layout = function() private$..data_layout$value,
-        data_spread = function() private$..data_spread$value,
-        difference_axis_units = function() private$..difference_axis_units$value,
+        sp_ymin = function() private$..sp_ymin$value,
+        sp_ymax = function() private$..sp_ymax$value,
+        sp_ybreaks = function() private$..sp_ybreaks$value,
+        sp_xmin = function() private$..sp_xmin$value,
+        sp_xmax = function() private$..sp_xmax$value,
+        sp_xbreaks = function() private$..sp_xbreaks$value,
+        sp_ylab = function() private$..sp_ylab$value,
+        sp_xlab = function() private$..sp_xlab$value,
+        sp_axis.text.y = function() private$..sp_axis.text.y$value,
+        sp_axis.title.y = function() private$..sp_axis.title.y$value,
+        sp_axis.text.x = function() private$..sp_axis.text.x$value,
+        sp_axis.title.x = function() private$..sp_axis.title.x$value,
         difference_axis_breaks = function() private$..difference_axis_breaks$value,
         shape_raw_reference = function() private$..shape_raw_reference$value,
         shape_raw_comparison = function() private$..shape_raw_comparison$value,
@@ -1447,6 +1485,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..null_color = NA,
         ..es_plot_width = NA,
         ..es_plot_height = NA,
+        ..sp_plot_width = NA,
+        ..sp_plot_height = NA,
         ..ymin = NA,
         ..ymax = NA,
         ..ybreaks = NA,
@@ -1456,13 +1496,18 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..axis.title.y = NA,
         ..axis.text.x = NA,
         ..axis.title.x = NA,
-        ..simple_contrast_labels = NA,
-        ..error_layout = NA,
-        ..error_scale = NA,
-        ..error_nudge = NA,
-        ..data_layout = NA,
-        ..data_spread = NA,
-        ..difference_axis_units = NA,
+        ..sp_ymin = NA,
+        ..sp_ymax = NA,
+        ..sp_ybreaks = NA,
+        ..sp_xmin = NA,
+        ..sp_xmax = NA,
+        ..sp_xbreaks = NA,
+        ..sp_ylab = NA,
+        ..sp_xlab = NA,
+        ..sp_axis.text.y = NA,
+        ..sp_axis.title.y = NA,
+        ..sp_axis.text.x = NA,
+        ..sp_axis.title.x = NA,
         ..difference_axis_breaks = NA,
         ..shape_raw_reference = NA,
         ..shape_raw_comparison = NA,
@@ -1847,8 +1892,8 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="estimation_plots",
                 title="Estimation Figure",
-                width=400,
-                height=500,
+                width=600,
+                height=400,
                 requiresData=TRUE,
                 renderFun=".estimation_plots"))
             self$add(jmvcore::Html$new(
@@ -1860,7 +1905,7 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="scatter_plots",
                 title="Scatter Plot",
-                width=650,
+                width=800,
                 height=650,
                 requiresData=TRUE,
                 renderFun=".scatter_plots",
@@ -1912,6 +1957,8 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param null_color .
 #' @param es_plot_width .
 #' @param es_plot_height .
+#' @param sp_plot_width .
+#' @param sp_plot_height .
 #' @param ymin .
 #' @param ymax .
 #' @param ybreaks .
@@ -1921,13 +1968,18 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param axis.title.y .
 #' @param axis.text.x .
 #' @param axis.title.x .
-#' @param simple_contrast_labels .
-#' @param error_layout .
-#' @param error_scale .
-#' @param error_nudge .
-#' @param data_layout .
-#' @param data_spread .
-#' @param difference_axis_units .
+#' @param sp_ymin .
+#' @param sp_ymax .
+#' @param sp_ybreaks .
+#' @param sp_xmin .
+#' @param sp_xmax .
+#' @param sp_xbreaks .
+#' @param sp_ylab .
+#' @param sp_xlab .
+#' @param sp_axis.text.y .
+#' @param sp_axis.title.y .
+#' @param sp_axis.text.x .
+#' @param sp_axis.title.x .
 #' @param difference_axis_breaks .
 #' @param shape_raw_reference .
 #' @param shape_raw_comparison .
@@ -2018,6 +2070,8 @@ jamovirdifftwo <- function(
     null_color = "#A40122",
     es_plot_width = "600",
     es_plot_height = "400",
+    sp_plot_width = "800",
+    sp_plot_height = "650",
     ymin = "auto",
     ymax = "auto",
     ybreaks = "auto",
@@ -2027,13 +2081,18 @@ jamovirdifftwo <- function(
     axis.title.y = "15",
     axis.text.x = "14",
     axis.title.x = "15",
-    simple_contrast_labels = TRUE,
-    error_layout = "halfeye",
-    error_scale = "0.25",
-    error_nudge = "0.5",
-    data_layout = "random",
-    data_spread = "0.20",
-    difference_axis_units = "raw",
+    sp_ymin = "auto",
+    sp_ymax = "auto",
+    sp_ybreaks = "auto",
+    sp_xmin = "auto",
+    sp_xmax = "auto",
+    sp_xbreaks = "auto",
+    sp_ylab = "auto",
+    sp_xlab = "auto",
+    sp_axis.text.y = "14",
+    sp_axis.title.y = "15",
+    sp_axis.text.x = "14",
+    sp_axis.title.x = "15",
     difference_axis_breaks = "auto",
     shape_raw_reference = "circle filled",
     shape_raw_comparison = "circle filled",
@@ -2117,6 +2176,8 @@ jamovirdifftwo <- function(
         null_color = null_color,
         es_plot_width = es_plot_width,
         es_plot_height = es_plot_height,
+        sp_plot_width = sp_plot_width,
+        sp_plot_height = sp_plot_height,
         ymin = ymin,
         ymax = ymax,
         ybreaks = ybreaks,
@@ -2126,13 +2187,18 @@ jamovirdifftwo <- function(
         axis.title.y = axis.title.y,
         axis.text.x = axis.text.x,
         axis.title.x = axis.title.x,
-        simple_contrast_labels = simple_contrast_labels,
-        error_layout = error_layout,
-        error_scale = error_scale,
-        error_nudge = error_nudge,
-        data_layout = data_layout,
-        data_spread = data_spread,
-        difference_axis_units = difference_axis_units,
+        sp_ymin = sp_ymin,
+        sp_ymax = sp_ymax,
+        sp_ybreaks = sp_ybreaks,
+        sp_xmin = sp_xmin,
+        sp_xmax = sp_xmax,
+        sp_xbreaks = sp_xbreaks,
+        sp_ylab = sp_ylab,
+        sp_xlab = sp_xlab,
+        sp_axis.text.y = sp_axis.text.y,
+        sp_axis.title.y = sp_axis.title.y,
+        sp_axis.text.x = sp_axis.text.x,
+        sp_axis.title.x = sp_axis.title.x,
         difference_axis_breaks = difference_axis_breaks,
         shape_raw_reference = shape_raw_reference,
         shape_raw_comparison = shape_raw_comparison,

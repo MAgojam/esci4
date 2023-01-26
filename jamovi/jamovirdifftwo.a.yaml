@@ -192,6 +192,16 @@ options:
       type: String
       default: '400'
 
+    - name: sp_plot_width
+      title: Width
+      type: String
+      default: '800'
+
+    - name: sp_plot_height
+      title: Height
+      type: String
+      default: '650'
+
     - name: ymin
       title: Min
       type: String
@@ -237,59 +247,66 @@ options:
       type: String
       default: '15'
 
-    - name: simple_contrast_labels
-      title: Simple labels
-      type: Bool
-      default: true
-
-    - name: error_layout
-      type: List
-      title: Style
-      default: halfeye
-      options:
-        - name: halfeye
-          title: Plausibility curve
-        - name: eye
-          title: "Cat's eye"
-        - name: none
-          title: None
-
-    - name: error_scale
-      title: Width
+    - name: sp_ymin
+      title: Min
       type: String
-      default: '0.25'
+      default: auto
 
-    - name: error_nudge
-      title: 'Offset from CI'
+    - name: sp_ymax
+      title: Max
       type: String
-      default: '0.5'
+      default: auto
 
-    - name: data_layout
-      type: List
-      title: Layout
-      default: random
-      options:
-        - name: random
-          title: Random
-        - name: swarm
-          title: Swarm
-        - name: none
-          title: None
-
-    - name: data_spread
-      title: Spread
+    - name: sp_ybreaks
+      title: 'Num. tick marks'
       type: String
-      default: '0.20'
+      default: auto
 
-    - name: difference_axis_units
-      title: Units
-      type: List
-      default: raw
-      options:
-        - name: raw
-          title: Original units
-        - name: sd
-          title: Standard deviations
+    - name: sp_xmin
+      title: Min
+      type: String
+      default: auto
+
+    - name: sp_xmax
+      title: Max
+      type: String
+      default: auto
+
+    - name: sp_xbreaks
+      title: 'Num. tick marks'
+      type: String
+      default: auto
+
+    - name: sp_ylab
+      title: Label
+      type: String
+      default: auto
+
+    - name: sp_xlab
+      title: Label
+      type: String
+      default: auto
+
+    - name: sp_axis.text.y
+      title: 'Tick font size'
+      type: String
+      default: '14'
+
+    - name: sp_axis.title.y
+      title: 'Label font size'
+      type: String
+      default: '15'
+
+    - name: sp_axis.text.x
+      title: 'Tick font size'
+      type: String
+      default: '14'
+
+    - name: sp_axis.title.x
+      title: 'Label font size'
+      type: String
+      default: '15'
+
 
     - name: difference_axis_breaks
       title: 'Num. tick marks'

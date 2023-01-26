@@ -82,8 +82,8 @@ plot_scatter <- function(
     rdata[rdata$grouping_variable == estimate$es_r_difference$effect[[1]], ]$type <- "Comparison"
     rdata[rdata$grouping_variable == estimate$es_r_difference$effect[[2]], ]$type <- "Reference"
     my_labels <- c(
-      paste(estimate$es_r_difference$effect[[2]], ": r = ", format( estimate$es_r_difference$effect_size[[2]], digits = 2), sep = ""),
-      paste(estimate$es_r_difference$effect[[1]], ": r = ", format( estimate$es_r_difference$effect_size[[1]], digits = 2), sep = ""),
+      paste(estimate$es_r_difference$effect[[2]], ": *r* = ", format( estimate$es_r_difference$effect_size[[2]], digits = 2), sep = ""),
+      paste(estimate$es_r_difference$effect[[1]], ": *r* = ", format( estimate$es_r_difference$effect_size[[1]], digits = 2), sep = ""),
       "All others"
     )
 
@@ -248,6 +248,8 @@ plot_scatter <- function(
   # Style options
   if (!plotting_groups) {
     myplot <- myplot + theme(legend.position="none")
+  } else {
+    myplot <- myplot + ggplot2::guides(group=ggplot2::guide_legend(title=estimate$es_r$grouping_variable_name[[1]]))
   }
   myplot <- myplot + theme(axis.line = element_line(size = 1, linetype = "solid"))
 
@@ -313,6 +315,16 @@ plot_scatter <- function(
 
 
   myplot <- myplot + ylab(ylab) + xlab(xlab)
+
+
+  myplot <- myplot + ggplot2::theme(
+    axis.text.y = ggtext::element_markdown(),
+    axis.title.y = ggtext::element_markdown(),
+    axis.text.x = ggtext::element_markdown(),
+    axis.title.x = ggtext::element_markdown(),
+    legend.title = ggtext::element_markdown(),
+    legend.text = ggtext::element_markdown()
+  )
 
 
   return(myplot)

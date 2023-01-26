@@ -976,9 +976,13 @@ plot_rdiff <- function(
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
   simple_contrast_labels = TRUE,
+  difference_axis_breaks = 5,
+  ylim = c(NA, NA),
+  ybreaks = 5,
   rope = c(NA, NA),
   ggtheme = NULL
 ) {
+
 
   # Input checks ---------------------------------------------------------------
   warnings <- NULL
@@ -1051,9 +1055,14 @@ plot_rdiff <- function(
     error_scale = error_scale,
     error_nudge = 0,
     error_normalize = error_normalize,
+    difference_axis_units = "raw",
+    difference_axis_breaks = difference_axis_breaks,
+    ylim = ylim,
+    ybreaks = ybreaks,
     rope = rope,
     ggtheme = ggtheme
   )
+
 
   # Customize plot -------------------------------
   # Default aesthetics
@@ -1065,12 +1074,18 @@ plot_rdiff <- function(
 
   # Labels -----------------------------
   vname <- paste(estimate$es_r$x_variable_name[[1]], estimate$es_r$y_variable_name[[1]], sep = " and ")
-  ylab <- glue::glue("Correlation between {vname}\nr and {conf_level*100}% Confidence Interval")
+  ylab <- glue::glue("Correlation between {vname}<br> *r* and {conf_level*100}% Confidence Interval")
   xlab <- estimate$es_r$grouping_variable[[1]]
 
 
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
 
+
+  myplot <- myplot + ggplot2::theme(
+    axis.title.x = ggtext::element_markdown(),
+    axis.title.y = ggtext::element_markdown(),
+    axis.text.x = ggtext::element_markdown()
+  )
 
   # Attach warnings and return    -------------------
   myplot$warnings <- c(myplot$warnings, warnings)
