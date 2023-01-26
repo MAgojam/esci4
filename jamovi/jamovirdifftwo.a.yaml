@@ -97,15 +97,6 @@ options:
       type: String
       default: '0'
 
-    - name: rope_units
-      type: List
-      default: raw
-      options:
-        - name: raw
-          title: Original units
-        - name: sd
-          title: Standard deviations
-
     - name: alpha
       title: '&alpha;'
       type: Number

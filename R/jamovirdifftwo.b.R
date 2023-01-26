@@ -11,6 +11,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             # Get a handle for each table
             tbl_overview <- self$results$overview
             tbl_es_r <- self$results$es_r
+            tbl_es_r_difference <- self$results$es_r_difference
 
             tbl_overview$setVisible(from_raw)
 
@@ -30,6 +31,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
             jamovi_set_confidence(tbl_overview, conf_level)
             jamovi_set_confidence(tbl_es_r, conf_level)
+            jamovi_set_confidence(tbl_es_r_difference, conf_level)
 
         },
         .run = function() {
@@ -45,14 +47,19 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            # Fill in MoE
+            estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
+
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
+
+#
+#             self$results$debug$setContent(estimate)
+#             self$results$debug$setVisible(TRUE)
 
         },
         .estimation_plots = function(image, ggtheme, theme, ...) {
 
-
-          return(FALSE)
 
           # Redo analysis
           estimate <- jamovi_rdiff_two(self)
@@ -60,18 +67,70 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
 
+          notes <- NULL
 
-          myplot <- plot_rdiff(
-            estimate
+          #Hyothesis evaluation
+          interval_null <- FALSE
+          htest <- FALSE
+          args <- list()
+          graph_call <- "plot_rdiff"
+
+          args$estimate <- estimate
+          args$ggtheme <- ggtheme[[1]]
+
+          try(htest <- self$options$evaluate_hypotheses)
+          if (htest) {
+            args <- jamovi_arg_builder(
+              args,
+              "null_boundary",
+              my_value = self$options$null_boundary,
+              return_value = 0,
+              convert_to_number = TRUE,
+              lower = 0,
+              lower_inclusive = TRUE,
+              upper = 1,
+              upper_inclusive = TRUE,
+              my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+            )
+
+            args$rope <- c(
+              0 - args$null_boundary,
+              0 + args$null_boundary
+            )
+
+            if (args$rope[[1]] != args$rope[[2]]) {
+              interval_null <- TRUE
+            }
+
+            notes <- c(
+              notes,
+              names(args$null_boundary),
+              args$warnings
+            )
+            args$null_boundary <- NULL
+            args$warnings <- NULL
+          }
+
+
+          myplot <- do.call(
+            what = graph_call,
+            args = args
           )
+
+
+          self$results$estimation_plot_warnings$setState(
+            c(
+              notes
+            )
+          )
+          jamovi_set_notes(self$results$estimation_plot_warnings)
+
 
           print(myplot)
           TRUE
 
         },
         .scatter_plots = function(image, ggtheme, theme, ...) {
-
-          return(FALSE)
 
           # Redo analysis
           estimate <- jamovi_rdiff_two(self)
@@ -81,7 +140,10 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           if (is.null(estimate$raw_data)) return(TRUE)
 
-          myplot <- plot_scatter(estimate)
+          myplot <- plot_scatter(
+            estimate,
+            ggtheme = ggtheme[[1]]
+          )
 
           print(myplot)
           TRUE
@@ -224,24 +286,25 @@ jamovi_rdiff_two <- function(self) {
 
     }
 
-    # b <- paste(names(args), args)
-    # c <- NULL
-    # for (e in args) {
-    #     paste(c, class(e))
-    # }
-    # self$results$debug$setContent(paste(b, c, collapse = ", "))
-    # return(NULL)
+
 
     # Do analysis, then post any notes that have emerged
     estimate <- try(do.call(what = call, args = args))
 
     if (!is(estimate, "try-error")) {
-        if (length(estimate$warnings) > 0) {
-            notes <- c(notes, estimate$warnings)
-        }
+
+      estimate <- jamovi_add_htest_rdiff(
+        self = self,
+        estimate = estimate
+      )
+
+      if (length(estimate$warnings) > 0) {
+          notes <- c(notes, estimate$warnings)
+      }
     }
 
     self$results$help$setState(notes)
+
 
     return(estimate)
 }

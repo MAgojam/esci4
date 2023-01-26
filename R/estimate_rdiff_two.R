@@ -126,6 +126,8 @@ estimate_rdiff_two <- function(
         } else {
           stop("Could not parse x")
         }
+      } else {
+        x_variable_name <- x
       }
 
 
@@ -146,6 +148,8 @@ estimate_rdiff_two <- function(
         } else {
           stop("Could not parse y")
         }
+      } else {
+        y_variable_name <- y
       }
 
       is_char <- try(
@@ -165,6 +169,8 @@ estimate_rdiff_two <- function(
         } else {
           stop("Could not parse grouping_variable")
         }
+      } else {
+        grouping_variable_name <- grouping_variable
       }
 
 
@@ -356,10 +362,11 @@ estimate_rdiff_two.summary <- function(
   es_r <- cbind(
     data.frame(
       grouping_variable_name = c(grouping_variable_name, grouping_variable_name),
-      grouping_variable_levels = grouping_variable_levels
+      grouping_variable_level = grouping_variable_levels
     ),
     es_r
   )
+  es_r$effect <- grouping_variable_levels
   estimate$es_r <- es_r
 
   estimate$es_r_difference <- wrapper_ci.cor2(
@@ -545,10 +552,11 @@ estimate_rdiff_two.data.frame <- function(
   estimate$es_r <- cbind(
     data.frame(
       grouping_variable_name = grouping_variable,
-      grouping_variable_levels = unique(data[[grouping_variable]])
+      grouping_variable_level = as.character(unique(data[[grouping_variable]]))
     ),
     es_r
   )
+  estimate$es_r$effect <- estimate$es_r$grouping_variable_level
 
   if(save_raw_data) {
     estimate$raw_data <- data[ , c(x, y, grouping_variable)]

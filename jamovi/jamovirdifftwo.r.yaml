@@ -18,15 +18,16 @@ items:
       rows:  4
       columns:
         - name: outcome_variable_name
-          title: 'Outcome Variable'
+          title: 'Outcome variable'
           type: text
           combineBelow: true
         - name: grouping_variable_name
           title: 'Grouping variable name'
           type: text
+          visible: false
           combineBelow: true
         - name: grouping_variable_level
-          title: 'Level'
+          title: 'Group'
           type: text
         - name: mean
           type: number
@@ -37,39 +38,51 @@ items:
         - name: mean_UL
           title: UL
           type: number
+        - name: moe
+          type: number
+          title: <i>MoE</i>
+          visible: (show_details)
+        - name: mean_SE
+          title: <i>SE</i><sub>Mean</sub>
+          type: number
+          visible: (show_details)
         - name: median
-          title: Median
+          title: <i>Mdn</i>
           type: number
           visible: (switch == 'from_raw')
         - name: median_LL
           title: LL
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: median_UL
           title: UL
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
+        - name: median_SE
+          type: number
+          title: <i>SE</i><sub>Median</sub>
+          visible: (show_details & switch == 'from_raw')
         - name: sd
           type: number
           title: <i>s</i>
         - name: min
           title: Minimum
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: max
           title: Maximum
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: q1
           title: 25th
           type: number
           superTitle: Percentile
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: q3
           title: 75th
           type: number
           superTitle: Percentile
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: n
           title: <i>n</i>
           type: integer
@@ -81,31 +94,33 @@ items:
           title: <i>df</i>
           type: integer
           visible: (show_details)
-        - name: mean_SE
-          title: <i>SEM</i>
-          type: number
-          visible: (show_details)
 
     - name:  es_r
-      title: Linear Correlation of Magnitude
+      title: Correlation Between Paired Measures
       type: Table
-      rows:  3
+      rows:  2
       columns:
-        - name: grouping_variable
+        - name: grouping_variable_name
           title: 'Grouping variable name'
           type: text
+          visible: false
           combineBelow: true
         - name: x_variable_name
-          title: 'Comparison variable name'
+          title: 'x-variable name'
           type: text
           combineBelow: true
         - name: y_variable_name
-          title: 'Reference measure name'
+          title: 'y-variable name'
           type: text
           combineBelow: true
+        - name: grouping_variable_level
+          title: 'Group'
+          type: text
+          visible: true
         - name: effect
           title: 'Effect'
           type: text
+          visible: false
         - name: effect_size
           type: number
           title: <i>r</i>
@@ -127,7 +142,7 @@ items:
           title: <i>df</i>
           type: integer
 
-    - name:  es_rdiffeence
+    - name:  es_r_difference
       title: Difference in Correlation
       type: Table
       rows:  3
@@ -135,18 +150,24 @@ items:
         - name: grouping_variable
           title: 'Grouping variable name'
           type: text
+          visible: false
           combineBelow: true
         - name: x_variable_name
-          title: 'Comparison variable name'
+          title: 'x-variable name'
           type: text
           combineBelow: true
         - name: y_variable_name
-          title: 'Reference measure name'
+          title: 'y-variable name'
           type: text
           combineBelow: true
+        - name: grouping_variable_level
+          title: 'Effect'
+          type: text
+          visible: false
         - name: effect
           title: 'Effect'
           type: text
+          visible: true
         - name: effect_size
           type: number
           title: <i>r</i>
@@ -159,14 +180,15 @@ items:
         - name: SE
           title: <i>SE</i>
           type: number
-          visible: (show_details)
+          visible: false
         - name: n
           title: <i>N</i>
           type: integer
-          visible: (show_details)
+          visible: false
         - name: df
           title: <i>df</i>
           type: integer
+          visible: false
 
     - name:  point_null
       title: Hypothesis Evaluation
@@ -192,16 +214,9 @@ items:
         - name: CI_compare
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
-        - name: t
-          title: 't'
-          type: number
-        - name: df
-          title: <i>df</i>
-          type: integer
-        - name: p
+        - name: p_result
           title: "<i>p</i>, two-tailed"
-          type: number
-          format: zto,pvalue
+          type: text
         - name: null_decision
           title: "<i>H</i><sub>0</sub> decision"
         - name: conclusion
@@ -239,19 +254,6 @@ items:
           title: 'Conclusion'
           type: text
 
-    - name: scatter_plot_warnings
-      title: Scatter Plot Warnings
-      type: Html
-      visible: true
-
-    - name: scatter_plots
-      title: Scatter Plot
-      type: Image
-      width:  300
-      height: 450
-      requiresData: true
-      renderFun: .scatter_plots
-
     - name: estimation_plot_warnings
       title: Estimation Figure Warnings
       type: Html
@@ -259,12 +261,24 @@ items:
 
     - name: estimation_plots
       title: Estimation Figure
-      type: Array
-      template:
-          title: $key
-          type: Image
-          width:  300
-          height: 450
-          requiresData: true
-          renderFun: .estimation_plots
+      type: Image
+      width:  400
+      height: 500
+      requiresData: true
+      renderFun: .estimation_plots
+
+    - name: scatter_plot_warnings
+      title: Scatter Plot Warnings
+      type: Html
+      visible: (switch == 'from_raw')
+
+    - name: scatter_plots
+      title: Scatter Plot
+      type: Image
+      width:  650
+      height: 650
+      requiresData: true
+      renderFun: .scatter_plots
+      visible: (switch == 'from_raw')
+
 ...

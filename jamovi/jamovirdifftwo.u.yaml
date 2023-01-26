@@ -48,7 +48,6 @@ children:
                 name: grouping_variable
                 maxItemCount: 1
                 isTarget: true
-                enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Work with summary data
     name: spanel
@@ -713,13 +712,11 @@ children:
           - type: TextBox
             name: null_value
             format: string
+            enable: '(switch:never)'
           - type: TextBox
             name: null_boundary
             format: string
             enable: (evaluate_hypotheses)
-          - type: ComboBox
-            name: rope_units
-            label: ' '
           - type: TextBox
             name: alpha
             format: number

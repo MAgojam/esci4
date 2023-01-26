@@ -24,7 +24,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             evaluate_hypotheses = FALSE,
             null_value = "0",
             null_boundary = "0",
-            rope_units = "raw",
             alpha = 0.05,
             null_color = "#A40122",
             es_plot_width = "600",
@@ -174,13 +173,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "null_boundary",
                 null_boundary,
                 default="0")
-            private$..rope_units <- jmvcore::OptionList$new(
-                "rope_units",
-                rope_units,
-                default="raw",
-                options=list(
-                    "raw",
-                    "sd"))
             private$..alpha <- jmvcore::OptionNumber$new(
                 "alpha",
                 alpha,
@@ -1284,7 +1276,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
-            self$.addOption(private$..rope_units)
             self$.addOption(private$..alpha)
             self$.addOption(private$..null_color)
             self$.addOption(private$..es_plot_width)
@@ -1369,7 +1360,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
-        rope_units = function() private$..rope_units$value,
         alpha = function() private$..alpha$value,
         null_color = function() private$..null_color$value,
         es_plot_width = function() private$..es_plot_width$value,
@@ -1453,7 +1443,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
         ..null_boundary = NA,
-        ..rope_units = NA,
         ..alpha = NA,
         ..null_color = NA,
         ..es_plot_width = NA,
@@ -1528,13 +1517,13 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_r = function() private$.items[["es_r"]],
-        es_rdiffeence = function() private$.items[["es_rdiffeence"]],
+        es_r_difference = function() private$.items[["es_r_difference"]],
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
-        scatter_plot_warnings = function() private$.items[["scatter_plot_warnings"]],
-        scatter_plots = function() private$.items[["scatter_plots"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        estimation_plots = function() private$.items[["estimation_plots"]]),
+        estimation_plots = function() private$.items[["estimation_plots"]],
+        scatter_plot_warnings = function() private$.items[["scatter_plot_warnings"]],
+        scatter_plots = function() private$.items[["scatter_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1558,17 +1547,18 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
-                        `title`="Outcome Variable", 
+                        `title`="Outcome variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable name", 
                         `type`="text", 
+                        `visible`=FALSE, 
                         `combineBelow`=TRUE),
                     list(
                         `name`="grouping_variable_level", 
-                        `title`="Level", 
+                        `title`="Group", 
                         `type`="text"),
                     list(
                         `name`="mean", 
@@ -1583,20 +1573,35 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="<i>MoE</i>", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="median", 
-                        `title`="Median", 
+                        `title`="<i>Mdn</i>", 
                         `type`="number", 
                         `visible`="(switch == 'from_raw')"),
                     list(
                         `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="median_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -1605,24 +1610,24 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="min", 
                         `title`="Minimum", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="max", 
                         `title`="Maximum", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="q1", 
                         `title`="25th", 
                         `type`="number", 
                         `superTitle`="Percentile", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="q3", 
                         `title`="75th", 
                         `type`="number", 
                         `superTitle`="Percentile", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="n", 
                         `title`="<i>n</i>", 
@@ -1636,37 +1641,39 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="df", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="mean_SE", 
-                        `title`="<i>SEM</i>", 
-                        `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_r",
-                title="Linear Correlation of Magnitude",
-                rows=3,
+                title="Correlation Between Paired Measures",
+                rows=2,
                 columns=list(
                     list(
-                        `name`="grouping_variable", 
+                        `name`="grouping_variable_name", 
                         `title`="Grouping variable name", 
                         `type`="text", 
+                        `visible`=FALSE, 
                         `combineBelow`=TRUE),
                     list(
                         `name`="x_variable_name", 
-                        `title`="Comparison variable name", 
+                        `title`="x-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="y_variable_name", 
-                        `title`="Reference measure name", 
+                        `title`="y-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="grouping_variable_level", 
+                        `title`="Group", 
+                        `type`="text", 
+                        `visible`=TRUE),
+                    list(
                         `name`="effect", 
                         `title`="Effect", 
-                        `type`="text"),
+                        `type`="text", 
+                        `visible`=FALSE),
                     list(
                         `name`="effect_size", 
                         `type`="number", 
@@ -1695,7 +1702,7 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="integer"))))
             self$add(jmvcore::Table$new(
                 options=options,
-                name="es_rdiffeence",
+                name="es_r_difference",
                 title="Difference in Correlation",
                 rows=3,
                 columns=list(
@@ -1703,21 +1710,28 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="grouping_variable", 
                         `title`="Grouping variable name", 
                         `type`="text", 
+                        `visible`=FALSE, 
                         `combineBelow`=TRUE),
                     list(
                         `name`="x_variable_name", 
-                        `title`="Comparison variable name", 
+                        `title`="x-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="y_variable_name", 
-                        `title`="Reference measure name", 
+                        `title`="y-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="grouping_variable_level", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `visible`=FALSE),
+                    list(
                         `name`="effect", 
                         `title`="Effect", 
-                        `type`="text"),
+                        `type`="text", 
+                        `visible`=TRUE),
                     list(
                         `name`="effect_size", 
                         `type`="number", 
@@ -1734,16 +1748,17 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
-                        `visible`="(show_details)"),
+                        `visible`=FALSE),
                     list(
                         `name`="n", 
                         `title`="<i>N</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
+                        `visible`=FALSE),
                     list(
                         `name`="df", 
                         `title`="<i>df</i>", 
-                        `type`="integer"))))
+                        `type`="integer", 
+                        `visible`=FALSE))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="point_null",
@@ -1775,18 +1790,9 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
-                        `name`="t", 
-                        `title`="t", 
-                        `type`="number"),
-                    list(
-                        `name`="df", 
-                        `title`="<i>df</i>", 
-                        `type`="integer"),
-                    list(
-                        `name`="p", 
+                        `name`="p_result", 
                         `title`="<i>p</i>, two-tailed", 
-                        `type`="number", 
-                        `format`="zto,pvalue"),
+                        `type`="text"),
                     list(
                         `name`="null_decision", 
                         `title`="<i>H</i><sub>0</sub> decision"),
@@ -1834,33 +1840,31 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text"))))
             self$add(jmvcore::Html$new(
                 options=options,
+                name="estimation_plot_warnings",
+                title="Estimation Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="estimation_plots",
+                title="Estimation Figure",
+                width=400,
+                height=500,
+                requiresData=TRUE,
+                renderFun=".estimation_plots"))
+            self$add(jmvcore::Html$new(
+                options=options,
                 name="scatter_plot_warnings",
                 title="Scatter Plot Warnings",
-                visible=TRUE))
+                visible="(switch == 'from_raw')"))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="scatter_plots",
                 title="Scatter Plot",
-                width=300,
-                height=450,
+                width=650,
+                height=650,
                 requiresData=TRUE,
-                renderFun=".scatter_plots"))
-            self$add(jmvcore::Html$new(
-                options=options,
-                name="estimation_plot_warnings",
-                title="Estimation Figure Warnings",
-                visible=TRUE))
-            self$add(jmvcore::Array$new(
-                options=options,
-                name="estimation_plots",
-                title="Estimation Figure",
-                template=jmvcore::Image$new(
-                    options=options,
-                    title="$key",
-                    width=300,
-                    height=450,
-                    requiresData=TRUE,
-                    renderFun=".estimation_plots")))}))
+                renderFun=".scatter_plots",
+                visible="(switch == 'from_raw')"))}))
 
 jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovirdifftwoBase",
@@ -1904,7 +1908,6 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param evaluate_hypotheses .
 #' @param null_value .
 #' @param null_boundary .
-#' @param rope_units .
 #' @param alpha .
 #' @param null_color .
 #' @param es_plot_width .
@@ -1975,13 +1978,13 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$es_rdiffeence} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_r_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$scatter_plots} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an array of images \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -2011,7 +2014,6 @@ jamovirdifftwo <- function(
     evaluate_hypotheses = FALSE,
     null_value = "0",
     null_boundary = "0",
-    rope_units = "raw",
     alpha = 0.05,
     null_color = "#A40122",
     es_plot_width = "600",
@@ -2111,7 +2113,6 @@ jamovirdifftwo <- function(
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
         null_boundary = null_boundary,
-        rope_units = rope_units,
         alpha = alpha,
         null_color = null_color,
         es_plot_width = es_plot_width,

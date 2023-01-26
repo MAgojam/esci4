@@ -426,7 +426,8 @@ plot_mdiff_base <- function(
   null_symbol <- sapply(
     effect_size,
     switch,
-    r = "rho[diff]",
+    r = "rho",
+    rdiff = "rho[diff]",
     mean = "mu[diff]",
     median = "eta[diff]",
     P = "Pi[diff]",

@@ -592,7 +592,8 @@ wrapper_ci.cor2 <- function(
 
   res <- cbind(
     type = c("Comparison", "Reference", "Difference"),
-    grouping_variable = grouping_variable_name,
+    grouping_variable_name = grouping_variable_name,
+    grouping_variable_level = res$effect,
     res
   )
 

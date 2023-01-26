@@ -75,6 +75,31 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     result_table$effect_size_smd <- result_table$effect_size
   }
 
+
+
+  for (x in 1:nrow(result_table)) {
+    # Initialize a named list
+    row_list <- list()
+
+    # Now fill the named list with the column/values from the data frame
+    for(mycol in names(result_table)) {
+      if (is.na(result_table[x, mycol])) {
+
+      } else {
+        row_list[mycol] = result_table[x, mycol]
+      }
+    }
+
+    # Save this data to the jamovi table
+    if_set <- try(jmv_table$setRow(rowNo = x, values = row_list))
+    if (class(if_set) == "try-error" & expand) {
+      jmv_table$addRow(rowKey = x, values = row_list)
+    }
+
+  }
+
+
+
   if (!is.null(result_table$grouping_variable_name) & !is.null(result_table$grouping_variable_level)) {
     jmv_table$getColumn("grouping_variable_level")$setTitle(
       result_table$grouping_variable_name[[1]]
@@ -134,27 +159,6 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
     )
   }
 
-
-  for (x in 1:nrow(result_table)) {
-    # Initialize a named list
-    row_list <- list()
-
-    # Now fill the named list with the column/values from the data frame
-    for(mycol in names(result_table)) {
-      if (is.na(result_table[x, mycol])) {
-
-      } else {
-        row_list[mycol] = result_table[x, mycol]
-      }
-    }
-
-    # Save this data to the jamovi table
-    if_set <- try(jmv_table$setRow(rowNo = x, values = row_list))
-    if (class(if_set) == "try-error" & expand) {
-      jmv_table$addRow(rowKey = x, values = row_list)
-    }
-
-  }
 
   # Return the filled table
   return(TRUE)
