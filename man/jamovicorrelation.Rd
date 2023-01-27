@@ -14,7 +14,72 @@ jamovicorrelation(
   x_variable_name = "x variable",
   y_variable_name = "y variable",
   conf_level = 95,
-  show_details = FALSE
+  show_details = FALSE,
+  show_line = FALSE,
+  show_residuals = FALSE,
+  show_PI = FALSE,
+  predict_from_x = " ",
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  alpha = 0.05,
+  null_color = "#A40122",
+  es_plot_width = "300",
+  es_plot_height = "400",
+  sp_plot_width = "650",
+  sp_plot_height = "650",
+  ymin = "-1",
+  ymax = "1",
+  ybreaks = "auto",
+  ylab = "auto",
+  xlab = "auto",
+  axis.text.y = "14",
+  axis.title.y = "15",
+  axis.text.x = "14",
+  axis.title.x = "15",
+  error_layout = "halfeye",
+  sp_ymin = "auto",
+  sp_ymax = "auto",
+  sp_ybreaks = "auto",
+  sp_xmin = "auto",
+  sp_xmax = "auto",
+  sp_xbreaks = "auto",
+  sp_ylab = "auto",
+  sp_xlab = "auto",
+  sp_axis.text.y = "14",
+  sp_axis.title.y = "15",
+  sp_axis.text.x = "14",
+  sp_axis.title.x = "15",
+  shape_summary = "circle filled",
+  color_summary = "#008DF9",
+  fill_summary = "#008DF9",
+  size_summary = "4",
+  alpha_summary = "1",
+  linetype_summary = "solid",
+  color_interval = "black",
+  size_interval = "3",
+  alpha_interval = "1",
+  alpha_error = "1",
+  fill_error = "gray75",
+  sp_shape_raw_reference = "circle filled",
+  sp_color_raw_reference = "#008DF9",
+  sp_fill_raw_reference = "#008DF9",
+  sp_size_raw_reference = "4",
+  sp_alpha_raw_reference = ".25",
+  sp_linetype_summary_reference = "solid",
+  sp_color_summary_reference = "#008DF9",
+  sp_size_summary_reference = "3",
+  sp_alpha_summary_reference = ".25",
+  sp_linetype_PI_reference = "dotted",
+  sp_color_PI_reference = "#E20134",
+  sp_size_PI_reference = "2",
+  sp_alpha_PI_reference = "1",
+  sp_linetype_residual_reference = "solid",
+  sp_color_residual_reference = "#E20134",
+  sp_size_residual_reference = "1",
+  sp_alpha_residual_reference = "1",
+  sp_prediction_label = "5",
+  sp_prediction_color = "#E20134"
 )
 }
 \arguments{
@@ -37,6 +102,136 @@ jamovicorrelation(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{show_line}{.}
+
+\item{show_residuals}{.}
+
+\item{show_PI}{.}
+
+\item{predict_from_x}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{alpha}{.}
+
+\item{null_color}{.}
+
+\item{es_plot_width}{.}
+
+\item{es_plot_height}{.}
+
+\item{sp_plot_width}{.}
+
+\item{sp_plot_height}{.}
+
+\item{ymin}{.}
+
+\item{ymax}{.}
+
+\item{ybreaks}{.}
+
+\item{ylab}{.}
+
+\item{xlab}{.}
+
+\item{axis.text.y}{.}
+
+\item{axis.title.y}{.}
+
+\item{axis.text.x}{.}
+
+\item{axis.title.x}{.}
+
+\item{error_layout}{.}
+
+\item{sp_ymin}{.}
+
+\item{sp_ymax}{.}
+
+\item{sp_ybreaks}{.}
+
+\item{sp_xmin}{.}
+
+\item{sp_xmax}{.}
+
+\item{sp_xbreaks}{.}
+
+\item{sp_ylab}{.}
+
+\item{sp_xlab}{.}
+
+\item{sp_axis.text.y}{.}
+
+\item{sp_axis.title.y}{.}
+
+\item{sp_axis.text.x}{.}
+
+\item{sp_axis.title.x}{.}
+
+\item{shape_summary}{.}
+
+\item{color_summary}{.}
+
+\item{fill_summary}{.}
+
+\item{size_summary}{.}
+
+\item{alpha_summary}{.}
+
+\item{linetype_summary}{.}
+
+\item{color_interval}{.}
+
+\item{size_interval}{.}
+
+\item{alpha_interval}{.}
+
+\item{alpha_error}{.}
+
+\item{fill_error}{.}
+
+\item{sp_shape_raw_reference}{.}
+
+\item{sp_color_raw_reference}{.}
+
+\item{sp_fill_raw_reference}{.}
+
+\item{sp_size_raw_reference}{.}
+
+\item{sp_alpha_raw_reference}{.}
+
+\item{sp_linetype_summary_reference}{.}
+
+\item{sp_color_summary_reference}{.}
+
+\item{sp_size_summary_reference}{.}
+
+\item{sp_alpha_summary_reference}{.}
+
+\item{sp_linetype_PI_reference}{.}
+
+\item{sp_color_PI_reference}{.}
+
+\item{sp_size_PI_reference}{.}
+
+\item{sp_alpha_PI_reference}{.}
+
+\item{sp_linetype_residual_reference}{.}
+
+\item{sp_color_residual_reference}{.}
+
+\item{sp_size_residual_reference}{.}
+
+\item{sp_alpha_residual_reference}{.}
+
+\item{sp_prediction_label}{.}
+
+\item{sp_prediction_color}{.}
 }
 \value{
 A results object containing:
@@ -45,6 +240,12 @@ A results object containing:
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$scatter_plots} \tab \tab \tab \tab \tab an image \cr
+\code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

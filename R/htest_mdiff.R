@@ -55,7 +55,7 @@ test_diff_base <- function(
     "mean" = "es_mean_difference",
     "median" = "es_median_difference",
     "P" = "es_proportion_difference",
-    "r" = "es_r_difference"
+    "r" = "es_r"
   )
 
 
@@ -454,6 +454,52 @@ test_pdiff <- function(
 
 #' @export
 test_rdiff <- function(
+    estimate,
+    rope = c(0, 0),
+    output_html = FALSE
+)
+
+{
+
+
+  # Input Checks ---------------------
+  # This function expects:
+  #   estimate should be of class estimate
+  #   rope_lower <= 0
+  #   rope_upper >= 0
+  #   If rope_lower and rope_upper = 0, only traditional nil test returned
+  #   0 < alpha < 1
+  esci_assert_type(estimate, "is.estimate")
+  if (length(rope) == 1) rope[[2]] <- rope[[1]]
+  rope_lower <- rope[[1]]
+  rope_upper <- rope[[2]]
+  esci_assert_range(
+    var = rope_lower,
+    upper = 0,
+    upper_inclusive = TRUE
+  )
+  esci_assert_range(
+    var = rope_upper,
+    lower = 0,
+    lower_inclusive = TRUE
+  )
+
+
+  return(
+    test_diff_base(
+      estimate = estimate,
+      effect_size = "r",
+      rope = rope,
+      rope_units = "raw",
+      output_html = output_html
+    )
+  )
+
+}
+
+
+#' @export
+test_correlation <- function(
     estimate,
     rope = c(0, 0),
     output_html = FALSE

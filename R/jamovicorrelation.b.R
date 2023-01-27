@@ -34,7 +34,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             width <- jamovi_sanitize(
               my_value = self$options$es_plot_width,
-              return_value = 600,
+              return_value = 300,
               convert_to_number = TRUE,
               lower = 10,
               lower_inclusive = TRUE,
@@ -60,7 +60,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             width <- jamovi_sanitize(
               my_value = self$options$sp_plot_width,
-              return_value = 800,
+              return_value = 650,
               convert_to_number = TRUE,
               lower = 10,
               lower_inclusive = TRUE,
@@ -120,6 +120,8 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           args$estimate <- estimate
           args$ggtheme <- ggtheme[[1]]
+          args$error_layout <- self$options$error_layout
+          # args$error_scale <- self$options$error_scale
 
 
           # Hypothesis test and rope
@@ -172,7 +174,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
-            return_value = 600,
+            return_value = 300,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -268,7 +270,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           # Axis breaks
           ymin <- jamovi_sanitize(
-            my_value = self$options$sp_ymin,
+            my_value = self$options$ymin,
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
@@ -276,7 +278,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           )
 
           ymax <- jamovi_sanitize(
-            my_value = self$options$sp_ymax,
+            my_value = self$options$ymax,
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
@@ -284,7 +286,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           )
 
           ybreaks <- jamovi_sanitize(
-            my_value = self$options$sp_ybreaks,
+            my_value = self$options$ybreaks,
             return_value = 5,
             na_ok = FALSE,
             lower = 1,
@@ -295,11 +297,109 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             my_value_name = "Scatter Plot Y axis: Number of tick marks"
           )
 
+          # Slab
+          myplot <- myplot + ggplot2::scale_fill_manual(
+            values = c(
+              "summary" = self$options$fill_error
+            ),
+            aesthetics = "slab_fill"
+          )
+          myplot <- myplot + ggplot2::discrete_scale(
+            "slab_alpha",
+            "slab_alpha_d",
+            function(n) return(c(
+              "summary" = as.numeric(self$options$alpha_error)
+            ))
+          )
+
+          if (self$options$evaluate_hypotheses) {
+            myplot$layers[["null_line"]]$aes_params$colour <- self$options$null_color
+            if (interval_null) {
+              try(myplot$layers[["null_interval"]]$aes_params$fill <- self$options$null_color)
+              try(myplot$layers[["ta_CI"]]$aes_params$size <- as.numeric(self$options$size_interval)/divider+1)
+              try(myplot$layers[["ta_CI"]]$aes_params$alpha <- as.numeric(self$options$alpha_interval))
+              try(myplot$layers[["ta_CI"]]$aes_params$colour <- self$options$color_interval)
+              try(myplot$layers[["ta_CI"]]$aes_params$linetype <- self$options$linetype_summary)
+
+            }
+          }
+
 
           myplot <- myplot + ggplot2::scale_y_continuous(
             limits = c(ymin, ymax),
             n.breaks = ybreaks,
           )
+
+
+          #aesthetics
+          myplot <- myplot + ggplot2::scale_shape_manual(
+            values = c(
+              "raw" = "circle",
+              "summary" = self$options$shape_summary
+            )
+          )
+
+          myplot <- myplot + ggplot2::scale_color_manual(
+            values = c(
+              "raw" = "black",
+              "summary" = self$options$color_summary
+            ),
+            aesthetics = c("color", "point_color")
+          )
+
+          myplot <- myplot + ggplot2::scale_fill_manual(
+            values = c(
+              "raw" = "black",
+              "summary" = self$options$fill_summary
+            ),
+            aesthetics = c("fill", "point_fill")
+          )
+
+          myplot <- myplot + ggplot2::discrete_scale(
+            c("size", "point_size"),
+            "point_size_d",
+            function(n) return(c(
+              "raw" = 2,
+              "summary" = as.numeric(self$options$size_summary)
+            ))
+          )
+
+          myplot <- myplot + ggplot2::discrete_scale(
+            c("alpha", "point_alpha"),
+            "point_alpha_d",
+            function(n) return(c(
+              "raw" = 1,
+              "summary" = as.numeric(self$options$alpha_summary)
+            ))
+          )
+
+          myplot <- myplot + ggplot2::scale_linetype_manual(
+            values = c(
+              "summary" = self$options$linetype_summary
+            )
+          )
+
+          myplot <- myplot + ggplot2::scale_color_manual(
+            values = c(
+              "summary" = self$options$color_interval
+            ),
+            aesthetics = "interval_color"
+          )
+          myplot <- myplot + ggplot2::discrete_scale(
+            "interval_alpha",
+            "interval_alpha_d",
+            function(n) return(c(
+              "summary" = as.numeric(self$options$alpha_interval)
+            ))
+          )
+          myplot <- myplot + ggplot2::discrete_scale(
+            "interval_size",
+            "interval_size_d",
+            function(n) return(c(
+              "summary" = as.numeric(self$options$size_interval)
+            ))
+          )
+
 
           self$results$estimation_plot_warnings$setState(
             c(
@@ -344,17 +444,23 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           args$show_PI <- self$options$show_PI
           args$show_residuals <- self$options$show_residuals
 
-          # args$predict_from_x <- jamovi_arg_builder(
-          #   args,
-          #   "predict_from_x",
-          #   my_value = self$options$predict_from_x,
-          #   na_ok = FALSE,
-          #   convert_to_number = TRUE,
-          #   my_value_name = "X value for prediction"
-          # )
-          #
-          # if (is.na(args$predict_from_x)) args$predict_from_x <- NULL
-          # args$warnings <- NULL
+          args <- jamovi_arg_builder(
+            args = args,
+            arg_name = "predict_from_x",
+            my_value = self$options$predict_from_x,
+            na_ok = FALSE,
+            return_value = 'bad',
+            convert_to_number = TRUE,
+            my_value_name = "<i>X</i> value for prediction"
+          )
+
+          # self$results$debug$setContent(args$predict_from_x)
+          # self$results$debug$setVisible(TRUE)
+
+          if (args$predict_from_x == "bad") {
+            args$predict_from_x <- NULL
+            args$warnings <- NULL
+          }
 
           myplot <- do.call(
             what = graph_call,
@@ -362,9 +468,11 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           )
 
 
+
+
           width <- jamovi_sanitize(
             my_value = self$options$sp_plot_width,
-            return_value = 800,
+            return_value = 650,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -525,21 +633,63 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           }
 
 
-          # myplot$layers$raw_Reference_point$aes_params$fill <- self$options$sp_fill_raw_reference
-          # myplot$layers$raw_Reference_point$aes_params$color <- self$options$sp_color_raw_reference
-          # myplot$layers$raw_Reference_point$aes_params$size <- as.numeric(self$options$sp_size_raw_reference)
-          # myplot$layers$raw_Reference_point$aes_params$alpha <- as.numeric(self$options$sp_alpha_raw_reference)
-          # myplot$layers$raw_Reference_point$aes_params$shape <- self$options$sp_shape_raw_reference
+          myplot$layers$raw_Reference_point$aes_params$fill <- self$options$sp_fill_raw_reference
+          myplot$layers$raw_Reference_point$aes_params$colour <- self$options$sp_color_raw_reference
+          myplot$layers$raw_Reference_point$aes_params$size <- as.numeric(self$options$sp_size_raw_reference)
+          myplot$layers$raw_Reference_point$aes_params$alpha <- as.numeric(self$options$sp_alpha_raw_reference)
+          myplot$layers$raw_Reference_point$aes_params$shape <- self$options$sp_shape_raw_reference
           #
-          # myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
-          # myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
-          # myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
-          # myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
-          # myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+
+          if (!is.null(myplot$layers$summary_Reference_line)) {
+            myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+            myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
+            myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+            myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
+            myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+
+          }
+
+
+          if (!is.null(myplot$layers$residuals)) {
+            myplot$layers$residuals$aes_params$colour <- self$options$sp_color_residual_reference
+            myplot$layers$residuals$aes_params$alpha <- as.numeric(self$options$sp_alpha_residual_reference)
+            myplot$layers$residuals$aes_params$linetype <- self$options$sp_linetype_residual_reference
+            myplot$layers$residuals$aes_params$size <- as.numeric(self$options$sp_size_residual_reference)/2
+          }
+
+          if (!is.null(myplot$layers$prediction_interval_upper)) {
+            myplot$layers$prediction_interval_upper$aes_params$colour <- self$options$sp_color_PI_reference
+            myplot$layers$prediction_interval_upper$aes_params$alpha <- as.numeric(self$options$sp_alpha_PI_reference)
+            myplot$layers$prediction_interval_upper$aes_params$linetype <- self$options$sp_linetype_PI_reference
+            myplot$layers$prediction_interval_upper$aes_params$size <- as.numeric(self$options$sp_size_PI_reference)/2
+          }
+
+          if (!is.null(myplot$layers$prediction_interval_lower)) {
+            myplot$layers$prediction_interval_lower$aes_params$colour <- self$options$sp_color_PI_reference
+            myplot$layers$prediction_interval_lower$aes_params$alpha <- as.numeric(self$options$sp_alpha_PI_reference)
+            myplot$layers$prediction_interval_lower$aes_params$linetype <- self$options$sp_linetype_PI_reference
+            myplot$layers$prediction_interval_lower$aes_params$size <- as.numeric(self$options$sp_size_PI_reference)/2
+          }
+
+          if (!is.null(myplot$layers$prediction_y_label)) {
+            myplot$layers$prediction_y_label$aes_params$size <- as.numeric(self$options$sp_prediction_label)
+            myplot$layers$prediction_y_label$aes_params$colour <- self$options$sp_prediction_color
+          }
+
+          if (!is.null(myplot$layers$prediction_x_label)) {
+            myplot$layers$prediction_x_label$aes_params$size <- as.numeric(self$options$sp_prediction_label)
+            myplot$layers$prediction_x_label$aes_params$colour <- self$options$sp_prediction_color
+          }
+
+          if (!is.null(myplot$layers$prediction_prediction_interval)) {
+            myplot$layers$prediction_prediction_interval$aes_params$colour <- self$options$sp_prediction_color
+          }
+
 
 
           notes <- c(
             notes,
+            myplot$warnings,
             names(width),
             names(height),
             names(axis.text.y),
@@ -668,6 +818,35 @@ jamovi_correlation <- function(self) {
     estimate <- try(do.call(what = call, args = args))
 
     if (!is(estimate, "try-error")) {
+        evaluate_h <- self$options$evaluate_hypotheses
+
+        if(evaluate_h) {
+          rope_upper <- jamovi_sanitize(
+            self$options$null_boundary,
+            na_ok = FALSE,
+            return_value = 0,
+            lower = 0,
+            lower_inclusive = TRUE,
+            convert_to_number = TRUE
+          )
+
+          test_results <- test_correlation(
+            estimate,
+            rope = c(rope_upper * -1, rope_upper),
+            output_html = TRUE
+          )
+
+          estimate$point_null <- test_results$point_null
+          estimate$interval_null <- test_results$interval_null
+
+          if (!is.null(names(rope_upper))) {
+            self$results$point_null$setVisible(TRUE)
+            self$results$interval_null$setVisible(FALSE)
+          }
+
+        }
+
+
         if (length(estimate$warnings) > 0) {
             notes <- c(notes, estimate$warnings)
         }

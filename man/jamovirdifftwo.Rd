@@ -20,7 +20,79 @@ jamovirdifftwo(
   reference_level_name = "Reference level",
   grouping_variable_name = "Grouping variable",
   conf_level = 95,
-  show_details = FALSE
+  show_details = FALSE,
+  evaluate_hypotheses = FALSE,
+  null_value = "0",
+  null_boundary = "0",
+  alpha = 0.05,
+  null_color = "#A40122",
+  es_plot_width = "600",
+  es_plot_height = "400",
+  sp_plot_width = "800",
+  sp_plot_height = "650",
+  ymin = "auto",
+  ymax = "auto",
+  ybreaks = "auto",
+  ylab = "auto",
+  xlab = "auto",
+  axis.text.y = "14",
+  axis.title.y = "15",
+  axis.text.x = "14",
+  axis.title.x = "15",
+  sp_ymin = "auto",
+  sp_ymax = "auto",
+  sp_ybreaks = "auto",
+  sp_xmin = "auto",
+  sp_xmax = "auto",
+  sp_xbreaks = "auto",
+  sp_ylab = "auto",
+  sp_xlab = "auto",
+  sp_axis.text.y = "14",
+  sp_axis.title.y = "15",
+  sp_axis.text.x = "14",
+  sp_axis.title.x = "15",
+  difference_axis_breaks = "auto",
+  shape_summary_reference = "circle filled",
+  shape_summary_comparison = "circle filled",
+  shape_summary_difference = "triangle filled",
+  color_summary_reference = "#008DF9",
+  color_summary_comparison = "#009F81",
+  color_summary_difference = "black",
+  fill_summary_reference = "#008DF9",
+  fill_summary_comparison = "#009F81",
+  fill_summary_difference = "black",
+  size_summary_reference = "4",
+  size_summary_comparison = "4",
+  size_summary_difference = "4",
+  alpha_summary_reference = "1",
+  alpha_summary_comparison = "1",
+  alpha_summary_difference = "1",
+  linetype_summary_reference = "solid",
+  linetype_summary_comparison = "solid",
+  linetype_summary_difference = "solid",
+  sp_shape_raw_reference = "circle filled",
+  sp_shape_raw_comparison = "circle filled",
+  sp_shape_raw_unused = "circle filled",
+  sp_color_raw_reference = "#008DF9",
+  sp_color_raw_comparison = "#009F81",
+  sp_color_raw_unused = "gray75",
+  sp_fill_raw_reference = "#008DF9",
+  sp_fill_raw_comparison = "#009F81",
+  sp_fill_raw_unused = "NA",
+  sp_size_raw_reference = "4",
+  sp_size_raw_comparison = "4",
+  sp_size_raw_unused = "2",
+  sp_alpha_raw_reference = ".25",
+  sp_alpha_raw_comparison = ".25",
+  sp_alpha_raw_unused = ".25",
+  sp_linetype_summary_reference = "solid",
+  sp_linetype_summary_comparison = "solid",
+  sp_color_summary_reference = "#008DF9",
+  sp_color_summary_comparison = "#009F81",
+  sp_size_summary_reference = "2",
+  sp_size_summary_comparison = "2",
+  sp_alpha_summary_reference = ".25",
+  sp_alpha_summary_comparison = ".25"
 )
 }
 \arguments{
@@ -55,6 +127,150 @@ jamovirdifftwo(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{evaluate_hypotheses}{.}
+
+\item{null_value}{.}
+
+\item{null_boundary}{.}
+
+\item{alpha}{.}
+
+\item{null_color}{.}
+
+\item{es_plot_width}{.}
+
+\item{es_plot_height}{.}
+
+\item{sp_plot_width}{.}
+
+\item{sp_plot_height}{.}
+
+\item{ymin}{.}
+
+\item{ymax}{.}
+
+\item{ybreaks}{.}
+
+\item{ylab}{.}
+
+\item{xlab}{.}
+
+\item{axis.text.y}{.}
+
+\item{axis.title.y}{.}
+
+\item{axis.text.x}{.}
+
+\item{axis.title.x}{.}
+
+\item{sp_ymin}{.}
+
+\item{sp_ymax}{.}
+
+\item{sp_ybreaks}{.}
+
+\item{sp_xmin}{.}
+
+\item{sp_xmax}{.}
+
+\item{sp_xbreaks}{.}
+
+\item{sp_ylab}{.}
+
+\item{sp_xlab}{.}
+
+\item{sp_axis.text.y}{.}
+
+\item{sp_axis.title.y}{.}
+
+\item{sp_axis.text.x}{.}
+
+\item{sp_axis.title.x}{.}
+
+\item{difference_axis_breaks}{.}
+
+\item{shape_summary_reference}{.}
+
+\item{shape_summary_comparison}{.}
+
+\item{shape_summary_difference}{.}
+
+\item{color_summary_reference}{.}
+
+\item{color_summary_comparison}{.}
+
+\item{color_summary_difference}{.}
+
+\item{fill_summary_reference}{.}
+
+\item{fill_summary_comparison}{.}
+
+\item{fill_summary_difference}{.}
+
+\item{size_summary_reference}{.}
+
+\item{size_summary_comparison}{.}
+
+\item{size_summary_difference}{.}
+
+\item{alpha_summary_reference}{.}
+
+\item{alpha_summary_comparison}{.}
+
+\item{alpha_summary_difference}{.}
+
+\item{linetype_summary_reference}{.}
+
+\item{linetype_summary_comparison}{.}
+
+\item{linetype_summary_difference}{.}
+
+\item{sp_shape_raw_reference}{.}
+
+\item{sp_shape_raw_comparison}{.}
+
+\item{sp_shape_raw_unused}{.}
+
+\item{sp_color_raw_reference}{.}
+
+\item{sp_color_raw_comparison}{.}
+
+\item{sp_color_raw_unused}{.}
+
+\item{sp_fill_raw_reference}{.}
+
+\item{sp_fill_raw_comparison}{.}
+
+\item{sp_fill_raw_unused}{.}
+
+\item{sp_size_raw_reference}{.}
+
+\item{sp_size_raw_comparison}{.}
+
+\item{sp_size_raw_unused}{.}
+
+\item{sp_alpha_raw_reference}{.}
+
+\item{sp_alpha_raw_comparison}{.}
+
+\item{sp_alpha_raw_unused}{.}
+
+\item{sp_linetype_summary_reference}{.}
+
+\item{sp_linetype_summary_comparison}{.}
+
+\item{sp_color_summary_reference}{.}
+
+\item{sp_color_summary_comparison}{.}
+
+\item{sp_size_summary_reference}{.}
+
+\item{sp_size_summary_comparison}{.}
+
+\item{sp_alpha_summary_reference}{.}
+
+\item{sp_alpha_summary_comparison}{.}
 }
 \value{
 A results object containing:
@@ -63,6 +279,13 @@ A results object containing:
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
+\code{results$es_r_difference} \tab \tab \tab \tab \tab a table \cr
+\code{results$point_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
+\code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
+\code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$scatter_plots} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

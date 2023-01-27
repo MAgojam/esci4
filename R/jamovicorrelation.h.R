@@ -24,12 +24,12 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             null_boundary = "0",
             alpha = 0.05,
             null_color = "#A40122",
-            es_plot_width = "600",
+            es_plot_width = "300",
             es_plot_height = "400",
-            sp_plot_width = "800",
+            sp_plot_width = "650",
             sp_plot_height = "650",
-            ymin = "auto",
-            ymax = "auto",
+            ymin = "-1",
+            ymax = "1",
             ybreaks = "auto",
             ylab = "auto",
             xlab = "auto",
@@ -37,6 +37,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             axis.title.y = "15",
             axis.text.x = "14",
             axis.title.x = "15",
+            error_layout = "halfeye",
             sp_ymin = "auto",
             sp_ymax = "auto",
             sp_ybreaks = "auto",
@@ -49,21 +50,36 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             sp_axis.title.y = "15",
             sp_axis.text.x = "14",
             sp_axis.title.x = "15",
-            shape_summary_reference = "circle filled",
-            color_summary_reference = "#008DF9",
-            fill_summary_reference = "#008DF9",
-            size_summary_reference = "4",
-            alpha_summary_reference = "1",
-            linetype_summary_reference = "solid",
+            shape_summary = "circle filled",
+            color_summary = "#008DF9",
+            fill_summary = "#008DF9",
+            size_summary = "4",
+            alpha_summary = "1",
+            linetype_summary = "solid",
+            color_interval = "black",
+            size_interval = "3",
+            alpha_interval = "1",
+            alpha_error = "1",
+            fill_error = "gray75",
             sp_shape_raw_reference = "circle filled",
             sp_color_raw_reference = "#008DF9",
-            sp_fill_raw_reference = "NA",
-            sp_size_raw_reference = "3",
-            sp_alpha_raw_reference = "1",
+            sp_fill_raw_reference = "#008DF9",
+            sp_size_raw_reference = "4",
+            sp_alpha_raw_reference = ".25",
             sp_linetype_summary_reference = "solid",
             sp_color_summary_reference = "#008DF9",
-            sp_size_summary_reference = "2",
-            sp_alpha_summary_reference = ".25", ...) {
+            sp_size_summary_reference = "3",
+            sp_alpha_summary_reference = ".25",
+            sp_linetype_PI_reference = "dotted",
+            sp_color_PI_reference = "#E20134",
+            sp_size_PI_reference = "2",
+            sp_alpha_PI_reference = "1",
+            sp_linetype_residual_reference = "solid",
+            sp_color_residual_reference = "#E20134",
+            sp_size_residual_reference = "1",
+            sp_alpha_residual_reference = "1",
+            sp_prediction_label = "5",
+            sp_prediction_color = "#E20134", ...) {
 
             super$initialize(
                 package="esci4",
@@ -189,7 +205,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="600")
+                default="300")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
@@ -197,7 +213,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_plot_width <- jmvcore::OptionString$new(
                 "sp_plot_width",
                 sp_plot_width,
-                default="800")
+                default="650")
             private$..sp_plot_height <- jmvcore::OptionString$new(
                 "sp_plot_height",
                 sp_plot_height,
@@ -205,11 +221,11 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..ymin <- jmvcore::OptionString$new(
                 "ymin",
                 ymin,
-                default="auto")
+                default="-1")
             private$..ymax <- jmvcore::OptionString$new(
                 "ymax",
                 ymax,
-                default="auto")
+                default="1")
             private$..ybreaks <- jmvcore::OptionString$new(
                 "ybreaks",
                 ybreaks,
@@ -238,6 +254,14 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 "axis.title.x",
                 axis.title.x,
                 default="15")
+            private$..error_layout <- jmvcore::OptionList$new(
+                "error_layout",
+                error_layout,
+                default="halfeye",
+                options=list(
+                    "halfeye",
+                    "eye",
+                    "none"))
             private$..sp_ymin <- jmvcore::OptionString$new(
                 "sp_ymin",
                 sp_ymin,
@@ -286,18 +310,18 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 "sp_axis.title.x",
                 sp_axis.title.x,
                 default="15")
-            private$..shape_summary_reference <- jmvcore::OptionList$new(
-                "shape_summary_reference",
-                shape_summary_reference,
+            private$..shape_summary <- jmvcore::OptionList$new(
+                "shape_summary",
+                shape_summary,
                 default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
                     "triangle filled",
                     "diamond filled"))
-            private$..color_summary_reference <- jmvcore::OptionList$new(
-                "color_summary_reference",
-                color_summary_reference,
+            private$..color_summary <- jmvcore::OptionList$new(
+                "color_summary",
+                color_summary,
                 default="#008DF9",
                 options=list(
                     "black",
@@ -337,9 +361,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..fill_summary_reference <- jmvcore::OptionList$new(
-                "fill_summary_reference",
-                fill_summary_reference,
+            private$..fill_summary <- jmvcore::OptionList$new(
+                "fill_summary",
+                fill_summary,
                 default="#008DF9",
                 options=list(
                     "black",
@@ -379,9 +403,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..size_summary_reference <- jmvcore::OptionList$new(
-                "size_summary_reference",
-                size_summary_reference,
+            private$..size_summary <- jmvcore::OptionList$new(
+                "size_summary",
+                size_summary,
                 default="4",
                 options=list(
                     "1",
@@ -390,9 +414,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "4",
                     "5",
                     "6"))
-            private$..alpha_summary_reference <- jmvcore::OptionList$new(
-                "alpha_summary_reference",
-                alpha_summary_reference,
+            private$..alpha_summary <- jmvcore::OptionList$new(
+                "alpha_summary",
+                alpha_summary,
                 default="1",
                 options=list(
                     "1",
@@ -400,9 +424,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".5",
                     ".25",
                     "0"))
-            private$..linetype_summary_reference <- jmvcore::OptionList$new(
-                "linetype_summary_reference",
-                linetype_summary_reference,
+            private$..linetype_summary <- jmvcore::OptionList$new(
+                "linetype_summary",
+                linetype_summary,
                 default="solid",
                 options=list(
                     "solid",
@@ -410,6 +434,123 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "dotdash",
                     "dashed",
                     "blank"))
+            private$..color_interval <- jmvcore::OptionList$new(
+                "color_interval",
+                color_interval,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..size_interval <- jmvcore::OptionList$new(
+                "size_interval",
+                size_interval,
+                default="3",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..alpha_interval <- jmvcore::OptionList$new(
+                "alpha_interval",
+                alpha_interval,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_error <- jmvcore::OptionList$new(
+                "alpha_error",
+                alpha_error,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..fill_error <- jmvcore::OptionList$new(
+                "fill_error",
+                fill_error,
+                default="gray75",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
             private$..sp_shape_raw_reference <- jmvcore::OptionList$new(
                 "sp_shape_raw_reference",
                 sp_shape_raw_reference,
@@ -464,7 +605,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_fill_raw_reference <- jmvcore::OptionList$new(
                 "sp_fill_raw_reference",
                 sp_fill_raw_reference,
-                default="NA",
+                default="#008DF9",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -506,7 +647,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_size_raw_reference <- jmvcore::OptionList$new(
                 "sp_size_raw_reference",
                 sp_size_raw_reference,
-                default="3",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -517,7 +658,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_alpha_raw_reference <- jmvcore::OptionList$new(
                 "sp_alpha_raw_reference",
                 sp_alpha_raw_reference,
-                default="1",
+                default=".25",
                 options=list(
                     "1",
                     ".75",
@@ -579,7 +720,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_size_summary_reference <- jmvcore::OptionList$new(
                 "sp_size_summary_reference",
                 sp_size_summary_reference,
-                default="2",
+                default="3",
                 options=list(
                     "1",
                     "2",
@@ -597,6 +738,205 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".5",
                     ".25",
                     "0"))
+            private$..sp_linetype_PI_reference <- jmvcore::OptionList$new(
+                "sp_linetype_PI_reference",
+                sp_linetype_PI_reference,
+                default="dotted",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_color_PI_reference <- jmvcore::OptionList$new(
+                "sp_color_PI_reference",
+                sp_color_PI_reference,
+                default="#E20134",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_size_PI_reference <- jmvcore::OptionList$new(
+                "sp_size_PI_reference",
+                sp_size_PI_reference,
+                default="2",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_alpha_PI_reference <- jmvcore::OptionList$new(
+                "sp_alpha_PI_reference",
+                sp_alpha_PI_reference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..sp_linetype_residual_reference <- jmvcore::OptionList$new(
+                "sp_linetype_residual_reference",
+                sp_linetype_residual_reference,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_color_residual_reference <- jmvcore::OptionList$new(
+                "sp_color_residual_reference",
+                sp_color_residual_reference,
+                default="#E20134",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_size_residual_reference <- jmvcore::OptionList$new(
+                "sp_size_residual_reference",
+                sp_size_residual_reference,
+                default="1",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_alpha_residual_reference <- jmvcore::OptionList$new(
+                "sp_alpha_residual_reference",
+                sp_alpha_residual_reference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..sp_prediction_label <- jmvcore::OptionList$new(
+                "sp_prediction_label",
+                sp_prediction_label,
+                default="5",
+                options=list(
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
+            private$..sp_prediction_color <- jmvcore::OptionList$new(
+                "sp_prediction_color",
+                sp_prediction_color,
+                default="#E20134",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
 
             self$.addOption(private$..switch)
             self$.addOption(private$..x)
@@ -629,6 +969,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..axis.title.y)
             self$.addOption(private$..axis.text.x)
             self$.addOption(private$..axis.title.x)
+            self$.addOption(private$..error_layout)
             self$.addOption(private$..sp_ymin)
             self$.addOption(private$..sp_ymax)
             self$.addOption(private$..sp_ybreaks)
@@ -641,12 +982,17 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..sp_axis.title.y)
             self$.addOption(private$..sp_axis.text.x)
             self$.addOption(private$..sp_axis.title.x)
-            self$.addOption(private$..shape_summary_reference)
-            self$.addOption(private$..color_summary_reference)
-            self$.addOption(private$..fill_summary_reference)
-            self$.addOption(private$..size_summary_reference)
-            self$.addOption(private$..alpha_summary_reference)
-            self$.addOption(private$..linetype_summary_reference)
+            self$.addOption(private$..shape_summary)
+            self$.addOption(private$..color_summary)
+            self$.addOption(private$..fill_summary)
+            self$.addOption(private$..size_summary)
+            self$.addOption(private$..alpha_summary)
+            self$.addOption(private$..linetype_summary)
+            self$.addOption(private$..color_interval)
+            self$.addOption(private$..size_interval)
+            self$.addOption(private$..alpha_interval)
+            self$.addOption(private$..alpha_error)
+            self$.addOption(private$..fill_error)
             self$.addOption(private$..sp_shape_raw_reference)
             self$.addOption(private$..sp_color_raw_reference)
             self$.addOption(private$..sp_fill_raw_reference)
@@ -656,6 +1002,16 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..sp_color_summary_reference)
             self$.addOption(private$..sp_size_summary_reference)
             self$.addOption(private$..sp_alpha_summary_reference)
+            self$.addOption(private$..sp_linetype_PI_reference)
+            self$.addOption(private$..sp_color_PI_reference)
+            self$.addOption(private$..sp_size_PI_reference)
+            self$.addOption(private$..sp_alpha_PI_reference)
+            self$.addOption(private$..sp_linetype_residual_reference)
+            self$.addOption(private$..sp_color_residual_reference)
+            self$.addOption(private$..sp_size_residual_reference)
+            self$.addOption(private$..sp_alpha_residual_reference)
+            self$.addOption(private$..sp_prediction_label)
+            self$.addOption(private$..sp_prediction_color)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -689,6 +1045,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         axis.title.y = function() private$..axis.title.y$value,
         axis.text.x = function() private$..axis.text.x$value,
         axis.title.x = function() private$..axis.title.x$value,
+        error_layout = function() private$..error_layout$value,
         sp_ymin = function() private$..sp_ymin$value,
         sp_ymax = function() private$..sp_ymax$value,
         sp_ybreaks = function() private$..sp_ybreaks$value,
@@ -701,12 +1058,17 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         sp_axis.title.y = function() private$..sp_axis.title.y$value,
         sp_axis.text.x = function() private$..sp_axis.text.x$value,
         sp_axis.title.x = function() private$..sp_axis.title.x$value,
-        shape_summary_reference = function() private$..shape_summary_reference$value,
-        color_summary_reference = function() private$..color_summary_reference$value,
-        fill_summary_reference = function() private$..fill_summary_reference$value,
-        size_summary_reference = function() private$..size_summary_reference$value,
-        alpha_summary_reference = function() private$..alpha_summary_reference$value,
-        linetype_summary_reference = function() private$..linetype_summary_reference$value,
+        shape_summary = function() private$..shape_summary$value,
+        color_summary = function() private$..color_summary$value,
+        fill_summary = function() private$..fill_summary$value,
+        size_summary = function() private$..size_summary$value,
+        alpha_summary = function() private$..alpha_summary$value,
+        linetype_summary = function() private$..linetype_summary$value,
+        color_interval = function() private$..color_interval$value,
+        size_interval = function() private$..size_interval$value,
+        alpha_interval = function() private$..alpha_interval$value,
+        alpha_error = function() private$..alpha_error$value,
+        fill_error = function() private$..fill_error$value,
         sp_shape_raw_reference = function() private$..sp_shape_raw_reference$value,
         sp_color_raw_reference = function() private$..sp_color_raw_reference$value,
         sp_fill_raw_reference = function() private$..sp_fill_raw_reference$value,
@@ -715,7 +1077,17 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         sp_linetype_summary_reference = function() private$..sp_linetype_summary_reference$value,
         sp_color_summary_reference = function() private$..sp_color_summary_reference$value,
         sp_size_summary_reference = function() private$..sp_size_summary_reference$value,
-        sp_alpha_summary_reference = function() private$..sp_alpha_summary_reference$value),
+        sp_alpha_summary_reference = function() private$..sp_alpha_summary_reference$value,
+        sp_linetype_PI_reference = function() private$..sp_linetype_PI_reference$value,
+        sp_color_PI_reference = function() private$..sp_color_PI_reference$value,
+        sp_size_PI_reference = function() private$..sp_size_PI_reference$value,
+        sp_alpha_PI_reference = function() private$..sp_alpha_PI_reference$value,
+        sp_linetype_residual_reference = function() private$..sp_linetype_residual_reference$value,
+        sp_color_residual_reference = function() private$..sp_color_residual_reference$value,
+        sp_size_residual_reference = function() private$..sp_size_residual_reference$value,
+        sp_alpha_residual_reference = function() private$..sp_alpha_residual_reference$value,
+        sp_prediction_label = function() private$..sp_prediction_label$value,
+        sp_prediction_color = function() private$..sp_prediction_color$value),
     private = list(
         ..switch = NA,
         ..x = NA,
@@ -748,6 +1120,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..axis.title.y = NA,
         ..axis.text.x = NA,
         ..axis.title.x = NA,
+        ..error_layout = NA,
         ..sp_ymin = NA,
         ..sp_ymax = NA,
         ..sp_ybreaks = NA,
@@ -760,12 +1133,17 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..sp_axis.title.y = NA,
         ..sp_axis.text.x = NA,
         ..sp_axis.title.x = NA,
-        ..shape_summary_reference = NA,
-        ..color_summary_reference = NA,
-        ..fill_summary_reference = NA,
-        ..size_summary_reference = NA,
-        ..alpha_summary_reference = NA,
-        ..linetype_summary_reference = NA,
+        ..shape_summary = NA,
+        ..color_summary = NA,
+        ..fill_summary = NA,
+        ..size_summary = NA,
+        ..alpha_summary = NA,
+        ..linetype_summary = NA,
+        ..color_interval = NA,
+        ..size_interval = NA,
+        ..alpha_interval = NA,
+        ..alpha_error = NA,
+        ..fill_error = NA,
         ..sp_shape_raw_reference = NA,
         ..sp_color_raw_reference = NA,
         ..sp_fill_raw_reference = NA,
@@ -774,7 +1152,17 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..sp_linetype_summary_reference = NA,
         ..sp_color_summary_reference = NA,
         ..sp_size_summary_reference = NA,
-        ..sp_alpha_summary_reference = NA)
+        ..sp_alpha_summary_reference = NA,
+        ..sp_linetype_PI_reference = NA,
+        ..sp_color_PI_reference = NA,
+        ..sp_size_PI_reference = NA,
+        ..sp_alpha_PI_reference = NA,
+        ..sp_linetype_residual_reference = NA,
+        ..sp_color_residual_reference = NA,
+        ..sp_size_residual_reference = NA,
+        ..sp_alpha_residual_reference = NA,
+        ..sp_prediction_label = NA,
+        ..sp_prediction_color = NA)
 )
 
 jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -787,10 +1175,10 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         es_r = function() private$.items[["es_r"]],
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        estimation_plots = function() private$.items[["estimation_plots"]],
         scatter_plot_warnings = function() private$.items[["scatter_plot_warnings"]],
-        scatter_plots = function() private$.items[["scatter_plots"]]),
+        scatter_plots = function() private$.items[["scatter_plots"]],
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -928,9 +1316,8 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `visible`="(show_details)"),
                     list(
                         `name`="n", 
-                        `title`="<i>N</i>", 
-                        `type`="integer", 
-                        `visible`="(show_details)"),
+                        `title`="<i>N</i><sub>pairs</sub>", 
+                        `type`="integer"),
                     list(
                         `name`="df", 
                         `title`="<i>df</i>", 
@@ -1016,19 +1403,6 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `type`="text"))))
             self$add(jmvcore::Html$new(
                 options=options,
-                name="estimation_plot_warnings",
-                title="Estimation Figure Warnings",
-                visible=TRUE))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="estimation_plots",
-                title="Estimation Figure",
-                width=600,
-                height=400,
-                requiresData=TRUE,
-                renderFun=".estimation_plots"))
-            self$add(jmvcore::Html$new(
-                options=options,
                 name="scatter_plot_warnings",
                 title="Scatter Plot Warnings",
                 visible="(switch == 'from_raw')"))
@@ -1036,11 +1410,24 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 options=options,
                 name="scatter_plots",
                 title="Scatter Plot",
-                width=800,
+                width=650,
                 height=650,
                 requiresData=TRUE,
                 renderFun=".scatter_plots",
-                visible="(switch == 'from_raw')"))}))
+                visible="(switch == 'from_raw')"))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Estimation Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="estimation_plots",
+                title="Estimation Figure",
+                width=300,
+                height=400,
+                requiresData=TRUE,
+                renderFun=".estimation_plots"))}))
 
 jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovicorrelationBase",
@@ -1097,6 +1484,7 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param axis.title.y .
 #' @param axis.text.x .
 #' @param axis.title.x .
+#' @param error_layout .
 #' @param sp_ymin .
 #' @param sp_ymax .
 #' @param sp_ybreaks .
@@ -1109,12 +1497,17 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param sp_axis.title.y .
 #' @param sp_axis.text.x .
 #' @param sp_axis.title.x .
-#' @param shape_summary_reference .
-#' @param color_summary_reference .
-#' @param fill_summary_reference .
-#' @param size_summary_reference .
-#' @param alpha_summary_reference .
-#' @param linetype_summary_reference .
+#' @param shape_summary .
+#' @param color_summary .
+#' @param fill_summary .
+#' @param size_summary .
+#' @param alpha_summary .
+#' @param linetype_summary .
+#' @param color_interval .
+#' @param size_interval .
+#' @param alpha_interval .
+#' @param alpha_error .
+#' @param fill_error .
 #' @param sp_shape_raw_reference .
 #' @param sp_color_raw_reference .
 #' @param sp_fill_raw_reference .
@@ -1124,6 +1517,16 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param sp_color_summary_reference .
 #' @param sp_size_summary_reference .
 #' @param sp_alpha_summary_reference .
+#' @param sp_linetype_PI_reference .
+#' @param sp_color_PI_reference .
+#' @param sp_size_PI_reference .
+#' @param sp_alpha_PI_reference .
+#' @param sp_linetype_residual_reference .
+#' @param sp_color_residual_reference .
+#' @param sp_size_residual_reference .
+#' @param sp_alpha_residual_reference .
+#' @param sp_prediction_label .
+#' @param sp_prediction_color .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
@@ -1132,10 +1535,10 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #'   \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$scatter_plots} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -1165,12 +1568,12 @@ jamovicorrelation <- function(
     null_boundary = "0",
     alpha = 0.05,
     null_color = "#A40122",
-    es_plot_width = "600",
+    es_plot_width = "300",
     es_plot_height = "400",
-    sp_plot_width = "800",
+    sp_plot_width = "650",
     sp_plot_height = "650",
-    ymin = "auto",
-    ymax = "auto",
+    ymin = "-1",
+    ymax = "1",
     ybreaks = "auto",
     ylab = "auto",
     xlab = "auto",
@@ -1178,6 +1581,7 @@ jamovicorrelation <- function(
     axis.title.y = "15",
     axis.text.x = "14",
     axis.title.x = "15",
+    error_layout = "halfeye",
     sp_ymin = "auto",
     sp_ymax = "auto",
     sp_ybreaks = "auto",
@@ -1190,21 +1594,36 @@ jamovicorrelation <- function(
     sp_axis.title.y = "15",
     sp_axis.text.x = "14",
     sp_axis.title.x = "15",
-    shape_summary_reference = "circle filled",
-    color_summary_reference = "#008DF9",
-    fill_summary_reference = "#008DF9",
-    size_summary_reference = "4",
-    alpha_summary_reference = "1",
-    linetype_summary_reference = "solid",
+    shape_summary = "circle filled",
+    color_summary = "#008DF9",
+    fill_summary = "#008DF9",
+    size_summary = "4",
+    alpha_summary = "1",
+    linetype_summary = "solid",
+    color_interval = "black",
+    size_interval = "3",
+    alpha_interval = "1",
+    alpha_error = "1",
+    fill_error = "gray75",
     sp_shape_raw_reference = "circle filled",
     sp_color_raw_reference = "#008DF9",
-    sp_fill_raw_reference = "NA",
-    sp_size_raw_reference = "3",
-    sp_alpha_raw_reference = "1",
+    sp_fill_raw_reference = "#008DF9",
+    sp_size_raw_reference = "4",
+    sp_alpha_raw_reference = ".25",
     sp_linetype_summary_reference = "solid",
     sp_color_summary_reference = "#008DF9",
-    sp_size_summary_reference = "2",
-    sp_alpha_summary_reference = ".25") {
+    sp_size_summary_reference = "3",
+    sp_alpha_summary_reference = ".25",
+    sp_linetype_PI_reference = "dotted",
+    sp_color_PI_reference = "#E20134",
+    sp_size_PI_reference = "2",
+    sp_alpha_PI_reference = "1",
+    sp_linetype_residual_reference = "solid",
+    sp_color_residual_reference = "#E20134",
+    sp_size_residual_reference = "1",
+    sp_alpha_residual_reference = "1",
+    sp_prediction_label = "5",
+    sp_prediction_color = "#E20134") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovicorrelation requires jmvcore to be installed (restart may be required)")
@@ -1250,6 +1669,7 @@ jamovicorrelation <- function(
         axis.title.y = axis.title.y,
         axis.text.x = axis.text.x,
         axis.title.x = axis.title.x,
+        error_layout = error_layout,
         sp_ymin = sp_ymin,
         sp_ymax = sp_ymax,
         sp_ybreaks = sp_ybreaks,
@@ -1262,12 +1682,17 @@ jamovicorrelation <- function(
         sp_axis.title.y = sp_axis.title.y,
         sp_axis.text.x = sp_axis.text.x,
         sp_axis.title.x = sp_axis.title.x,
-        shape_summary_reference = shape_summary_reference,
-        color_summary_reference = color_summary_reference,
-        fill_summary_reference = fill_summary_reference,
-        size_summary_reference = size_summary_reference,
-        alpha_summary_reference = alpha_summary_reference,
-        linetype_summary_reference = linetype_summary_reference,
+        shape_summary = shape_summary,
+        color_summary = color_summary,
+        fill_summary = fill_summary,
+        size_summary = size_summary,
+        alpha_summary = alpha_summary,
+        linetype_summary = linetype_summary,
+        color_interval = color_interval,
+        size_interval = size_interval,
+        alpha_interval = alpha_interval,
+        alpha_error = alpha_error,
+        fill_error = fill_error,
         sp_shape_raw_reference = sp_shape_raw_reference,
         sp_color_raw_reference = sp_color_raw_reference,
         sp_fill_raw_reference = sp_fill_raw_reference,
@@ -1276,7 +1701,17 @@ jamovicorrelation <- function(
         sp_linetype_summary_reference = sp_linetype_summary_reference,
         sp_color_summary_reference = sp_color_summary_reference,
         sp_size_summary_reference = sp_size_summary_reference,
-        sp_alpha_summary_reference = sp_alpha_summary_reference)
+        sp_alpha_summary_reference = sp_alpha_summary_reference,
+        sp_linetype_PI_reference = sp_linetype_PI_reference,
+        sp_color_PI_reference = sp_color_PI_reference,
+        sp_size_PI_reference = sp_size_PI_reference,
+        sp_alpha_PI_reference = sp_alpha_PI_reference,
+        sp_linetype_residual_reference = sp_linetype_residual_reference,
+        sp_color_residual_reference = sp_color_residual_reference,
+        sp_size_residual_reference = sp_size_residual_reference,
+        sp_alpha_residual_reference = sp_alpha_residual_reference,
+        sp_prediction_label = sp_prediction_label,
+        sp_prediction_color = sp_prediction_color)
 
     analysis <- jamovicorrelationClass$new(
         options = options,

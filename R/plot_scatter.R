@@ -21,6 +21,8 @@ plot_scatter <- function(
     stop(err_string)
   }
 
+  warnings <- NULL
+
   plotting_groups <- !is.null(estimate$overview$grouping_variable_name)
   if (plotting_groups) {
     if (!is.null(predict_from_x)) {
@@ -44,18 +46,22 @@ plot_scatter <- function(
 
     if(!is.numeric(predict_from_x)) {
       predict_from_x <- NULL
-      warning_string <- stringr::str_interp("'predict_from_x' ignored because it is not numeric, instead it is = ${class(predict_from_x)}.")
+      warning_string <- stringr::str_interp("'predict_from_x' ignored because it is not numeric, instead it is ${class(predict_from_x)}.")
+      warnings <- c(warnings, warning_string)
       warning(warning_string)
     } else {
       if(predict_from_x > max(rdata$x, na.rm = TRUE)) {
-        predict_from_x <- NULL
-        warning_string <- stringr::str_interp("'predict_from_x' ignored because it is out of range.  predict_from_x = ${predict_from_x}, but highest y value is ${max(rdata$x, na.rm = TRUE)}.")
+        warning_string <- stringr::str_interp("'predict_from_x' ignored because it is out of range.  predict_from_x = ${predict_from_x}, but highest y value is $[.2f]{max(rdata$x, na.rm = TRUE)}.")
+        warnings <- c(warnings, warning_string)
         warning(warning_string)
+        predict_from_x <- NULL
       } else {
         if(predict_from_x < min(rdata$x, na.rm = TRUE)) {
-          predict_from_x <- NULL
-          warning_string <- stringr::str_interp("'predict_from_x' ignored because it is out of range.  predict_from_x = ${predict_from_x}, but lowest x value is ${min(rdata$x, na.rm = TRUE)}.")
+          warning_string <- stringr::str_interp("'predict_from_x' ignored because it is out of range.  predict_from_x = ${predict_from_x}, but lowest x value is $[.2f]{min(rdata$x, na.rm = TRUE)}.")
+          warnings <- c(warnings, warning_string)
           warning(warning_string)
+          predict_from_x <- NULL
+
         }
       }
     }
@@ -262,24 +268,24 @@ plot_scatter <- function(
     nxrange <- nx_max - nx_min
 
     ypr <- (predict_from_x * myslope) + myintercept
-    yplabel <- paste("Y' = ", format(ypr, digits = 2))
-    myplot <- myplot + annotate("text", x = nx_min - 0.1*nxrange, y = ypr, label = yplabel, color = "red")
+    yplabel <- paste("        Y' = ", format(ypr, digits = 2))
+    myplot <- myplot + ggplot2::annotate("text", x = nx_min - 0.2*nxrange, y = ypr, label = yplabel, color = "red")
     myplot <- esci_plot_layers(myplot, "prediction_y_label")
 
     xlabel <- paste("X =", predict_from_x)
-    y_half <- ny_min - (0.1* (ny_max - ny_min))
-    myplot <- myplot + annotate("text", x = predict_from_x, y = y_half, label = xlabel, color = "red")
+    y_half <- ny_min - (0.2* (ny_max - ny_min))
+    myplot <- myplot + ggplot2::annotate("text", x = predict_from_x, y = y_half, label = xlabel, color = "red")
     myplot <- esci_plot_layers(myplot, "prediction_x_label")
 
     pi <- predict(estimate$properties$lm, interval = "prediction", newdata = data.frame(x = predict_from_x), level = estimate$properties$conf_level)
-    xlab <- paste(xlab, "\nAt X =", predict_from_x, ": Y' =", format(ypr, digits = 2), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=2), ",", format(pi[1, "upr"], digits=2), "]")
-    myplot <- myplot + geom_segment(alpha = 0.1, size = 1, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
+    xlab <- paste(xlab, "\n<br>At *X* =", predict_from_x, ": *Y*' =", format(ypr, digits = 2), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=2), ",", format(pi[1, "upr"], digits=2), "]")
+    myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
     myplot <- esci_plot_layers(myplot, "prediction_prediction_interval")
-    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min, yend = ypr))
+    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min, yend = ypr), size = 2)
     myplot <- esci_plot_layers(myplot, "prediction_vertical_line")
-    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min, xend = predict_from_x, y = ypr, yend = ypr))
+    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min, xend = predict_from_x, y = ypr, yend = ypr), size = 2)
     myplot <- esci_plot_layers(myplot, "prediction_horizontal_line")
-    myplot <- myplot + annotate("point", x = predict_from_x, y = ypr, colour = "red", shape = 23, size=3, fill="white")
+    myplot <- myplot + annotate("point", x = predict_from_x, y = ypr, colour = "red", shape = 23, size=4, fill="white")
     myplot <- esci_plot_layers(myplot, "prediction_point")
   }
 
@@ -326,6 +332,7 @@ plot_scatter <- function(
     legend.text = ggtext::element_markdown()
   )
 
+  myplot$warnings <- warnings
 
   return(myplot)
 }

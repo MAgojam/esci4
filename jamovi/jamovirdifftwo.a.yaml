@@ -1244,7 +1244,7 @@ options:
 
     - name: sp_fill_raw_reference
       type: List
-      default: 'NA'
+      default: '#008DF9'
       options:
          - name: 'black'
            title: 'Black'
@@ -1323,7 +1323,7 @@ options:
 
     - name: sp_fill_raw_comparison
       type: List
-      default: 'NA'
+      default: '#009F81'
       options:
          - name: 'black'
            title: 'Black'
@@ -1481,7 +1481,7 @@ options:
 
     - name: sp_size_raw_reference
       type: List
-      default: '3'
+      default: '4'
       options:
         - name: '1'
           title: '1'
@@ -1498,7 +1498,7 @@ options:
 
     - name: sp_size_raw_comparison
       type: List
-      default: '3'
+      default: '4'
       options:
         - name: '1'
           title: '1'
@@ -1532,7 +1532,7 @@ options:
 
     - name: sp_alpha_raw_reference
       type: List
-      default: '1'
+      default: '.25'
       options:
         - name: '1'
           title: '0'
@@ -1547,7 +1547,7 @@ options:
 
     - name: sp_alpha_raw_comparison
       type: List
-      default: '1'
+      default: '.25'
       options:
         - name: '1'
           title: '0'
@@ -1562,7 +1562,7 @@ options:
 
     - name: sp_alpha_raw_unused
       type: List
-      default: '1'
+      default: '.25'
       options:
         - name: '1'
           title: '0'

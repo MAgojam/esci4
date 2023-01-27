@@ -76,15 +76,15 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             sp_color_raw_reference = "#008DF9",
             sp_color_raw_comparison = "#009F81",
             sp_color_raw_unused = "gray75",
-            sp_fill_raw_reference = "NA",
-            sp_fill_raw_comparison = "NA",
+            sp_fill_raw_reference = "#008DF9",
+            sp_fill_raw_comparison = "#009F81",
             sp_fill_raw_unused = "NA",
-            sp_size_raw_reference = "3",
-            sp_size_raw_comparison = "3",
+            sp_size_raw_reference = "4",
+            sp_size_raw_comparison = "4",
             sp_size_raw_unused = "2",
-            sp_alpha_raw_reference = "1",
-            sp_alpha_raw_comparison = "1",
-            sp_alpha_raw_unused = "1",
+            sp_alpha_raw_reference = ".25",
+            sp_alpha_raw_comparison = ".25",
+            sp_alpha_raw_unused = ".25",
             sp_linetype_summary_reference = "solid",
             sp_linetype_summary_comparison = "solid",
             sp_color_summary_reference = "#008DF9",
@@ -856,7 +856,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_fill_raw_reference <- jmvcore::OptionList$new(
                 "sp_fill_raw_reference",
                 sp_fill_raw_reference,
-                default="NA",
+                default="#008DF9",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -898,7 +898,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_fill_raw_comparison <- jmvcore::OptionList$new(
                 "sp_fill_raw_comparison",
                 sp_fill_raw_comparison,
-                default="NA",
+                default="#009F81",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -982,7 +982,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_reference <- jmvcore::OptionList$new(
                 "sp_size_raw_reference",
                 sp_size_raw_reference,
-                default="3",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -993,7 +993,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_comparison <- jmvcore::OptionList$new(
                 "sp_size_raw_comparison",
                 sp_size_raw_comparison,
-                default="3",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -1015,7 +1015,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_alpha_raw_reference <- jmvcore::OptionList$new(
                 "sp_alpha_raw_reference",
                 sp_alpha_raw_reference,
-                default="1",
+                default=".25",
                 options=list(
                     "1",
                     ".75",
@@ -1025,7 +1025,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_alpha_raw_comparison <- jmvcore::OptionList$new(
                 "sp_alpha_raw_comparison",
                 sp_alpha_raw_comparison,
-                default="1",
+                default=".25",
                 options=list(
                     "1",
                     ".75",
@@ -1035,7 +1035,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_alpha_raw_unused <- jmvcore::OptionList$new(
                 "sp_alpha_raw_unused",
                 sp_alpha_raw_unused,
-                default="1",
+                default=".25",
                 options=list(
                     "1",
                     ".75",
@@ -2015,15 +2015,15 @@ jamovirdifftwo <- function(
     sp_color_raw_reference = "#008DF9",
     sp_color_raw_comparison = "#009F81",
     sp_color_raw_unused = "gray75",
-    sp_fill_raw_reference = "NA",
-    sp_fill_raw_comparison = "NA",
+    sp_fill_raw_reference = "#008DF9",
+    sp_fill_raw_comparison = "#009F81",
     sp_fill_raw_unused = "NA",
-    sp_size_raw_reference = "3",
-    sp_size_raw_comparison = "3",
+    sp_size_raw_reference = "4",
+    sp_size_raw_comparison = "4",
     sp_size_raw_unused = "2",
-    sp_alpha_raw_reference = "1",
-    sp_alpha_raw_comparison = "1",
-    sp_alpha_raw_unused = "1",
+    sp_alpha_raw_reference = ".25",
+    sp_alpha_raw_comparison = ".25",
+    sp_alpha_raw_unused = ".25",
     sp_linetype_summary_reference = "solid",
     sp_linetype_summary_comparison = "solid",
     sp_color_summary_reference = "#008DF9",
