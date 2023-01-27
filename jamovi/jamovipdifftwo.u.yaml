@@ -266,7 +266,7 @@ children:
               column: 1
               row: 9
           - type: CollapseBox
-            label: Aesthetics
+            label: Esimtation Figure Aesthetics
             stretchFactor: 1
             collapsed: true
             children:

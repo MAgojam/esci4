@@ -52,49 +52,47 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             sp_axis.text.x = "14",
             sp_axis.title.x = "15",
             difference_axis_breaks = "auto",
-            shape_raw_reference = "circle filled",
-            shape_raw_comparison = "circle filled",
             shape_summary_reference = "circle filled",
             shape_summary_comparison = "circle filled",
             shape_summary_difference = "triangle filled",
-            color_raw_reference = "#008DF9",
-            color_raw_comparison = "#009F81",
             color_summary_reference = "#008DF9",
             color_summary_comparison = "#009F81",
             color_summary_difference = "black",
-            fill_raw_reference = "NA",
-            fill_raw_comparison = "NA",
             fill_summary_reference = "#008DF9",
             fill_summary_comparison = "#009F81",
             fill_summary_difference = "black",
-            size_raw_reference = "2",
-            size_raw_comparison = "2",
             size_summary_reference = "4",
             size_summary_comparison = "4",
             size_summary_difference = "4",
-            alpha_raw_reference = "1",
-            alpha_raw_comparison = "1",
             alpha_summary_reference = "1",
             alpha_summary_comparison = "1",
             alpha_summary_difference = "1",
             linetype_summary_reference = "solid",
             linetype_summary_comparison = "solid",
             linetype_summary_difference = "solid",
-            color_interval_reference = "black",
-            color_interval_comparison = "black",
-            color_interval_difference = "black",
-            size_interval_reference = "3",
-            size_interval_comparison = "3",
-            size_interval_difference = "3",
-            alpha_interval_reference = "1",
-            alpha_interval_comparison = "1",
-            alpha_interval_difference = "1",
-            alpha_error_reference = "1",
-            alpha_error_comparison = "1",
-            alpha_error_difference = "1",
-            fill_error_reference = "gray75",
-            fill_error_comparison = "gray75",
-            fill_error_difference = "gray75", ...) {
+            sp_shape_raw_reference = "circle filled",
+            sp_shape_raw_comparison = "circle filled",
+            sp_shape_raw_unused = "triangle filled",
+            sp_color_raw_reference = "#008DF9",
+            sp_color_raw_comparison = "#009F81",
+            sp_color_raw_unused = "black",
+            sp_fill_raw_reference = "#008DF9",
+            sp_fill_raw_comparison = "#009F81",
+            sp_fill_raw_unused = "black",
+            sp_size_raw_reference = "4",
+            sp_size_raw_comparison = "4",
+            sp_size_raw_unused = "4",
+            sp_alpha_raw_reference = "1",
+            sp_alpha_raw_comparison = "1",
+            sp_alpha_raw_unused = "1",
+            sp_linetype_summary_reference = "solid",
+            sp_linetype_summary_comparison = "solid",
+            sp_color_summary_reference = "#008DF9",
+            sp_color_summary_comparison = "#009F81",
+            sp_size_summary_reference = "4",
+            sp_size_summary_comparison = "4",
+            sp_alpha_summary_reference = "1",
+            sp_alpha_summary_comparison = "1", ...) {
 
             super$initialize(
                 package="esci4",
@@ -330,24 +328,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "difference_axis_breaks",
                 difference_axis_breaks,
                 default="auto")
-            private$..shape_raw_reference <- jmvcore::OptionList$new(
-                "shape_raw_reference",
-                shape_raw_reference,
-                default="circle filled",
-                options=list(
-                    "circle filled",
-                    "square filled",
-                    "triangle filled",
-                    "diamond filled"))
-            private$..shape_raw_comparison <- jmvcore::OptionList$new(
-                "shape_raw_comparison",
-                shape_raw_comparison,
-                default="circle filled",
-                options=list(
-                    "circle filled",
-                    "square filled",
-                    "triangle filled",
-                    "diamond filled"))
             private$..shape_summary_reference <- jmvcore::OptionList$new(
                 "shape_summary_reference",
                 shape_summary_reference,
@@ -375,90 +355,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "square filled",
                     "triangle filled",
                     "diamond filled"))
-            private$..color_raw_reference <- jmvcore::OptionList$new(
-                "color_raw_reference",
-                color_raw_reference,
-                default="#008DF9",
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
-            private$..color_raw_comparison <- jmvcore::OptionList$new(
-                "color_raw_comparison",
-                color_raw_comparison,
-                default="#009F81",
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
             private$..color_summary_reference <- jmvcore::OptionList$new(
                 "color_summary_reference",
                 color_summary_reference,
@@ -547,90 +443,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "color_summary_difference",
                 color_summary_difference,
                 default="black",
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
-            private$..fill_raw_reference <- jmvcore::OptionList$new(
-                "fill_raw_reference",
-                fill_raw_reference,
-                default="NA",
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
-            private$..fill_raw_comparison <- jmvcore::OptionList$new(
-                "fill_raw_comparison",
-                fill_raw_comparison,
-                default="NA",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -795,28 +607,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..size_raw_reference <- jmvcore::OptionList$new(
-                "size_raw_reference",
-                size_raw_reference,
-                default="2",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"))
-            private$..size_raw_comparison <- jmvcore::OptionList$new(
-                "size_raw_comparison",
-                size_raw_comparison,
-                default="2",
-                options=list(
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"))
             private$..size_summary_reference <- jmvcore::OptionList$new(
                 "size_summary_reference",
                 size_summary_reference,
@@ -850,26 +640,6 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "4",
                     "5",
                     "6"))
-            private$..alpha_raw_reference <- jmvcore::OptionList$new(
-                "alpha_raw_reference",
-                alpha_raw_reference,
-                default="1",
-                options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
-            private$..alpha_raw_comparison <- jmvcore::OptionList$new(
-                "alpha_raw_comparison",
-                alpha_raw_comparison,
-                default="1",
-                options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
             private$..alpha_summary_reference <- jmvcore::OptionList$new(
                 "alpha_summary_reference",
                 alpha_summary_reference,
@@ -930,9 +700,120 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "dotdash",
                     "dashed",
                     "blank"))
-            private$..color_interval_reference <- jmvcore::OptionList$new(
-                "color_interval_reference",
-                color_interval_reference,
+            private$..sp_shape_raw_reference <- jmvcore::OptionList$new(
+                "sp_shape_raw_reference",
+                sp_shape_raw_reference,
+                default="circle filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "triangle filled",
+                    "diamond filled"))
+            private$..sp_shape_raw_comparison <- jmvcore::OptionList$new(
+                "sp_shape_raw_comparison",
+                sp_shape_raw_comparison,
+                default="circle filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "triangle filled",
+                    "diamond filled"))
+            private$..sp_shape_raw_unused <- jmvcore::OptionList$new(
+                "sp_shape_raw_unused",
+                sp_shape_raw_unused,
+                default="triangle filled",
+                options=list(
+                    "circle filled",
+                    "square filled",
+                    "triangle filled",
+                    "diamond filled"))
+            private$..sp_color_raw_reference <- jmvcore::OptionList$new(
+                "sp_color_raw_reference",
+                sp_color_raw_reference,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_color_raw_comparison <- jmvcore::OptionList$new(
+                "sp_color_raw_comparison",
+                sp_color_raw_comparison,
+                default="#009F81",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_color_raw_unused <- jmvcore::OptionList$new(
+                "sp_color_raw_unused",
+                sp_color_raw_unused,
                 default="black",
                 options=list(
                     "black",
@@ -972,9 +853,93 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..color_interval_comparison <- jmvcore::OptionList$new(
-                "color_interval_comparison",
-                color_interval_comparison,
+            private$..sp_fill_raw_reference <- jmvcore::OptionList$new(
+                "sp_fill_raw_reference",
+                sp_fill_raw_reference,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_fill_raw_comparison <- jmvcore::OptionList$new(
+                "sp_fill_raw_comparison",
+                sp_fill_raw_comparison,
+                default="#009F81",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_fill_raw_unused <- jmvcore::OptionList$new(
+                "sp_fill_raw_unused",
+                sp_fill_raw_unused,
                 default="black",
                 options=list(
                     "black",
@@ -1014,90 +979,42 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..color_interval_difference <- jmvcore::OptionList$new(
-                "color_interval_difference",
-                color_interval_difference,
-                default="black",
-                options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
-            private$..size_interval_reference <- jmvcore::OptionList$new(
-                "size_interval_reference",
-                size_interval_reference,
-                default="3",
+            private$..sp_size_raw_reference <- jmvcore::OptionList$new(
+                "sp_size_raw_reference",
+                sp_size_raw_reference,
+                default="4",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6",
-                    "7",
-                    "8"))
-            private$..size_interval_comparison <- jmvcore::OptionList$new(
-                "size_interval_comparison",
-                size_interval_comparison,
-                default="3",
+                    "6"))
+            private$..sp_size_raw_comparison <- jmvcore::OptionList$new(
+                "sp_size_raw_comparison",
+                sp_size_raw_comparison,
+                default="4",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6",
-                    "7",
-                    "8"))
-            private$..size_interval_difference <- jmvcore::OptionList$new(
-                "size_interval_difference",
-                size_interval_difference,
-                default="3",
+                    "6"))
+            private$..sp_size_raw_unused <- jmvcore::OptionList$new(
+                "sp_size_raw_unused",
+                sp_size_raw_unused,
+                default="4",
                 options=list(
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
-                    "6",
-                    "7",
-                    "8"))
-            private$..alpha_interval_reference <- jmvcore::OptionList$new(
-                "alpha_interval_reference",
-                alpha_interval_reference,
+                    "6"))
+            private$..sp_alpha_raw_reference <- jmvcore::OptionList$new(
+                "sp_alpha_raw_reference",
+                sp_alpha_raw_reference,
                 default="1",
                 options=list(
                     "1",
@@ -1105,9 +1022,9 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".5",
                     ".25",
                     "0"))
-            private$..alpha_interval_comparison <- jmvcore::OptionList$new(
-                "alpha_interval_comparison",
-                alpha_interval_comparison,
+            private$..sp_alpha_raw_comparison <- jmvcore::OptionList$new(
+                "sp_alpha_raw_comparison",
+                sp_alpha_raw_comparison,
                 default="1",
                 options=list(
                     "1",
@@ -1115,9 +1032,9 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".5",
                     ".25",
                     "0"))
-            private$..alpha_interval_difference <- jmvcore::OptionList$new(
-                "alpha_interval_difference",
-                alpha_interval_difference,
+            private$..sp_alpha_raw_unused <- jmvcore::OptionList$new(
+                "sp_alpha_raw_unused",
+                sp_alpha_raw_unused,
                 default="1",
                 options=list(
                     "1",
@@ -1125,40 +1042,30 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".5",
                     ".25",
                     "0"))
-            private$..alpha_error_reference <- jmvcore::OptionList$new(
-                "alpha_error_reference",
-                alpha_error_reference,
-                default="1",
+            private$..sp_linetype_summary_reference <- jmvcore::OptionList$new(
+                "sp_linetype_summary_reference",
+                sp_linetype_summary_reference,
+                default="solid",
                 options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
-            private$..alpha_error_comparison <- jmvcore::OptionList$new(
-                "alpha_error_comparison",
-                alpha_error_comparison,
-                default="1",
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_linetype_summary_comparison <- jmvcore::OptionList$new(
+                "sp_linetype_summary_comparison",
+                sp_linetype_summary_comparison,
+                default="solid",
                 options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
-            private$..alpha_error_difference <- jmvcore::OptionList$new(
-                "alpha_error_difference",
-                alpha_error_difference,
-                default="1",
-                options=list(
-                    "1",
-                    ".75",
-                    ".5",
-                    ".25",
-                    "0"))
-            private$..fill_error_reference <- jmvcore::OptionList$new(
-                "fill_error_reference",
-                fill_error_reference,
-                default="gray75",
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_color_summary_reference <- jmvcore::OptionList$new(
+                "sp_color_summary_reference",
+                sp_color_summary_reference,
+                default="#008DF9",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -1197,10 +1104,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..fill_error_comparison <- jmvcore::OptionList$new(
-                "fill_error_comparison",
-                fill_error_comparison,
-                default="gray75",
+            private$..sp_color_summary_comparison <- jmvcore::OptionList$new(
+                "sp_color_summary_comparison",
+                sp_color_summary_comparison,
+                default="#009F81",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -1239,48 +1146,48 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..fill_error_difference <- jmvcore::OptionList$new(
-                "fill_error_difference",
-                fill_error_difference,
-                default="gray75",
+            private$..sp_size_summary_reference <- jmvcore::OptionList$new(
+                "sp_size_summary_reference",
+                sp_size_summary_reference,
+                default="4",
                 options=list(
-                    "black",
-                    "#00C2F9",
-                    "#008DF9",
-                    "#009F81",
-                    "#FF5AAF",
-                    "#9F0162",
-                    "#A40122",
-                    "#00FCCF",
-                    "#FF6E3A",
-                    "#FFB2FD",
-                    "#8400CD",
-                    "#E20134",
-                    "#FFC33B",
-                    "white",
-                    "NA",
-                    "NA",
-                    "gray0",
-                    "gray5",
-                    "gray10",
-                    "gray15",
-                    "gray20",
-                    "gray25",
-                    "gray30",
-                    "gray35",
-                    "gray40",
-                    "gray45",
-                    "gray50",
-                    "gray55",
-                    "gray60",
-                    "gray65",
-                    "gray70",
-                    "gray75",
-                    "gray80",
-                    "gray85",
-                    "gray90",
-                    "gray95",
-                    "gray100"))
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_size_summary_comparison <- jmvcore::OptionList$new(
+                "sp_size_summary_comparison",
+                sp_size_summary_comparison,
+                default="4",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_alpha_summary_reference <- jmvcore::OptionList$new(
+                "sp_alpha_summary_reference",
+                sp_alpha_summary_reference,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..sp_alpha_summary_comparison <- jmvcore::OptionList$new(
+                "sp_alpha_summary_comparison",
+                sp_alpha_summary_comparison,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
 
             self$.addOption(private$..switch)
             self$.addOption(private$..x)
@@ -1328,49 +1235,47 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..sp_axis.text.x)
             self$.addOption(private$..sp_axis.title.x)
             self$.addOption(private$..difference_axis_breaks)
-            self$.addOption(private$..shape_raw_reference)
-            self$.addOption(private$..shape_raw_comparison)
             self$.addOption(private$..shape_summary_reference)
             self$.addOption(private$..shape_summary_comparison)
             self$.addOption(private$..shape_summary_difference)
-            self$.addOption(private$..color_raw_reference)
-            self$.addOption(private$..color_raw_comparison)
             self$.addOption(private$..color_summary_reference)
             self$.addOption(private$..color_summary_comparison)
             self$.addOption(private$..color_summary_difference)
-            self$.addOption(private$..fill_raw_reference)
-            self$.addOption(private$..fill_raw_comparison)
             self$.addOption(private$..fill_summary_reference)
             self$.addOption(private$..fill_summary_comparison)
             self$.addOption(private$..fill_summary_difference)
-            self$.addOption(private$..size_raw_reference)
-            self$.addOption(private$..size_raw_comparison)
             self$.addOption(private$..size_summary_reference)
             self$.addOption(private$..size_summary_comparison)
             self$.addOption(private$..size_summary_difference)
-            self$.addOption(private$..alpha_raw_reference)
-            self$.addOption(private$..alpha_raw_comparison)
             self$.addOption(private$..alpha_summary_reference)
             self$.addOption(private$..alpha_summary_comparison)
             self$.addOption(private$..alpha_summary_difference)
             self$.addOption(private$..linetype_summary_reference)
             self$.addOption(private$..linetype_summary_comparison)
             self$.addOption(private$..linetype_summary_difference)
-            self$.addOption(private$..color_interval_reference)
-            self$.addOption(private$..color_interval_comparison)
-            self$.addOption(private$..color_interval_difference)
-            self$.addOption(private$..size_interval_reference)
-            self$.addOption(private$..size_interval_comparison)
-            self$.addOption(private$..size_interval_difference)
-            self$.addOption(private$..alpha_interval_reference)
-            self$.addOption(private$..alpha_interval_comparison)
-            self$.addOption(private$..alpha_interval_difference)
-            self$.addOption(private$..alpha_error_reference)
-            self$.addOption(private$..alpha_error_comparison)
-            self$.addOption(private$..alpha_error_difference)
-            self$.addOption(private$..fill_error_reference)
-            self$.addOption(private$..fill_error_comparison)
-            self$.addOption(private$..fill_error_difference)
+            self$.addOption(private$..sp_shape_raw_reference)
+            self$.addOption(private$..sp_shape_raw_comparison)
+            self$.addOption(private$..sp_shape_raw_unused)
+            self$.addOption(private$..sp_color_raw_reference)
+            self$.addOption(private$..sp_color_raw_comparison)
+            self$.addOption(private$..sp_color_raw_unused)
+            self$.addOption(private$..sp_fill_raw_reference)
+            self$.addOption(private$..sp_fill_raw_comparison)
+            self$.addOption(private$..sp_fill_raw_unused)
+            self$.addOption(private$..sp_size_raw_reference)
+            self$.addOption(private$..sp_size_raw_comparison)
+            self$.addOption(private$..sp_size_raw_unused)
+            self$.addOption(private$..sp_alpha_raw_reference)
+            self$.addOption(private$..sp_alpha_raw_comparison)
+            self$.addOption(private$..sp_alpha_raw_unused)
+            self$.addOption(private$..sp_linetype_summary_reference)
+            self$.addOption(private$..sp_linetype_summary_comparison)
+            self$.addOption(private$..sp_color_summary_reference)
+            self$.addOption(private$..sp_color_summary_comparison)
+            self$.addOption(private$..sp_size_summary_reference)
+            self$.addOption(private$..sp_size_summary_comparison)
+            self$.addOption(private$..sp_alpha_summary_reference)
+            self$.addOption(private$..sp_alpha_summary_comparison)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -1419,49 +1324,47 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         sp_axis.text.x = function() private$..sp_axis.text.x$value,
         sp_axis.title.x = function() private$..sp_axis.title.x$value,
         difference_axis_breaks = function() private$..difference_axis_breaks$value,
-        shape_raw_reference = function() private$..shape_raw_reference$value,
-        shape_raw_comparison = function() private$..shape_raw_comparison$value,
         shape_summary_reference = function() private$..shape_summary_reference$value,
         shape_summary_comparison = function() private$..shape_summary_comparison$value,
         shape_summary_difference = function() private$..shape_summary_difference$value,
-        color_raw_reference = function() private$..color_raw_reference$value,
-        color_raw_comparison = function() private$..color_raw_comparison$value,
         color_summary_reference = function() private$..color_summary_reference$value,
         color_summary_comparison = function() private$..color_summary_comparison$value,
         color_summary_difference = function() private$..color_summary_difference$value,
-        fill_raw_reference = function() private$..fill_raw_reference$value,
-        fill_raw_comparison = function() private$..fill_raw_comparison$value,
         fill_summary_reference = function() private$..fill_summary_reference$value,
         fill_summary_comparison = function() private$..fill_summary_comparison$value,
         fill_summary_difference = function() private$..fill_summary_difference$value,
-        size_raw_reference = function() private$..size_raw_reference$value,
-        size_raw_comparison = function() private$..size_raw_comparison$value,
         size_summary_reference = function() private$..size_summary_reference$value,
         size_summary_comparison = function() private$..size_summary_comparison$value,
         size_summary_difference = function() private$..size_summary_difference$value,
-        alpha_raw_reference = function() private$..alpha_raw_reference$value,
-        alpha_raw_comparison = function() private$..alpha_raw_comparison$value,
         alpha_summary_reference = function() private$..alpha_summary_reference$value,
         alpha_summary_comparison = function() private$..alpha_summary_comparison$value,
         alpha_summary_difference = function() private$..alpha_summary_difference$value,
         linetype_summary_reference = function() private$..linetype_summary_reference$value,
         linetype_summary_comparison = function() private$..linetype_summary_comparison$value,
         linetype_summary_difference = function() private$..linetype_summary_difference$value,
-        color_interval_reference = function() private$..color_interval_reference$value,
-        color_interval_comparison = function() private$..color_interval_comparison$value,
-        color_interval_difference = function() private$..color_interval_difference$value,
-        size_interval_reference = function() private$..size_interval_reference$value,
-        size_interval_comparison = function() private$..size_interval_comparison$value,
-        size_interval_difference = function() private$..size_interval_difference$value,
-        alpha_interval_reference = function() private$..alpha_interval_reference$value,
-        alpha_interval_comparison = function() private$..alpha_interval_comparison$value,
-        alpha_interval_difference = function() private$..alpha_interval_difference$value,
-        alpha_error_reference = function() private$..alpha_error_reference$value,
-        alpha_error_comparison = function() private$..alpha_error_comparison$value,
-        alpha_error_difference = function() private$..alpha_error_difference$value,
-        fill_error_reference = function() private$..fill_error_reference$value,
-        fill_error_comparison = function() private$..fill_error_comparison$value,
-        fill_error_difference = function() private$..fill_error_difference$value),
+        sp_shape_raw_reference = function() private$..sp_shape_raw_reference$value,
+        sp_shape_raw_comparison = function() private$..sp_shape_raw_comparison$value,
+        sp_shape_raw_unused = function() private$..sp_shape_raw_unused$value,
+        sp_color_raw_reference = function() private$..sp_color_raw_reference$value,
+        sp_color_raw_comparison = function() private$..sp_color_raw_comparison$value,
+        sp_color_raw_unused = function() private$..sp_color_raw_unused$value,
+        sp_fill_raw_reference = function() private$..sp_fill_raw_reference$value,
+        sp_fill_raw_comparison = function() private$..sp_fill_raw_comparison$value,
+        sp_fill_raw_unused = function() private$..sp_fill_raw_unused$value,
+        sp_size_raw_reference = function() private$..sp_size_raw_reference$value,
+        sp_size_raw_comparison = function() private$..sp_size_raw_comparison$value,
+        sp_size_raw_unused = function() private$..sp_size_raw_unused$value,
+        sp_alpha_raw_reference = function() private$..sp_alpha_raw_reference$value,
+        sp_alpha_raw_comparison = function() private$..sp_alpha_raw_comparison$value,
+        sp_alpha_raw_unused = function() private$..sp_alpha_raw_unused$value,
+        sp_linetype_summary_reference = function() private$..sp_linetype_summary_reference$value,
+        sp_linetype_summary_comparison = function() private$..sp_linetype_summary_comparison$value,
+        sp_color_summary_reference = function() private$..sp_color_summary_reference$value,
+        sp_color_summary_comparison = function() private$..sp_color_summary_comparison$value,
+        sp_size_summary_reference = function() private$..sp_size_summary_reference$value,
+        sp_size_summary_comparison = function() private$..sp_size_summary_comparison$value,
+        sp_alpha_summary_reference = function() private$..sp_alpha_summary_reference$value,
+        sp_alpha_summary_comparison = function() private$..sp_alpha_summary_comparison$value),
     private = list(
         ..switch = NA,
         ..x = NA,
@@ -1509,49 +1412,47 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..sp_axis.text.x = NA,
         ..sp_axis.title.x = NA,
         ..difference_axis_breaks = NA,
-        ..shape_raw_reference = NA,
-        ..shape_raw_comparison = NA,
         ..shape_summary_reference = NA,
         ..shape_summary_comparison = NA,
         ..shape_summary_difference = NA,
-        ..color_raw_reference = NA,
-        ..color_raw_comparison = NA,
         ..color_summary_reference = NA,
         ..color_summary_comparison = NA,
         ..color_summary_difference = NA,
-        ..fill_raw_reference = NA,
-        ..fill_raw_comparison = NA,
         ..fill_summary_reference = NA,
         ..fill_summary_comparison = NA,
         ..fill_summary_difference = NA,
-        ..size_raw_reference = NA,
-        ..size_raw_comparison = NA,
         ..size_summary_reference = NA,
         ..size_summary_comparison = NA,
         ..size_summary_difference = NA,
-        ..alpha_raw_reference = NA,
-        ..alpha_raw_comparison = NA,
         ..alpha_summary_reference = NA,
         ..alpha_summary_comparison = NA,
         ..alpha_summary_difference = NA,
         ..linetype_summary_reference = NA,
         ..linetype_summary_comparison = NA,
         ..linetype_summary_difference = NA,
-        ..color_interval_reference = NA,
-        ..color_interval_comparison = NA,
-        ..color_interval_difference = NA,
-        ..size_interval_reference = NA,
-        ..size_interval_comparison = NA,
-        ..size_interval_difference = NA,
-        ..alpha_interval_reference = NA,
-        ..alpha_interval_comparison = NA,
-        ..alpha_interval_difference = NA,
-        ..alpha_error_reference = NA,
-        ..alpha_error_comparison = NA,
-        ..alpha_error_difference = NA,
-        ..fill_error_reference = NA,
-        ..fill_error_comparison = NA,
-        ..fill_error_difference = NA)
+        ..sp_shape_raw_reference = NA,
+        ..sp_shape_raw_comparison = NA,
+        ..sp_shape_raw_unused = NA,
+        ..sp_color_raw_reference = NA,
+        ..sp_color_raw_comparison = NA,
+        ..sp_color_raw_unused = NA,
+        ..sp_fill_raw_reference = NA,
+        ..sp_fill_raw_comparison = NA,
+        ..sp_fill_raw_unused = NA,
+        ..sp_size_raw_reference = NA,
+        ..sp_size_raw_comparison = NA,
+        ..sp_size_raw_unused = NA,
+        ..sp_alpha_raw_reference = NA,
+        ..sp_alpha_raw_comparison = NA,
+        ..sp_alpha_raw_unused = NA,
+        ..sp_linetype_summary_reference = NA,
+        ..sp_linetype_summary_comparison = NA,
+        ..sp_color_summary_reference = NA,
+        ..sp_color_summary_comparison = NA,
+        ..sp_size_summary_reference = NA,
+        ..sp_size_summary_comparison = NA,
+        ..sp_alpha_summary_reference = NA,
+        ..sp_alpha_summary_comparison = NA)
 )
 
 jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -1981,49 +1882,47 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param sp_axis.text.x .
 #' @param sp_axis.title.x .
 #' @param difference_axis_breaks .
-#' @param shape_raw_reference .
-#' @param shape_raw_comparison .
 #' @param shape_summary_reference .
 #' @param shape_summary_comparison .
 #' @param shape_summary_difference .
-#' @param color_raw_reference .
-#' @param color_raw_comparison .
 #' @param color_summary_reference .
 #' @param color_summary_comparison .
 #' @param color_summary_difference .
-#' @param fill_raw_reference .
-#' @param fill_raw_comparison .
 #' @param fill_summary_reference .
 #' @param fill_summary_comparison .
 #' @param fill_summary_difference .
-#' @param size_raw_reference .
-#' @param size_raw_comparison .
 #' @param size_summary_reference .
 #' @param size_summary_comparison .
 #' @param size_summary_difference .
-#' @param alpha_raw_reference .
-#' @param alpha_raw_comparison .
 #' @param alpha_summary_reference .
 #' @param alpha_summary_comparison .
 #' @param alpha_summary_difference .
 #' @param linetype_summary_reference .
 #' @param linetype_summary_comparison .
 #' @param linetype_summary_difference .
-#' @param color_interval_reference .
-#' @param color_interval_comparison .
-#' @param color_interval_difference .
-#' @param size_interval_reference .
-#' @param size_interval_comparison .
-#' @param size_interval_difference .
-#' @param alpha_interval_reference .
-#' @param alpha_interval_comparison .
-#' @param alpha_interval_difference .
-#' @param alpha_error_reference .
-#' @param alpha_error_comparison .
-#' @param alpha_error_difference .
-#' @param fill_error_reference .
-#' @param fill_error_comparison .
-#' @param fill_error_difference .
+#' @param sp_shape_raw_reference .
+#' @param sp_shape_raw_comparison .
+#' @param sp_shape_raw_unused .
+#' @param sp_color_raw_reference .
+#' @param sp_color_raw_comparison .
+#' @param sp_color_raw_unused .
+#' @param sp_fill_raw_reference .
+#' @param sp_fill_raw_comparison .
+#' @param sp_fill_raw_unused .
+#' @param sp_size_raw_reference .
+#' @param sp_size_raw_comparison .
+#' @param sp_size_raw_unused .
+#' @param sp_alpha_raw_reference .
+#' @param sp_alpha_raw_comparison .
+#' @param sp_alpha_raw_unused .
+#' @param sp_linetype_summary_reference .
+#' @param sp_linetype_summary_comparison .
+#' @param sp_color_summary_reference .
+#' @param sp_color_summary_comparison .
+#' @param sp_size_summary_reference .
+#' @param sp_size_summary_comparison .
+#' @param sp_alpha_summary_reference .
+#' @param sp_alpha_summary_comparison .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
@@ -2094,49 +1993,47 @@ jamovirdifftwo <- function(
     sp_axis.text.x = "14",
     sp_axis.title.x = "15",
     difference_axis_breaks = "auto",
-    shape_raw_reference = "circle filled",
-    shape_raw_comparison = "circle filled",
     shape_summary_reference = "circle filled",
     shape_summary_comparison = "circle filled",
     shape_summary_difference = "triangle filled",
-    color_raw_reference = "#008DF9",
-    color_raw_comparison = "#009F81",
     color_summary_reference = "#008DF9",
     color_summary_comparison = "#009F81",
     color_summary_difference = "black",
-    fill_raw_reference = "NA",
-    fill_raw_comparison = "NA",
     fill_summary_reference = "#008DF9",
     fill_summary_comparison = "#009F81",
     fill_summary_difference = "black",
-    size_raw_reference = "2",
-    size_raw_comparison = "2",
     size_summary_reference = "4",
     size_summary_comparison = "4",
     size_summary_difference = "4",
-    alpha_raw_reference = "1",
-    alpha_raw_comparison = "1",
     alpha_summary_reference = "1",
     alpha_summary_comparison = "1",
     alpha_summary_difference = "1",
     linetype_summary_reference = "solid",
     linetype_summary_comparison = "solid",
     linetype_summary_difference = "solid",
-    color_interval_reference = "black",
-    color_interval_comparison = "black",
-    color_interval_difference = "black",
-    size_interval_reference = "3",
-    size_interval_comparison = "3",
-    size_interval_difference = "3",
-    alpha_interval_reference = "1",
-    alpha_interval_comparison = "1",
-    alpha_interval_difference = "1",
-    alpha_error_reference = "1",
-    alpha_error_comparison = "1",
-    alpha_error_difference = "1",
-    fill_error_reference = "gray75",
-    fill_error_comparison = "gray75",
-    fill_error_difference = "gray75") {
+    sp_shape_raw_reference = "circle filled",
+    sp_shape_raw_comparison = "circle filled",
+    sp_shape_raw_unused = "triangle filled",
+    sp_color_raw_reference = "#008DF9",
+    sp_color_raw_comparison = "#009F81",
+    sp_color_raw_unused = "black",
+    sp_fill_raw_reference = "#008DF9",
+    sp_fill_raw_comparison = "#009F81",
+    sp_fill_raw_unused = "black",
+    sp_size_raw_reference = "4",
+    sp_size_raw_comparison = "4",
+    sp_size_raw_unused = "4",
+    sp_alpha_raw_reference = "1",
+    sp_alpha_raw_comparison = "1",
+    sp_alpha_raw_unused = "1",
+    sp_linetype_summary_reference = "solid",
+    sp_linetype_summary_comparison = "solid",
+    sp_color_summary_reference = "#008DF9",
+    sp_color_summary_comparison = "#009F81",
+    sp_size_summary_reference = "4",
+    sp_size_summary_comparison = "4",
+    sp_alpha_summary_reference = "1",
+    sp_alpha_summary_comparison = "1") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovirdifftwo requires jmvcore to be installed (restart may be required)")
@@ -2200,49 +2097,47 @@ jamovirdifftwo <- function(
         sp_axis.text.x = sp_axis.text.x,
         sp_axis.title.x = sp_axis.title.x,
         difference_axis_breaks = difference_axis_breaks,
-        shape_raw_reference = shape_raw_reference,
-        shape_raw_comparison = shape_raw_comparison,
         shape_summary_reference = shape_summary_reference,
         shape_summary_comparison = shape_summary_comparison,
         shape_summary_difference = shape_summary_difference,
-        color_raw_reference = color_raw_reference,
-        color_raw_comparison = color_raw_comparison,
         color_summary_reference = color_summary_reference,
         color_summary_comparison = color_summary_comparison,
         color_summary_difference = color_summary_difference,
-        fill_raw_reference = fill_raw_reference,
-        fill_raw_comparison = fill_raw_comparison,
         fill_summary_reference = fill_summary_reference,
         fill_summary_comparison = fill_summary_comparison,
         fill_summary_difference = fill_summary_difference,
-        size_raw_reference = size_raw_reference,
-        size_raw_comparison = size_raw_comparison,
         size_summary_reference = size_summary_reference,
         size_summary_comparison = size_summary_comparison,
         size_summary_difference = size_summary_difference,
-        alpha_raw_reference = alpha_raw_reference,
-        alpha_raw_comparison = alpha_raw_comparison,
         alpha_summary_reference = alpha_summary_reference,
         alpha_summary_comparison = alpha_summary_comparison,
         alpha_summary_difference = alpha_summary_difference,
         linetype_summary_reference = linetype_summary_reference,
         linetype_summary_comparison = linetype_summary_comparison,
         linetype_summary_difference = linetype_summary_difference,
-        color_interval_reference = color_interval_reference,
-        color_interval_comparison = color_interval_comparison,
-        color_interval_difference = color_interval_difference,
-        size_interval_reference = size_interval_reference,
-        size_interval_comparison = size_interval_comparison,
-        size_interval_difference = size_interval_difference,
-        alpha_interval_reference = alpha_interval_reference,
-        alpha_interval_comparison = alpha_interval_comparison,
-        alpha_interval_difference = alpha_interval_difference,
-        alpha_error_reference = alpha_error_reference,
-        alpha_error_comparison = alpha_error_comparison,
-        alpha_error_difference = alpha_error_difference,
-        fill_error_reference = fill_error_reference,
-        fill_error_comparison = fill_error_comparison,
-        fill_error_difference = fill_error_difference)
+        sp_shape_raw_reference = sp_shape_raw_reference,
+        sp_shape_raw_comparison = sp_shape_raw_comparison,
+        sp_shape_raw_unused = sp_shape_raw_unused,
+        sp_color_raw_reference = sp_color_raw_reference,
+        sp_color_raw_comparison = sp_color_raw_comparison,
+        sp_color_raw_unused = sp_color_raw_unused,
+        sp_fill_raw_reference = sp_fill_raw_reference,
+        sp_fill_raw_comparison = sp_fill_raw_comparison,
+        sp_fill_raw_unused = sp_fill_raw_unused,
+        sp_size_raw_reference = sp_size_raw_reference,
+        sp_size_raw_comparison = sp_size_raw_comparison,
+        sp_size_raw_unused = sp_size_raw_unused,
+        sp_alpha_raw_reference = sp_alpha_raw_reference,
+        sp_alpha_raw_comparison = sp_alpha_raw_comparison,
+        sp_alpha_raw_unused = sp_alpha_raw_unused,
+        sp_linetype_summary_reference = sp_linetype_summary_reference,
+        sp_linetype_summary_comparison = sp_linetype_summary_comparison,
+        sp_color_summary_reference = sp_color_summary_reference,
+        sp_color_summary_comparison = sp_color_summary_comparison,
+        sp_size_summary_reference = sp_size_summary_reference,
+        sp_size_summary_comparison = sp_size_summary_comparison,
+        sp_alpha_summary_reference = sp_alpha_summary_reference,
+        sp_alpha_summary_comparison = sp_alpha_summary_comparison)
 
     analysis <- jamovirdifftwoClass$new(
         options = options,
