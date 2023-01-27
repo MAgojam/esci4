@@ -66,5 +66,6 @@ test_r <- function() {
     they,
     thegroup
   )
-  plot_scatter(estimate_rdiff_raw)
+  myplot <- plot_scatter(estimate_rdiff_raw)
+  myplot
 }

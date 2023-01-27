@@ -722,22 +722,22 @@ children:
                   column: 2
                   row: 9
               - type: ComboBox
-                name: sp_color_summary_reference
+                name: sp_size_summary_reference
                 cell:
                   column: 1
                   row: 10
               - type: ComboBox
-                name: sp_color_summary_comparison
+                name: sp_size_summary_comparison
                 cell:
                   column: 2
                   row: 10
               - type: ComboBox
-                name: sp_size_summary_reference
+                name: sp_color_summary_reference
                 cell:
                   column: 1
                   row: 11
               - type: ComboBox
-                name: sp_size_summary_comparison
+                name: sp_color_summary_comparison
                 cell:
                   column: 2
                   row: 11

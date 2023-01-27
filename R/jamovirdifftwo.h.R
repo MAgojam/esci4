@@ -72,16 +72,16 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             linetype_summary_difference = "solid",
             sp_shape_raw_reference = "circle filled",
             sp_shape_raw_comparison = "circle filled",
-            sp_shape_raw_unused = "triangle filled",
+            sp_shape_raw_unused = "circle filled",
             sp_color_raw_reference = "#008DF9",
             sp_color_raw_comparison = "#009F81",
-            sp_color_raw_unused = "black",
-            sp_fill_raw_reference = "#008DF9",
-            sp_fill_raw_comparison = "#009F81",
-            sp_fill_raw_unused = "black",
-            sp_size_raw_reference = "4",
-            sp_size_raw_comparison = "4",
-            sp_size_raw_unused = "4",
+            sp_color_raw_unused = "gray75",
+            sp_fill_raw_reference = "NA",
+            sp_fill_raw_comparison = "NA",
+            sp_fill_raw_unused = "NA",
+            sp_size_raw_reference = "3",
+            sp_size_raw_comparison = "3",
+            sp_size_raw_unused = "2",
             sp_alpha_raw_reference = "1",
             sp_alpha_raw_comparison = "1",
             sp_alpha_raw_unused = "1",
@@ -89,10 +89,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             sp_linetype_summary_comparison = "solid",
             sp_color_summary_reference = "#008DF9",
             sp_color_summary_comparison = "#009F81",
-            sp_size_summary_reference = "4",
-            sp_size_summary_comparison = "4",
-            sp_alpha_summary_reference = "1",
-            sp_alpha_summary_comparison = "1", ...) {
+            sp_size_summary_reference = "2",
+            sp_size_summary_comparison = "2",
+            sp_alpha_summary_reference = ".25",
+            sp_alpha_summary_comparison = ".25", ...) {
 
             super$initialize(
                 package="esci4",
@@ -721,7 +721,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_shape_raw_unused <- jmvcore::OptionList$new(
                 "sp_shape_raw_unused",
                 sp_shape_raw_unused,
-                default="triangle filled",
+                default="circle filled",
                 options=list(
                     "circle filled",
                     "square filled",
@@ -814,7 +814,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_color_raw_unused <- jmvcore::OptionList$new(
                 "sp_color_raw_unused",
                 sp_color_raw_unused,
-                default="black",
+                default="gray75",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -856,7 +856,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_fill_raw_reference <- jmvcore::OptionList$new(
                 "sp_fill_raw_reference",
                 sp_fill_raw_reference,
-                default="#008DF9",
+                default="NA",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -898,7 +898,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_fill_raw_comparison <- jmvcore::OptionList$new(
                 "sp_fill_raw_comparison",
                 sp_fill_raw_comparison,
-                default="#009F81",
+                default="NA",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -940,7 +940,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_fill_raw_unused <- jmvcore::OptionList$new(
                 "sp_fill_raw_unused",
                 sp_fill_raw_unused,
-                default="black",
+                default="NA",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -982,7 +982,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_reference <- jmvcore::OptionList$new(
                 "sp_size_raw_reference",
                 sp_size_raw_reference,
-                default="4",
+                default="3",
                 options=list(
                     "1",
                     "2",
@@ -993,7 +993,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_comparison <- jmvcore::OptionList$new(
                 "sp_size_raw_comparison",
                 sp_size_raw_comparison,
-                default="4",
+                default="3",
                 options=list(
                     "1",
                     "2",
@@ -1004,7 +1004,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_unused <- jmvcore::OptionList$new(
                 "sp_size_raw_unused",
                 sp_size_raw_unused,
-                default="4",
+                default="2",
                 options=list(
                     "1",
                     "2",
@@ -1149,7 +1149,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_summary_reference <- jmvcore::OptionList$new(
                 "sp_size_summary_reference",
                 sp_size_summary_reference,
-                default="4",
+                default="2",
                 options=list(
                     "1",
                     "2",
@@ -1160,7 +1160,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_summary_comparison <- jmvcore::OptionList$new(
                 "sp_size_summary_comparison",
                 sp_size_summary_comparison,
-                default="4",
+                default="2",
                 options=list(
                     "1",
                     "2",
@@ -1171,7 +1171,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_alpha_summary_reference <- jmvcore::OptionList$new(
                 "sp_alpha_summary_reference",
                 sp_alpha_summary_reference,
-                default="1",
+                default=".25",
                 options=list(
                     "1",
                     ".75",
@@ -1181,7 +1181,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_alpha_summary_comparison <- jmvcore::OptionList$new(
                 "sp_alpha_summary_comparison",
                 sp_alpha_summary_comparison,
-                default="1",
+                default=".25",
                 options=list(
                     "1",
                     ".75",
@@ -1639,9 +1639,8 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details)"),
                     list(
                         `name`="n", 
-                        `title`="<i>N</i>", 
-                        `type`="integer", 
-                        `visible`="(show_details)"),
+                        `title`="<i>N</i><sub>pairs</sub>", 
+                        `type`="integer"),
                     list(
                         `name`="df", 
                         `title`="<i>df</i>", 
@@ -1691,19 +1690,18 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="UL", 
                         `type`="number"),
                     list(
-                        `name`="SE", 
-                        `title`="<i>SE</i>", 
-                        `type`="number", 
-                        `visible`=FALSE),
-                    list(
                         `name`="n", 
-                        `title`="<i>N</i>", 
-                        `type`="integer", 
-                        `visible`=FALSE),
+                        `title`="<i>N</i><sub>pairs</sub>", 
+                        `type`="integer"),
                     list(
                         `name`="df", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
+                        `visible`=TRUE),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
+                        `type`="number", 
                         `visible`=FALSE))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -2013,16 +2011,16 @@ jamovirdifftwo <- function(
     linetype_summary_difference = "solid",
     sp_shape_raw_reference = "circle filled",
     sp_shape_raw_comparison = "circle filled",
-    sp_shape_raw_unused = "triangle filled",
+    sp_shape_raw_unused = "circle filled",
     sp_color_raw_reference = "#008DF9",
     sp_color_raw_comparison = "#009F81",
-    sp_color_raw_unused = "black",
-    sp_fill_raw_reference = "#008DF9",
-    sp_fill_raw_comparison = "#009F81",
-    sp_fill_raw_unused = "black",
-    sp_size_raw_reference = "4",
-    sp_size_raw_comparison = "4",
-    sp_size_raw_unused = "4",
+    sp_color_raw_unused = "gray75",
+    sp_fill_raw_reference = "NA",
+    sp_fill_raw_comparison = "NA",
+    sp_fill_raw_unused = "NA",
+    sp_size_raw_reference = "3",
+    sp_size_raw_comparison = "3",
+    sp_size_raw_unused = "2",
     sp_alpha_raw_reference = "1",
     sp_alpha_raw_comparison = "1",
     sp_alpha_raw_unused = "1",
@@ -2030,10 +2028,10 @@ jamovirdifftwo <- function(
     sp_linetype_summary_comparison = "solid",
     sp_color_summary_reference = "#008DF9",
     sp_color_summary_comparison = "#009F81",
-    sp_size_summary_reference = "4",
-    sp_size_summary_comparison = "4",
-    sp_alpha_summary_reference = "1",
-    sp_alpha_summary_comparison = "1") {
+    sp_size_summary_reference = "2",
+    sp_size_summary_comparison = "2",
+    sp_alpha_summary_reference = ".25",
+    sp_alpha_summary_comparison = ".25") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovirdifftwo requires jmvcore to be installed (restart may be required)")

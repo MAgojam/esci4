@@ -966,11 +966,6 @@ options:
         - name: 'blank'
           title: 'Blank'
 
-
-
-
-
-
     - name: sp_shape_raw_reference
       type: List
       default: 'circle filled'
@@ -999,7 +994,7 @@ options:
 
     - name: sp_shape_raw_unused
       type: List
-      default: 'triangle filled'
+      default: 'circle filled'
       options:
         - name: 'circle filled'
           title: Circle
@@ -1170,7 +1165,7 @@ options:
 
     - name: sp_color_raw_unused
       type: List
-      default: 'black'
+      default: 'gray75'
       options:
          - name: 'black'
            title: 'Black'
@@ -1249,7 +1244,7 @@ options:
 
     - name: sp_fill_raw_reference
       type: List
-      default: '#008DF9'
+      default: 'NA'
       options:
          - name: 'black'
            title: 'Black'
@@ -1328,7 +1323,7 @@ options:
 
     - name: sp_fill_raw_comparison
       type: List
-      default: '#009F81'
+      default: 'NA'
       options:
          - name: 'black'
            title: 'Black'
@@ -1407,7 +1402,7 @@ options:
 
     - name: sp_fill_raw_unused
       type: List
-      default: 'black'
+      default: 'NA'
       options:
          - name: 'black'
            title: 'Black'
@@ -1486,7 +1481,7 @@ options:
 
     - name: sp_size_raw_reference
       type: List
-      default: '4'
+      default: '3'
       options:
         - name: '1'
           title: '1'
@@ -1503,7 +1498,7 @@ options:
 
     - name: sp_size_raw_comparison
       type: List
-      default: '4'
+      default: '3'
       options:
         - name: '1'
           title: '1'
@@ -1520,7 +1515,7 @@ options:
 
     - name: sp_size_raw_unused
       type: List
-      default: '4'
+      default: '2'
       options:
         - name: '1'
           title: '1'
@@ -1770,7 +1765,7 @@ options:
 
     - name: sp_size_summary_reference
       type: List
-      default: '4'
+      default: '2'
       options:
         - name: '1'
           title: '1'
@@ -1787,7 +1782,7 @@ options:
 
     - name: sp_size_summary_comparison
       type: List
-      default: '4'
+      default: '2'
       options:
         - name: '1'
           title: '1'
@@ -1804,7 +1799,7 @@ options:
 
     - name: sp_alpha_summary_reference
       type: List
-      default: '1'
+      default: '.25'
       options:
         - name: '1'
           title: '0'
@@ -1819,7 +1814,7 @@ options:
 
     - name: sp_alpha_summary_comparison
       type: List
-      default: '1'
+      default: '.25'
       options:
         - name: '1'
           title: '0'

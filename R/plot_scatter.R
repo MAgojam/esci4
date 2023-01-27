@@ -84,7 +84,7 @@ plot_scatter <- function(
     my_labels <- c(
       paste(estimate$es_r_difference$effect[[2]], ": *r* = ", format( estimate$es_r_difference$effect_size[[2]], digits = 2), sep = ""),
       paste(estimate$es_r_difference$effect[[1]], ": *r* = ", format( estimate$es_r_difference$effect_size[[1]], digits = 2), sep = ""),
-      "All others"
+      if (nrow(estimate$es_r) > 2) "All others" else NULL
     )
 
     my_fills <- c(

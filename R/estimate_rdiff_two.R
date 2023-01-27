@@ -523,6 +523,71 @@ estimate_rdiff_two.data.frame <- function(
   reference_n <- crossprod(!is.na(data1[ , c(x, y)]))[1, 2]
   comparison_n <- crossprod(!is.na(data2[ , c(x, y)]))[1, 2]
 
+  valid_message <- glue::glue(
+    "N_pairs in {level2} = {comparison_n}."
+  )
+  valid_message_html <- glue::glue(
+    "<i>N</i><sub>pairs</sub> in {level2} = {comparison_n}."
+  )
+
+
+  if (comparison_n != nrow(data2)) {
+    missing <- nrow(data2) - comparison_n
+    valid_message <- paste(
+      valid_message,
+      glue::glue(
+        "  There were {missing} rows with incomplete data.  All analysis are based only on the {comparison_n} rows with complete data."
+      ),
+      sep = ""
+    )
+    valid_message_html <- paste(
+      valid_message_html,
+      glue::glue(
+        "  There were {missing} rows with incomplete data.  All analysis are based only on the {comparison_n} rows with complete data."
+      ),
+      sep = ""
+    )
+  }
+
+  valid_message <- paste(
+    valid_message,
+    glue::glue(
+      "\nN_pairs in {level1} = {reference_n}."
+    ),
+    sep = ""
+  )
+  valid_message_html <- paste(
+    valid_message_html,
+    glue::glue(
+      "  <i>N</i><sub>pairs</sub> in {level1} = {reference_n}."
+    ),
+    sep = ""
+  )
+
+
+  if (reference_n != nrow(data1)) {
+    missing <- nrow(data1) - reference_n
+    valid_message <- paste(
+      valid_message,
+      glue::glue(
+        "  There were {missing} rows with incomplete data.  All analysis are based only on the {reference_n} rows with complete data."
+      ),
+      sep = ""
+    )
+    valid_message_html <- paste(
+      valid_message_html,
+      glue::glue(
+        "  There were {missing} rows with incomplete data.  All analysis are based only on the {reference_n} rows with complete data."
+      ),
+      sep = ""
+    )
+  }
+
+  estimate$es_r_difference_properties <- list(
+    message = valid_message,
+    message_html = valid_message_html
+  )
+
   estimate$es_r_difference <- estimate_rdiff_two.summary(
     comparison_r = comparison_r,
     comparison_n = comparison_n,

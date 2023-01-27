@@ -323,6 +323,111 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           }
 
 
+
+          shape_summary_unused <- "circle"
+          color_summary_unused <- "black"
+          fill_summary_unused <- "black"
+          size_summary_unused <- 1
+          alpha_summary_unused <- 1
+          alpha_error_reference <- 1
+          linetype_summary_unused <- "solid"
+          linetype_summary_reference <- "solid"
+          color_interval_unused <- "black"
+          color_interval_reference <- "black"
+          alpha_interval_unused <- 1
+          alpha_interval_reference <- 1
+          size_interval_unused <- 1
+          size_interval_reference <- 1
+          fill_error_unused <- "black"
+          fill_error_reference <- "black"
+          alpha_error_unused <- 1
+          #
+          #
+          try(shape_summary_unused <- self$options$shape_summary_unused)
+          try(color_summary_unused <- self$options$color_summary_unused)
+          try(fill_summary_unused <- self$options$fill_summary_unused)
+          try(size_summary_unused <- as.integer(self$options$size_summary_unused))
+          try(alpha_summary_unused <- as.numeric(self$options$alpha_summary_unused))
+          try(linetype_summary_unused <- self$options$linetype_summary_unused)
+          try(linetype_summary_reference <- self$options$linetype_summary_reference)
+          try(color_interval_unused <- self$options$color_interval_unused)
+          try(color_interval_reference <- self$options$color_interval_reference)
+          try(alpha_interval_unusued <- as.numeric(self$options$alpha_interval_unused))
+          try(alpha_interval_reference <- as.numeric(self$options$alpha_interval_reference))
+          try(size_interval_unused <- as.integer(self$options$size_interval_unused))
+          try(size_interval_reference <- as.integer(self$options$size_interval_reference))
+          try(fill_error_unused <- self$options$fill_error_unused)
+          try(fill_error_reference <- self$options$fill_error_reference)
+          try(alpha_error_reference <- self$options$alpha_error_reference)
+          try(alpha_error_unused <- as.numeric(self$options$alpha_error_unused))
+          #
+          #
+          # Aesthetics
+          myplot <- myplot + ggplot2::scale_shape_manual(
+            values = c(
+              "Reference_summary" = self$options$shape_summary_reference,
+              "Comparison_summary" = self$options$shape_summary_comparison,
+              "Difference_summary" = self$options$shape_summary_difference,
+              "Unused_summary" = shape_summary_unused
+            )
+          )
+          #
+          myplot <- myplot + ggplot2::scale_color_manual(
+            values = c(
+              "Reference_summary" = self$options$color_summary_reference,
+              "Comparison_summary" = self$options$color_summary_comparison,
+              "Difference_summary" = self$options$color_summary_difference,
+              "Unused_summary" = color_summary_unused
+            ),
+            aesthetics = c("color", "point_color")
+          )
+          #
+          myplot <- myplot + ggplot2::scale_fill_manual(
+            values = c(
+              "Reference_summary" = self$options$fill_summary_reference,
+              "Comparison_summary" = self$options$fill_summary_comparison,
+              "Difference_summary" = self$options$fill_summary_difference,
+              "Unused_summary" = fill_summary_unused
+            ),
+            aesthetics = c("fill", "point_fill")
+          )
+          #
+          divider <- 4
+          #
+          myplot <- myplot + ggplot2::discrete_scale(
+            c("size", "point_size"),
+            "point_size_d",
+            function(n) return(c(
+              "Reference_summary" = as.integer(self$options$size_summary_reference)/divider,
+              "Comparison_summary" = as.integer(self$options$size_summary_comparison)/divider,
+              "Difference_summary" = as.integer(self$options$size_summary_difference)/divider,
+              "Unused_summary" = size_summary_unused/divider
+            ))
+          )
+          #
+          myplot <- myplot + ggplot2::discrete_scale(
+            c("alpha", "point_alpha"),
+            "point_alpha_d",
+            function(n) return(c(
+              "Reference_summary" = as.numeric(self$options$alpha_summary_reference),
+              "Comparison_summary" = as.numeric(self$options$alpha_summary_comparison),
+              "Difference_summary" = as.numeric(self$options$alpha_summary_difference),
+              "Unused_summary" = alpha_summary_unused
+            ))
+          )
+          #
+          # Error bars
+          myplot <- myplot + ggplot2::scale_linetype_manual(
+            values = c(
+              "Reference_summary" = linetype_summary_reference,
+              "Comparison_summary" = self$options$linetype_summary_comparison,
+              "Difference_summary" = self$options$linetype_summary_difference,
+              "Unused_summary" = linetype_summary_unused
+            )
+          )
+
+
+
           self$results$estimation_plot_warnings$setState(
             c(
               notes,
@@ -521,6 +626,54 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           if (!(self$options$sp_ylab %in% c("auto", "Auto", "AUTO"))) {
             myplot <- myplot + ggplot2::ylab(ylab)
           }
+
+
+          # Aesthetics
+          my_fills <- c(
+            "Reference" =  self$options$sp_fill_raw_reference,
+            "Comparison" = self$options$sp_fill_raw_comparison,
+            "Unused" = self$options$sp_fill_raw_unused
+          )
+          my_shapes <- c(
+            "Reference" =  self$options$sp_shape_raw_reference,
+            "Comparison" = self$options$sp_shape_raw_comparison,
+            "Unused" = self$options$sp_shape_raw_unused
+          )
+          my_colour <- c(
+            "Reference" =  self$options$sp_color_raw_reference,
+            "Comparison" = self$options$sp_color_raw_comparison,
+            "Unused" = self$options$sp_color_raw_unused
+          )
+          my_alphas <- c(
+            "Reference" =  as.numeric(self$options$sp_alpha_raw_reference),
+            "Comparison" = as.numeric(self$options$sp_alpha_raw_comparison),
+            "Unused" = as.numeric(self$options$sp_alpha_raw_unused)
+          )
+          my_sizes <- c(
+            "Reference" =  as.numeric(self$options$sp_size_raw_reference),
+            "Comparison" = as.numeric(self$options$sp_size_raw_comparison),
+            "Unused" = as.numeric(self$options$sp_size_raw_unused)
+          )
+
+          my_labels <- myplot$esci_scale_labels
+
+          myplot <- myplot + ggplot2::scale_color_manual(values = my_colour, labels = my_labels)
+          myplot <- myplot + ggplot2::scale_fill_manual(values = my_fills, labels = my_labels)
+          myplot <- myplot + ggplot2::scale_shape_manual(values = my_shapes, labels = my_labels)
+          myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels)
+          myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels)
+
+
+          myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+          myplot$layers$summary_Comparison_line$aes_params$colour <- self$options$sp_color_summary_comparison
+          myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
+          myplot$layers$summary_Comparison_line$aes_params$fill <- self$options$sp_color_summary_comparison
+          myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+          myplot$layers$summary_Comparison_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_comparison)
+          myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
+          myplot$layers$summary_Comparison_line$aes_params$linetype <- self$options$sp_linetype_summary_comparison
+          myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+          myplot$layers$summary_Comparison_line$aes_params$size <- as.numeric(self$options$sp_size_summary_comparison)/2
 
 
           notes <- c(
