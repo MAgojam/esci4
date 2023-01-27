@@ -115,4 +115,97 @@ items:
         - name: df
           title: <i>df</i>
           type: integer
+
+
+
+    - name:  point_null
+      title: Hypothesis Evaluation
+      type: Table
+      rows:  1
+      visible: (evaluate_hypotheses & null_boundary == 0)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          visible: true
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+          combineBelow: false
+        - name: null_words
+          title: "<i>H</i><sub>0</sub>"
+          type: text
+        - name: CI
+          title: "CI"
+          type: text
+        - name: CI_compare
+          title: "Compare CI with <i>H</i><sub>0</sub>"
+          type: text
+        - name: p_result
+          title: "<i>p</i>, two-tailed"
+          type: text
+        - name: null_decision
+          title: "<i>H</i><sub>0</sub> decision"
+        - name: conclusion
+          title: 'Conclusion'
+          type: text
+
+    - name:  interval_null
+      title: Hypothesis Evaluation
+      type: Table
+      rows:  1
+      visible: (evaluate_hypotheses & null_boundary != 0)
+      columns:
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          visible: true
+          type: text
+          combineBelow: true
+        - name: effect
+          title: 'Effect'
+          type: text
+          combineBelow: false
+        - name: rope
+          title: "<i>H</i><sub>0</sub>"
+          type: text
+        - name: CI
+          title: "CI"
+          type: text
+        - name: rope_compare
+          title: "Compare CI with <i>H</i><sub>0</sub>"
+          type: text
+        - name: p_result
+          title: "<i>p</i>, two tailed"
+          type: text
+        - name: conclusion
+          title: 'Conclusion'
+          type: text
+
+    - name: estimation_plot_warnings
+      title: Estimation Figure Warnings
+      type: Html
+      visible: true
+
+    - name: estimation_plots
+      title: Estimation Figure
+      type: Image
+      width:  600
+      height: 400
+      requiresData: true
+      renderFun: .estimation_plots
+
+    - name: scatter_plot_warnings
+      title: Scatter Plot Warnings
+      type: Html
+      visible: (switch == 'from_raw')
+
+    - name: scatter_plots
+      title: Scatter Plot
+      type: Image
+      width:  800
+      height: 650
+      requiresData: true
+      renderFun: .scatter_plots
+      visible: (switch == 'from_raw')
 ...
