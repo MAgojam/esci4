@@ -109,9 +109,8 @@ items:
           type: number
           visible: (show_details)
         - name: n
-          title: <i>N</i>
+          title: <i>N</i><sub>pairs</sub>
           type: integer
-          visible: (show_details)
         - name: df
           title: <i>df</i>
           type: integer

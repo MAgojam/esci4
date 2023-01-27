@@ -31,6 +31,55 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             jamovi_set_confidence(tbl_overview, conf_level)
             jamovi_set_confidence(tbl_es_r, conf_level)
 
+
+            width <- jamovi_sanitize(
+              my_value = self$options$es_plot_width,
+              return_value = 600,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 3000,
+              upper_inclusive = TRUE,
+              my_value_name = "Plot width"
+            )
+            height <- jamovi_sanitize(
+              my_value = self$options$es_plot_height,
+              return_value = 400,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 4000,
+              upper_inclusive = TRUE,
+              my_value_name = "Plot height"
+            )
+
+
+            image <- self$results$estimation_plots
+            image$setSize(width, height)
+
+
+            width <- jamovi_sanitize(
+              my_value = self$options$sp_plot_width,
+              return_value = 800,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 3000,
+              upper_inclusive = TRUE
+            )
+            height <- jamovi_sanitize(
+              my_value = self$options$sp_plot_height,
+              return_value = 650,
+              convert_to_number = TRUE,
+              lower = 10,
+              lower_inclusive = TRUE,
+              upper = 4000,
+              upper_inclusive = TRUE
+            )
+
+            image <- self$results$scatter_plots
+            image$setSize(width, height)
+
         },
         .run = function() {
 
@@ -45,8 +94,477 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             if(is.null(estimate)) return(TRUE)
             if(is(estimate, "try-error")) stop(estimate[1])
 
+            # Fill in MoE
+            estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
+
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
+
+        },
+        .estimation_plots = function(image, ggtheme, theme, ...) {
+
+
+          # Redo analysis
+          estimate <- jamovi_correlation(self)
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          notes <- NULL
+
+          #Hyothesis evaluation
+          interval_null <- FALSE
+          htest <- FALSE
+          args <- list()
+          graph_call <- "plot_correlation"
+
+          args$estimate <- estimate
+          args$ggtheme <- ggtheme[[1]]
+
+
+          # Hypothesis test and rope
+          try(htest <- self$options$evaluate_hypotheses)
+          if (htest) {
+            args <- jamovi_arg_builder(
+              args,
+              "null_boundary",
+              my_value = self$options$null_boundary,
+              return_value = 0,
+              convert_to_number = TRUE,
+              lower = 0,
+              lower_inclusive = TRUE,
+              upper = 1,
+              upper_inclusive = TRUE,
+              my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+            )
+
+            args$rope <- c(
+              0 - args$null_boundary,
+              0 + args$null_boundary
+            )
+
+            if (args$rope[[1]] != args$rope[[2]]) {
+              interval_null <- TRUE
+            }
+
+            notes <- c(
+              notes,
+              names(args$null_boundary),
+              args$warnings
+            )
+            args$null_boundary <- NULL
+            args$warnings <- NULL
+          }
+
+
+          notes <- c(
+            notes,
+            args$warnings
+          )
+          args$warnings <- NULL
+
+
+          myplot <- do.call(
+            what = graph_call,
+            args = args
+          )
+
+
+          width <- jamovi_sanitize(
+            my_value = self$options$es_plot_width,
+            return_value = 600,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 3000,
+            upper_inclusive = TRUE,
+            my_value_name = "Estimation plot width"
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$es_plot_height,
+            return_value = 400,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE,
+            my_value_name = "Estimation plot height"
+          )
+
+          # Basic graph options --------------------
+          # Axis font sizes
+          axis.text.y <- jamovi_sanitize(
+            my_value = self$options$axis.text.y,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Y axis: Tick font size"
+          )
+          axis.title.y <- jamovi_sanitize(
+            my_value = self$options$axis.title.y,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Y axis: Label font size"
+          )
+          axis.text.x <- jamovi_sanitize(
+            my_value = self$options$axis.text.x,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "X axis: Tick font size"
+          )
+          axis.title.x <- jamovi_sanitize(
+            my_value = self$options$axis.title.x,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "X axis: Label font size"
+          )
+
+
+          myplot <- myplot + ggplot2::theme(
+            axis.text.y = ggtext::element_markdown(size = axis.text.y),
+            axis.title.y = ggtext::element_markdown(size = axis.title.y),
+            axis.text.x = ggtext::element_markdown(size = axis.text.x),
+            axis.title.x = ggtext::element_markdown(size = axis.title.x)
+          )
+
+
+          # Axis labels
+          xlab <- jamovi_sanitize(
+            my_value = self$options$xlab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "X axis: Title"
+          )
+
+          ylab <- jamovi_sanitize(
+            my_value = self$options$ylab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "Y axis: Title"
+          )
+
+          if (!(self$options$xlab %in% c("auto", "Auto", "AUTO"))) {
+            myplot <- myplot + ggplot2::xlab(xlab)
+          }
+          if (!(self$options$ylab %in% c("auto", "Auto", "AUTO"))) {
+            myplot <- myplot + ggplot2::ylab(ylab)
+          }
+
+
+          # Axis breaks
+          ymin <- jamovi_sanitize(
+            my_value = self$options$sp_ymin,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot Y axis: Minimum"
+          )
+
+          ymax <- jamovi_sanitize(
+            my_value = self$options$sp_ymax,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot Y axis: Maximum"
+          )
+
+          ybreaks <- jamovi_sanitize(
+            my_value = self$options$sp_ybreaks,
+            return_value = 5,
+            na_ok = FALSE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 50,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot Y axis: Number of tick marks"
+          )
+
+
+          myplot <- myplot + ggplot2::scale_y_continuous(
+            limits = c(ymin, ymax),
+            n.breaks = ybreaks,
+          )
+
+          self$results$estimation_plot_warnings$setState(
+            c(
+              notes,
+              names(xlab),
+              names(ylab),
+              names(axis.text.y),
+              names(axis.title.y),
+              names(axis.text.x),
+              names(axis.title.x),
+              names(width),
+              names(height),
+              names(ymin),
+              names(ymax),
+              names(ybreaks)
+            )
+          )
+          jamovi_set_notes(self$results$estimation_plot_warnings)
+
+
+          print(myplot)
+          TRUE
+
+        },
+        .scatter_plots = function(image, ggtheme, theme, ...) {
+
+          # Redo analysis
+          estimate <- jamovi_correlation(self)
+
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
+          if (is.null(estimate$raw_data)) return(TRUE)
+
+          notes <- NULL
+
+          graph_call <- "plot_scatter"
+          args <- list()
+          args$estimate <- estimate
+          args$ggtheme <- ggtheme[[1]]
+          args$show_line <- self$options$show_line
+          args$show_PI <- self$options$show_PI
+          args$show_residuals <- self$options$show_residuals
+
+          # args$predict_from_x <- jamovi_arg_builder(
+          #   args,
+          #   "predict_from_x",
+          #   my_value = self$options$predict_from_x,
+          #   na_ok = FALSE,
+          #   convert_to_number = TRUE,
+          #   my_value_name = "X value for prediction"
+          # )
+          #
+          # if (is.na(args$predict_from_x)) args$predict_from_x <- NULL
+          # args$warnings <- NULL
+
+          myplot <- do.call(
+            what = graph_call,
+            args = args
+          )
+
+
+          width <- jamovi_sanitize(
+            my_value = self$options$sp_plot_width,
+            return_value = 800,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 3000,
+            upper_inclusive = TRUE,
+            my_value_name = "Scatter plot width"
+          )
+          height <- jamovi_sanitize(
+            my_value = self$options$sp_plot_height,
+            return_value = 650,
+            convert_to_number = TRUE,
+            lower = 10,
+            lower_inclusive = TRUE,
+            upper = 4000,
+            upper_inclusive = TRUE,
+            my_value_name = "Scatter plot height"
+          )
+
+          # X and y limits
+          xmin <- jamovi_sanitize(
+            my_value = self$options$sp_xmin,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot X axis: Minimum"
+          )
+
+          xmax <- jamovi_sanitize(
+            my_value = self$options$sp_xmax,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot X axis: Maximum"
+          )
+
+          xbreaks <- jamovi_sanitize(
+            my_value = self$options$sp_xbreaks,
+            return_value = 5,
+            na_ok = FALSE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 50,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot X axis: Number of tick marks"
+          )
+
+          ymin <- jamovi_sanitize(
+            my_value = self$options$sp_ymin,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot Y axis: Minimum"
+          )
+
+          ymax <- jamovi_sanitize(
+            my_value = self$options$sp_ymax,
+            return_value = NA,
+            na_ok = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot Y axis: Maximum"
+          )
+
+          ybreaks <- jamovi_sanitize(
+            my_value = self$options$sp_ybreaks,
+            return_value = 5,
+            na_ok = FALSE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 50,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Scatter Plot Y axis: Number of tick marks"
+          )
+
+          # Apply axis labels and scales
+          myplot <- myplot + ggplot2::scale_x_continuous(
+            limits = c(xmin, xmax),
+            n.breaks = xbreaks,
+          )
+
+          myplot <- myplot + ggplot2::scale_y_continuous(
+            limits = c(ymin, ymax),
+            n.breaks = ybreaks,
+          )
+
+          # Axis font sizes
+          axis.text.y <- jamovi_sanitize(
+            my_value = self$options$sp_axis.text.y,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Scatter Plot Y axis: Tick font size"
+          )
+          axis.title.y <- jamovi_sanitize(
+            my_value = self$options$sp_axis.title.y,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Scatter Plot Y axis: Label font size"
+          )
+          axis.text.x <- jamovi_sanitize(
+            my_value = self$options$sp_axis.text.x,
+            return_value = 14,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Scatter Plot X axis: Tick font size"
+          )
+          axis.title.x <- jamovi_sanitize(
+            my_value = self$options$sp_axis.title.x,
+            return_value = 15,
+            na_ok = FALSE,
+            convert_to_number = TRUE,
+            lower = 1,
+            lower_inclusive = TRUE,
+            upper = 97,
+            my_value_name = "Scatter Plot X axis: Label font size"
+          )
+
+          myplot <- myplot + ggplot2::theme(
+            axis.text.y = ggtext::element_markdown(size = axis.text.y),
+            axis.title.y = ggtext::element_markdown(size = axis.title.y),
+            axis.text.x = ggtext::element_markdown(size = axis.text.x),
+            axis.title.x = ggtext::element_markdown(size = axis.title.x),
+            legend.title = ggtext::element_markdown(),
+            legend.text = ggtext::element_markdown()
+          )
+
+          # Axis labels
+          xlab <- jamovi_sanitize(
+            my_value = self$options$sp_xlab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "Scatter Plot X axis: Title"
+          )
+
+          ylab <- jamovi_sanitize(
+            my_value = self$options$sp_ylab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "Scatter Plot Y axis: Title"
+          )
+
+          if (!(self$options$sp_xlab %in% c("auto", "Auto", "AUTO"))) {
+            myplot <- myplot + ggplot2::xlab(xlab)
+          }
+          if (!(self$options$sp_ylab %in% c("auto", "Auto", "AUTO"))) {
+            myplot <- myplot + ggplot2::ylab(ylab)
+          }
+
+
+          # myplot$layers$raw_Reference_point$aes_params$fill <- self$options$sp_fill_raw_reference
+          # myplot$layers$raw_Reference_point$aes_params$color <- self$options$sp_color_raw_reference
+          # myplot$layers$raw_Reference_point$aes_params$size <- as.numeric(self$options$sp_size_raw_reference)
+          # myplot$layers$raw_Reference_point$aes_params$alpha <- as.numeric(self$options$sp_alpha_raw_reference)
+          # myplot$layers$raw_Reference_point$aes_params$shape <- self$options$sp_shape_raw_reference
+          #
+          # myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+          # myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
+          # myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+          # myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
+          # myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+
+
+          notes <- c(
+            notes,
+            names(width),
+            names(height),
+            names(axis.text.y),
+            names(axis.text.x),
+            names(axis.title.x),
+            names(axis.title.y),
+            names(xlab),
+            names(xmin),
+            names(xmax),
+            names(xbreaks),
+            names(ylab),
+            names(ymin),
+            names(ymax),
+            names(ybreaks)
+          )
+
+          self$results$scatter_plot_warnings$setState(
+            c(
+              notes
+            )
+          )
+          jamovi_set_notes(self$results$scatter_plot_warnings)
+
+          print(myplot)
+          TRUE
 
         })
 )
@@ -145,14 +663,6 @@ jamovi_correlation <- function(self) {
         }
 
     }
-
-    # b <- paste(names(args), args)
-    # c <- NULL
-    # for (e in args) {
-    #     paste(c, class(e))
-    # }
-    # self$results$debug$setContent(paste(b, c, collapse = ", "))
-    # return(NULL)
 
     # Do analysis, then post any notes that have emerged
     estimate <- try(do.call(what = call, args = args))
