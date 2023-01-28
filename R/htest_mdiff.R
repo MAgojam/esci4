@@ -55,7 +55,7 @@ test_diff_base <- function(
     "mean" = "es_mean_difference",
     "median" = "es_median_difference",
     "P" = "es_proportion_difference",
-    "r" = "es_r"
+    "r" = "es_r_difference"
   )
 
 
