@@ -903,8 +903,8 @@ estimate_mdiff_2x2_between.data.frame <- function(
   )
 
   overview$grouping_variable_level <- c(
-    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[[1:2]], sep = " - "),
-    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[[1:2]], sep = " - ")
+    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[1:2], sep = " - "),
+    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[1:2], sep = " - ")
   )
 
   estimate <- estimate_mdiff_2x2_between.base(
@@ -918,7 +918,14 @@ estimate_mdiff_2x2_between.data.frame <- function(
     assume_equal_variance = assume_equal_variance
   )
 
-  # estimate <- estimate_mdiff_2x2_between.summary(
+
+  for (x in 1:length(estimate)) {
+    estimate[[x]]$overview <- overview
+    estimate[[x]]$properties$data_type <- "summary"
+    estimate[[x]]$properties$data_source <- NULL
+  }
+
+    # estimate <- estimate_mdiff_2x2_between.summary(
   #   means = means,
   #   sds = sds,
   #   ns = ns,
