@@ -58,8 +58,8 @@ estimate_mdiff_2x2_between <- function(
   means = NULL,
   sds = NULL,
   ns = NULL,
-  grouping_variable_A_levels = c("A1", "A2"),
-  grouping_variable_B_levels = c("B1", "B2"),
+  grouping_variable_A_levels = NULL,
+  grouping_variable_B_levels = NULL,
   outcome_variable_name = "My outcome variable",
   grouping_variable_A_name = "A",
   grouping_variable_B_name = "A",
@@ -691,10 +691,11 @@ estimate_mdiff_2x2_between.summary <- function(
 
 
 estimate_mdiff_2x2_between.vector <- function(
-  grouping_variable,
+  grouping_variable_A,
+  grouping_variable_B,
   outcome_variable,
-  contrast = NULL,
-  grouping_variable_name = "My grouping variable",
+  grouping_variable_A_name = "A",
+  grouping_variable_B_name = "B",
   outcome_variable_name = "My outcome variable",
   conf_level = 0.95,
   assume_equal_variance = FALSE,
@@ -714,26 +715,47 @@ estimate_mdiff_2x2_between.vector <- function(
   #  save_raw_data is a logical, TRUE or FALSE
 
   # Check grouping variable
-  esci_assert_type(grouping_variable, "is.factor")
+  esci_assert_type(grouping_variable_A, "is.factor")
   grouping_variable_report <- esci_assert_vector_valid_length(
-    grouping_variable,
+    grouping_variable_A,
     lower = 2,
     lower_inclusive = FALSE)
-  if (length(levels(as.factor(grouping_variable))) < 2) {
-    stop("Not enough levels in grouping_variable")
+  if (length(levels(as.factor(grouping_variable_A))) < 2) {
+    stop("Not enough levels in grouping_variable_A")
   }
+
+  # Check grouping variable
+  esci_assert_type(grouping_variable_B, "is.factor")
+  grouping_variable_report <- esci_assert_vector_valid_length(
+    grouping_variable_B,
+    lower = 2,
+    lower_inclusive = FALSE)
+  if (length(levels(as.factor(grouping_variable_B))) < 2) {
+    stop("Not enough levels in grouping_variable_B")
+  }
+
 
   # Check outcome variable
   esci_assert_type(outcome_variable, "is.numeric")
-  if(length(grouping_variable) != length(outcome_variable)) {
+  if(length(grouping_variable_A) != length(outcome_variable)) {
     # vectors not of same length!
     msg <- glue::glue("
-The grouping_variable and outcome_variable are not the same length
-The grouping_variable length is {length(grouping_variable)};
+The grouping_variable_A and outcome_variable are not the same length
+The grouping_variable_A length is {length(grouping_variable_A)};
 The outcome_variable length is {length(outcome_variable)}.
     ")
     stop(msg)
   }
+  if(length(grouping_variable_B) != length(outcome_variable)) {
+    # vectors not of same length!
+    msg <- glue::glue("
+The grouping_variable_B and outcome_variable are not the same length
+The grouping_variable_B length is {length(grouping_variable_A)};
+The outcome_variable length is {length(outcome_variable)}.
+    ")
+    stop(msg)
+  }
+
 
   # Check save_raw_data
   esci_assert_type(save_raw_data, "is.logical")
@@ -742,232 +764,35 @@ The outcome_variable length is {length(outcome_variable)}.
   # Do the analysis --------------------------------------------------
   # Create overview -- which will gracefully deal with missing and n=0 or n=1
   all_overview <- overview.vector(
-    grouping_variable = grouping_variable,
+    grouping_variable = paste(grouping_variable_A, grouping_variable_B, sep = " - "),
     outcome_variable = outcome_variable,
     outcome_variable_name = outcome_variable_name,
-    grouping_variable_name = grouping_variable_name,
+    grouping_variable_name = paste(grouping_variable_A_name, grouping_variable_B_name, sep = " - "),
     conf_level = conf_level,
     assume_equal_variance = assume_equal_variance
   )
 
-  # From the overview function, get just the valid groups
-  no_miss_overview <- all_overview[row.names(all_overview) != "missing", ]
-  overview <- no_miss_overview[no_miss_overview$n > 1, ]
-
-  # If no contrast, job is done
-  if (is.null(contrast)) {
-    estimate <- list()
-    estimate$properties <- list(
-      outcome_variable_name = outcome_variable_name,
-      grouping_variable_name = grouping_variable_name,
-      effect_size_category = "Simple",
-      effect_size_name = "M",
-      conf_level = conf_level,
-      assume_equal_variance = assume_equal_variance
-    )
-    estimate$overview <- all_overview
-    class(estimate) <- "esci_estimate"
-
-    # Store raw data -----------------------------------------------
-    if (save_raw_data) {
-      # Revise all NAs
-      if (row.names(overview)[nrow(overview)] == "missing") {
-        # na_level was generated in overview to be unique
-        na_level <- overview[nrow(overview), "group"]
-        levels(grouping_variable) <- c(levels(grouping_variable), na_level)
-        grouping_variable[which(is.na(grouping_variable))] <- na_level
-      }
-
-      estimate$raw_data <- data.frame(
-        grouping_variable = grouping_variable,
-        outcome_variable = outcome_variable
-      )
-    }
-
-
-    return(estimate)
-  }
-
-
-  # Check the validity of the contrast ---------------------------------------
-  ns <- no_miss_overview$n
-  groups <- no_miss_overview$grouping_variable_level
-
-  valid_groups <- groups[which(ns > 1)]
-  invalid_groups <- groups[which(ns < 2)]
-  invalid_ns <- ns[which(ns < 2)]
-
-  if (is.null(names(contrast))) {
-    if (length(valid_groups) != length(contrast)) {
-      msg <- glue::glue("
-Invalid contrast specified.
-Contrast length is {length(contrast)}.
-But number of valid groups is {length(valid_groups)}.
-The contrast passed is: {paste(contrast, collapse = ', ')}.
-The valid groups found are: {paste(valid_groups, collapse = ', ')}
-Invalid groups are those with n < 2.
-{length(invalid_groups)} invalid groups: {paste(invalid_groups, collapse = ', ')}
-      ")
-      stop(msg)
-    }
-  } else {
-    if (prod(names(contrast) %in% valid_groups) != 1) {
-      msg <- glue::glue("
-Invalid contrast specified.
-Contrast has named value that is not found in the valid groups.
-The contrast passed is: {paste(names(contrast), '=', contrast, collapse = ', ')}.
-The valid groups are: {paste(valid_groups, collapse = ', ')}
-Invalid groups are those with n < 2.
-{length(invalid_groups)} invalid groups: {paste(invalid_groups, collapse = ', ')}
-      ")
-      stop(msg)
-    }
-  }
-
-
-  # Dispatch only valid groups to base function
-  estimate <-estimate_mdiff_ind_contrast.base(
-    overview_table = overview,
-    grouping_variable_levels = overview$grouping_variable_level,
-    grouping_variable_name = grouping_variable_name,
-    outcome_variable_name = outcome_variable_name,
-    contrast = contrast,
-    conf_level = conf_level,
-    assume_equal_variance = assume_equal_variance
+  mydata <- data.frame(
+    ov = outcome_variable,
+    g1 = grouping_variable_A,
+    g2 = grouping_variable_B
   )
 
+  colnames(mydata) <- c(
+    outcome_variable_name,
+    grouping_variable_A_name,
+    grouping_variable_B_name
+  )
 
-  if(length(contrast) == 2) {
-    comp_level <- names(contrast[contrast > 0])
-    ref_level <- names(contrast[contrast < 0])
-
-    if(length(comp_level) > 0 & length(ref_level) > 0) {
-      vec_comparison <- outcome_variable[which(grouping_variable == comp_level)]
-      vec_reference <- outcome_variable[which(grouping_variable == ref_level)]
-      vec_comparison <- vec_comparison[!is.na(vec_comparison)]
-      vec_reference <- vec_reference[!is.na(vec_reference)]
-
-      if(length(vec_comparison) > 0 & length(vec_reference) > 0) {
-        estimate$es_mean_ratio <- as.data.frame(
-            statpsych::ci.ratio.mean2(
-              alpha = 1 - conf_level,
-              y1 = vec_comparison,
-              y2 = vec_reference
-            )
-        )
-
-        estimate$es_mean_ratio_properties <- list(
-          message_html = "
-          For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
-        )
-
-
-        estimate$es_median_ratio <- as.data.frame(
-          statpsych::ci.ratio.median2(
-            alpha = 1 - conf_level,
-            y1 = vec_comparison,
-            y2 = vec_reference
-          )
-        )
-
-        estimate$es_median_ratio_properties <- list(
-          message_html = "
-          For more information on this effect size, see Bonett & Price (2020) doi: 10.3102/1076998620934125."
-        )
-
-
-        estimate$es_mean_ratio <- estimate$es_mean_ratio[ , c(3, 4, 5, 1, 2)]
-        colnames(estimate$es_mean_ratio) <- c("effect_size", "LL", "UL", "comparison_mean", "reference_mean")
-
-        estimate$es_median_ratio <- estimate$es_median_ratio[ , c(3, 4, 5, 1, 2)]
-        colnames(estimate$es_median_ratio) <- c("effect_size", "LL", "UL", "comparison_median", "reference_median")
-
-        clabel <- paste(
-          comp_level,
-          "/",
-          ref_level
-        )
-
-        estimate$es_mean_ratio <- cbind(
-          outcome_variable_name = outcome_variable_name,
-          grouping_variable_name = grouping_variable_name,
-          effect = clabel,
-          estimate$es_mean_ratio
-        )
-
-        estimate$es_median_ratio <- cbind(
-          outcome_variable_name = outcome_variable_name,
-          grouping_variable_name = grouping_variable_name,
-          effect = clabel,
-          estimate$es_median_ratio
-        )
-
-      }
-    }
-  }
-
-  estimate$overview <- all_overview
-  estimate$properties$data_type <- "vector"
-  estimate$properties$data_source <- NULL
-
-
-  # Raise warnings if needed ------------------------------------------------
-  # Warning if all_overview has a row for missing grouping data
-  if ("missing" %in% row.names(all_overview)) {
-    n_miss <- all_overview[row.names(all_overview) == "missing", "n"]
-    n_rows <- all_overview[row.names(all_overview) == "missing", "missing"]
-    if (n_miss > 0 & n_rows > 0) {
-      msg <-  glue::glue("
-There are {n_rows} rows missing the outcome variable and grouping variable and {n_miss} rows missing only the grouping variable ({grouping_variable_name}).
-Outcomes with missing grouping variables were **dropped* from the analysis
-    ")
-      estimate$warnings <- c(estimate$warnings, msg)
-      warning(msg)
-    }
-    if (n_miss > 0 & n_rows == 0) {
-      msg <-  glue::glue("
-There are {n_miss} missing values in grouping variable {grouping_variable_name}.
-Outcomes with missing grouping variables were **dropped* from the analysis
-    ")
-      estimate$warnings <- c(estimate$warnings, msg)
-      warning(msg)
-    }
-    if (n_rows > 0 & n_miss == 0) {
-      msg <-  glue::glue("
-There are {n_rows} rows that were missing values for both the grouping variable ({grouping_variable_name}) and the outcome variable.
-    ")
-      estimate$warnings <- c(estimate$warnings, msg)
-      warning(msg)
-    }
-  }
-
-  if(length(invalid_groups) > 0) {
-    for (x in 1:length(invalid_groups)) {
-      msg <-  glue::glue("
-  The group {invalid_groups[[x]]} had an invalid sample size: {invalid_ns[[x]]}.
-  This group was **dropped* from the analysis.
-        ")
-      estimate$warnings <- c(estimate$warnings, msg)
-      warning(msg)
-
-    }
-  }
-
-  # Store raw data -----------------------------------------------
-  if (save_raw_data) {
-    # Revise all NAs
-    if (row.names(overview)[nrow(overview)] == "missing") {
-      # na_level was generated in overview to be unique
-      na_level <- overview[nrow(overview), "group"]
-      levels(grouping_variable) <- c(levels(grouping_variable), na_level)
-      grouping_variable[which(is.na(grouping_variable))] <- na_level
-    }
-
-    estimate$raw_data <- data.frame(
-      grouping_variable = grouping_variable,
-      outcome_variable = outcome_variable
-    )
-  }
+  estimate <- estimate_mdiff_2x2_between.data.frame(
+    data = mydata,
+    grouping_variable_A = grouping_variable_A_name,
+    grouping_variable_B = grouping_variable_B_name,
+    outcome_variable = outcome_variable_name,
+    conf_level = conf_level,
+    assume_equal_variance = assume_equal_variance,
+    save_raw_data = save_raw_data
+  )
 
   return(estimate)
 }
@@ -975,9 +800,9 @@ There are {n_rows} rows that were missing values for both the grouping variable 
 
 estimate_mdiff_2x2_between.data.frame <- function(
   data,
-  grouping_variable,
+  grouping_variable_A,
+  grouping_variable_B,
   outcome_variable,
-  contrast = NULL,
   conf_level = 0.95,
   assume_equal_variance = FALSE,
   save_raw_data = TRUE
@@ -990,11 +815,19 @@ estimate_mdiff_2x2_between.data.frame <- function(
   #   grouping_variable to be a factor with more than 2 valid rows
   #   outcome_variable to be a numeric column in data, with more than 2 rows
   esci_assert_type(data, "is.data.frame")
-  esci_assert_valid_column_name(data, grouping_variable)
-  esci_assert_column_type(data, grouping_variable, "is.factor")
+  esci_assert_valid_column_name(data, grouping_variable_A)
+  esci_assert_column_type(data, grouping_variable_A, "is.factor")
   esci_assert_column_has_valid_rows(
     data,
-    grouping_variable,
+    grouping_variable_A,
+    lower = 2,
+    na.rm = TRUE
+  )
+  esci_assert_valid_column_name(data, grouping_variable_B)
+  esci_assert_column_type(data, grouping_variable_B, "is.factor")
+  esci_assert_column_has_valid_rows(
+    data,
+    grouping_variable_B,
     lower = 2,
     na.rm = TRUE
   )
@@ -1009,17 +842,94 @@ estimate_mdiff_2x2_between.data.frame <- function(
     na.rm = TRUE
   )
 
-  # Now pass along to the .vector version of this function
-  estimate <- estimate_mdiff_ind_contrast.vector(
-    grouping_variable = data[[grouping_variable]],
-    outcome_variable = data[[outcome_variable]],
-    grouping_variable_name = grouping_variable,
-    outcome_variable_name = outcome_variable,
-    contrast = contrast,
-    conf_level = conf_level,
-    assume_equal_variance = assume_equal_variance,
-    save_raw_data = save_raw_data
+  keeps <- c(
+    grouping_variable_A,
+    grouping_variable_B,
+    outcome_variable
   )
+  data <- data[ , keeps]
+  data <- data[complete.cases(data), ]
+
+  a1 <- levels(data[[grouping_variable_A]])[[1]]
+  a2 <- levels(data[[grouping_variable_A]])[[2]]
+  b1 <- levels(data[[grouping_variable_B]])[[1]]
+  b2 <- levels(data[[grouping_variable_B]])[[2]]
+
+  da1 <- data[data[[grouping_variable_A]] == a1, ]
+  da2 <- data[data[[grouping_variable_A]] == a2, ]
+
+  da1b1 <- da1[da1[[grouping_variable_B]] == b1, ]
+  da1b2 <- da1[da1[[grouping_variable_B]] == b2, ]
+  da2b1 <- da2[da2[[grouping_variable_B]] == b1, ]
+  da2b2 <- da2[da2[[grouping_variable_B]] == b2, ]
+
+
+  means <- c(
+    mean(da1b1[[outcome_variable]]),
+    mean(da1b2[[outcome_variable]]),
+    mean(da2b1[[outcome_variable]]),
+    mean(da2b2[[outcome_variable]])
+  )
+
+  sds <- c(
+    sd(da1b1[[outcome_variable]]),
+    sd(da1b2[[outcome_variable]]),
+    sd(da2b1[[outcome_variable]]),
+    sd(da2b2[[outcome_variable]])
+  )
+
+  ns <- c(
+    nrow(da1b1),
+    nrow(da1b2),
+    nrow(da2b1),
+    nrow(da2b2)
+  )
+
+  overview <- rbind(
+    overview.data.frame(
+      data = da1,
+      outcome_variable = outcome_variable,
+      grouping_variable = grouping_variable_B,
+      conf_level = conf_level,
+      assume_equal_variance = assume_equal_variance
+    ),
+    overview.data.frame(
+      data = da2,
+      outcome_variable = outcome_variable,
+      grouping_variable = grouping_variable_B,
+      conf_level = conf_level,
+      assume_equal_variance = assume_equal_variance
+    )
+  )
+
+  overview$grouping_variable_level <- c(
+    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[[1:2]], sep = " - "),
+    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[[1:2]], sep = " - ")
+  )
+
+  estimate <- estimate_mdiff_2x2_between.base(
+    overview_table = overview,
+    grouping_variable_A_levels = c(a1, a2),
+    grouping_variable_B_levels = c(b1, b2),
+    grouping_variable_A_name = grouping_variable_A,
+    grouping_variable_B_name = grouping_variable_B,
+    outcome_variable_name = outcome_variable,
+    conf_level = conf_level,
+    assume_equal_variance = assume_equal_variance
+  )
+
+  # estimate <- estimate_mdiff_2x2_between.summary(
+  #   means = means,
+  #   sds = sds,
+  #   ns = ns,
+  #   grouping_variable_A_levels = c(a1, a2),
+  #   grouping_variable_B_levels = c(b1, b2),
+  #   grouping_variable_A_name = grouping_variable_A,
+  #   grouping_variable_B_name = grouping_variable_B,
+  #   outcome_variable_name = outcome_variable,
+  #   conf_level = conf_level,
+  #   assume_equal_variance = assume_equal_variance
+  # )
 
   estimate$properties$data_type <- "data.frame"
   estimate$properties$data_source <- deparse(substitute(data))

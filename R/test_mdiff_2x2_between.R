@@ -22,4 +22,132 @@ test_mdiff_2x2_between <- function() {
   )
   estimate$main_effect_A
   estimate$interaction
+  plot_mdiff(estimate$main_effect_A)
+  plot_mdiff(estimate$main_effect_B)
+  plot_mdiff(estimate$simple_effect_B_at_A1)
+  plot_mdiff(estimate$simple_effect_B_at_A2)
+  plot_mdiff(estimate$interaction)
+
+
+
+  sound <- c(
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'
+  )
+
+  stress <- c(
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'
+
+  )
+
+  score <- c(
+    5	,
+    5	,
+    4	,
+    4	,
+    2	,
+    5	,
+    6	,
+    5	,
+    10	,
+    10	,
+    8	,
+    9	,
+    11	,
+    9	,
+    10	,
+    8	,
+    8	,
+    11	,
+    10	,
+    9	,
+    8	,
+    9	,
+    10	,
+    9	,
+    15	,
+    15	,
+    13	,
+    14	,
+    15	,
+    15	,
+    13	,
+    15
+
+  )
+
+  mydf <- data.frame(
+    v1 = as.factor(sound),
+    v2 = as.factor(stress),
+    o = score
+  )
+
+  estimate <- estimate_mdiff_2x2_between(
+    mydf,
+    grouping_variable_A = v1,
+    grouping_variable_B = v2,
+    outcome_variable = o
+  )
+
 }
