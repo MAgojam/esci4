@@ -321,6 +321,14 @@ estimate_mdiff_2x2_between.base <- function(
     )
   )
 
+  effect_types <- c(
+    paste("Main effect of ", grouping_variable_A_name, sep = ""),
+    paste("Main effect of ", grouping_variable_B_name, sep = ""),
+    paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_levels[[1]], " of ", grouping_variable_A_name, sep = ""),
+    paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_levels[[2]], " of ", grouping_variable_A_name, sep = ""),
+    paste("Interaction between ", grouping_variable_A_name, " and ", grouping_variable_B_name, sep = "")
+  )
+
   names(means) <- c(
     paste(grouping_variable_A_levels[1], grouping_variable_B_levels, sep = " - "),
     paste(grouping_variable_A_levels[2], grouping_variable_B_levels, sep = " - ")
@@ -362,6 +370,7 @@ estimate_mdiff_2x2_between.base <- function(
     estimate <- list()
     estimate$properties <- list(
       outcome_variable_name = outcome_variable_name,
+      grouping_variable_name = paste(grouping_variable_A_name, grouping_variable_B_name, sep = " - "),
       grouping_variable_A_name = grouping_variable_A_name,
       grouping_variable_B_name = grouping_variable_B_name,
       contrast = weights,
@@ -457,6 +466,7 @@ estimate_mdiff_2x2_between.base <- function(
       effect = contrast_labels,
       estimate$es_mean_difference
     )
+    estimate$es_mean_difference$effect_type <- effect_types[[x]]
 
     # Median difference
     if (!is.null(es_median_difference)) {
@@ -471,6 +481,8 @@ estimate_mdiff_2x2_between.base <- function(
         effect = contrast_labels,
         estimate$es_median_difference
       )
+
+      estimate$es_median_difference$effect_type <- effect_types[[x]]
 
       estimate$es_median_difference_properties <- list(
         effect_size_name = "Mdn_Diff",
@@ -506,9 +518,13 @@ estimate_mdiff_2x2_between.base <- function(
       estimate$es_smd
     )
 
+    estimate$es_smd$effect_type <- effect_types[[x]]
+
     all_estimates[[names(all_contrasts)[[x]]]] <- estimate
 
   }
+
+  all_estimates <- esci_estimate_consolidate(all_estimates)
 
 
   return(all_estimates)
@@ -678,12 +694,17 @@ estimate_mdiff_2x2_between.summary <- function(
   )
 
   for (x in 1:length(estimate)) {
-    estimate[[x]]$overview <- overview
-    estimate[[x]]$properties$data_type <- "summary"
-    estimate[[x]]$properties$data_source <- NULL
+    if (class(estimate[[x]]) == "esci_estimate") {
+      estimate[[x]]$overview <- overview
+      estimate[[x]]$properties$data_type <- "summary"
+      estimate[[x]]$properties$data_source <- NULL
+    }
   }
 
+  estimate$overview <- estimate$overview
   estimate$warnings <- c(estimate$warnings, warnings)
+  estimate$properties$data_type <- "summary"
+  estimate$properties$data_source <- NULL
 
   return(estimate)
 
@@ -904,7 +925,7 @@ estimate_mdiff_2x2_between.data.frame <- function(
 
   overview$grouping_variable_level <- c(
     paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[1:2], sep = " - "),
-    paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[1:2], sep = " - ")
+    paste(levels(data[[grouping_variable_A]])[[2]], levels(data[[grouping_variable_B]])[1:2], sep = " - ")
   )
 
   estimate <- estimate_mdiff_2x2_between.base(
@@ -918,28 +939,37 @@ estimate_mdiff_2x2_between.data.frame <- function(
     assume_equal_variance = assume_equal_variance
   )
 
-
-  for (x in 1:length(estimate)) {
-    estimate[[x]]$overview <- overview
-    estimate[[x]]$properties$data_type <- "summary"
-    estimate[[x]]$properties$data_source <- NULL
+  # Store raw data -----------------------------------------------
+  if (save_raw_data) {
+    # Revise all NAs
+    raw_data <- data.frame(
+      grouping_variable = as.factor(
+        paste(
+          data[[grouping_variable_A]],
+          data[[grouping_variable_B]],
+          sep = " - "
+        )
+      ),
+      outcome_variable = data[[outcome_variable]],
+      grouping_variable_A = data[[grouping_variable_A]],
+      grouping_variable_B = data[[grouping_variable_B]]
+    )
   }
 
-    # estimate <- estimate_mdiff_2x2_between.summary(
-  #   means = means,
-  #   sds = sds,
-  #   ns = ns,
-  #   grouping_variable_A_levels = c(a1, a2),
-  #   grouping_variable_B_levels = c(b1, b2),
-  #   grouping_variable_A_name = grouping_variable_A,
-  #   grouping_variable_B_name = grouping_variable_B,
-  #   outcome_variable_name = outcome_variable,
-  #   conf_level = conf_level,
-  #   assume_equal_variance = assume_equal_variance
-  # )
+
+  for (x in 1:length(estimate)) {
+    if (class(estimate[[x]]) == "esci_estimate") {
+        estimate[[x]]$overview <- overview
+        estimate[[x]]$raw_data <- if (save_raw_data) raw_data else NULL
+        estimate[[x]]$properties$data_type <- "data.frame"
+        estimate[[x]]$properties$data_source <- deparse(substitute(data))
+    }
+  }
+
 
   estimate$properties$data_type <- "data.frame"
   estimate$properties$data_source <- deparse(substitute(data))
+  estimate$overview <- overview
 
   return(estimate)
 
