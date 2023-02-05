@@ -292,6 +292,8 @@ estimate_mdiff_2x2_between.base <- function(
   esci_assert_type(assume_equal_variance, "is.logical")
 
 
+
+
   # Prep the contrast ---------------------
   all_contrasts <- list(
     main_effect_A = c(-1/2, -1/2, 1/2, 1/2),
@@ -348,7 +350,7 @@ estimate_mdiff_2x2_between.base <- function(
       b_effects
     ),
     paste(
-      paste("At ", grouping_variable_A_levels[[2]]),
+      paste("At ", grouping_variable_A_levels[[2]], ":", sep = ""),
       b_effects
     ),
     c(
@@ -365,7 +367,6 @@ estimate_mdiff_2x2_between.base <- function(
 
 
   all_estimates <- list()
-  class(all_estimates) == "esci_estimate"
 
   for (x in 1:5) {
     contrast <- all_contrasts[[x]]
@@ -558,6 +559,7 @@ estimate_mdiff_2x2_between.base <- function(
   }
 
   all_estimates <- esci_estimate_consolidate(all_estimates)
+  class(all_estimates) <- "esci_estimate"
 
 
   return(all_estimates)
@@ -734,6 +736,17 @@ estimate_mdiff_2x2_between.summary <- function(
     }
   }
 
+  overview$grouping_variable_A_name <- grouping_variable_A_name
+  overview$grouping_variable_B_name <- grouping_variable_B_name
+  overview$grouping_variable_A_level <- c(
+    rep(grouping_variable_A_levels[[1]], 2),
+    rep(grouping_variable_A_levels[[2]], 2)
+  )
+  overview$grouping_variable_B_level <- c(
+    grouping_variable_B_levels,
+    grouping_variable_B_levels
+  )
+
   estimate$overview <- estimate$overview
   estimate$warnings <- c(estimate$warnings, warnings)
   estimate$properties$data_type <- "summary"
@@ -902,6 +915,7 @@ estimate_mdiff_2x2_between.data.frame <- function(
     outcome_variable
   )
   data <- data[ , keeps]
+  #all_rows <- nrow(data)
   data <- data[complete.cases(data), ]
 
   a1 <- levels(data[[grouping_variable_A]])[[1]]
@@ -911,33 +925,33 @@ estimate_mdiff_2x2_between.data.frame <- function(
 
   da1 <- data[data[[grouping_variable_A]] == a1, ]
   da2 <- data[data[[grouping_variable_A]] == a2, ]
+#
+#   da1b1 <- da1[da1[[grouping_variable_B]] == b1, ]
+#   da1b2 <- da1[da1[[grouping_variable_B]] == b2, ]
+#   da2b1 <- da2[da2[[grouping_variable_B]] == b1, ]
+#   da2b2 <- da2[da2[[grouping_variable_B]] == b2, ]
 
-  da1b1 <- da1[da1[[grouping_variable_B]] == b1, ]
-  da1b2 <- da1[da1[[grouping_variable_B]] == b2, ]
-  da2b1 <- da2[da2[[grouping_variable_B]] == b1, ]
-  da2b2 <- da2[da2[[grouping_variable_B]] == b2, ]
-
-
-  means <- c(
-    mean(da1b1[[outcome_variable]]),
-    mean(da1b2[[outcome_variable]]),
-    mean(da2b1[[outcome_variable]]),
-    mean(da2b2[[outcome_variable]])
-  )
-
-  sds <- c(
-    sd(da1b1[[outcome_variable]]),
-    sd(da1b2[[outcome_variable]]),
-    sd(da2b1[[outcome_variable]]),
-    sd(da2b2[[outcome_variable]])
-  )
-
-  ns <- c(
-    nrow(da1b1),
-    nrow(da1b2),
-    nrow(da2b1),
-    nrow(da2b2)
-  )
+#
+#   means <- c(
+#     mean(da1b1[[outcome_variable]]),
+#     mean(da1b2[[outcome_variable]]),
+#     mean(da2b1[[outcome_variable]]),
+#     mean(da2b2[[outcome_variable]])
+#   )
+#
+#   sds <- c(
+#     sd(da1b1[[outcome_variable]]),
+#     sd(da1b2[[outcome_variable]]),
+#     sd(da2b1[[outcome_variable]]),
+#     sd(da2b2[[outcome_variable]])
+#   )
+#
+#   ns <- c(
+#     nrow(da1b1),
+#     nrow(da1b2),
+#     nrow(da2b1),
+#     nrow(da2b2)
+#   )
 
   overview <- rbind(
     overview.data.frame(
@@ -999,6 +1013,11 @@ estimate_mdiff_2x2_between.data.frame <- function(
     }
   }
 
+
+  overview$grouping_variable_A_name <- grouping_variable_A
+  overview$grouping_variable_B_name <- grouping_variable_B
+  overview$grouping_variable_A_level <- c(a1, a1, a2, a2)
+  overview$grouping_variable_B_level <- c(b1, b2, b1, b2)
 
   estimate$properties$data_type <- "data.frame"
   estimate$properties$data_source <- deparse(substitute(data))

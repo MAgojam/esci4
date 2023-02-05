@@ -41,6 +41,23 @@ items:
         - name: grouping_variable_level
           title: 'Group'
           type: text
+          visible: false
+        - name: grouping_variable_name_A
+          title: 'Grouping variable A'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: grouping_variable_A_level
+          title: 'Group A'
+          type: text
+        - name: grouping_variable_name_B
+          title: 'Grouping variable B'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: grouping_variable_B_level
+          title: 'Group B'
+          type: text
         - name: mean
           type: number
           title: <i>M</i>
@@ -131,12 +148,20 @@ items:
           title: 'Outcome variable'
           type: text
           combineBelow: true
+        - name: effect_type
+          title: "Effect type"
+          type: text
+          combineBelow: true
         - name: grouping_variable_name
           title: 'Grouping variable'
           type: text
           combineBelow: true
           visible: false
         - name: effect
+          title: 'Effect'
+          type: text
+          visible: false
+        - name: effects_complex
           title: 'Effect'
           type: text
         - name: effect_size
@@ -175,12 +200,20 @@ items:
           title: 'Outcome variable'
           type: text
           combineBelow: true
+        - name: effect_type
+          title: "Effect type"
+          type: text
+          combineBelow: true
         - name: grouping_variable_name
           title: 'Grouping variable'
           type: text
           combineBelow: true
           visible: false
         - name: effect
+          title: 'Effect'
+          type: text
+          visible: false
+        - name: effects_complex
           title: 'Effect'
           type: text
         - name: effect_size
@@ -239,6 +272,14 @@ items:
         - name: effect
           title: 'Effect'
           type: text
+          visible: false
+        - name: effect_type
+          title: 'Effect type'
+          type: text
+          visible: true
+        - name: effects_complex
+          title: 'Effect'
+          type: text
         - name: numerator
           title: <i>M</i><sub>diff</sub>
           superTitle: Numerator
@@ -288,6 +329,14 @@ items:
           title: 'Effect'
           type: text
           combineBelow: false
+          visible: false
+        - name: effect_type
+          title: 'Effect type'
+          type: text
+          visible: true
+        - name: effects_complex
+          title: 'Effect'
+          type: text
         - name: null_words
           title: "<i>H</i><sub>0</sub>"
           type: text
@@ -339,6 +388,14 @@ items:
           title: 'Effect'
           type: text
           combineBelow: false
+          visible: false
+        - name: effect_type
+          title: 'Effect type'
+          type: text
+          visible: true
+        - name: effects_complex
+          title: 'Effect'
+          type: text
         - name: rope
           title: "<i>H</i><sub>0</sub>"
           type: text
@@ -364,16 +421,24 @@ items:
       title: Main Effect A
       type: Image
       requiresData: true
-      width:  400
-      height: 300
+      width:  700
+      height: 400
       renderFun: .estimation_plot
 
     - name: main_effect_B
       title: Main Effect B
       type: Image
       requiresData: true
-      width:  400
-      height: 300
+      width:  700
+      height: 400
+      renderFun: .estimation_plot
+
+    - name: interaction
+      title: Interaction
+      type: Image
+      requiresData: true
+      width:  700
+      height: 400
       renderFun: .estimation_plot
 
 ...

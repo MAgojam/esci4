@@ -99,6 +99,17 @@ jamovi_table_filler <- function(jmv_table = NULL, result_table, expand = FALSE) 
   }
 
 
+  if (!is.null(result_table$grouping_variable_A_name) & !is.null(result_table$grouping_variable_A_level)) {
+    jmv_table$getColumn("grouping_variable_A_level")$setTitle(
+      result_table$grouping_variable_A_name[[1]]
+    )
+  }
+
+  if (!is.null(result_table$grouping_variable_B_name) & !is.null(result_table$grouping_variable_B_level)) {
+    jmv_table$getColumn("grouping_variable_B_level")$setTitle(
+      result_table$grouping_variable_B_name[[1]]
+    )
+  }
 
   if (!is.null(result_table$grouping_variable_name) & !is.null(result_table$grouping_variable_level)) {
     jmv_table$getColumn("grouping_variable_level")$setTitle(

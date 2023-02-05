@@ -101,7 +101,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
 
           width <- jamovi_sanitize(
             my_value = self$options$es_plot_width,
-            return_value = 600,
+            return_value = 700,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,
@@ -121,10 +121,14 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
           image <- self$results$main_effect_A
           image$setState("Main Effect of A")
           image$setSize(width, height)
+
           image <- self$results$main_effect_B
           image$setState("Main Effect of B")
           image$setSize(width, height)
 
+          image <- self$results$interaction
+          image$setState("Interaction")
+          image$setSize(width, height)
 
         },
         .run = function() {
@@ -149,6 +153,12 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             estimate$es_mean_difference$moe <- (estimate$es_mean_difference$UL - estimate$es_mean_difference$LL)/2
             estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
 
+            estimate$es_mean_difference$effect_type <- paste(
+              "<b>",
+              estimate$es_mean_difference$effect_type,
+              "</b>"
+            )
+
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
 
@@ -163,27 +173,29 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
 
           if (is.null(estimate)) return(TRUE)
 
-          # if(!is(estimate, "esci_estimate"))
-          #   return(TRUE)
-          #
+          if(!is(estimate, "esci_estimate"))
+            return(TRUE)
+
 
           which_plot <- switch(
             image$state,
             "Main Effect of A" = "main_effect_A",
-            "Main Effect of B" = "main_effect_B"
+            "Main Effect of B" = "main_effect_B",
+            "Interaction" = "interaction"
           )
+
+          gvA <- estimate$properties$grouping_variable_A_name
+          gvB <- estimate$properties$grouping_variable_B_name
 
           which_title <- switch(
             image$state,
-            "Main Effect of A" = "grouping_variable_A",
-            "Main Effect of B" = "grouping_variable_B"
+            "Main Effect of A" = paste("Main effect of", gvA),
+            "Main Effect of B" = paste("Main effect of", gvB),
+            "Interaction" = paste("Interaction betweeen", gvA, "and", gvB)
           )
 
           image$setTitle(
-            paste(
-              "Main Effect of",
-              self$options[[which_title]]
-            )
+            which_title
           )
 
           myplot <- jamovi_plot_mdiff(
@@ -193,6 +205,22 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             ggtheme,
             theme
           )
+
+          myplot <- myplot + ggplot2::xlab(NULL)
+
+          mylabs <- paste(
+            estimate$overview$grouping_variable_B_level,
+            "\n",
+            estimate$overview$grouping_variable_A_level,
+            sep = ""
+          )
+
+          mylabs <- c(
+            mylabs,
+            myplot$scales$scales[[2]]$labels[5:7]
+          )
+
+          myplot$scales$scales[[2]]$labels <- mylabs
 
           print(myplot)
           TRUE
@@ -274,10 +302,68 @@ jamovi_mdiff_2x2between <- function(
 
   # For summary data, store in a list based on outcome_variable_name
   if (!is(estimate, "try-error")) {
-    estimate <- jamovi_add_htest_mdiff(
-      self = self,
-      estimate = estimate
-    )
+
+    evaluate_h <- self$options$evaluate_hypotheses
+
+    if(evaluate_h) {
+      # Test results
+      effect_size = self$options$effect_size
+      if (effect_size == "mean_difference") effect_size <- "mean"
+      if (effect_size == "median_difference") effect_size <- "median"
+
+      rope_upper <- jamovi_sanitize(
+        self$options$null_boundary,
+        na_ok = FALSE,
+        return_value = 0,
+        lower = 0,
+        lower_inclusive = TRUE,
+        convert_to_number = TRUE
+      )
+
+      rope_units <- "raw"
+      try(rope_units <- self$options$rope_units)
+
+      estimate$point_null <- NULL
+      estimate$interval_null <- NULL
+
+      for (myestimate in estimate) {
+        if(is(myestimate, "esci_estimate")) {
+
+          test_results <- test_mdiff(
+            myestimate,
+            effect_size = effect_size,
+            rope = c(rope_upper * -1, rope_upper),
+            rope_units = rope_units,
+            output_html = TRUE
+          )
+
+          estimate$point_null <- rbind(
+            estimate$point_null,
+            test_results$point_null
+          )
+
+          estimate$interval_null <- rbind(
+            estimate$interval_null,
+            test_results$interval_null
+          )
+
+        }
+      }
+
+      estimate$point_null$effect_type <- estimate$es_smd$effect_type
+      estimate$point_null$effects_complex <- estimate$es_smd$effects_complex
+      estimate$interval_null$effect_type <- estimate$es_smd$effect_type
+      estimate$interval_null$effects_complex <- estimate$es_smd$effects_complex
+
+
+      if (!is.null(names(rope_upper))) {
+        self$results$point_null$setVisible(TRUE)
+        self$results$interval_null$setVisible(FALSE)
+      }
+
+
+    }
+
 
     notes <- c(notes, estimate$warnings)
     self$results$help$setState(notes)

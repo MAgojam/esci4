@@ -20,8 +20,8 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             rope_units = "raw",
             alpha = 0.05,
             null_color = "#A40122",
-            es_plot_width = "550",
-            es_plot_height = "450",
+            es_plot_width = "700",
+            es_plot_height = "400",
             ymin = "auto",
             ymax = "auto",
             ybreaks = "auto",
@@ -214,11 +214,11 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             private$..es_plot_width <- jmvcore::OptionString$new(
                 "es_plot_width",
                 es_plot_width,
-                default="550")
+                default="700")
             private$..es_plot_height <- jmvcore::OptionString$new(
                 "es_plot_height",
                 es_plot_height,
-                default="450")
+                default="400")
             private$..ymin <- jmvcore::OptionString$new(
                 "ymin",
                 ymin,
@@ -1900,7 +1900,8 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
         interval_null = function() private$.items[["interval_null"]],
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         main_effect_A = function() private$.items[["main_effect_A"]],
-        main_effect_B = function() private$.items[["main_effect_B"]]),
+        main_effect_B = function() private$.items[["main_effect_B"]],
+        interaction = function() private$.items[["interaction"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1948,6 +1949,27 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                     list(
                         `name`="grouping_variable_level", 
                         `title`="Group", 
+                        `type`="text", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="grouping_variable_name_A", 
+                        `title`="Grouping variable A", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="grouping_variable_A_level", 
+                        `title`="Group A", 
+                        `type`="text"),
+                    list(
+                        `name`="grouping_variable_name_B", 
+                        `title`="Grouping variable B", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="grouping_variable_B_level", 
+                        `title`="Group B", 
                         `type`="text"),
                     list(
                         `name`="mean", 
@@ -2058,6 +2080,11 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="effect_type", 
+                        `title`="Effect type", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
@@ -2065,6 +2092,11 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `visible`=FALSE),
                     list(
                         `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effects_complex", 
                         `title`="Effect", 
                         `type`="text"),
                     list(
@@ -2109,6 +2141,11 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
+                        `name`="effect_type", 
+                        `title`="Effect type", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
                         `name`="grouping_variable_name", 
                         `title`="Grouping variable", 
                         `type`="text", 
@@ -2116,6 +2153,11 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `visible`=FALSE),
                     list(
                         `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effects_complex", 
                         `title`="Effect", 
                         `type`="text"),
                     list(
@@ -2183,6 +2225,16 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                     list(
                         `name`="effect", 
                         `title`="Effect", 
+                        `type`="text", 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effect_type", 
+                        `title`="Effect type", 
+                        `type`="text", 
+                        `visible`=TRUE),
+                    list(
+                        `name`="effects_complex", 
+                        `title`="Effect", 
                         `type`="text"),
                     list(
                         `name`="numerator", 
@@ -2243,7 +2295,17 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text", 
-                        `combineBelow`=FALSE),
+                        `combineBelow`=FALSE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effect_type", 
+                        `title`="Effect type", 
+                        `type`="text", 
+                        `visible`=TRUE),
+                    list(
+                        `name`="effects_complex", 
+                        `title`="Effect", 
+                        `type`="text"),
                     list(
                         `name`="null_words", 
                         `title`="<i>H</i><sub>0</sub>", 
@@ -2306,7 +2368,17 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `name`="effect", 
                         `title`="Effect", 
                         `type`="text", 
-                        `combineBelow`=FALSE),
+                        `combineBelow`=FALSE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effect_type", 
+                        `title`="Effect type", 
+                        `type`="text", 
+                        `visible`=TRUE),
+                    list(
+                        `name`="effects_complex", 
+                        `title`="Effect", 
+                        `type`="text"),
                     list(
                         `name`="rope", 
                         `title`="<i>H</i><sub>0</sub>", 
@@ -2337,16 +2409,24 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                 name="main_effect_A",
                 title="Main Effect A",
                 requiresData=TRUE,
-                width=400,
-                height=300,
+                width=700,
+                height=400,
                 renderFun=".estimation_plot"))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="main_effect_B",
                 title="Main Effect B",
                 requiresData=TRUE,
-                width=400,
-                height=300,
+                width=700,
+                height=400,
+                renderFun=".estimation_plot"))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="interaction",
+                title="Interaction",
+                requiresData=TRUE,
+                width=700,
+                height=400,
                 renderFun=".estimation_plot"))}))
 
 jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -2369,7 +2449,7 @@ jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 requiresMissings = FALSE)
         }))
 
-#' jamovimdiff2x2between
+#' 2x2 Factorial
 #'
 #' 
 #' @param switch .
@@ -2478,6 +2558,7 @@ jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
 #'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$main_effect_A} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$main_effect_B} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$interaction} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -2503,8 +2584,8 @@ jamovimdiff2x2between <- function(
     rope_units = "raw",
     alpha = 0.05,
     null_color = "#A40122",
-    es_plot_width = "550",
-    es_plot_height = "450",
+    es_plot_width = "700",
+    es_plot_height = "400",
     ymin = "auto",
     ymax = "auto",
     ybreaks = "auto",

@@ -1,6 +1,6 @@
 ---
 name:  jamovimdiff2x2between
-title: jamovimdiff2x2between
+title: "2x2 Factorial"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
@@ -175,7 +175,7 @@ options:
     - name: es_plot_height
       title: Height
       type: String
-      default: '500'
+      default: '400'
 
     - name: ymin
       title: Min
