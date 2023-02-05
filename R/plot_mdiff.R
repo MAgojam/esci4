@@ -286,6 +286,7 @@ plot_mdiff_base <- function(
   # Reorder comparison data
   gdata <- gdata[c(2, 1, 3), ]
   gdata$effect_type <- NULL
+  gdata$effects_complex <- NULL
 
   # Handle comparisons to a specified reference value
   if (one_group) {

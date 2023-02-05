@@ -56,6 +56,12 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Independent Groups Contrast
+  - title: jamovimdiff2x2between
+    name: jamovimdiff2x2between
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Means and Medians
+    menuTitle: jamovimdiff2x2between
   - title: Correlation
     name: jamovicorrelation
     ns: esci4

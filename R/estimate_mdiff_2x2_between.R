@@ -329,6 +329,35 @@ estimate_mdiff_2x2_between.base <- function(
     paste("Interaction between ", grouping_variable_A_name, " and ", grouping_variable_B_name, sep = "")
   )
 
+
+  b_effects <-  c(
+    grouping_variable_B_levels[[2]],
+    grouping_variable_B_levels[[1]],
+    paste(grouping_variable_B_levels[[2]], "\U2012", grouping_variable_B_levels[[1]])
+  )
+
+  effects_complex <- list(
+    c(
+      grouping_variable_A_levels[[2]],
+      grouping_variable_A_levels[[1]],
+      paste(grouping_variable_A_levels[[2]], "\U2012", grouping_variable_A_levels[[1]])
+    ),
+    b_effects,
+    paste(
+      paste("At ", grouping_variable_A_levels[[1]], ":", sep = ""),
+      b_effects
+    ),
+    paste(
+      paste("At ", grouping_variable_A_levels[[2]]),
+      b_effects
+    ),
+    c(
+      paste("At ", grouping_variable_A_levels[[1]], ":", b_effects[[3]], sep = ""),
+      paste("At ", grouping_variable_A_levels[[2]], ":", b_effects[[3]], sep = ""),
+      paste("Difference in Difference")
+    )
+  )
+
   names(means) <- c(
     paste(grouping_variable_A_levels[1], grouping_variable_B_levels, sep = " - "),
     paste(grouping_variable_A_levels[2], grouping_variable_B_levels, sep = " - ")
@@ -336,6 +365,7 @@ estimate_mdiff_2x2_between.base <- function(
 
 
   all_estimates <- list()
+  class(all_estimates) == "esci_estimate"
 
   for (x in 1:5) {
     contrast <- all_contrasts[[x]]
@@ -467,6 +497,7 @@ estimate_mdiff_2x2_between.base <- function(
       estimate$es_mean_difference
     )
     estimate$es_mean_difference$effect_type <- effect_types[[x]]
+    estimate$es_mean_difference$effects_complex <- effects_complex[[x]]
 
     # Median difference
     if (!is.null(es_median_difference)) {
@@ -483,6 +514,7 @@ estimate_mdiff_2x2_between.base <- function(
       )
 
       estimate$es_median_difference$effect_type <- effect_types[[x]]
+      estimate$es_median_difference$effects_complex <- effects_complex[[x]]
 
       estimate$es_median_difference_properties <- list(
         effect_size_name = "Mdn_Diff",
@@ -519,6 +551,7 @@ estimate_mdiff_2x2_between.base <- function(
     )
 
     estimate$es_smd$effect_type <- effect_types[[x]]
+    estimate$es_smd$effects_complex <- effects_complex[[x]][[3]]
 
     all_estimates[[names(all_contrasts)[[x]]]] <- estimate
 
