@@ -314,7 +314,7 @@ estimate_mdiff_2x2_mixed <- function(
   estimate$es_median_difference <- NULL
   estimate$es_median_difference_properties <- NULL
   estimate$es_smd <- NULL
-  estimate$es_smd_proporties <- NULL
+  estimate$es_smd_properties <- NULL
 
   estimate <- esci_estimate_consolidate(estimate)
   class(estimate) <- "esci_estimate"
