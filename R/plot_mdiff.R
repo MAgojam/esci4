@@ -83,6 +83,7 @@ plot_mdiff <- function(
   # simple_contrast <- (length(reference_groups) == 1) & (length(comparison_groups) == 1)
   simple_contrast <- (length(contrast) == 2)
   plot_paired <- !is.null(estimate$es_r)
+  plot_mixed <- !is.null(estimate$raw_data$paired)
   difference_es_name <- if (difference_axis_units == "sd")
     estimate$es_smd_properties$effect_size_name_html
   else
@@ -185,6 +186,7 @@ plot_mdiff <- function(
     conf_level = conf_level,
     contrast = contrast,
     plot_paired = plot_paired,
+    plot_mixed = plot_mixed,
     rdata = rdata,
     overview = overview,
     effect_size = effect_size,
@@ -239,6 +241,7 @@ plot_mdiff_base <- function(
   conf_level,
   contrast,
   plot_paired,
+  plot_mixed = FALSE,
   rdata = NULL,
   overview = NULL,
   effect_size = c("mean", "median", "r", "P"),
@@ -287,6 +290,8 @@ plot_mdiff_base <- function(
   gdata <- gdata[c(2, 1, 3), ]
   gdata$effect_type <- NULL
   gdata$effects_complex <- NULL
+  gdata$p <- NULL
+  gdata$t <- NULL
 
   # Handle comparisons to a specified reference value
   if (one_group) {
@@ -318,6 +323,10 @@ plot_mdiff_base <- function(
     orows <- nrow(overview)
     overview$x_value <- seq(from = 1, to = orows, by = 1)
     overview$nudge <- nudge
+    if (plot_mixed) {
+      overview$x_value <- c(1, 2, 3.5, 4.5)
+      overview$nudge <- c(nudge*-2, nudge, nudge*-2, nudge)
+    }
 
     rlines <- overview[overview$type == "Reference", c("y_value", "x_value", "nudge", "type")]
     clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge", "type") ]
@@ -485,7 +494,7 @@ plot_mdiff_base <- function(
   if ( (difference_LL + reference_es) < reference_es) {
     rawStart <- difference_LL
     saxisStart <- floor(difference_LL/pooled_sd)
-    if (saxisStart > -1) saxisStart = -1
+    if (saxisStart > -1) saxisStart <- -1
   } else {
     rawStart <- 0
     saxisStart <- 0
@@ -495,7 +504,7 @@ plot_mdiff_base <- function(
     if (rope[[1]] < rawStart) {
       rawStart <- rope[[1]]
       saxisStart <- floor(difference_LL/pooled_sd)
-      if (saxisStart > -1) saxisStart = -1
+      if (saxisStart > -1) saxisStart <- -1
     }
   }
 
@@ -643,6 +652,25 @@ plot_mdiff_base <- function(
       #myplot <- try(eval(raw_expression))
     }
 
+    if (plot_mixed) {
+      rrows <- nrow(rdata)
+      mrows <- rrows/2
+      mdata <- rdata[1:mrows, ]
+      nextrow <- mrows+1
+      mdata$x_end <- rdata[nextrow:rrows, "x_value"]
+      myplot <- myplot + ggplot2::geom_segment(
+        data = mdata,
+        ggplot2::aes(
+          x = x_value,
+          xend = x_end,
+          y = y_value,
+          yend = paired
+        ),
+        color = "gray",
+        alpha = 0.5
+      )
+    }
+
   }
 
   # paired measure lines
@@ -656,6 +684,31 @@ plot_mdiff_base <- function(
         yend = gdata$y_value[[2]]
       ),
       linetype = "solid",
+      colour = "black"
+    )
+  }
+
+  if (plot_mixed) {
+    myplot <- myplot + ggplot2::geom_segment(
+      data = NULL,
+      ggplot2::aes(
+        x = gdata$x_value[[1]] + gdata$nudge[[1]],
+        xend = gdata$x_value[[2]] + gdata$nudge[[2]],
+        y = gdata$y_value[[1]],
+        yend = gdata$y_value[[2]]
+      ),
+      linetype = "dotted",
+      colour = "black"
+    )
+    myplot <- myplot + ggplot2::geom_segment(
+      data = NULL,
+      ggplot2::aes(
+        x = gdata$x_value[[3]] + gdata$nudge[[3]],
+        xend = gdata$x_value[[4]] + gdata$nudge[[4]],
+        y = gdata$y_value[[3]],
+        yend = gdata$y_value[[4]]
+      ),
+      linetype = "dotted",
       colour = "black"
     )
   }
@@ -802,7 +855,7 @@ plot_mdiff_base <- function(
   # And finally, adjust coordinates
   # Set boundaries
   xmin <- min(gdata$x_value)
-  xdeduct <- if (plot_paired) 2*nudge else nudge
+  xdeduct <- if (plot_paired | plot_mixed) 2*nudge else nudge
   xmin <- xmin - xdeduct - 0.25
 
 

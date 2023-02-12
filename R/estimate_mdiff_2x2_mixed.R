@@ -210,8 +210,8 @@ estimate_mdiff_2x2_mixed <- function(
   sp$ta_LL <- sp_ta$LL
   sp$ta_UL <- sp_ta$UL
 
-  esci_names <- c("effect_size", "LL", "UL", "SE", "df", "ta_LL", "ta_UL", "t", "p")
-  statpsych_names <- c("Estimate", "LL", "UL", "SE", "df", "ta_LL", "ta_UL", "t", "p")
+  esci_names <- c("effect_size", "LL", "UL", "ta_LL", "ta_UL", "SE", "df", "t", "p")
+  statpsych_names <- c("Estimate", "LL", "UL", "ta_LL", "ta_UL", "SE", "df", "t", "p")
 
   tbl_fix <- c(
     "main_effect_A" = 3,
@@ -244,7 +244,7 @@ estimate_mdiff_2x2_mixed <- function(
     save_raw_data = FALSE
   )
 
-  esci_copy_columns <- c("LL", "UL", "SE", "df", "ta_LL", "ta_UL")
+  esci_copy_columns <- c("LL", "UL", "ta_LL", "ta_UL", "SE", "df")
   estimate$main_effect_B$es_mean_difference[1, esci_copy_columns] <-
     ws_estimate$es_mean_difference[1, esci_copy_columns]
   estimate$main_effect_B$es_mean_difference[2, esci_copy_columns] <-
@@ -303,8 +303,8 @@ estimate_mdiff_2x2_mixed <- function(
 
       estimate[[x]]$es_median_difference <- NULL
       estimate[[x]]$es_median_difference_properties <- NULL
-      estimate[[x]]$es_smd <- NULL
-      estimate[[x]]$es_smd_properties <- NULL
+      # estimate[[x]]$es_smd <- NULL
+      # estimate[[x]]$es_smd_properties <- NULL
     }
   }
 
