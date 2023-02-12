@@ -9,55 +9,130 @@ children:
     style: inline
     children:
       - type: RadioButton
-        name: raw_button
-        optionName: switch
-        optionPart: from_raw
+        name: fully_between_button
+        optionName: design
+        optionPart: fully_between
       - type: RadioButton
-        name: summary_button
-        optionName: switch
-        optionPart: from_summary
+        name: mixed_button
+        optionName: design
+        optionPart: mixed
   - type: CollapseBox
-    label: Work with full data
-    name: rpanel
+    label: Fully between-subjects design
+    name: fully_between_panel
     collapsed: false
     children:
       - type: Label
-        label: Raw data
+        label: Fully between-subjects design
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: RadioButton
+            name: raw_button
+            optionName: switch
+            optionPart: from_raw
+          - type: RadioButton
+            name: summary_button
+            optionName: switch
+            optionPart: from_summary
+      - type: CollapseBox
+        label: Work with full data
+        name: rpanel
+        collapsed: false
+        children:
+          - type: Label
+            label: Raw data
+          - type: VariableSupplier
+            persistentItems: false
+            stretchFactor: 1
+            children:
+              - type: TargetLayoutBox
+                label: Grouping variable A
+                children:
+                  - type: VariablesListBox
+                    name: grouping_variable_A
+                    enable: '(switch:from_raw)'
+                    maxItemCount: 1
+                    isTarget: true
+              - type: TargetLayoutBox
+                label: Grouping variable B
+                children:
+                  - type: VariablesListBox
+                    name: grouping_variable_B
+                    enable: '(switch:from_raw)'
+                    maxItemCount: 1
+                    isTarget: true
+              - type: TargetLayoutBox
+                label: Outcome variable
+                children:
+                  - type: VariablesListBox
+                    name: outcome_variable
+                    maxItemCount: 1
+                    isTarget: true
+      - type: CollapseBox
+        label: Work with summary data
+        name: spanel
+        stretchFactor: 1
+        collapsed: true
+        children:
+          - type: Label
+            label: Summary data
+      - type: Label
+        label: <hr>Between-subjects analysis options
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: effect_size
+            enable: '(switch:from_raw)'
+          - type: CheckBox
+            name: assume_equal_variance
+            enable: '(effect_size:mean_difference)'
+  - type: CollapseBox
+    label: Mixed Design (RCT)
+    name: mixed_panel
+    collapsed: true
+    children:
+      - type: Label
+        label: Mixed Design (RCT)
       - type: VariableSupplier
         persistentItems: false
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Grouping variable A
+            label: Grouping variable
             children:
               - type: VariablesListBox
-                name: grouping_variable_A
-                enable: '(switch:from_raw)'
+                name: grouping_variable
+                enable: '(design:mixed)'
                 maxItemCount: 1
                 isTarget: true
           - type: TargetLayoutBox
-            label: Grouping variable B
+            label: First repeated measure
             children:
               - type: VariablesListBox
-                name: grouping_variable_B
-                enable: '(switch:from_raw)'
+                name: outcome_variable_level1
+                enable: '(design:mixed)'
                 maxItemCount: 1
                 isTarget: true
           - type: TargetLayoutBox
-            label: Outcome variable
+            label: Second repeated measure
             children:
               - type: VariablesListBox
-                name: outcome_variable
+                name: outcome_variable_level2
                 maxItemCount: 1
                 isTarget: true
-  - type: CollapseBox
-    label: Work with summary data
-    name: spanel
-    stretchFactor: 1
-    collapsed: true
-    children:
-      - type: Label
-        label: Summary data
+      - type: LayoutBox
+        margin: small
+        stretchFactor: 1
+        children:
+          - type: TextBox
+            name: repeated_measures_name
+            format: string
+            stretchFactor: 1
+          - type: TextBox
+            name: outcome_variable_name
+            format: string
+            stretchFactor: 1
   - type: Label
     label: <hr>Analysis options
     stretchFactor: 1
@@ -66,12 +141,6 @@ children:
         name: conf_level
         format: number
         suffix: '%'
-      - type: ComboBox
-        name: effect_size
-        enable: '(switch:from_raw)'
-      - type: CheckBox
-        name: assume_equal_variance
-        enable: '(effect_size:mean_difference)'
       - type: CheckBox
         name: show_details
   - type: CollapseBox

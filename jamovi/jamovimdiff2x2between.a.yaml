@@ -6,6 +6,15 @@ version: '1.0.0'
 jas: '1.2'
 
 options:
+    - name: design
+      type: List
+      default: fully_between
+      options:
+          - name: fully_between
+            title: Fully between-subjects
+          - name: mixed
+            title: Mixed (RCT)
+
     - name: switch
       type: List
       default: from_raw
@@ -32,6 +41,31 @@ options:
       title: Grouping variable B
       type: Variable
       permitted: [factor]
+
+    - name: outcome_variable_level1
+      title: First repeated measure
+      type: Variable
+      permitted: [numeric]
+
+    - name: outcome_variable_level2
+      title: Second repeated measure
+      type: Variable
+      permitted: [numeric]
+
+    - name: grouping_variable
+      title: Grouping variable
+      type: Variable
+      permitted: [factor]
+
+    - name: repeated_measures_name
+      title: 'Repeated measure name'
+      type: String
+      default: 'Time'
+
+    - name: outcome_variable_name
+      title: 'Outcome variable name'
+      type: String
+      default: 'My outcome variable'
 
     - name: conf_level
       type: Number

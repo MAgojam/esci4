@@ -237,64 +237,97 @@ jamovi_mdiff_2x2between <- function(
 
 
   # Prelim -----------------------------------------------------
+  mixed <- (self$options$design == "mixed")
   from_raw <- (self$options$switch == "from_raw")
   notes <- c(NULL)
 
 
-  # Step 1 - Check if analysis basics are defined ---------------
-  #  if not, return NULL
-  if(from_raw) {
+  if (!mixed) {
+    # Step 1 - Check if analysis basics are defined ---------------
+    #  if not, return NULL
+    if(from_raw) {
+      if (
+        is.null(self$options$grouping_variable_A) |
+        is.null(self$options$grouping_variable_B) |
+        is.null(self$options$outcome_variable)
+      ) return(NULL)
+    } else {
+    }
+
+
+
+    # Step 3: Run analysis ------------------------------------------
+    # Fill in analysis properties
+
+    # If from summary:
+    # get outcome and grouping variable names
+    # and set notes if they have been replaced
+    if(!from_raw) {
+
+    }
+
+    call <- esci4::estimate_mdiff_2x2_between
+    args <- list()
+    conf_level <- jamovi_sanitize(
+      my_value = self$options$conf_level,
+      return_value = 95,
+      na_ok = FALSE,
+      convert_to_number = TRUE,
+      lower = 75,
+      lower_inclusive = FALSE,
+      upper = 100,
+      upper_inclusive = FALSE,
+      my_value_name = "Confidence level"
+    )
+    notes <- c(notes, names(conf_level))
+    args$conf_level <- conf_level/100
+    args$assume_equal_variance <- self$options$assume_equal_variance
+
+    # Set args for summary and raw data cases
+    if (from_raw) {
+      # Analysis from raw data
+      args$data <- self$data
+      args$grouping_variable_A <- self$options$grouping_variable_A
+      args$grouping_variable_B <- self$options$grouping_variable_B
+      args$outcome_variable <- self$options$outcome_variable
+
+    } else {
+
+    }
+
+
+  } else {
+
     if (
-      is.null(self$options$grouping_variable_A) |
-      is.null(self$options$grouping_variable_B) |
-      is.null(self$options$outcome_variable)
+      is.null(self$options$grouping_variable) |
+      is.null(self$options$outcome_variable_level1) |
+      is.null(self$options$outcome_variable_level2)
     ) return(NULL)
-  } else {
-  }
 
-
-
-  # Step 3: Run analysis ------------------------------------------
-  # Fill in analysis properties
-
-  # If from summary:
-  # get outcome and grouping variable names
-  # and set notes if they have been replaced
-  if(!from_raw) {
-
-  }
-
-  call <- esci4::estimate_mdiff_2x2_between
-  args <- list()
-  conf_level <- jamovi_sanitize(
-    my_value = self$options$conf_level,
-    return_value = 95,
-    na_ok = FALSE,
-    convert_to_number = TRUE,
-    lower = 75,
-    lower_inclusive = FALSE,
-    upper = 100,
-    upper_inclusive = FALSE,
-    my_value_name = "Confidence level"
-  )
-  notes <- c(notes, names(conf_level))
-  args$conf_level <- conf_level/100
-  args$assume_equal_variance <- self$options$assume_equal_variance
-
-  # Set args for summary and raw data cases
-  if (from_raw) {
-    # Analysis from raw data
+    call <- esci4::estimate_mdiff_2x2_mixed
+    args <- list()
+    conf_level <- jamovi_sanitize(
+      my_value = self$options$conf_level,
+      return_value = 95,
+      na_ok = FALSE,
+      convert_to_number = TRUE,
+      lower = 75,
+      lower_inclusive = FALSE,
+      upper = 100,
+      upper_inclusive = FALSE,
+      my_value_name = "Confidence level"
+    )
+    notes <- c(notes, names(conf_level))
+    args$conf_level <- conf_level/100
     args$data <- self$data
-    args$grouping_variable_A <- self$options$grouping_variable_A
-    args$grouping_variable_B <- self$options$grouping_variable_B
-    args$outcome_variable <- self$options$outcome_variable
-
-  } else {
+    args$grouping_variable <- self$options$grouping_variable
+    args$outcome_variable_level1 <- self$options$outcome_variable_level1
+    args$outcome_variable_level2 <- self$options$outcome_variable_level2
+    args$outcome_variable_name <- self$options$outcome_variable_name
+    args$repeated_measures_name <- self$options$repeated_measures_name
 
   }
 
-  # self$results$debug$setContent(args)
-  # self$results$debug$setVisible(TRUE)
 
 
   # Do analysis, then post any notes that have emerged

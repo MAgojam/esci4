@@ -188,7 +188,7 @@ estimate_mdiff_2x2_mixed <- function(
 
 
   sp <- as.data.frame(
-    statpsych::ci.2x2.mean.mixed(
+    esci_ci.2x2.mean.mixed(
       alpha = 1 - conf_level,
       y11 = data[data[[grouping_variable]] == a2, b2],
       y12 = data[data[[grouping_variable]] == a2, b1],
@@ -198,7 +198,7 @@ estimate_mdiff_2x2_mixed <- function(
   )
 
   sp_ta <- as.data.frame(
-    statpsych::ci.2x2.mean.mixed(
+   esci_ci.2x2.mean.mixed(
       alpha = (1 - conf_level)*2,
       y11 = data[data[[grouping_variable]] == a2, b2],
       y12 = data[data[[grouping_variable]] == a2, b1],

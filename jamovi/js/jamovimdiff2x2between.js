@@ -21,6 +21,14 @@
             this.setPanels(ui, event);
         },
 
+        fully_between_button_changed: function(ui, event) {
+            this.setPanels(ui, event);
+        },
+
+        mixed_button_changed: function(ui, event) {
+            this.setPanels(ui, event);
+        },
+
 
         effect_size_changed: function(ui, event) {
             if (ui.effect_size.getValue() == "median_difference") {
@@ -43,6 +51,19 @@
               // would be nice to disable collapse/expand options on the panels, but doesn't seem possible at the moment
               ui.spanel.collapse();
               ui.rpanel.expand();
+            }
+
+            if (ui.fully_between_button.value()){
+              // summary data option - expand that panel and collapse the raw panel
+              // also set all controls in summary panel to be enabled
+              // would be nice to be able to disable the controls in the raw data panel and/or expand option for that panel
+              ui.fully_between_panel.expand();
+              ui.mixed_panel.collapse();
+            } else {
+              // raw data selected, so expand that panel, collapse summary data panel and disable its controls
+              // would be nice to disable collapse/expand options on the panels, but doesn't seem possible at the moment
+              ui.fully_between_panel.collapse();
+              ui.mixed_panel.expand();
             }
 
         }

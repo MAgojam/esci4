@@ -6,10 +6,16 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
+            design = "fully_between",
             switch = "from_raw",
             outcome_variable = NULL,
             grouping_variable_A = NULL,
             grouping_variable_B = NULL,
+            outcome_variable_level1 = NULL,
+            outcome_variable_level2 = NULL,
+            grouping_variable = NULL,
+            repeated_measures_name = "Time",
+            outcome_variable_name = "My outcome variable",
             conf_level = 95,
             effect_size = "mean_difference",
             assume_equal_variance = TRUE,
@@ -105,6 +111,13 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                 requiresData=TRUE,
                 ...)
 
+            private$..design <- jmvcore::OptionList$new(
+                "design",
+                design,
+                default="fully_between",
+                options=list(
+                    "fully_between",
+                    "mixed"))
             private$..switch <- jmvcore::OptionList$new(
                 "switch",
                 switch,
@@ -127,6 +140,29 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                 grouping_variable_B,
                 permitted=list(
                     "factor"))
+            private$..outcome_variable_level1 <- jmvcore::OptionVariable$new(
+                "outcome_variable_level1",
+                outcome_variable_level1,
+                permitted=list(
+                    "numeric"))
+            private$..outcome_variable_level2 <- jmvcore::OptionVariable$new(
+                "outcome_variable_level2",
+                outcome_variable_level2,
+                permitted=list(
+                    "numeric"))
+            private$..grouping_variable <- jmvcore::OptionVariable$new(
+                "grouping_variable",
+                grouping_variable,
+                permitted=list(
+                    "factor"))
+            private$..repeated_measures_name <- jmvcore::OptionString$new(
+                "repeated_measures_name",
+                repeated_measures_name,
+                default="Time")
+            private$..outcome_variable_name <- jmvcore::OptionString$new(
+                "outcome_variable_name",
+                outcome_variable_name,
+                default="My outcome variable")
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -1605,10 +1641,16 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                     "gray95",
                     "gray100"))
 
+            self$.addOption(private$..design)
             self$.addOption(private$..switch)
             self$.addOption(private$..outcome_variable)
             self$.addOption(private$..grouping_variable_A)
             self$.addOption(private$..grouping_variable_B)
+            self$.addOption(private$..outcome_variable_level1)
+            self$.addOption(private$..outcome_variable_level2)
+            self$.addOption(private$..grouping_variable)
+            self$.addOption(private$..repeated_measures_name)
+            self$.addOption(private$..outcome_variable_name)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..effect_size)
             self$.addOption(private$..assume_equal_variance)
@@ -1699,10 +1741,16 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             self$.addOption(private$..fill_error_difference)
         }),
     active = list(
+        design = function() private$..design$value,
         switch = function() private$..switch$value,
         outcome_variable = function() private$..outcome_variable$value,
         grouping_variable_A = function() private$..grouping_variable_A$value,
         grouping_variable_B = function() private$..grouping_variable_B$value,
+        outcome_variable_level1 = function() private$..outcome_variable_level1$value,
+        outcome_variable_level2 = function() private$..outcome_variable_level2$value,
+        grouping_variable = function() private$..grouping_variable$value,
+        repeated_measures_name = function() private$..repeated_measures_name$value,
+        outcome_variable_name = function() private$..outcome_variable_name$value,
         conf_level = function() private$..conf_level$value,
         effect_size = function() private$..effect_size$value,
         assume_equal_variance = function() private$..assume_equal_variance$value,
@@ -1792,10 +1840,16 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
         fill_error_unused = function() private$..fill_error_unused$value,
         fill_error_difference = function() private$..fill_error_difference$value),
     private = list(
+        ..design = NA,
         ..switch = NA,
         ..outcome_variable = NA,
         ..grouping_variable_A = NA,
         ..grouping_variable_B = NA,
+        ..outcome_variable_level1 = NA,
+        ..outcome_variable_level2 = NA,
+        ..grouping_variable = NA,
+        ..repeated_measures_name = NA,
+        ..outcome_variable_name = NA,
         ..conf_level = NA,
         ..effect_size = NA,
         ..assume_equal_variance = NA,
@@ -2059,7 +2113,7 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                 options=options,
                 name="es_median_difference",
                 title="Median Difference",
-                visible="(effect_size == 'median_difference')",
+                visible="(effect_size == 'median_difference' & design == 'fully_between')",
                 rows=15,
                 clearWith=list(
                     "switch",
@@ -2197,7 +2251,7 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                 name="es_smd",
                 title="Standardized Mean Difference",
                 rows=5,
-                visible="(effect_size == 'mean_difference')",
+                visible="(effect_size == 'mean_difference' & design == 'fully_between')",
                 clearWith=list(
                     "switch",
                     "grouping_variable_levels",
@@ -2452,11 +2506,17 @@ jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
 #' 2x2 Factorial
 #'
 #' 
+#' @param design .
 #' @param switch .
 #' @param data .
 #' @param outcome_variable .
 #' @param grouping_variable_A .
 #' @param grouping_variable_B .
+#' @param outcome_variable_level1 .
+#' @param outcome_variable_level2 .
+#' @param grouping_variable .
+#' @param repeated_measures_name .
+#' @param outcome_variable_name .
 #' @param conf_level .
 #' @param effect_size .
 #' @param assume_equal_variance .
@@ -2569,11 +2629,17 @@ jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
 #'
 #' @export
 jamovimdiff2x2between <- function(
+    design = "fully_between",
     switch = "from_raw",
     data,
     outcome_variable,
     grouping_variable_A,
     grouping_variable_B,
+    outcome_variable_level1,
+    outcome_variable_level2,
+    grouping_variable,
+    repeated_measures_name = "Time",
+    outcome_variable_name = "My outcome variable",
     conf_level = 95,
     effect_size = "mean_difference",
     assume_equal_variance = TRUE,
@@ -2669,21 +2735,34 @@ jamovimdiff2x2between <- function(
     if ( ! missing(outcome_variable)) outcome_variable <- jmvcore::resolveQuo(jmvcore::enquo(outcome_variable))
     if ( ! missing(grouping_variable_A)) grouping_variable_A <- jmvcore::resolveQuo(jmvcore::enquo(grouping_variable_A))
     if ( ! missing(grouping_variable_B)) grouping_variable_B <- jmvcore::resolveQuo(jmvcore::enquo(grouping_variable_B))
+    if ( ! missing(outcome_variable_level1)) outcome_variable_level1 <- jmvcore::resolveQuo(jmvcore::enquo(outcome_variable_level1))
+    if ( ! missing(outcome_variable_level2)) outcome_variable_level2 <- jmvcore::resolveQuo(jmvcore::enquo(outcome_variable_level2))
+    if ( ! missing(grouping_variable)) grouping_variable <- jmvcore::resolveQuo(jmvcore::enquo(grouping_variable))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(outcome_variable), outcome_variable, NULL),
             `if`( ! missing(grouping_variable_A), grouping_variable_A, NULL),
-            `if`( ! missing(grouping_variable_B), grouping_variable_B, NULL))
+            `if`( ! missing(grouping_variable_B), grouping_variable_B, NULL),
+            `if`( ! missing(outcome_variable_level1), outcome_variable_level1, NULL),
+            `if`( ! missing(outcome_variable_level2), outcome_variable_level2, NULL),
+            `if`( ! missing(grouping_variable), grouping_variable, NULL))
 
     for (v in grouping_variable_A) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
     for (v in grouping_variable_B) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+    for (v in grouping_variable) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- jamovimdiff2x2betweenOptions$new(
+        design = design,
         switch = switch,
         outcome_variable = outcome_variable,
         grouping_variable_A = grouping_variable_A,
         grouping_variable_B = grouping_variable_B,
+        outcome_variable_level1 = outcome_variable_level1,
+        outcome_variable_level2 = outcome_variable_level2,
+        grouping_variable = grouping_variable,
+        repeated_measures_name = repeated_measures_name,
+        outcome_variable_name = outcome_variable_name,
         conf_level = conf_level,
         effect_size = effect_size,
         assume_equal_variance = assume_equal_variance,
