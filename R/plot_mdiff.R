@@ -84,6 +84,7 @@ plot_mdiff <- function(
   simple_contrast <- (length(contrast) == 2)
   plot_paired <- !is.null(estimate$es_r)
   plot_mixed <- !is.null(estimate$raw_data$paired)
+  plot_interaction <- all(estimate$properties$contrast == c(1, -1, -1, 1))
   difference_es_name <- if (difference_axis_units == "sd")
     estimate$es_smd_properties$effect_size_name_html
   else
@@ -187,6 +188,7 @@ plot_mdiff <- function(
     contrast = contrast,
     plot_paired = plot_paired,
     plot_mixed = plot_mixed,
+    plot_interaction = plot_interaction,
     rdata = rdata,
     overview = overview,
     effect_size = effect_size,
@@ -242,6 +244,7 @@ plot_mdiff_base <- function(
   contrast,
   plot_paired,
   plot_mixed = FALSE,
+  plot_interaction = FALSE,
   rdata = NULL,
   overview = NULL,
   effect_size = c("mean", "median", "r", "P"),
@@ -284,10 +287,15 @@ plot_mdiff_base <- function(
   difference_LL <- gdata[[3, "LL"]]
   difference_UL <- gdata[[3, "UL"]]
 
-  gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + reference_es
 
-  # Reorder comparison data
-  gdata <- gdata[c(2, 1, 3), ]
+  if (plot_interaction) {
+    gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + overview[2, "y_value"]
+  } else {
+    gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + reference_es
+    # Reorder comparison data
+    gdata <- gdata[c(2, 1, 3), ]
+  }
+
   gdata$effect_type <- NULL
   gdata$effects_complex <- NULL
   gdata$p <- NULL
@@ -331,9 +339,11 @@ plot_mdiff_base <- function(
     rlines <- overview[overview$type == "Reference", c("y_value", "x_value", "nudge", "type")]
     clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge", "type") ]
 
-
-
-    gdata$x_value <- seq(from = orows + 2, to = orows + 4, by = 1)
+    if (plot_interaction) {
+      gdata$x_value <- orows + 1
+    } else {
+      gdata$x_value <- seq(from = orows + 2, to = orows + 4, by = 1)
+    }
     gdata$nudge <- 0
 
     ref_x <- gdata$x_value[[1]] + gdata$nudge[[1]]
@@ -374,6 +384,10 @@ plot_mdiff_base <- function(
     rlines$type <- paste(rlines$type, "_summary", sep = "")
     clines$type <- paste(clines$type, "_summary", sep = "")
 
+    if (plot_interaction) {
+      gdata <- gdata[3, ]
+    }
+
     gdata <- rbind(
       overview,
       gdata
@@ -387,6 +401,11 @@ plot_mdiff_base <- function(
       gdata$nudge <- c(nudge, nudge, 0)
     }
   }
+
+  if (plot_interaction) {
+    gdata$type <- "Unused"
+  }
+
 
   # Update types for aesthetic control
   gdata$type <- paste(gdata$type, "_summary", sep = "")
@@ -417,6 +436,9 @@ plot_mdiff_base <- function(
     }
     rdata[rdata$grouping_variable %in% comparison_groups, ]$type <- "Comparison"
 
+    if (plot_interaction) {
+      rdata$type <- "Unused"
+    }
 
     rdata$type <- paste(rdata$type, "_raw", sep = "")
 
@@ -587,17 +609,21 @@ plot_mdiff_base <- function(
 
 
   if (!simple_contrast) {
-    myplot <- myplot + ggplot2::geom_segment(
-      data = rbind(rlines, clines),
-      aes(
-        x = x_value + nudge,
-        xend = xend,
-        y = y_value,
-        yend = yend,
-        color = type
-      ),
-      linetype = "solid"
-    )
+
+    if (!plot_interaction) {
+      myplot <- myplot + ggplot2::geom_segment(
+        data = rbind(rlines, clines),
+        aes(
+          x = x_value + nudge,
+          xend = xend,
+          y = y_value,
+          yend = yend,
+          color = type
+        ),
+        linetype = "solid"
+      )
+
+    }
 
   }
 
@@ -608,16 +634,18 @@ plot_mdiff_base <- function(
   myplot <- try(eval(error_expression))
 
   # Reference lines
-  myplot <- myplot + ggplot2::geom_segment(
-    data = tail(gdata, 3),
-    aes(
-      x = x_value + nudge,
-      xend = daxis_x,
-      y = y_value,
-      yend = y_value,
-    ),
-    linetype = "dotted"
-  )
+  if (!plot_interaction) {
+    myplot <- myplot + ggplot2::geom_segment(
+      data = tail(gdata, 3),
+      aes(
+        x = x_value + nudge,
+        xend = daxis_x,
+        y = y_value,
+        yend = y_value,
+      ),
+      linetype = "dotted"
+    )
+  }
 
   # Raw data
   if (plot_raw) {
