@@ -19,7 +19,7 @@ test_mdiff_2x2_between <- function() {
   )
 
 
-  estimate <- estimate_mdiff_2x2_mixed(
+  mestimate <- estimate_mdiff_2x2_mixed(
     mydf,
     outcome_variable_level1 = pre,
     outcome_variable_level2 = post,
@@ -28,5 +28,7 @@ test_mdiff_2x2_between <- function() {
     repeated_measures_name = "Phase",
     save_raw_data = TRUE
   )
+
+  plot_mdiff(mestimate$interaction)
 
 }

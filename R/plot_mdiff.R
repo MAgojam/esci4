@@ -289,8 +289,8 @@ plot_mdiff_base <- function(
 
 
   if (plot_interaction) {
-    reference_es <- overview[2, "y_value"]
-    gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + overview[2, "y_value"]
+    reference_es <- gdata[2, "y_value"] + overview[3, "y_value"]
+    gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + reference_es
   } else {
     gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + reference_es
     # Reorder comparison data
@@ -387,6 +387,7 @@ plot_mdiff_base <- function(
     }
     rlines$type <- paste(rlines$type, "_summary", sep = "")
     clines$type <- paste(clines$type, "_summary", sep = "")
+
 
     if (plot_interaction) {
       gdata <- gdata[3, ]
@@ -612,7 +613,35 @@ plot_mdiff_base <- function(
 
   if (!simple_contrast) {
 
-    if (!plot_interaction) {
+
+    if (plot_interaction) {
+      intlines <- overview[c(1, 2, 4), c("x_value", "nudge", "y_value")]
+      intlines[4, ] <- intlines[3, ]
+      intlines$x_value <- intlines$x_value + c(0.5, -0.5, 0, 0)
+      intlines[4, "y_value"] <- reference_es
+      intlines$x_end <- c(
+        overview[3, "x_value"],
+        overview[3, "x_value"],
+        Inf,
+        Inf
+      )
+      intlines$y_end <- c(
+        overview[3, "y_value"],
+        reference_es,
+        overview[4, "y_value"],
+        reference_es
+      )
+      myplot <- myplot + ggplot2::geom_segment(
+        data = intlines,
+        aes(
+          x = x_value + nudge,
+          xend = x_end + nudge,
+          y = y_value,
+          yend = y_end
+        ),
+        linetype = "dotted"
+      )
+    } else {
       myplot <- myplot + ggplot2::geom_segment(
         data = rbind(rlines, clines),
         aes(
@@ -741,6 +770,36 @@ plot_mdiff_base <- function(
       linetype = "dotted",
       colour = "black"
     )
+  }
+
+  if (plot_interaction) {
+    dots <- overview[c(2, 4), ]
+    dots$type <- c("Reference_summary", "Comparison_summary")
+    dots$y_end <- overview[c(1, 3), "y_value"]
+
+    myplot <- myplot + ggplot2::geom_segment(
+      data = dots,
+      ggplot2::aes(
+        x = x_value + nudge - 0.5,
+        xend = x_value + nudge - 0.5,
+        y = y_value,
+        yend = y_end,
+        color = type,
+        size = type
+      )
+    )
+
+    myplot <- myplot + ggplot2::geom_point(
+      data = dots,
+      ggplot2::aes(
+        x = x_value + nudge - 0.5,
+        y = y_value,
+        color = type,
+        size = type,
+        shape = type
+      )
+    )
+
   }
 
 

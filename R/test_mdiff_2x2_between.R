@@ -143,11 +143,13 @@ test_mdiff_2x2_between <- function() {
     o = score
   )
 
-  estimate <- estimate_mdiff_2x2_between(
+  restimate <- estimate_mdiff_2x2_between(
     mydf,
     grouping_variable_A = v1,
     grouping_variable_B = v2,
     outcome_variable = o
   )
+
+  plot_mdiff(restimate$interaction)
 
 }
