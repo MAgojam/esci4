@@ -5,11 +5,17 @@
 \title{2x2 Factorial}
 \usage{
 jamovimdiff2x2between(
+  design = "fully_between",
   switch = "from_raw",
   data,
   outcome_variable,
   grouping_variable_A,
   grouping_variable_B,
+  outcome_variable_level1,
+  outcome_variable_level2,
+  grouping_variable,
+  repeated_measures_name = "Time",
+  outcome_variable_name = "My outcome variable",
   conf_level = 95,
   effect_size = "mean_difference",
   assume_equal_variance = TRUE,
@@ -101,6 +107,8 @@ jamovimdiff2x2between(
 )
 }
 \arguments{
+\item{design}{.}
+
 \item{switch}{.}
 
 \item{data}{.}
@@ -110,6 +118,16 @@ jamovimdiff2x2between(
 \item{grouping_variable_A}{.}
 
 \item{grouping_variable_B}{.}
+
+\item{outcome_variable_level1}{.}
+
+\item{outcome_variable_level2}{.}
+
+\item{grouping_variable}{.}
+
+\item{repeated_measures_name}{.}
+
+\item{outcome_variable_name}{.}
 
 \item{conf_level}{.}
 

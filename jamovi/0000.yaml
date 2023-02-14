@@ -117,7 +117,7 @@ analyses:
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Proportions
   - title: Correlations
-    name: jamovirmetar
+    name: jamovimetar
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis

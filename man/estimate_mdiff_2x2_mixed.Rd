@@ -12,7 +12,7 @@ estimate_mdiff_2x2_mixed(
   outcome_variable_name = "My outcome variable",
   repeated_measures_name = "Time",
   conf_level = 0.95,
-  save_raw_data = FALSE
+  save_raw_data = TRUE
 )
 }
 \arguments{

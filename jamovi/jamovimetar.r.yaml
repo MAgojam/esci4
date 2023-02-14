@@ -1,5 +1,5 @@
 ---
-name:  jamovirmetar
+name:  jamovimetar
 title: "Meta-analysis: Correlations"
 jrs:   '1.1'
 
@@ -47,7 +47,7 @@ items:
         - name: r
           title: <i>r</i>
           type: number
-          visible: (false)
+          visible: false
         - name: N
           title: <i>N</i>
           type: integer
