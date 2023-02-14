@@ -289,6 +289,7 @@ plot_mdiff_base <- function(
 
 
   if (plot_interaction) {
+    reference_es <- overview[2, "y_value"]
     gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + overview[2, "y_value"]
   } else {
     gdata[3, c("y_value", "LL", "UL")] <- gdata[3, c("y_value", "LL", "UL")]  + reference_es
@@ -331,6 +332,9 @@ plot_mdiff_base <- function(
     orows <- nrow(overview)
     overview$x_value <- seq(from = 1, to = orows, by = 1)
     overview$nudge <- nudge
+    if (plot_interaction) {
+      overview$x_value <- c(1, 2, 3.5, 4.5)
+    }
     if (plot_mixed) {
       overview$x_value <- c(1, 2, 3.5, 4.5)
       overview$nudge <- c(nudge*-2, nudge, nudge*-2, nudge)
@@ -340,7 +344,7 @@ plot_mdiff_base <- function(
     clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge", "type") ]
 
     if (plot_interaction) {
-      gdata$x_value <- orows + 1
+      gdata$x_value <- orows + 2
     } else {
       gdata$x_value <- seq(from = orows + 2, to = orows + 4, by = 1)
     }
@@ -386,6 +390,7 @@ plot_mdiff_base <- function(
 
     if (plot_interaction) {
       gdata <- gdata[3, ]
+      overview$type <- "Unused"
     }
 
     gdata <- rbind(
@@ -402,9 +407,6 @@ plot_mdiff_base <- function(
     }
   }
 
-  if (plot_interaction) {
-    gdata$type <- "Unused"
-  }
 
 
   # Update types for aesthetic control
