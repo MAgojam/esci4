@@ -191,7 +191,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             image$state,
             "Main Effect of A" = paste("Main effect of", gvA),
             "Main Effect of B" = paste("Main effect of", gvB),
-            "Interaction" = paste("Interaction betweeen", gvA, "and", gvB)
+            "Interaction" = paste("Interaction of", gvA, "and", gvB)
           )
 
           image$setTitle(
@@ -206,7 +206,16 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             theme
           )
 
-          myplot <- myplot + ggplot2::xlab(NULL)
+          xlab <- jamovi_sanitize(
+            my_value = self$options$xlab,
+            return_value = NULL,
+            na_ok = FALSE,
+            my_value_name = "X axis: Title"
+          )
+
+          if (self$options$xlab %in% c("auto", "Auto", "AUTO")) {
+            myplot <- myplot + ggplot2::xlab(NULL)
+          }
 
           mylabs <- paste(
             estimate$overview$grouping_variable_B_level,
@@ -215,12 +224,22 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             sep = ""
           )
 
-          mylabs <- c(
-            mylabs,
-            myplot$scales$scales[[2]]$labels[5:7]
-          )
+          if (which_plot != "interaction") {
+            mylabs <- c(
+              mylabs,
+              myplot$scales$scales[[2]]$labels[5:7]
+            )
+          } else {
+            mylabs <- c(
+              mylabs,
+              myplot$scales$scales[[2]]$labels[5:5]
+            )
+
+          }
+
 
           myplot$scales$scales[[2]]$labels <- mylabs
+
 
           print(myplot)
           TRUE

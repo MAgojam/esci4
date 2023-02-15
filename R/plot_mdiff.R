@@ -93,6 +93,16 @@ plot_mdiff <- function(
     else
       "<i>Mdn</i><sub>diff</sub>"
 
+
+  if (plot_interaction & difference_axis_units != "sd") {
+    difference_es_name <- paste(
+      difference_es_name,
+      "<sub>diff</sub>",
+      sep = ""
+    )
+    #difference_es_name <- "Difference~of~Differences"
+  }
+
   #
   if (length(rope) > 1) {
 
@@ -470,6 +480,14 @@ plot_mdiff_base <- function(
     Proportion = "Pi[diff]"
   )
 
+  if (plot_interaction) {
+    null_symbol <- switch(
+      effect_size,
+      mean = "mu[diffdiff]",
+      median = "eta[diffdiff]"
+    )
+  }
+
   if (length(rope) == 1) rope[[2]] = rope[[1]]
 
   if (!is.na(rope[[1]])) {
@@ -614,34 +632,7 @@ plot_mdiff_base <- function(
   if (!simple_contrast) {
 
 
-    if (plot_interaction) {
-      intlines <- overview[c(1, 2, 4), c("x_value", "nudge", "y_value")]
-      intlines[4, ] <- intlines[3, ]
-      intlines$x_value <- intlines$x_value + c(0.5, -0.5, 0, 0)
-      intlines[4, "y_value"] <- reference_es
-      intlines$x_end <- c(
-        overview[3, "x_value"],
-        overview[3, "x_value"],
-        Inf,
-        Inf
-      )
-      intlines$y_end <- c(
-        overview[3, "y_value"],
-        reference_es,
-        overview[4, "y_value"],
-        reference_es
-      )
-      myplot <- myplot + ggplot2::geom_segment(
-        data = intlines,
-        aes(
-          x = x_value + nudge,
-          xend = x_end + nudge,
-          y = y_value,
-          yend = y_end
-        ),
-        linetype = "dotted"
-      )
-    } else {
+    if (!plot_interaction) {
       myplot <- myplot + ggplot2::geom_segment(
         data = rbind(rlines, clines),
         aes(
@@ -747,7 +738,7 @@ plot_mdiff_base <- function(
     )
   }
 
-  if (plot_mixed) {
+  if (plot_mixed & !plot_interaction) {
     myplot <- myplot + ggplot2::geom_segment(
       data = NULL,
       ggplot2::aes(
@@ -776,32 +767,69 @@ plot_mdiff_base <- function(
     dots <- overview[c(2, 4), ]
     dots$type <- c("Reference_summary", "Comparison_summary")
     dots$y_end <- overview[c(1, 3), "y_value"]
+    ref_middle <- (sum(gdata[1:2, "x_value"])+sum(gdata[1:2, "nudge"]))/2
+    comp_middle <- (sum(gdata[3:4, "x_value"])+sum(gdata[3:4, "nudge"]))/2
+    dots$x_value <- c(ref_middle, comp_middle)
 
     myplot <- myplot + ggplot2::geom_segment(
       data = dots,
       ggplot2::aes(
-        x = x_value + nudge - 0.5,
-        xend = x_value + nudge - 0.5,
+        x = x_value,
+        xend = x_value,
         y = y_value,
         yend = y_end,
-        color = type,
-        size = type
+        colour = type,
+        size = type,
+        alpha = type,
+        linetype = type,
+        linewidth = type
       )
     )
 
     myplot <- myplot + ggplot2::geom_point(
       data = dots,
       ggplot2::aes(
-        x = x_value + nudge - 0.5,
+        x = x_value,
         y = y_value,
-        color = type,
+        colour = type,
         size = type,
-        shape = type
+        shape = type,
+        alpha = type,
+        fill = type
       )
     )
 
   }
 
+
+  if (plot_interaction) {
+    intlines <- overview[c(1, 2, 4), c("x_value", "nudge", "y_value")]
+    intlines[4, ] <- intlines[3, ]
+    intlines$x_value <- c(ref_middle, ref_middle, comp_middle, comp_middle)
+    intlines[4, "y_value"] <- reference_es
+    intlines$x_end <- c(
+      comp_middle,
+      comp_middle,
+      Inf,
+      Inf
+    )
+    intlines$y_end <- c(
+      overview[3, "y_value"],
+      reference_es,
+      overview[4, "y_value"],
+      reference_es
+    )
+    myplot <- myplot + ggplot2::geom_segment(
+      data = intlines,
+      aes(
+        x = x_value,
+        xend = x_end,
+        y = y_value,
+        yend = y_end
+      ),
+      linetype = "dotted"
+    )
+  }
 
   # Plot null
   rope <- rope + reference_es

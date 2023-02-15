@@ -319,7 +319,7 @@ estimate_mdiff_2x2_between.base <- function(
     c(
       paste("Simple effect of", grouping_variable_B_name, "at", grouping_variable_A_levels[[1]]),
       paste("Simple effect of", grouping_variable_B_name, "at", grouping_variable_A_levels[[2]]),
-      paste("Difference in simple effects")
+      paste("Difference of differences")
     )
   )
 
@@ -328,7 +328,7 @@ estimate_mdiff_2x2_between.base <- function(
     paste("Main effect of ", grouping_variable_B_name, sep = ""),
     paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_levels[[1]], " of ", grouping_variable_A_name, sep = ""),
     paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_levels[[2]], " of ", grouping_variable_A_name, sep = ""),
-    paste("Interaction between ", grouping_variable_A_name, " and ", grouping_variable_B_name, sep = "")
+    paste("Interaction of ", grouping_variable_A_name, " and ", grouping_variable_B_name, sep = "")
   )
 
 
@@ -346,17 +346,17 @@ estimate_mdiff_2x2_between.base <- function(
     ),
     b_effects,
     paste(
-      paste("At ", grouping_variable_A_levels[[1]], ":", sep = ""),
+      paste(grouping_variable_A_levels[[1]], ":", sep = ""),
       b_effects
     ),
     paste(
-      paste("At ", grouping_variable_A_levels[[2]], ":", sep = ""),
+      paste(grouping_variable_A_levels[[2]], ":", sep = ""),
       b_effects
     ),
     c(
-      paste("At ", grouping_variable_A_levels[[1]], ":", b_effects[[3]], sep = ""),
-      paste("At ", grouping_variable_A_levels[[2]], ":", b_effects[[3]], sep = ""),
-      paste("Difference in Difference")
+      paste(grouping_variable_A_levels[[2]], " :", b_effects[[3]], sep = ""),
+      paste(grouping_variable_A_levels[[1]], " :", b_effects[[3]], sep = ""),
+      paste("Difference of differences")
     )
   )
 

@@ -231,9 +231,9 @@ estimate_mdiff_2x2_mixed <- function(
   }
 
   estimate$interaction$es_mean_difference[1, esci_names] <-
-    sp[5, statpsych_names]
-  estimate$interaction$es_mean_difference[2, esci_names] <-
     sp[4, statpsych_names]
+  estimate$interaction$es_mean_difference[2, esci_names] <-
+    sp[5, statpsych_names]
 
 
   ws_estimate <- esci4::estimate_mdiff_paired(
