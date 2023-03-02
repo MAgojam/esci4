@@ -72,11 +72,183 @@ children:
       - type: CollapseBox
         label: Work with summary data
         name: spanel
-        stretchFactor: 1
+        stretchFactor: 5
         collapsed: true
         children:
-          - type: Label
-            label: Summary data
+          - type: LayoutBox
+            margin: small
+            children:
+              - type: Label
+                label: Summary data
+                stretchFactor: 3
+                horizontalAlignment: center
+          - type: LayoutBox
+            margin: small
+            stretchFactor: 5
+            children:
+              - type: Label
+                label: " "
+                stretchFactor: 1
+                cell:
+                  column: 0
+                  row: 0
+              - type: TextBox
+                name: A_label
+                format: string
+                stretchFactor: 3
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 0
+          - type: LayoutBox
+            margin: small
+            stretchFactor: 5
+            children:
+              - type: TextBox
+                name: A1_label
+                format: string
+                stretchFactor: 2
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 2
+              - type: TextBox
+                name: A2_label
+                format: string
+                stretchFactor: 2
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 2
+              - type: TextBox
+                name: B_label
+                format: string
+                stretchFactor: 2
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 0
+                  row: 3
+              - type: TextBox
+                name: A1B1_mean
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 4
+              - type: TextBox
+                name: A2B1_mean
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 4
+              - type: TextBox
+                name: B1_label
+                format: string
+                stretchFactor: 1
+                suffix: '   '
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 0
+                  row: 5
+              - type: TextBox
+                name: A1B1_sd
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 5
+              - type: TextBox
+                name: A2B1_sd
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 5
+              - type: TextBox
+                name: A1B1_n
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 6
+              - type: TextBox
+                name: A2B1_n
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 6
+              - type: Label
+                label: ' '
+                stretchFactor: 2
+                horizontalAlignment: center
+                cell:
+                  column: 0
+                  row: 7
+              - type: TextBox
+                name: A1B2_mean
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 8
+              - type: TextBox
+                name: A2B2_mean
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 8
+              - type: TextBox
+                name: B2_label
+                format: string
+                stretchFactor: 1
+                suffix: '   '
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 0
+                  row: 9
+              - type: TextBox
+                name: A1B2_sd
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 9
+              - type: TextBox
+                name: A2B2_sd
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 9
+              - type: TextBox
+                name: A1B2_n
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 2
+                  row: 10
+              - type: TextBox
+                name: A2B2_n
+                format: string
+                stretchFactor: 1
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 4
+                  row: 10
       - type: Label
         label: <hr>Between-subjects analysis options
         stretchFactor: 1

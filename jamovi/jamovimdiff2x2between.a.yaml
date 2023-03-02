@@ -67,6 +67,90 @@ options:
       type: String
       default: 'My outcome variable'
 
+    - name: A1_label
+      type: String
+      default: "Control"
+
+    - name: A2_label
+      type: String
+      default: "Treated"
+
+    - name: B1_label
+      type: String
+      default: "Older"
+
+    - name: B2_label
+      type: String
+      default: "Younger"
+
+    - name: A_label
+      type: String
+      default: "Treatment"
+
+    - name: B_label
+      type: String
+      default: "Age"
+
+    - name: A1B1_mean
+      type: String
+      default: ' '
+      title: "  <i>M</i>"
+
+    - name: A1B1_sd
+      type: String
+      default: ' '
+      title: "  <i>s</i>"
+
+    - name: A1B1_n
+      type: String
+      default: ' '
+      title: "  <i>N</i>"
+
+    - name: A1B2_mean
+      type: String
+      default: ' '
+      title: "  <i>M</i>"
+
+    - name: A1B2_sd
+      type: String
+      default: ' '
+      title: "  <i>s</i>"
+
+    - name: A1B2_n
+      type: String
+      default: ' '
+      title: "  <i>N</i>"
+
+    - name: A2B1_mean
+      type: String
+      default: ' '
+      title: " "
+
+    - name: A2B1_sd
+      type: String
+      default: ' '
+      title: " "
+
+    - name: A2B1_n
+      type: String
+      default: ' '
+      title: " "
+
+    - name: A2B2_mean
+      type: String
+      default: ' '
+      title: " "
+
+    - name: A2B2_sd
+      type: String
+      default: ' '
+      title: " "
+
+    - name: A2B2_n
+      type: String
+      default: ' '
+      title: " "
+
     - name: conf_level
       type: Number
       title: Confidence level

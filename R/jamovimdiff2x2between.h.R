@@ -16,6 +16,24 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             grouping_variable = NULL,
             repeated_measures_name = "Time",
             outcome_variable_name = "My outcome variable",
+            A1_label = "Control",
+            A2_label = "Treated",
+            B1_label = "Older",
+            B2_label = "Younger",
+            A_label = "Treatment",
+            B_label = "Age",
+            A1B1_mean = " ",
+            A1B1_sd = " ",
+            A1B1_n = " ",
+            A1B2_mean = " ",
+            A1B2_sd = " ",
+            A1B2_n = " ",
+            A2B1_mean = " ",
+            A2B1_sd = " ",
+            A2B1_n = " ",
+            A2B2_mean = " ",
+            A2B2_sd = " ",
+            A2B2_n = " ",
             conf_level = 95,
             effect_size = "mean_difference",
             assume_equal_variance = TRUE,
@@ -163,6 +181,78 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                 "outcome_variable_name",
                 outcome_variable_name,
                 default="My outcome variable")
+            private$..A1_label <- jmvcore::OptionString$new(
+                "A1_label",
+                A1_label,
+                default="Control")
+            private$..A2_label <- jmvcore::OptionString$new(
+                "A2_label",
+                A2_label,
+                default="Treated")
+            private$..B1_label <- jmvcore::OptionString$new(
+                "B1_label",
+                B1_label,
+                default="Older")
+            private$..B2_label <- jmvcore::OptionString$new(
+                "B2_label",
+                B2_label,
+                default="Younger")
+            private$..A_label <- jmvcore::OptionString$new(
+                "A_label",
+                A_label,
+                default="Treatment")
+            private$..B_label <- jmvcore::OptionString$new(
+                "B_label",
+                B_label,
+                default="Age")
+            private$..A1B1_mean <- jmvcore::OptionString$new(
+                "A1B1_mean",
+                A1B1_mean,
+                default=" ")
+            private$..A1B1_sd <- jmvcore::OptionString$new(
+                "A1B1_sd",
+                A1B1_sd,
+                default=" ")
+            private$..A1B1_n <- jmvcore::OptionString$new(
+                "A1B1_n",
+                A1B1_n,
+                default=" ")
+            private$..A1B2_mean <- jmvcore::OptionString$new(
+                "A1B2_mean",
+                A1B2_mean,
+                default=" ")
+            private$..A1B2_sd <- jmvcore::OptionString$new(
+                "A1B2_sd",
+                A1B2_sd,
+                default=" ")
+            private$..A1B2_n <- jmvcore::OptionString$new(
+                "A1B2_n",
+                A1B2_n,
+                default=" ")
+            private$..A2B1_mean <- jmvcore::OptionString$new(
+                "A2B1_mean",
+                A2B1_mean,
+                default=" ")
+            private$..A2B1_sd <- jmvcore::OptionString$new(
+                "A2B1_sd",
+                A2B1_sd,
+                default=" ")
+            private$..A2B1_n <- jmvcore::OptionString$new(
+                "A2B1_n",
+                A2B1_n,
+                default=" ")
+            private$..A2B2_mean <- jmvcore::OptionString$new(
+                "A2B2_mean",
+                A2B2_mean,
+                default=" ")
+            private$..A2B2_sd <- jmvcore::OptionString$new(
+                "A2B2_sd",
+                A2B2_sd,
+                default=" ")
+            private$..A2B2_n <- jmvcore::OptionString$new(
+                "A2B2_n",
+                A2B2_n,
+                default=" ")
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -1651,6 +1741,24 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             self$.addOption(private$..grouping_variable)
             self$.addOption(private$..repeated_measures_name)
             self$.addOption(private$..outcome_variable_name)
+            self$.addOption(private$..A1_label)
+            self$.addOption(private$..A2_label)
+            self$.addOption(private$..B1_label)
+            self$.addOption(private$..B2_label)
+            self$.addOption(private$..A_label)
+            self$.addOption(private$..B_label)
+            self$.addOption(private$..A1B1_mean)
+            self$.addOption(private$..A1B1_sd)
+            self$.addOption(private$..A1B1_n)
+            self$.addOption(private$..A1B2_mean)
+            self$.addOption(private$..A1B2_sd)
+            self$.addOption(private$..A1B2_n)
+            self$.addOption(private$..A2B1_mean)
+            self$.addOption(private$..A2B1_sd)
+            self$.addOption(private$..A2B1_n)
+            self$.addOption(private$..A2B2_mean)
+            self$.addOption(private$..A2B2_sd)
+            self$.addOption(private$..A2B2_n)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..effect_size)
             self$.addOption(private$..assume_equal_variance)
@@ -1751,6 +1859,24 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
         grouping_variable = function() private$..grouping_variable$value,
         repeated_measures_name = function() private$..repeated_measures_name$value,
         outcome_variable_name = function() private$..outcome_variable_name$value,
+        A1_label = function() private$..A1_label$value,
+        A2_label = function() private$..A2_label$value,
+        B1_label = function() private$..B1_label$value,
+        B2_label = function() private$..B2_label$value,
+        A_label = function() private$..A_label$value,
+        B_label = function() private$..B_label$value,
+        A1B1_mean = function() private$..A1B1_mean$value,
+        A1B1_sd = function() private$..A1B1_sd$value,
+        A1B1_n = function() private$..A1B1_n$value,
+        A1B2_mean = function() private$..A1B2_mean$value,
+        A1B2_sd = function() private$..A1B2_sd$value,
+        A1B2_n = function() private$..A1B2_n$value,
+        A2B1_mean = function() private$..A2B1_mean$value,
+        A2B1_sd = function() private$..A2B1_sd$value,
+        A2B1_n = function() private$..A2B1_n$value,
+        A2B2_mean = function() private$..A2B2_mean$value,
+        A2B2_sd = function() private$..A2B2_sd$value,
+        A2B2_n = function() private$..A2B2_n$value,
         conf_level = function() private$..conf_level$value,
         effect_size = function() private$..effect_size$value,
         assume_equal_variance = function() private$..assume_equal_variance$value,
@@ -1850,6 +1976,24 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
         ..grouping_variable = NA,
         ..repeated_measures_name = NA,
         ..outcome_variable_name = NA,
+        ..A1_label = NA,
+        ..A2_label = NA,
+        ..B1_label = NA,
+        ..B2_label = NA,
+        ..A_label = NA,
+        ..B_label = NA,
+        ..A1B1_mean = NA,
+        ..A1B1_sd = NA,
+        ..A1B1_n = NA,
+        ..A1B2_mean = NA,
+        ..A1B2_sd = NA,
+        ..A1B2_n = NA,
+        ..A2B1_mean = NA,
+        ..A2B1_sd = NA,
+        ..A2B1_n = NA,
+        ..A2B2_mean = NA,
+        ..A2B2_sd = NA,
+        ..A2B2_n = NA,
         ..conf_level = NA,
         ..effect_size = NA,
         ..assume_equal_variance = NA,
@@ -2517,6 +2661,24 @@ jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
 #' @param grouping_variable .
 #' @param repeated_measures_name .
 #' @param outcome_variable_name .
+#' @param A1_label .
+#' @param A2_label .
+#' @param B1_label .
+#' @param B2_label .
+#' @param A_label .
+#' @param B_label .
+#' @param A1B1_mean .
+#' @param A1B1_sd .
+#' @param A1B1_n .
+#' @param A1B2_mean .
+#' @param A1B2_sd .
+#' @param A1B2_n .
+#' @param A2B1_mean .
+#' @param A2B1_sd .
+#' @param A2B1_n .
+#' @param A2B2_mean .
+#' @param A2B2_sd .
+#' @param A2B2_n .
 #' @param conf_level .
 #' @param effect_size .
 #' @param assume_equal_variance .
@@ -2640,6 +2802,24 @@ jamovimdiff2x2between <- function(
     grouping_variable,
     repeated_measures_name = "Time",
     outcome_variable_name = "My outcome variable",
+    A1_label = "Control",
+    A2_label = "Treated",
+    B1_label = "Older",
+    B2_label = "Younger",
+    A_label = "Treatment",
+    B_label = "Age",
+    A1B1_mean = " ",
+    A1B1_sd = " ",
+    A1B1_n = " ",
+    A1B2_mean = " ",
+    A1B2_sd = " ",
+    A1B2_n = " ",
+    A2B1_mean = " ",
+    A2B1_sd = " ",
+    A2B1_n = " ",
+    A2B2_mean = " ",
+    A2B2_sd = " ",
+    A2B2_n = " ",
     conf_level = 95,
     effect_size = "mean_difference",
     assume_equal_variance = TRUE,
@@ -2763,6 +2943,24 @@ jamovimdiff2x2between <- function(
         grouping_variable = grouping_variable,
         repeated_measures_name = repeated_measures_name,
         outcome_variable_name = outcome_variable_name,
+        A1_label = A1_label,
+        A2_label = A2_label,
+        B1_label = B1_label,
+        B2_label = B2_label,
+        A_label = A_label,
+        B_label = B_label,
+        A1B1_mean = A1B1_mean,
+        A1B1_sd = A1B1_sd,
+        A1B1_n = A1B1_n,
+        A1B2_mean = A1B2_mean,
+        A1B2_sd = A1B2_sd,
+        A1B2_n = A1B2_n,
+        A2B1_mean = A2B1_mean,
+        A2B1_sd = A2B1_sd,
+        A2B1_n = A2B1_n,
+        A2B2_mean = A2B2_mean,
+        A2B2_sd = A2B2_sd,
+        A2B2_n = A2B2_n,
         conf_level = conf_level,
         effect_size = effect_size,
         assume_equal_variance = assume_equal_variance,

@@ -135,7 +135,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
 
             from_raw <- (self$options$switch == "from_raw")
 
-            estimate <- jamovi_mdiff_2x2between(
+            estimate <- jamovi_mdiff_2x2(
               self = self,
               save_raw_data = FALSE
             )
@@ -166,7 +166,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
         .estimation_plot = function(image, ggtheme, theme, ...) {
 
           # Redo analysis
-          estimate <- jamovi_mdiff_2x2between(
+          estimate <- jamovi_mdiff_2x2(
             self = self,
             save_raw_data = TRUE
           )
@@ -249,7 +249,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
 
 
 
-jamovi_mdiff_2x2between <- function(
+jamovi_mdiff_2x2 <- function(
     self,
     save_raw_data = FALSE
 ) {
@@ -260,6 +260,7 @@ jamovi_mdiff_2x2between <- function(
   from_raw <- (self$options$switch == "from_raw")
   notes <- c(NULL)
 
+  args <- list()
 
   if (!mixed) {
     # Step 1 - Check if analysis basics are defined ---------------
@@ -271,6 +272,263 @@ jamovi_mdiff_2x2between <- function(
         is.null(self$options$outcome_variable)
       ) return(NULL)
     } else {
+      a_label <- jamovi_sanitize(
+        self$options$A1_label,
+        return_value = "Treatment",
+        na_ok = FALSE,
+        my_value_name = "Variable A name"
+      )
+
+      b_label <- jamovi_sanitize(
+        self$options$A1_label,
+        return_value = "Age",
+        na_ok = FALSE,
+        my_value_name = "Variable B name"
+      )
+
+      a1_label <- jamovi_sanitize(
+        self$options$A1_label,
+        return_value = "Control",
+        na_ok = FALSE,
+        my_value_name = "A1 label"
+      )
+      a2_label <- jamovi_sanitize(
+        self$options$A2_label,
+        return_value = "Control",
+        na_ok = FALSE,
+        my_value_name = "A2 label"
+      )
+      b1_label <- jamovi_sanitize(
+        self$options$B1_label,
+        return_value = "Control",
+        na_ok = FALSE,
+        my_value_name = "B1 label"
+      )
+      b2_label <- jamovi_sanitize(
+        self$options$B2_label,
+        return_value = "Control",
+        na_ok = FALSE,
+        my_value_name = "B1 label"
+      )
+
+
+      args$A1B1_mean <- jamovi_required_numeric(
+        self$options$A1B1_mean,
+        my_value_name = paste(
+          "Mean of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A1B2_mean <- jamovi_required_numeric(
+        self$options$A1B2_mean,
+        my_value_name = paste(
+          "Mean of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A2B1_mean <- jamovi_required_numeric(
+        self$options$A2B1_mean,
+        my_value_name = paste(
+          "Mean of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A2B2_mean <- jamovi_required_numeric(
+        self$options$A2B2_mean,
+        my_value_name = paste(
+          "Mean of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+
+
+      args$A1B1_sd <- jamovi_required_numeric(
+        self$options$A1B1_sd,
+        lower = 0,
+        lower_inclusive = FALSE,
+        my_value_name = paste(
+          "Standard deviation of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A1B2_sd <- jamovi_required_numeric(
+        self$options$A1B2_sd,
+        lower = 0,
+        lower_inclusive = FALSE,
+        my_value_name = paste(
+          "Standard deviation of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A2B1_sd <- jamovi_required_numeric(
+        self$options$A2B1_sd,
+        lower = 0,
+        lower_inclusive = FALSE,
+        my_value_name = paste(
+          "Standard deviation of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A2B2_sd <- jamovi_required_numeric(
+        self$options$A2B2_sd,
+        lower = 0,
+        lower_inclusive = FALSE,
+        my_value_name = paste(
+          "Standard deviation of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+
+      args$A1B1_n <- jamovi_required_numeric(
+        self$options$A1B1_n,
+        lower = 0,
+        lower_inclusive = TRUE,
+        integer_required = TRUE,
+        my_value_name = paste(
+          "Sample size of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A1B2_n <- jamovi_required_numeric(
+        self$options$A1B2_n,
+        lower = 0,
+        lower_inclusive = TRUE,
+        integer_required = TRUE,
+        my_value_name = paste(
+          "Sample size of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A2B1_n <- jamovi_required_numeric(
+        self$options$A2B1_n,
+        lower = 0,
+        lower_inclusive = TRUE,
+        integer_required = TRUE,
+        my_value_name = paste(
+          "Sample size of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+      args$A2B2_n <- jamovi_required_numeric(
+        self$options$A2B2_n,
+        lower = 0,
+        lower_inclusive = TRUE,
+        integer_required = TRUE,
+        my_value_name = paste(
+          "Sample size of cell ",
+          a_label,
+          ":",
+          a1_label,
+          "; ",
+          b_label,
+          ":",
+          b1_label,
+          sep = ""
+        )
+      )
+
+
+      unfilled <- names(args[which(is.na(args))])
+      for (element in args) {
+        if (is.character(element)) {
+          notes <- c(notes, element)
+        }
+      }
+
+      if (length(unfilled) > 0) {
+        notes <- c(
+          paste(
+            "For summary data, please specify ",
+            length(unfilled),
+            " more valid cells statistics.",
+            sep = ""
+          ),
+          notes
+        )
+      }
+
+      if (length(notes) > 0) {
+        self$results$help$setState(notes)
+        return(NULL)
+      }
+
     }
 
 
@@ -286,7 +544,6 @@ jamovi_mdiff_2x2between <- function(
     }
 
     call <- esci4::estimate_mdiff_2x2_between
-    args <- list()
     conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,
       return_value = 95,
@@ -311,6 +568,53 @@ jamovi_mdiff_2x2between <- function(
       args$outcome_variable <- self$options$outcome_variable
 
     } else {
+      args$means <- c(
+        args$A1B1_mean,
+        args$A1B2_mean,
+        args$A2B1_mean,
+        args$A2B2_mean
+      )
+
+      args$sds <- c(
+        args$A1B1_sd,
+        args$A1B2_sd,
+        args$A2B1_sd,
+        args$A2B2_sd
+      )
+
+      args$ns <- c(
+        args$A1B1_n,
+        args$A1B2_n,
+        args$A2B1_n,
+        args$A2B2_n
+      )
+
+      args$A1B1_mean <- NULL
+      args$A1B2_mean <- NULL
+      args$A2B1_mean <- NULL
+      args$A2B2_mean <- NULL
+      args$A1B1_sd <- NULL
+      args$A1B2_sd <- NULL
+      args$A2B1_sd <- NULL
+      args$A2B2_sd <- NULL
+      args$A1B1_n <- NULL
+      args$A1B2_n <- NULL
+      args$A2B1_n <- NULL
+      args$A2B2_n <- NULL
+
+      args$grouping_variable_A_levels <- c(
+        a1_label,
+        a2_label
+      )
+
+      args$grouping_variable_B_levels <- c(
+        b1_label,
+        b2_label
+      )
+
+      args$grouping_variable_A_name <- a_label
+      args$grouping_variable_B_name <- b_label
+
 
     }
 
