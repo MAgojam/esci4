@@ -11,6 +11,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
           #   Are we evaluating a hypothesis?
           #   Is this a contrast?
           from_raw <- (self$options$switch == "from_raw")
+          mixed <- (self$options$design == "mixed")
 
           # Get a handle for each table
           tbl_overview <- NULL
@@ -30,7 +31,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
           try(tbl_interval_null <- self$results$interval_null)
           try(effect_size <- self$options$effect_size)
 
-          if (effect_size == "mean_difference") {
+          if (effect_size == "mean_difference" & !mixed) {
 
             if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
               if (assume_equal_variance) {
@@ -56,7 +57,7 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             )
           }
 
-          if (!is.null(tbl_es_mean_difference) & !is.null(assume_equal_variance)) {
+          if (!is.null(tbl_es_mean_difference) & !is.null(assume_equal_variance) & !mixed) {
             if (assume_equal_variance) {
               tbl_es_mean_difference$setNote(
                 key = "overview_table",
@@ -71,6 +72,12 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
               )
 
             }
+          } else {
+            tbl_es_mean_difference$setNote(
+              key = "es_mean_difference",
+              note = NULL,
+              init = TRUE
+            )
           }
 
           # Prep output -------------------------------------------
@@ -152,12 +159,36 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             # Add in MoE
             estimate$es_mean_difference$moe <- (estimate$es_mean_difference$UL - estimate$es_mean_difference$LL)/2
             estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
+            estimate$overview$s_pooled <- estimate$es_smd$denominator[[1]]
+            estimate$es_mean_difference$s_component <- estimate$es_smd$denominator[[1]]
 
             estimate$es_mean_difference$effect_type <- paste(
               "<b>",
               estimate$es_mean_difference$effect_type,
               "</b>"
             )
+
+            estimate$es_mean_difference$effects_complex[c(3, 6, 9, 12, 15)] <- paste(
+              "<b>",
+              estimate$es_mean_difference$effects_complex[c(3, 6, 9, 12, 15)],
+              "</b>"
+            )
+
+            if (!is.null(estimate$es_median_difference)) {
+              estimate$es_median_difference$effect_type <- paste(
+                "<b>",
+                estimate$es_median_difference$effect_type,
+                "</b>"
+              )
+
+              estimate$es_median_difference$effects_complex[c(3, 6, 9, 12, 15)] <- paste(
+                "<b>",
+                estimate$es_median_difference$effects_complex[c(3, 6, 9, 12, 15)],
+                "</b>"
+              )
+
+            }
+
 
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
@@ -189,8 +220,8 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
 
           which_title <- switch(
             image$state,
-            "Main Effect of A" = paste("Main effect of", gvA),
-            "Main Effect of B" = paste("Main effect of", gvB),
+            "Main Effect of A" = paste("Main Effect of", gvA),
+            "Main Effect of B" = paste("Main Effect of", gvB),
             "Interaction" = paste("Interaction of", gvA, "and", gvB)
           )
 

@@ -2252,7 +2252,12 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details & effect_size == 'mean_difference')"))))
+                        `visible`="(show_details & effect_size == 'mean_difference')"),
+                    list(
+                        `name`="s_pooled", 
+                        `type`="number", 
+                        `title`="<i>s</i><sub>p</sub>", 
+                        `visible`="(effect_size == 'mean_difference' & assume_equal_variance & design == 'fully_between')"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_median_difference",
@@ -2389,7 +2394,12 @@ jamovimdiff2x2betweenResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
                         `name`="df_i", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details & assume_equal_variance)"))))
+                        `visible`="(show_details & assume_equal_variance)"),
+                    list(
+                        `name`="s_component", 
+                        `type`="number", 
+                        `title`="<i>s</i><sub>p</sub>", 
+                        `visible`="(show_details & assume_equal_variance & design == 'fully_between')"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_smd",

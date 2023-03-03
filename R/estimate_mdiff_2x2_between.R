@@ -298,8 +298,8 @@ estimate_mdiff_2x2_between.base <- function(
   all_contrasts <- list(
     main_effect_A = c(-1/2, -1/2, 1/2, 1/2),
     main_effect_B = c(-1/2, 1/2, -1/2, 1/2),
-    simple_effect_B_at_A1 = c(-1, 1, 0, 0),
     simple_effect_B_at_A2 = c(0, 0, -1, 1),
+    simple_effect_B_at_A1 = c(-1, 1, 0, 0),
     interaction = c(1, -1, -1, 1)
   )
 
@@ -317,8 +317,8 @@ estimate_mdiff_2x2_between.base <- function(
     c(grouping_variable_B_levels[[2]], grouping_variable_B_levels[[1]], "Difference"),
     c(grouping_variable_B_levels[[2]], grouping_variable_B_levels[[1]], "Difference"),
     c(
-      paste("Simple effect of", grouping_variable_B_name, "at", grouping_variable_A_levels[[1]]),
       paste("Simple effect of", grouping_variable_B_name, "at", grouping_variable_A_levels[[2]]),
+      paste("Simple effect of", grouping_variable_B_name, "at", grouping_variable_A_levels[[1]]),
       paste("Difference of differences")
     )
   )
@@ -326,8 +326,8 @@ estimate_mdiff_2x2_between.base <- function(
   effect_types <- c(
     paste("Main effect of ", grouping_variable_A_name, sep = ""),
     paste("Main effect of ", grouping_variable_B_name, sep = ""),
-    paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_levels[[1]], " of ", grouping_variable_A_name, sep = ""),
-    paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_levels[[2]], " of ", grouping_variable_A_name, sep = ""),
+    paste("Simple effect of ", grouping_variable_B_name, " at ", grouping_variable_A_name, ": ", grouping_variable_A_levels[[2]], sep = ""),
+    paste("Simple effect of ", grouping_variable_B_name, " at ",  grouping_variable_A_name, ": ", grouping_variable_A_levels[[1]], sep = ""),
     paste("Interaction of ", grouping_variable_A_name, " and ", grouping_variable_B_name, sep = "")
   )
 
@@ -346,16 +346,16 @@ estimate_mdiff_2x2_between.base <- function(
     ),
     b_effects,
     paste(
-      paste(grouping_variable_A_levels[[1]], ":", sep = ""),
-      b_effects
-    ),
-    paste(
       paste(grouping_variable_A_levels[[2]], ":", sep = ""),
       b_effects
     ),
+    paste(
+      paste(grouping_variable_A_levels[[1]], ":", sep = ""),
+      b_effects
+    ),
     c(
-      paste(grouping_variable_A_levels[[2]], " :", b_effects[[3]], sep = ""),
-      paste(grouping_variable_A_levels[[1]], " :", b_effects[[3]], sep = ""),
+      paste(grouping_variable_A_levels[[2]], ": ", b_effects[[3]], sep = ""),
+      paste(grouping_variable_A_levels[[1]], ": ", b_effects[[3]], sep = ""),
       paste("Difference of differences")
     )
   )
@@ -925,33 +925,6 @@ estimate_mdiff_2x2_between.data.frame <- function(
 
   da1 <- data[data[[grouping_variable_A]] == a1, ]
   da2 <- data[data[[grouping_variable_A]] == a2, ]
-#
-#   da1b1 <- da1[da1[[grouping_variable_B]] == b1, ]
-#   da1b2 <- da1[da1[[grouping_variable_B]] == b2, ]
-#   da2b1 <- da2[da2[[grouping_variable_B]] == b1, ]
-#   da2b2 <- da2[da2[[grouping_variable_B]] == b2, ]
-
-#
-#   means <- c(
-#     mean(da1b1[[outcome_variable]]),
-#     mean(da1b2[[outcome_variable]]),
-#     mean(da2b1[[outcome_variable]]),
-#     mean(da2b2[[outcome_variable]])
-#   )
-#
-#   sds <- c(
-#     sd(da1b1[[outcome_variable]]),
-#     sd(da1b2[[outcome_variable]]),
-#     sd(da2b1[[outcome_variable]]),
-#     sd(da2b2[[outcome_variable]])
-#   )
-#
-#   ns <- c(
-#     nrow(da1b1),
-#     nrow(da1b2),
-#     nrow(da2b1),
-#     nrow(da2b2)
-#   )
 
   overview <- rbind(
     overview.data.frame(
@@ -969,6 +942,17 @@ estimate_mdiff_2x2_between.data.frame <- function(
       assume_equal_variance = assume_equal_variance
     )
   )
+
+  overview_all <- overview.summary(
+    means = overview$mean,
+    sds = overview$sd,
+    ns = overview$n,
+    conf_level = conf_level,
+    assume_equal_variance = assume_equal_variance
+  )
+  overview$mean_LL <- overview_all$mean_LL
+  overview$mean_UL <- overview_all$mean_UL
+  overview$df <- overview_all$df
 
   overview$grouping_variable_level <- c(
     paste(levels(data[[grouping_variable_A]])[[1]], levels(data[[grouping_variable_B]])[1:2], sep = " - "),
