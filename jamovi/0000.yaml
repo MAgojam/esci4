@@ -32,31 +32,31 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuTitle: Describe
-  - title: Single Group
+  - title: "Means and Medians: Single Group""
     name: jamovimagnitude
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Single Group
-  - title: Two Groups
+  - title: "Means and Medians: Two Groups"
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Two Groups
-  - title: Paired
+  - title: "Means and Medians: Paired"
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Paired
-  - title: Independent Groups Contrast
+  - title: "Means and Medians: Independent Groups Contrast"
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Independent Groups Contrast
-  - title: 2x2 Factorial
+  - title: "Means and Medians: 2x2 Factorial"
     name: jamovimdiff2x2between
     ns: esci4
     menuGroup: esci4
@@ -68,55 +68,55 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Correlations
     menuTitle: Correlation
-  - title: Two Groups
+  - title: "Correlation: Two Groups"
     name: jamovirdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Correlations
     menuTitle: Two Groups
-  - title: Single Group
+  - title: "Proportions: Single Group"
     name: jamoviproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Single Group
-  - title: Two Groups
+  - title: "Proportions: Two Groups"
     name: jamovipdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Two Groups
-  - title: Paired
+  - title: "Proportions: Paired"
     name: jamovipdiffpaired
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Paired
-  - title: Means
+  - title: "Meta-Analysis: Means"
     name: jamovirmetamean
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Means
-  - title: Difference in Means
+  - title: "Meta-Analysis: Difference in Means"
     name: jamovimetamdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Means
-  - title: Proportions
+  - title: "Meta-Analysis: Proportions"
     name: jamovirmetaproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Proportions
-  - title: Difference in Proportions
+  - title: "Meta-Analysis: Difference in Proportions"
     name: jamovimetapdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Proportions
-  - title: Correlations
+  - title: "Meta-Analysis: Correlations"
     name: jamovimetar
     ns: esci4
     menuGroup: esci4
