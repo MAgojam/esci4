@@ -747,7 +747,7 @@ estimate_mdiff_2x2_between.summary <- function(
     grouping_variable_B_levels
   )
 
-  estimate$overview <- estimate$overview
+  estimate$overview <- overview
   estimate$warnings <- c(estimate$warnings, warnings)
   estimate$properties$data_type <- "summary"
   estimate$properties$data_source <- NULL

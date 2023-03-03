@@ -273,14 +273,14 @@ jamovi_mdiff_2x2 <- function(
       ) return(NULL)
     } else {
       a_label <- jamovi_sanitize(
-        self$options$A1_label,
+        self$options$A_label,
         return_value = "Treatment",
         na_ok = FALSE,
         my_value_name = "Variable A name"
       )
 
       b_label <- jamovi_sanitize(
-        self$options$A1_label,
+        self$options$B_label,
         return_value = "Age",
         na_ok = FALSE,
         my_value_name = "Variable B name"
