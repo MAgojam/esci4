@@ -2177,7 +2177,7 @@ jamovimdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Two Groups
+#' Means and Medians: Two Groups
 #'
 #' 
 #' @param switch .

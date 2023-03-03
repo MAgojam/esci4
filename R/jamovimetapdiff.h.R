@@ -1738,7 +1738,7 @@ jamovimetapdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Difference in Proportions
+#' Meta-Analysis: Difference in proportions
 #'
 #' 
 #' @param data .

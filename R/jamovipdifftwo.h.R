@@ -1077,7 +1077,7 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Two Groups
+#' Proprtions: Two groups
 #'
 #' 
 #' @param switch .

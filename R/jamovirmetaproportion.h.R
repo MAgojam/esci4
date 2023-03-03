@@ -1451,7 +1451,7 @@ jamovirmetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             super$initialize(
                 options=options,
                 name="",
-                title="Meta-analysis: Proportions")
+                title="Meta-Analysis: Proportions")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
@@ -1695,7 +1695,7 @@ jamovirmetaproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 requiresMissings = FALSE)
         }))
 
-#' Proportions
+#' Meta-Analysis: Proportions
 #'
 #' 
 #' @param data .

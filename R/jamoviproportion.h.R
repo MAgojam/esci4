@@ -426,7 +426,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             super$initialize(
                 options=options,
                 name="",
-                title="Single Group")
+                title="Proportions: Single Group")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -588,7 +588,7 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 requiresMissings = FALSE)
         }))
 
-#' Single Group
+#' Proportions: Single Group
 #'
 #' 
 #' @param switch .
