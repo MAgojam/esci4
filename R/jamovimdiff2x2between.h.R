@@ -2647,7 +2647,7 @@ jamovimdiff2x2betweenBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 requiresMissings = FALSE)
         }))
 
-#' Means and Medians: 2x2 Factorial
+#' 2x2 Factorial
 #'
 #' 
 #' @param design .

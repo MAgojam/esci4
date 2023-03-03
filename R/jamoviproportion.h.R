@@ -588,7 +588,7 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 requiresMissings = FALSE)
         }))
 
-#' Proportions: Single Group
+#' Single Group
 #'
 #' 
 #' @param switch .

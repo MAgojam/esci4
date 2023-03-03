@@ -971,7 +971,7 @@ jamovipdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' Proportions: Paired
+#' Paired
 #'
 #' 
 #' @param switch .

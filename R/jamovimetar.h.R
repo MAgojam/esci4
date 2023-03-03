@@ -1690,7 +1690,7 @@ jamovimetarBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 requiresMissings = FALSE)
         }))
 
-#' Meta-analysis: Correlations
+#' Correlations
 #'
 #' 
 #' @param data .

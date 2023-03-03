@@ -32,96 +32,96 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuTitle: Describe
-  - title: 'Means and Medians: Single Group'
+  - title: Single Group
     name: jamovimagnitude
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
-    menuTitle: 'Means and Medians: Single Group'
-  - title: 'Means and Medians: Two Groups'
+    menuTitle: Single Group
+  - title: Two Groups
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
-    menuTitle: 'Means and Medians: Two Groups'
-  - title: 'Means and Medians: Paired'
+    menuTitle: Two Groups
+  - title: Paired
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
-    menuTitle: 'Means and Medians: Paired'
-  - title: 'Means and Medians: Independent Groups Contrast'
+    menuTitle: Paired
+  - title: Independent Groups Contrast
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
-    menuTitle: 'Means and Medians: Independent Groups Contrast'
-  - title: 'Means and Medians: 2x2 Factorial'
+    menuTitle: Independent Groups Contrast
+  - title: 2x2 Factorial
     name: jamovimdiff2x2between
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
-    menuTitle: 'Means and Medians: 2x2 Factorial'
+    menuTitle: 2x2 Factorial
   - title: Correlation
     name: jamovicorrelation
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Correlations
     menuTitle: Correlation
-  - title: 'Correlations: Two Groups'
+  - title: Two Groups
     name: jamovirdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Correlations
-    menuTitle: 'Correlations: Two Groups'
-  - title: 'Proportions: Single Group'
+    menuTitle: Two Groups
+  - title: Single Group
     name: jamoviproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
-    menuTitle: 'Proportions: Single Group'
-  - title: 'Proprtions: Two groups'
+    menuTitle: Single Group
+  - title: Two groups
     name: jamovipdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
-    menuTitle: 'Proprtions: Two groups'
-  - title: 'Proportions: Paired'
+    menuTitle: Two groups
+  - title: Paired
     name: jamovipdiffpaired
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
-    menuTitle: 'Proportions: Paired'
-  - title: 'Meta-Analysis: Means'
+    menuTitle: Paired
+  - title: Means
     name: jamovirmetamean
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: 'Meta-Analysis: Means'
-  - title: 'Meta-Analysis: Difference in means'
+    menuTitle: Means
+  - title: Difference in means
     name: jamovimetamdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: 'Meta-Analysis: Difference in means'
-  - title: 'Meta-Analysis: Proportions'
+    menuTitle: Difference in means
+  - title: Proportions
     name: jamovirmetaproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: 'Meta-Analysis: Proportions'
-  - title: 'Meta-Analysis: Difference in proportions'
+    menuTitle: Proportions
+  - title: Difference in proportions
     name: jamovimetapdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: 'Meta-Analysis: Difference in proportions'
-  - title: 'Meta-analysis: Correlations'
+    menuTitle: Difference in proportions
+  - title: Correlations
     name: jamovimetar
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: 'Meta-analysis: Correlations'
+    menuTitle: Correlations
 usesNative: true
 minApp: 1.0.8
 

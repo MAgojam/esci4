@@ -2241,7 +2241,7 @@ jamovimdiffpairedBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' Means and Medians: Paired
+#' Paired
 #'
 #' 
 #' @param switch .
