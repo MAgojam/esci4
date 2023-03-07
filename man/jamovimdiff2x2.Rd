@@ -13,15 +13,16 @@ jamovimdiff2x2(
   grouping_variable_B,
   outcome_variable_level1,
   outcome_variable_level2,
+  outcome_variable_name_bs = "My outcome variable",
   grouping_variable,
   repeated_measures_name = "Time",
   outcome_variable_name = "My outcome variable",
-  A1_label = "Control",
-  A2_label = "Treated",
-  B1_label = "Older",
-  B2_label = "Younger",
-  A_label = "Treatment",
-  B_label = "Age",
+  A1_label = "A1 level",
+  A2_label = "A2 level",
+  B1_label = "B1 level",
+  B2_label = "B2 level",
+  A_label = "Variable A",
+  B_label = "Variable B",
   A1B1_mean = " ",
   A1B1_sd = " ",
   A1B1_n = " ",
@@ -140,6 +141,8 @@ jamovimdiff2x2(
 \item{outcome_variable_level1}{.}
 
 \item{outcome_variable_level2}{.}
+
+\item{outcome_variable_name_bs}{.}
 
 \item{grouping_variable}{.}
 

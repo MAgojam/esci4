@@ -93,7 +93,7 @@ analyses:
     menuSubgroup: Proportions
     menuTitle: Paired
   - title: Means
-    name: jamovirmetamean
+    name: jamovimetamean
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
@@ -105,7 +105,7 @@ analyses:
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in means
   - title: Proportions
-    name: jamovirmetaproportion
+    name: jamovimetaproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis

@@ -1,30 +1,16 @@
 ---
-name:  jamovirmetamean
-title: "Means"
+name:  jamovimetaproportion
+title: "Proportions"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
 
 options:
-    - name: switch
-      type: List
-      default: from_raw
-      options:
-          - name: from_raw
-            title: Enter raw scores
-          - name: from_d
-            title: Enter Cohen's d
-
     - name: data
       type: Data
 
-    - name: means
-      title: Means
-      type: Variable
-      permitted: [numeric]
-
-    - name: sds
-      title: Standard deviations
+    - name: cases
+      title: Case counts
       type: Variable
       permitted: [numeric]
 
@@ -41,48 +27,15 @@ options:
       title: Moderator (optional)
       type: Variable
 
-    - name: ds
-      title: Cohen's d unbiased
-      type: Variable
-      permitted: [numeric]
-
-    - name: dns
-      title: Sample sizes
-      type: Variable
-      permitted: [numeric]
-
-    - name: dlabels
-      title: Labels (optional)
-      type: Variable
-
-    - name: dmoderator
-      title: Moderator (optional)
-      type: Variable
-
-    - name: conf_level
-      type: Number
-      title: Confidence level
-      default: 95
-
     - name: effect_label
       title: Effect label
       type: String
       default: My effect
 
-    - name: reference_mean
-      title: Compare to reference value
-      type: String
-      default: ''
-
-    - name: reported_effect_size
-      type: List
-      title: Effect size
-      default: mean_difference
-      options:
-          - name: mean_difference
-            title: Original Units
-          - name: smd_unbiased
-            title: Standardized mean difference
+    - name: conf_level
+      type: Number
+      title: Confidence level
+      default: 95
 
     - name: random_effects
       title: Model
@@ -93,8 +46,6 @@ options:
             title: Random effects (RE)
           - name: fixed_effects
             title: Fixed effect (FE)
-          - name: compare
-            title: Compare fixed and random effects
 
     - name: include_PIs
       title: Report prediction intervals
@@ -199,12 +150,12 @@ options:
     - name: xmin
       title: Min
       type: String
-      default: auto
+      default: 'auto'
 
     - name: xmax
       title: Max
       type: String
-      default: auto
+      default: 'auto'
 
     - name: xbreaks
       title: 'Num. tick marks'
@@ -214,7 +165,7 @@ options:
     - name: mark_zero
       title: Mark zero
       type: Bool
-      default: true
+      default: false
 
     - name: axis.text.x
       title: 'Tick font size'

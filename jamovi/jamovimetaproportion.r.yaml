@@ -1,6 +1,6 @@
 ---
-name:  jamovirmetamean
-title: "Meta-Analysis: Means"
+name:  jamovimetaproportion
+title: "Meta-Analysis: Proportions"
 jrs:   '1.1'
 
 items:
@@ -13,7 +13,7 @@ items:
       visible: false
 
     - name:  raw_data
-      title: Table of studies
+      title: Overview
       type: Table
       rows:  1
       columns:
@@ -25,12 +25,7 @@ items:
           type: text
         - name: effect_size
           type: number
-          title: <i>M</i>
-          visible: (reported_effect_size == "mean_difference" | switch == "from_d")
-        - name: effect_size_smd
-          type: number
-          title: <i>d</i><sub>1</sub>
-          visible: (reported_effect_size == "smd_unbiased" & switch == "from_raw")
+          title: <i>P</i>
         - name: LL
           title: LL
           type: number
@@ -42,33 +37,28 @@ items:
           type: number
           visible: (show_details)
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE</i><sub>proportion<sub>
           type: number
           visible: (show_details)
         - name: sample_variance
-          title: <i>SE</i><sup>2</sup>
+          title: <i>SE</i><sup>2</sup><sub>proportion<sub>
           type: number
           visible: (show_details)
-        - name: mean
-          title: <i>M</i>
-          type: number
-          visible: (show_details & reported_effect_size != "mean_difference")
-        - name: sd
-          title: <i>s</i>
-          type: number
+        - name: cases
+          title: Cases
+          type: integer
           visible: (show_details)
-        - name: n
+        - name: N
           title: <i>N</i>
           type: integer
           visible: (show_details)
-        - name: p
-          title: "<i>p</i>, two tailed"
+        - name: P_adjusted
+          title: "<i>P</i><sub>adjusted</sub>"
           visible: (show_details)
           type: number
-          format: zto,pvalue
 
     - name:  es_meta
-      title: Meta-analytic effect sizes
+      title: Meta-analysis
       type: Table
       rows:  1
       columns:
@@ -86,12 +76,7 @@ items:
           combineBelow: true
         - name: effect_size
           type: number
-          title: <i>M</i>
-          visible: (reported_effect_size == "mean_difference")
-        - name: effect_size_smd
-          type: number
-          title: <i>d</i><sub>1</sub>
-          visible: (reported_effect_size == "smd_unbiased")
+          title: <i>P</i>
         - name: LL
           title: LL
           type: number
@@ -104,7 +89,6 @@ items:
           visible: (show_details)
         - name: k
           type: integer
-          title: <i>k</i>
         - name: PI_LL
           title: LL
           type: number
@@ -121,43 +105,11 @@ items:
         - name: FE_CI_width
           type: number
           title: FE CI width
-          visible: (random_effects == 'compare' | show_details)
+          visible: (show_details)
         - name: RE_CI_width
           type: number
           title: RE CI width
-          visible: (random_effects == 'compare' | show_details)
-        - name: diamond_ratio
-          type: number
-          title: Diamond ratio
-          visible: false
-        - name: diamond_ratio_LL
-          title: LL
-          type: number
-          visible: false
-        - name: diamond_ratio_UL
-          type: number
-          title: UL
-          visible: false
-        - name: I2
-          type: number
-          title: <i>I</i><sup>2</sup>
-          visible: false
-        - name: I2_LL
-          type: number
-          title: LL
-          visible: false
-        - name: I2_UL
-          type: number
-          title: UL
-          visible: false
-        - name: FE_effect_size
-          type: number
-          title: FE effect size
-          visible: (random_effects == 'compare')
-        - name: RE_effect_size
-          type: number
-          title: RE effect size
-          visible: (random_effects == 'compare')
+          visible: (show_details)
 
     - name:  es_heterogeneity
       title: Effect size heterogeneity
@@ -206,12 +158,7 @@ items:
           combineBelow: true
         - name: effect_size
           type: number
-          title: <i>M</i>
-          visible: (reported_effect_size == "mean_difference")
-        - name: effect_size_smd
-          type: number
-          title: <i>d</i><sub>1</sub>
-          visible: (reported_effect_size == "smd_unbiased")
+          title: <i>P</i>
         - name: LL
           title: LL
           type: number
@@ -240,4 +187,5 @@ items:
       width:  400
       height: 300
       renderFun: .estimation_plots
+
 ...
