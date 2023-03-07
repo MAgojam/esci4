@@ -275,6 +275,14 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
               #myplot$scales$scales[[2]]$labels[5:5]
             )
 
+            if (!is.null(myplot$layers["simple_effect_points"])) {
+              try(myplot$layers[["simple_effect_points"]]$aes_params$fill <- "white")
+              try(myplot$layers[["simple_effect_points"]]$aes_params$shape <- 23)
+              try(myplot$layers[["simple_effect_points"]]$aes_params$size <- as.numeric(self$options$size_summary_reference))+1
+            }
+            if (!is.null(myplot$layers["simple_effect_lines"])) {
+              try(myplot$layers[["simple_effect_lines"]]$aes_params$linewidth <- as.numeric(self$options$size_summary_reference))-2
+            }
           }
 
 
@@ -747,10 +755,23 @@ jamovi_mdiff_2x2 <- function(
         }
       }
 
+      if (!is.null(estimate$point_null)) {
+        estimate$point_null$conclusion[[5]] <- paste(
+          estimate$point_null$conclusion[[5]], "<sub>diff</sub>", sep = ""
+        )
+      }
+      if (!is.null(estimate$interval_null)) {
+        estimate$interval_null$conclusion[[5]] <- paste(
+          estimate$interval_null$conclusion[[5]], "<sub>diff</sub>", sep = ""
+        )
+      }
+
+
       estimate$point_null$effect_type <- estimate$es_smd$effect_type
       estimate$point_null$effects_complex <- estimate$es_smd$effects_complex
       estimate$interval_null$effect_type <- estimate$es_smd$effect_type
       estimate$interval_null$effects_complex <- estimate$es_smd$effects_complex
+
 
 
       if (!is.null(names(rope_upper))) {

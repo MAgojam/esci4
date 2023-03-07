@@ -357,9 +357,10 @@ plot_mdiff_base <- function(
     clines <- overview[overview$type == "Comparison", c("y_value", "x_value", "nudge", "type") ]
 
     if (plot_interaction) {
-      gdata$x_value <- orows + 2
+      gdata$x_value <- orows + 2.5
     } else {
       gdata$x_value <- seq(from = orows + 2, to = orows + 4, by = 1)
+      if (plot_main_effect_B | plot_main_effect_A | plot_mixed) { gdata$x_value <- gdata$x_value + 1}
     }
     gdata$nudge <- 0
 
@@ -412,6 +413,7 @@ plot_mdiff_base <- function(
       gdata
     )
     x_end <- 4 + orows
+    if (plot_main_effect_B | plot_main_effect_A | plot_mixed) x_end <- x_end + 1
   } else {
     gdata$x_value <- c(1, 2, 3)
     if (plot_paired) {
@@ -559,20 +561,20 @@ plot_mdiff_base <- function(
     rdata_min <- min(rdata$outcome_variable, na.rm = TRUE)
     rdata_range <- rdata_max - rdata_min
     axis_range <- rawEnd - rawStart
-    # if (axis_range / rdata_range < .36) {
-    #   ref_percent <- (reference_es -  rdata_min) / rdata_range
-    #   rangeEnd <- reference_es + (0.36 * (1-ref_percent) * rdata_range)
-    #   rangeStart <- reference_es - (0.36 * (ref_percent) * rdata_range)
-    #
-    #   if (rangeEnd > rawEnd) rawEnd <- rangeEnd
-    #   if (rangeStart < rawStart) rawStart <- rangeStart
-    #
-    #   saxisEnd <- ceiling(difference_UL/pooled_sd)
-    #   if (saxisEnd < 1) saxisEnd = 1
-    #   saxisStart <- floor(difference_LL/pooled_sd)
-    #   if (saxisStart > -1) saxisStart = -1
-    # }
-    # Adjust floating axis points for cases where small % of raw data range
+    if (axis_range / rdata_range < .3) {
+      ref_percent <- (reference_es -  rdata_min) / rdata_range
+      rangeEnd <- reference_es + (0.15 * (1-ref_percent) * rdata_range)
+      rangeStart <- reference_es - (0.15 * (ref_percent) * rdata_range)
+
+      if (rangeEnd > rawEnd) rawEnd <- rangeEnd
+      if (rangeStart < rawStart) rawStart <- rangeStart
+
+      saxisEnd <- ceiling(difference_UL/pooled_sd)
+      if (saxisEnd < 1) saxisEnd = 1
+      saxisStart <- floor(difference_LL/pooled_sd)
+      if (saxisStart > -1) saxisStart = -1
+    }
+    #Adjust floating axis points for cases where small % of raw data range
   }
 
 
@@ -782,12 +784,13 @@ plot_mdiff_base <- function(
         y = y_value,
         yend = y_end,
         colour = type,
-        size = type,
         alpha = type,
         linetype = type,
-        linewidth = type
-      )
+      ),
+      size = 1,
+      linewidth = 2
     )
+    myplot <- esci_plot_layers(myplot, "simple_effect_lines")
 
     myplot <- myplot + ggplot2::geom_point(
       data = dots,
@@ -795,12 +798,13 @@ plot_mdiff_base <- function(
         x = x_value,
         y = y_value,
         colour = type,
-        size = type,
-        shape = type,
         alpha = type,
-        fill = type
-      )
+      ),
+      size = 4,
+      fill = "white",
+      shape = 23
     )
+    myplot <- esci_plot_layers(myplot, "simple_effect_points")
 
   }
 
@@ -976,7 +980,7 @@ plot_mdiff_base <- function(
   # Set boundaries
   xmin <- min(gdata$x_value)
   xdeduct <- if (plot_paired | plot_mixed) 2*nudge else nudge
-  xmin <- xmin - xdeduct - 0.25
+  xmin <- xmin - xdeduct - 0.5
 
 
 
