@@ -1,5 +1,5 @@
 title: 'Means and Medians: 2x2 Factorial'
-name: jamovimdiff2x2between
+name: jamovimdiff2x2
 jus: '3.0'
 stage: 0
 compilerMode: tame
@@ -129,6 +129,24 @@ children:
                   column: 0
                   row: 3
               - type: TextBox
+                name: B1_label
+                format: string
+                stretchFactor: 1
+                suffix: '   '
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 0
+                  row: 5
+              - type: TextBox
+                name: B2_label
+                format: string
+                stretchFactor: 1
+                suffix: '   '
+                enable: '(switch:from_summary)'
+                cell:
+                  column: 0
+                  row: 9
+              - type: TextBox
                 name: A1B1_mean
                 format: string
                 stretchFactor: 1
@@ -144,15 +162,6 @@ children:
                 cell:
                   column: 4
                   row: 4
-              - type: TextBox
-                name: B1_label
-                format: string
-                stretchFactor: 1
-                suffix: '   '
-                enable: '(switch:from_summary)'
-                cell:
-                  column: 0
-                  row: 5
               - type: TextBox
                 name: A1B1_sd
                 format: string
@@ -209,15 +218,6 @@ children:
                   column: 4
                   row: 8
               - type: TextBox
-                name: B2_label
-                format: string
-                stretchFactor: 1
-                suffix: '   '
-                enable: '(switch:from_summary)'
-                cell:
-                  column: 0
-                  row: 9
-              - type: TextBox
                 name: A1B2_sd
                 format: string
                 stretchFactor: 1
@@ -249,6 +249,14 @@ children:
                 cell:
                   column: 4
                   row: 10
+          - type: LayoutBox
+            margin: small
+            stretchFactor: 1
+            children:
+              - type: TextBox
+                name: outcome_variable_name_bs
+                format: string
+                stretchFactor: 1
       - type: Label
         label: <hr>Between-subjects analysis options
         stretchFactor: 1

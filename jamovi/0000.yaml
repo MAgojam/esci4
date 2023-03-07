@@ -57,7 +57,7 @@ analyses:
     menuSubgroup: Means and Medians
     menuTitle: Independent Groups Contrast
   - title: 2x2 Factorial
-    name: jamovimdiff2x2between
+    name: jamovimdiff2x2
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians

@@ -1,5 +1,5 @@
 ---
-name:  jamovimdiff2x2between
+name:  jamovimdiff2x2
 title: '2x2 Factorial'
 menuGroup: esci4
 version: '1.0.0'
@@ -52,6 +52,11 @@ options:
       type: Variable
       permitted: [numeric]
 
+    - name: outcome_variable_name_bs
+      title: 'Outcome variable name'
+      type: String
+      default: 'My outcome variable'
+
     - name: grouping_variable
       title: Grouping variable
       type: Variable
@@ -69,27 +74,27 @@ options:
 
     - name: A1_label
       type: String
-      default: "Control"
+      default: "A1 level"
 
     - name: A2_label
       type: String
-      default: "Treated"
+      default: "A2 level"
 
     - name: B1_label
       type: String
-      default: "Older"
+      default: "B1 level"
 
     - name: B2_label
       type: String
-      default: "Younger"
+      default: "B2 level"
 
     - name: A_label
       type: String
-      default: "Treatment"
+      default: "Variable A"
 
     - name: B_label
       type: String
-      default: "Age"
+      default: "Variable B"
 
     - name: A1B1_mean
       type: String

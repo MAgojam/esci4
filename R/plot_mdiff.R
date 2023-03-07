@@ -349,7 +349,7 @@ plot_mdiff_base <- function(
       overview$x_value <- c(1, 2, 3.5, 4.5)
     }
     if (plot_mixed) {
-      overview$x_value <- c(1, 2, 3.5, 4.5)
+      overview$x_value <- c(1, 2, 4, 5)
       overview$nudge <- c(nudge*-2, nudge, nudge*-2, nudge)
     }
 
