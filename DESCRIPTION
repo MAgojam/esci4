@@ -23,6 +23,7 @@ Imports:
   metafor,
   ggplot2,
   ggdist,
+  ggh4x,
   ggtext,
   distributional, 
   ggbeeswarm, 

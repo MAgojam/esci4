@@ -343,7 +343,7 @@ options:
     - name: simple_contrast_labels
       title: Simple labels
       type: Bool
-      default: true
+      default: false
 
     - name: error_layout
       type: List

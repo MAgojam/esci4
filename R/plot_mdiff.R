@@ -290,6 +290,9 @@ plot_mdiff_base <- function(
   nudge <- if (plot_raw) error_nudge/2 else 0
   pooled_sd <- difference_axis_normalizer
 
+  plot_main_effect_A <- all(contrast == c(-1/2, -1/2, 1/2, 1/2))
+  plot_main_effect_B <- all(contrast == c(-1/2, 1/2, -1/2, 1/2))
+
   # Group data --------------------------------
   # Add comparison values to difference row
   comparison_es <- gdata[[1, "y_value"]]
@@ -342,7 +345,7 @@ plot_mdiff_base <- function(
     orows <- nrow(overview)
     overview$x_value <- seq(from = 1, to = orows, by = 1)
     overview$nudge <- nudge
-    if (plot_interaction) {
+    if (plot_interaction | plot_main_effect_B | plot_main_effect_A) {
       overview$x_value <- c(1, 2, 3.5, 4.5)
     }
     if (plot_mixed) {

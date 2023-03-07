@@ -150,6 +150,6 @@ test_mdiff_2x2_between <- function() {
     outcome_variable = o
   )
 
-  plot_mdiff(restimate$interaction)
+  myplot <- plot_mdiff(restimate$interaction)
 
 }

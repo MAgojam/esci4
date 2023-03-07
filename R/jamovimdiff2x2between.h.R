@@ -55,7 +55,7 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             axis.title.y = "15",
             axis.text.x = "14",
             axis.title.x = "15",
-            simple_contrast_labels = TRUE,
+            simple_contrast_labels = FALSE,
             error_layout = "halfeye",
             error_scale = "0.25",
             error_nudge = "0.5",
@@ -384,7 +384,7 @@ jamovimdiff2x2betweenOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R
             private$..simple_contrast_labels <- jmvcore::OptionBool$new(
                 "simple_contrast_labels",
                 simple_contrast_labels,
-                default=TRUE)
+                default=FALSE)
             private$..error_layout <- jmvcore::OptionList$new(
                 "error_layout",
                 error_layout,
@@ -2851,7 +2851,7 @@ jamovimdiff2x2between <- function(
     axis.title.y = "15",
     axis.text.x = "14",
     axis.title.x = "15",
-    simple_contrast_labels = TRUE,
+    simple_contrast_labels = FALSE,
     error_layout = "halfeye",
     error_scale = "0.25",
     error_nudge = "0.5",

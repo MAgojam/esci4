@@ -248,28 +248,38 @@ jamovimdiff2x2betweenClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6:
             myplot <- myplot + ggplot2::xlab(NULL)
           }
 
+          # mylabs <- paste(
+          #   estimate$overview$grouping_variable_B_level,
+          #   "\n",
+          #   estimate$overview$grouping_variable_A_level,
+          #   sep = ""
+          # )
+
           mylabs <- paste(
             estimate$overview$grouping_variable_B_level,
-            "\n",
+            " - ",
             estimate$overview$grouping_variable_A_level,
             sep = ""
           )
 
+
           if (which_plot != "interaction") {
             mylabs <- c(
               mylabs,
-              myplot$scales$scales[[2]]$labels[5:7]
+              paste(" \n", myplot$scales$scales[[2]]$labels[5:7],  sep = "")
             )
           } else {
             mylabs <- c(
               mylabs,
-              myplot$scales$scales[[2]]$labels[5:5]
+              "Difference of\ndifferences"
+              #myplot$scales$scales[[2]]$labels[5:5]
             )
 
           }
 
 
           myplot$scales$scales[[2]]$labels <- mylabs
+          myplot <- myplot + ggplot2::guides(x = ggh4x::guide_axis_nested(delim = " - "))
 
 
           print(myplot)
