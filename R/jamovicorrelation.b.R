@@ -741,16 +741,23 @@ jamovi_correlation <- function(self) {
             lower = -1,
             lower_inclusive = TRUE,
             upper = 1,
-            upper_inclusive = TRUE
+            upper_inclusive = TRUE,
+            my_value_name = "<i>r</i>"
         )
         args$n <- jamovi_required_numeric(
             self$options$n,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "<i>N</i>"
         )
 
-        unfilled <- names(args[which(is.na(args))])
+
+        unfilled <- NULL
+        for (element in args[which(is.na(args))]) {
+          unfilled <- c(unfilled, names(element))
+        }
+
 
         for (element in args) {
             if (is.character(element)) {

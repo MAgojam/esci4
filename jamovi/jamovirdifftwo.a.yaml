@@ -20,12 +20,12 @@ options:
       type: Data
 
     - name: x
-      title: x Variable
+      title: <i>X</i> Variable
       type: Variable
       permitted: [numeric]
 
     - name: y
-      title: y variable
+      title: <i>Y</i> variable
       type: Variable
       permitted: [numeric]
 

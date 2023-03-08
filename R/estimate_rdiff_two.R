@@ -492,6 +492,20 @@ estimate_rdiff_two.data.frame <- function(
     conf_level = conf_level
   )
 
+  valid_message <- NULL
+
+  if (length(levels(data[[grouping_variable]])) > 2) {
+    valid_message <- c(
+      valid_message,
+      glue::glue("Variable {grouping_variable} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable]])[-(1:2)], collapse = ', ')} were dropped.")
+    )
+  }
+
+  # Data processing - reduce to complete cases of just key vars and only 2 levels of grouping variable
+  data <- data[ , c(x, y, grouping_variable)]
+  data <- data[complete.cases(data), ]
+  data <- data[data[[grouping_variable]] %in% levels(data[[grouping_variable]])[1:2], ]
+
   estimate$overview <- rbind(
     overview(
       data = data,
@@ -510,6 +524,7 @@ estimate_rdiff_two.data.frame <- function(
       conf_level = conf_level
     )
   )
+  # estimate$overview <- estimate$overview[c(1, 3, 2, 4), ]
 
 
   level1 <- levels(data[[grouping_variable]])[[1]]
@@ -523,70 +538,39 @@ estimate_rdiff_two.data.frame <- function(
   reference_n <- crossprod(!is.na(data1[ , c(x, y)]))[1, 2]
   comparison_n <- crossprod(!is.na(data2[ , c(x, y)]))[1, 2]
 
-  valid_message <- glue::glue(
-    "N_pairs in {level2} = {comparison_n}."
-  )
-  valid_message_html <- glue::glue(
-    "<i>N</i><sub>pairs</sub> in {level2} = {comparison_n}."
-  )
-
 
   if (comparison_n != nrow(data2)) {
     missing <- nrow(data2) - comparison_n
-    valid_message <- paste(
+    valid_message <- c(
       valid_message,
       glue::glue(
-        "  There were {missing} rows with incomplete data.  All analysis are based only on the {comparison_n} rows with complete data."
-      ),
-      sep = ""
-    )
-    valid_message_html <- paste(
-      valid_message_html,
-      glue::glue(
-        "  There were {missing} rows with incomplete data.  All analysis are based only on the {comparison_n} rows with complete data."
-      ),
-      sep = ""
+        "For {level2}, there were {missing} rows with incomplete data.  All analysis are based only on the {comparison_n} rows of {level2} with complete data."
+      )
     )
   }
-
-  valid_message <- paste(
-    valid_message,
-    glue::glue(
-      "\nN_pairs in {level1} = {reference_n}."
-    ),
-    sep = ""
-  )
-  valid_message_html <- paste(
-    valid_message_html,
-    glue::glue(
-      "  <i>N</i><sub>pairs</sub> in {level1} = {reference_n}."
-    ),
-    sep = ""
-  )
-
 
   if (reference_n != nrow(data1)) {
     missing <- nrow(data1) - reference_n
-    valid_message <- paste(
+    valid_message <- c(
       valid_message,
       glue::glue(
-        "  There were {missing} rows with incomplete data.  All analysis are based only on the {reference_n} rows with complete data."
-      ),
-      sep = ""
-    )
-    valid_message_html <- paste(
-      valid_message_html,
-      glue::glue(
-        "  There were {missing} rows with incomplete data.  All analysis are based only on the {reference_n} rows with complete data."
-      ),
-      sep = ""
+        "For {level1}, there were {missing} rows with incomplete data.  All analysis are based only on the {reference_n} rows of {level1} with complete data."
+      )
     )
   }
 
-  estimate$es_r_difference_properties <- list(
-    message = valid_message,
-    message_html = valid_message_html
-  )
+  if (!is.null(valid_message)) {
+    estimate$overview_properties$message <- paste0(
+      valid_message,
+      collapse = "\n"
+    )
+
+    estimate$overview_properties$message_html <- gsub(
+      "\n",
+      "<BR>",
+      estimate$overview_properties$message
+    )
+  }
 
   estimate$es_r_difference <- estimate_rdiff_two.summary(
     comparison_r = comparison_r,

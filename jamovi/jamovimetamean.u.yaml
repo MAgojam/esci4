@@ -253,7 +253,7 @@ children:
               column: 1
               row: 11
           - type: Label
-            label: 'Size scale'
+            label: 'Size scale:'
             cell:
               column: 0
               row: 12
@@ -290,7 +290,7 @@ children:
                   column: 3
                   row: 3
               - type: Label
-                label: '<b>Study effect sizes</b>'
+                label: '<b>Study effect sizes:</b>'
                 cell:
                   column: 0
                   row: 4
@@ -375,7 +375,7 @@ children:
                   column: 3
                   row: 8
               - type: Label
-                label: '<b>Study CIs</b>'
+                label: '<b>Study CIs:</b>'
                 cell:
                   column: 0
                   row: 9
@@ -465,7 +465,7 @@ children:
                   column: 0
                   row: 14
               - type: Label
-                label: '<b>Diamonds</b>'
+                label: '<b>Diamonds:</b>'
                 cell:
                   column: 0
                   row: 15

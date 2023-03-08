@@ -106,11 +106,11 @@ items:
           visible: false
           combineBelow: true
         - name: x_variable_name
-          title: 'x-variable name'
+          title: '<i>X</i>-variable name'
           type: text
           combineBelow: true
         - name: y_variable_name
-          title: 'y-variable name'
+          title: '<i>Y</i>-variable name'
           type: text
           combineBelow: true
         - name: grouping_variable_level
@@ -152,11 +152,11 @@ items:
           visible: false
           combineBelow: true
         - name: x_variable_name
-          title: 'x-variable name'
+          title: '<i>X</i>-variable name'
           type: text
           combineBelow: true
         - name: y_variable_name
-          title: 'y-variable name'
+          title: '<i>Y</i>-variable name'
           type: text
           combineBelow: true
         - name: grouping_variable_level
@@ -253,19 +253,6 @@ items:
           title: 'Conclusion'
           type: text
 
-    - name: estimation_plot_warnings
-      title: Estimation Figure Warnings
-      type: Html
-      visible: true
-
-    - name: estimation_plots
-      title: Estimation Figure
-      type: Image
-      width:  600
-      height: 400
-      requiresData: true
-      renderFun: .estimation_plots
-
     - name: scatter_plot_warnings
       title: Scatter Plot Warnings
       type: Html
@@ -279,5 +266,18 @@ items:
       requiresData: true
       renderFun: .scatter_plots
       visible: (switch == 'from_raw')
+
+    - name: estimation_plot_warnings
+      title: Estimation Figure Warnings
+      type: Html
+      visible: true
+
+    - name: estimation_plots
+      title: Estimation Figure
+      type: Image
+      width:  600
+      height: 400
+      requiresData: true
+      renderFun: .estimation_plots
 
 ...

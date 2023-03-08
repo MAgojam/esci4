@@ -730,29 +730,38 @@ jamovi_rdiff_two <- function(self) {
             lower = -1,
             lower_inclusive = TRUE,
             upper = 1,
-            upper_inclusive = TRUE
+            upper_inclusive = TRUE,
+            my_value_name = "Comparison <i>r</i>"
         )
         args$comparison_n <- jamovi_required_numeric(
             self$options$comparison_n,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "Comparison <i>n</i>"
         )
         args$reference_r <- jamovi_required_numeric(
             self$options$reference_r,
             lower = -1,
             lower_inclusive = TRUE,
             upper = 1,
-            upper_inclusive = TRUE
+            upper_inclusive = TRUE,
+            my_value_name = "Reference <i>r</i>"
         )
         args$reference_n <- jamovi_required_numeric(
             self$options$reference_n,
             integer_required = TRUE,
             lower = 0,
-            lower_inclusive = FALSE
+            lower_inclusive = FALSE,
+            my_value_name = "Reference <i>n</i>"
         )
 
-        unfilled <- names(args[which(is.na(args))])
+        unfilled <- NULL
+        for (element in args[which(is.na(args))]) {
+          unfilled <- c(unfilled, names(element))
+        }
+
+#        unfilled <- names(args[which(is.na(args))])
 
         for (element in args) {
             if (is.character(element)) {
@@ -833,8 +842,8 @@ jamovi_rdiff_two <- function(self) {
         }
 
         args$grouping_variable_levels <- c(
-            args$comparison_level_name,
-            args$reference_level_name
+            args$reference_level_name,
+            args$comparison_level_name
         )
 
         args$comparison_level_name <- NULL

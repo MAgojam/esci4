@@ -1466,10 +1466,10 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         es_r_difference = function() private$.items[["es_r_difference"]],
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
-        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
-        estimation_plots = function() private$.items[["estimation_plots"]],
         scatter_plot_warnings = function() private$.items[["scatter_plot_warnings"]],
-        scatter_plots = function() private$.items[["scatter_plots"]]),
+        scatter_plots = function() private$.items[["scatter_plots"]],
+        estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
+        estimation_plots = function() private$.items[["estimation_plots"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -1602,12 +1602,12 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `combineBelow`=TRUE),
                     list(
                         `name`="x_variable_name", 
-                        `title`="x-variable name", 
+                        `title`="<i>X</i>-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="y_variable_name", 
-                        `title`="y-variable name", 
+                        `title`="<i>Y</i>-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -1659,12 +1659,12 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `combineBelow`=TRUE),
                     list(
                         `name`="x_variable_name", 
-                        `title`="x-variable name", 
+                        `title`="<i>X</i>-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="y_variable_name", 
-                        `title`="y-variable name", 
+                        `title`="<i>Y</i>-variable name", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -1784,19 +1784,6 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text"))))
             self$add(jmvcore::Html$new(
                 options=options,
-                name="estimation_plot_warnings",
-                title="Estimation Figure Warnings",
-                visible=TRUE))
-            self$add(jmvcore::Image$new(
-                options=options,
-                name="estimation_plots",
-                title="Estimation Figure",
-                width=600,
-                height=400,
-                requiresData=TRUE,
-                renderFun=".estimation_plots"))
-            self$add(jmvcore::Html$new(
-                options=options,
                 name="scatter_plot_warnings",
                 title="Scatter Plot Warnings",
                 visible="(switch == 'from_raw')"))
@@ -1808,7 +1795,20 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 height=650,
                 requiresData=TRUE,
                 renderFun=".scatter_plots",
-                visible="(switch == 'from_raw')"))}))
+                visible="(switch == 'from_raw')"))
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="estimation_plot_warnings",
+                title="Estimation Figure Warnings",
+                visible=TRUE))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="estimation_plots",
+                title="Estimation Figure",
+                width=600,
+                height=400,
+                requiresData=TRUE,
+                renderFun=".estimation_plots"))}))
 
 jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovirdifftwoBase",
@@ -1930,10 +1930,10 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$es_r_difference} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
-#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$scatter_plots} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+#'   \code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

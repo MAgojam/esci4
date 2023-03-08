@@ -256,7 +256,7 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: Raw data
+                label: 'Raw data:'
                 cell:
                   column: 0
                   row: 2
@@ -423,7 +423,7 @@ children:
                   column: 3
                   row: 12
               - type: Label
-                label: 'Prediction from <i>X</i>'
+                label: 'Prediction from <i>X</i>:'
                 cell:
                   column: 0
                   row: 13

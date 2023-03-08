@@ -310,22 +310,22 @@ children:
                   column: 4
                   row: 1
               - type: Label
-                label: Summary
+                label: 'Summary:'
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: CI
+                label: 'CI:'
                 cell:
                   column: 0
                   row: 8
               - type: Label
-                label: Error distribution
+                label: 'Error distribution:'
                 cell:
                   column: 0
                   row: 13
               - type: Label
-                label: Raw data
+                label: 'Raw data:'
                 cell:
                   column: 0
                   row: 16

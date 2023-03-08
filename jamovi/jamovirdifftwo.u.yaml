@@ -28,14 +28,14 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: x Variable
+            label: <i>X</i> Variable
             children:
               - type: VariablesListBox
                 name: x
                 maxItemCount: 1
                 isTarget: true
           - type: TargetLayoutBox
-            label: y variable
+            label: <i>Y</i> variable
             children:
               - type: VariablesListBox
                 name: 'y'
@@ -329,12 +329,12 @@ children:
                   column: 3
                   row: 1
               - type: Label
-                label: Raw Data
+                label: 'Raw Data:'
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: Regression Lines
+                label: 'Regression Lines:'
                 cell:
                   column: 0
                   row: 8
@@ -622,12 +622,12 @@ children:
                   column: 3
                   row: 1
               - type: Label
-                label: Summary
+                label: 'Summary:'
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: CI
+                label: 'CI:'
                 cell:
                   column: 0
                   row: 8
