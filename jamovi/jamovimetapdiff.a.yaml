@@ -1,7 +1,7 @@
 ---
 name:  jamovimetapdiff
-title: "Meta-Analysis: Difference in proportions"
-menuTitle: "Difference in proportions"
+title: "Meta-Analysis: Difference in Proportions"
+menuTitle: "Difference in Proportions"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
