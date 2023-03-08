@@ -1832,7 +1832,7 @@ jamovimetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Means
+#' Meta-Analysis: Means
 #'
 #' 
 #' @param switch .

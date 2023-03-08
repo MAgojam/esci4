@@ -1,6 +1,7 @@
 ---
 name:  jamovimdiffpaired
-title: "Paired"
+menuTitle: "Paired"
+title: "Means and Medians: Paired"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

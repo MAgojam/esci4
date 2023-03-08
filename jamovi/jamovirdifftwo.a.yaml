@@ -1,6 +1,7 @@
 ---
 name:  jamovirdifftwo
-title: 'Two Groups'
+title: "Correlations: Two Groups"
+menuTitle: 'Two Groups'
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

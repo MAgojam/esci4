@@ -1,6 +1,7 @@
 ---
 name:  jamovipdifftwo
-title: "Two groups"
+title: "Proportions: Two Groups"
+menuTitle: "Two groups"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

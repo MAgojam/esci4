@@ -1,6 +1,7 @@
 ---
 name:  jamovimetar
 title: "Correlations"
+menuTitle: "Meta-Analysis: Correlations"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

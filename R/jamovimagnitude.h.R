@@ -1058,7 +1058,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 requiresMissings = FALSE)
         }))
 
-#' Single Group
+#' Means and Medians: Single Group
 #'
 #' 
 #' @param switch .

@@ -1,6 +1,7 @@
 ---
 name:  jamovimdifftwo
-title: "Two Groups"
+menuTitle: "Two Groups"
+title: "Means and Medians: Two Groups"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

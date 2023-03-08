@@ -6,13 +6,16 @@ jms: '1.0'
 authors:
   - Robert J Calin-Jageman
 maintainer: Robert J Calin-Jageman <rcalinjageman@dom.edu>
-date: '2021-12-19'
+date: '2023-03-08'
 type: R
 description: >-
   This module is for estimation, providing analyses that focus on effect sizes,
   uncertainty, and synthesis.  This module is designed for ease of use and
   provides high-quality visualizations that emphasize effect sizes and
   uncertainty.</br></br>
+
+  The estimates provided are based on the statpsych package by Doug Bonett: <a
+  href = "https://dgbonett.github.io/statpsych/">Github</a></br></br>
 
   All analyses are frequentist, returning confidence intervals.</br></br>
 
@@ -32,85 +35,85 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuTitle: Describe
-  - title: Single Group
+  - title: 'Means and Medians: Single Group'
     name: jamovimagnitude
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Single Group
-  - title: Two Groups
+  - title: 'Means and Medians: Two Groups'
     name: jamovimdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Two Groups
-  - title: Paired
+  - title: 'Means and Medians: Paired'
     name: jamovimdiffpaired
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Paired
-  - title: Independent Groups Contrast
+  - title: 'Means and Medians: Independent Groups Contrast'
     name: jamovimdiffindcontrast
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: Independent Groups Contrast
-  - title: 2x2 Factorial
+  - title: 'Means and Medians: 2x2 Factorial'
     name: jamovimdiff2x2
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: 2x2 Factorial
-  - title: Correlation
+  - title: 'Correlation: Single Group'
     name: jamovicorrelation
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Correlations
-    menuTitle: Correlation
-  - title: Two Groups
+    menuTitle: Single Group
+  - title: 'Correlations: Two Groups'
     name: jamovirdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Correlations
     menuTitle: Two Groups
-  - title: Single Group
+  - title: 'Proportions: Single Group'
     name: jamoviproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Single Group
-  - title: Two groups
+  - title: 'Proportions: Two Groups'
     name: jamovipdifftwo
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Two groups
-  - title: Paired
+  - title: 'Proportions: Paired'
     name: jamovipdiffpaired
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
     menuTitle: Paired
-  - title: Means
+  - title: 'Meta-Analysis: Means'
     name: jamovimetamean
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Means
-  - title: Difference in means
+  - title: 'Meta-Analysis: Difference in means'
     name: jamovimetamdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in means
-  - title: Proportions
+  - title: 'Meta-Analysis: Proportions'
     name: jamovimetaproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Proportions
-  - title: Difference in proportions
+  - title: 'Meta-Analysis: Difference in proportions'
     name: jamovimetapdiff
     ns: esci4
     menuGroup: esci4
@@ -121,7 +124,7 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: Correlations
+    menuTitle: 'Meta-Analysis: Correlations'
 usesNative: true
 minApp: 1.0.8
 

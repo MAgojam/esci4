@@ -1,6 +1,7 @@
 ---
 name:  jamovimetamdiff
-title: "Difference in means"
+menuTitle: "Difference in means"
+title: "Meta-Analysis: Difference in means"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

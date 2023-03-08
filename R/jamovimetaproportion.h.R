@@ -1695,7 +1695,7 @@ jamovimetaproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 requiresMissings = FALSE)
         }))
 
-#' Proportions
+#' Meta-Analysis: Proportions
 #'
 #' 
 #' @param data .

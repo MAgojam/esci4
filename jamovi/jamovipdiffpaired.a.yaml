@@ -1,6 +1,7 @@
 ---
 name:  jamovipdiffpaired
-title: "Paired"
+title: "Proportions: Paired"
+menuTitle: "Paired"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

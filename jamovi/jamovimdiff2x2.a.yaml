@@ -1,6 +1,7 @@
 ---
 name:  jamovimdiff2x2
-title: '2x2 Factorial'
+menuTitle: '2x2 Factorial'
+title: "Means and Medians: 2x2 Factorial"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'

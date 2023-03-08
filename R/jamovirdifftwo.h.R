@@ -1830,7 +1830,7 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 requiresMissings = FALSE)
         }))
 
-#' Two Groups
+#' Correlations: Two Groups
 #'
 #' 
 #' @param switch .

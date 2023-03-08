@@ -1,6 +1,7 @@
 ---
 name:  jamovicorrelation
-title: "Correlation"
+title: 'Correlation: Single Group'
+menuTitle: "Single Group"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
