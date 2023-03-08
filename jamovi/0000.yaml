@@ -101,24 +101,24 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Means
-  - title: 'Meta-Analysis: Difference in means'
+  - title: 'Meta-Analysis: Difference in Means'
     name: jamovimetamdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: Difference in means
+    menuTitle: Difference in Means
   - title: 'Meta-Analysis: Proportions'
     name: jamovimetaproportion
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Proportions
-  - title: 'Meta-Analysis: Difference in proportions'
+  - title: 'Meta-Analysis: Difference in Proportions'
     name: jamovimetapdiff
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
-    menuTitle: Difference in proportions
+    menuTitle: Difference in Proportions
   - title: Correlations
     name: jamovimetar
     ns: esci4
