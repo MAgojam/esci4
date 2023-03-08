@@ -11,6 +11,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             # Get a handle for each table
             tbl_overview <- self$results$overview
             tbl_es_r <- self$results$es_r
+            tbl_regression <- self$restuls$regression
 
             tbl_overview$setVisible(from_raw)
 
@@ -30,6 +31,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             jamovi_set_confidence(tbl_overview, conf_level)
             jamovi_set_confidence(tbl_es_r, conf_level)
+            jamovi_set_confidence(tbl_regression, conf_level)
 
 
             width <- jamovi_sanitize(
@@ -443,6 +445,8 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           args$show_line <- self$options$show_line
           args$show_PI <- self$options$show_PI
           args$show_residuals <- self$options$show_residuals
+          args$show_mean_lines <- self$options$show_mean_lines
+          args$plot_as_z <- self$options$plot_as_z
 
           args <- jamovi_arg_builder(
             args = args,
@@ -494,7 +498,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           # X and y limits
           xmin <- jamovi_sanitize(
             my_value = self$options$sp_xmin,
-            return_value = NA,
+            return_value = myplot$esci_xmin,
             na_ok = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Scatter Plot X axis: Minimum"
@@ -502,7 +506,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           xmax <- jamovi_sanitize(
             my_value = self$options$sp_xmax,
-            return_value = NA,
+            return_value = myplot$esci_xmax,
             na_ok = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Scatter Plot X axis: Maximum"
@@ -522,7 +526,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           ymin <- jamovi_sanitize(
             my_value = self$options$sp_ymin,
-            return_value = NA,
+            return_value = myplot$esci_ymin,
             na_ok = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Scatter Plot Y axis: Minimum"
@@ -530,7 +534,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           ymax <- jamovi_sanitize(
             my_value = self$options$sp_ymax,
-            return_value = NA,
+            return_value = myplot$esci_ymax,
             na_ok = TRUE,
             convert_to_number = TRUE,
             my_value_name = "Scatter Plot Y axis: Maximum"
@@ -552,11 +556,13 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           myplot <- myplot + ggplot2::scale_x_continuous(
             limits = c(xmin, xmax),
             n.breaks = xbreaks,
+            expand = c(0, 0)
           )
 
           myplot <- myplot + ggplot2::scale_y_continuous(
             limits = c(ymin, ymax),
             n.breaks = ybreaks,
+            expand = c(0, 0)
           )
 
           # Axis font sizes

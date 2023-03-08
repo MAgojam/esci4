@@ -5,7 +5,9 @@ plot_scatter <- function(
     show_line = FALSE,
     show_PI = FALSE,
     show_residuals = FALSE,
+    show_mean_lines = FALSE,
     predict_from_x = NULL,
+    plot_as_z = FALSE,
     ggtheme = ggplot2::theme_classic()
 ) {
 
@@ -41,6 +43,20 @@ plot_scatter <- function(
 
   rdata <- estimate$raw_data
 
+  x_mean <- mean(rdata$x, na.rm = TRUE)
+  x_sd <- sd(rdata$x, na.rm = TRUE)
+  y_mean <- mean(rdata$y, na.rm = TRUE)
+  y_sd <- sd(rdata$y, na.rm = TRUE)
+
+  if (!plotting_groups & plot_as_z) {
+    rdata$x <- (rdata$x - x_mean) / x_sd
+    rdata$fit <- (rdata$fit -  y_mean) / y_sd
+    rdata$lwr <- (rdata$lwr-  y_mean) / y_sd
+    rdata$upr <- (rdata$upr -  y_mean) / y_sd
+    rdata$y <- (rdata$y - y_mean) / y_sd
+
+  }
+
   # predict_from_x
   if(!is.null(predict_from_x)) {
 
@@ -69,13 +85,22 @@ plot_scatter <- function(
 
 
   # Prep for building graph ---------------------------
-  ylab <- estimate$es_r$y_variable_name
-  xlab <- estimate$es_r$x_variable_name
+  zfix <- if (plot_as_z & !plotting_groups) "*Z*<sub>" else NULL
+  zpost <- if (plot_as_z & !plotting_groups) "</sub>" else NULL
+
+  ylab <- paste(zfix, estimate$es_r$y_variable_name, zpost, sep = "")
+  xlab <- paste(zfix, estimate$es_r$x_variable_name, zpost, sep = "")
+
 
   if (!plotting_groups) {
     myslope <- estimate$regression$values[2]
     myintercept <- estimate$regression$values[1]
-    rdata$predicted <- rdata$x * myslope + myintercept
+    myr <- estimate$es_r$effect_size[[1]]
+    if (plot_as_z) {
+      rdata$predicted <- rdata$x * myr
+    } else{
+      rdata$predicted <- rdata$x * myslope + myintercept
+    }
   }
 
 
@@ -142,11 +167,12 @@ plot_scatter <- function(
     myplot <- esci_plot_layers(myplot, "raw_point")
 
     myplot <- myplot + ggtheme
-    myplot <- myplot + ggplot2::scale_color_manual(values = my_colour, labels = my_labels)
-    myplot <- myplot + ggplot2::scale_fill_manual(values = my_fills, labels = my_labels)
-    myplot <- myplot + ggplot2::scale_shape_manual(values = my_shapes, labels = my_labels)
-    myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels)
-    myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels)
+    scale_title <- estimate$es_r$grouping_variable_name[[1]]
+    myplot <- myplot + ggplot2::scale_color_manual(values = my_colour, labels = my_labels, name = scale_title)
+    myplot <- myplot + ggplot2::scale_fill_manual(values = my_fills, labels = my_labels, name = scale_title)
+    myplot <- myplot + ggplot2::scale_shape_manual(values = my_shapes, labels = my_labels, name = scale_title)
+    myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels, name = scale_title)
+    myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels, name = scale_title)
 
     myplot$esci_scale_labels <- my_labels
 
@@ -187,6 +213,19 @@ plot_scatter <- function(
     )
     myplot <- myplot + ggtheme
 
+
+    if (show_mean_lines) {
+      myplot <- myplot + ggplot2::geom_hline(
+        yintercept = mean(rdata$y, na.rm = TRUE),
+        linetype = "dotted",
+        color = "black"
+      )
+      myplot <- myplot + ggplot2::geom_vline(
+        xintercept = mean(rdata$x, na.rm = TRUE),
+        linetype = "dotted",
+        color = "black"
+      )
+    }
 
     # Regression line
     if (show_line) {
@@ -267,18 +306,45 @@ plot_scatter <- function(
     nx_max <- max(ggplot2::layer_scales(myplot)$x$range$range)
     nxrange <- nx_max - nx_min
 
-    ypr <- (predict_from_x * myslope) + myintercept
-    yplabel <- paste("        Y' = ", format(ypr, digits = 2))
-    myplot <- myplot + ggplot2::annotate("text", x = nx_min - 0.2*nxrange, y = ypr, label = yplabel, color = "red")
+    if (plot_as_z) {
+      ypr <- (predict_from_x * myr)
+    } else {
+      ypr <- (predict_from_x * myslope) + myintercept
+    }
+    yplabel <- paste(zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), sep = "")
+    myplot <- myplot + ggtext::geom_richtext(
+      ggplot2::aes(
+        x = nx_min - 0.2*nxrange,
+        y = ypr,
+        label = yplabel
+      ),
+      text.color = "red",
+      fill = NA,
+      label.color = NA
+    )
     myplot <- esci_plot_layers(myplot, "prediction_y_label")
 
-    xlabel <- paste("X =", predict_from_x)
+    xlabel <- paste(zfix, "*X*", zpost, " =", predict_from_x, sep = "")
     y_half <- ny_min - (0.2* (ny_max - ny_min))
-    myplot <- myplot + ggplot2::annotate("text", x = predict_from_x, y = y_half, label = xlabel, color = "red")
+    myplot <- myplot + ggtext::geom_richtext(
+      ggplot2::aes(
+        x = predict_from_x,
+        y = y_half,
+        label = xlabel
+      ),
+    text.color = "red",
+    fill = NA,
+    label.color = NA
+    )
     myplot <- esci_plot_layers(myplot, "prediction_x_label")
 
-    pi <- predict(estimate$properties$lm, interval = "prediction", newdata = data.frame(x = predict_from_x), level = estimate$properties$conf_level)
-    xlab <- paste(xlab, "\n<br>At *X* =", predict_from_x, ": *Y*' =", format(ypr, digits = 2), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=2), ",", format(pi[1, "upr"], digits=2), "]")
+    pi_input <- if (plot_as_z) (predict_from_x * x_sd) + x_mean else predict_from_x
+    pi <- predict(estimate$properties$lm, interval = "prediction", newdata = data.frame(x = pi_input), level = estimate$properties$conf_level)
+    if (plot_as_z) {
+      pi[1, "lwr"] <- (pi[1, "lwr"] - y_mean) / y_sd
+      pi[1, "upr"] <- (pi[1, "upr"] - y_mean) / y_sd
+    }
+    xlab <- paste(xlab, "\n<br>At ", zfix, "*X*", zpost, " =", predict_from_x, ": ", zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=3), ",", format(pi[1, "upr"], digits=3), "]", sep = "")
     myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
     myplot <- esci_plot_layers(myplot, "prediction_prediction_interval")
     myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min, yend = ypr), size = 2)
@@ -299,12 +365,24 @@ plot_scatter <- function(
   y_s <- sd(rdata$y, na.rm = TRUE)
   x_s <- sd(rdata$x, na.rm = TRUE)
 
+  mypadding <- 0.05
+
+  y_min <- y_min - (mypadding * (y_max - y_min))
+  y_max <- y_max + (mypadding * (y_max - y_min))
+  x_min <- x_min - (mypadding * (x_max - x_min))
+  x_max <- x_max + (mypadding * (x_max - x_min))
+
+  if (!is.null(predict_from_x)) {
+    x_min <- x_min - (mypadding * (x_max - x_min))
+  }
+
+
   y_zmin <- (y_min - y_mean) / y_s
   y_zmax <- (y_max - y_mean) / y_s
   x_zmin <- (x_min - x_mean) / x_s
   x_zmax <- (x_max - x_mean) / x_s
 
-  if (y_zmin < x_min) {
+  if (y_zmin < x_zmin) {
     x_min <- (x_s * y_zmin) + x_mean
   } else {
     y_min <- (y_s * x_zmin) + y_mean
@@ -316,11 +394,27 @@ plot_scatter <- function(
     y_max <- (y_s * x_zmax) + y_mean
   }
 
-  myplot <- myplot + ggplot2::ylim(c(y_min, y_max))
-  myplot <- myplot + ggplot2::xlim(c(x_min, x_max))
+  # myplot <- myplot + ggplot2::ylim(c(y_min, y_max))
+  # myplot <- myplot + ggplot2::xlim(c(x_min, x_max))
 
+  myplot <- myplot + ggplot2::scale_y_continuous(
+    limits = c(y_min, y_max),
+    expand = c(0, 0),
+    name = ylab
+  )
 
-  myplot <- myplot + ylab(ylab) + xlab(xlab)
+  myplot <- myplot + ggplot2::scale_x_continuous(
+    limits = c(x_min, x_max),
+    expand = c(0, 0),
+    name = xlab
+  )
+
+  myplot$esci_ymin <- y_min
+  myplot$esci_ymax <- y_max
+  myplot$esci_xmin <- x_min
+  myplot$esci_xmax <- x_max
+
+  #myplot <- myplot + ylab(ylab) + xlab(xlab)
 
 
   myplot <- myplot + ggplot2::theme(

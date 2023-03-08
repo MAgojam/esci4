@@ -420,7 +420,7 @@ estimate_correlation.data.frame <- function(
 
   estimate$regression_properties <- list()
   estimate$regression_properties$message <- paste(
-    "Y' = ",
+    "\U0176 = ",
     formatC(a, format = "fg", digits = 4),
     " + ",
     formatC(b, format="fg", digits=4),
@@ -429,7 +429,7 @@ estimate_correlation.data.frame <- function(
   )
 
   estimate$regression_properties$message_html <- paste(
-    "<i>Y</i>' = ",
+    "<i>&#374;</i> = ",
     formatC(a, format = "fg", digits = 4),
     " + ",
     formatC(b, format="fg", digits=4),

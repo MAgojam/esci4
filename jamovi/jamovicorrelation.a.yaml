@@ -72,8 +72,18 @@ options:
       type: Bool
       default: false
 
+    - name: show_mean_lines
+      title: Show means for <i>X</i> and <i>Y</i>
+      type: Bool
+      default: false
+
+    - name: plot_as_z
+      title: Plot <i>Z</i> scores rather than raw scores
+      type: Bool
+      default: false
+
     - name: predict_from_x
-      title: "Give <i>X</i> value to generate prediction (<i>Y</i>')"
+      title: "Give <i>X</i> value to generate prediction (<i>&#374;</i>)"
       type: String
       default: ' '
 
@@ -245,7 +255,7 @@ options:
     - name: error_layout
       type: List
       title: Style
-      default: halfeye
+      default: none
       options:
         - name: halfeye
           title: Plausibility curve

@@ -115,7 +115,25 @@ items:
           title: <i>df</i>
           type: integer
 
-
+    - name:  regression
+      title: Regression
+      type: Table
+      rows:  2
+      visible: (show_line)
+      columns:
+        - name: component
+          title: 'Component'
+          type: text
+          combineBelow: true
+        - name: values
+          type: number
+          title: 'Value'
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
 
     - name:  point_null
       title: Hypothesis Evaluation

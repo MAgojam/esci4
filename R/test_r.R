@@ -64,6 +64,10 @@ test_r <- function() {
     lsat_post
   )
 
+  plot_scatter(estimate_r_raw, show_mean_lines = TRUE, plot_as_z = TRUE)
+
+  plot_scatter(estimate_r_raw, show_mean_lines = TRUE, plot_as_z = TRUE, predict_from_x = 0.5)
+
   estimate <- estimate_correlation(
     thomason1,
     lsat_pre_missing,

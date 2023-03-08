@@ -48,13 +48,23 @@ children:
         children:
           - type: CheckBox
             name: show_line
+            enable: '(switch:from_raw)'
           - type: CheckBox
             name: show_residuals
+            enable: '(switch:from_raw)'
           - type: CheckBox
             name: show_PI
+            enable: '(switch:from_raw)'
+          - type: CheckBox
+            name: show_mean_lines
+            enable: '(switch:from_raw)'
+          - type: CheckBox
+            name: plot_as_z
+            enable: '(switch:from_raw)'
           - type: TextBox
             name: predict_from_x
             format: string
+            enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Work with summary data
     name: spanel
@@ -548,6 +558,7 @@ children:
               row: 8
           - type: ComboBox
             name: error_layout
+            enable: '(switch:never)'
             cell:
               column: 1
               row: 8

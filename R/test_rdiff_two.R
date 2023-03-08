@@ -53,6 +53,9 @@ test_r <- function() {
     they,
     thegroup
   )
+  myplot <- plot_scatter(estimate_rdiff_raw)
+
+
 
   mystart <- rnorm(n = 50)
   otherstart <- rnorm(n = 50)

@@ -18,6 +18,8 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             show_line = FALSE,
             show_residuals = FALSE,
             show_PI = FALSE,
+            show_mean_lines = FALSE,
+            plot_as_z = FALSE,
             predict_from_x = " ",
             evaluate_hypotheses = FALSE,
             null_value = "0",
@@ -37,7 +39,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             axis.title.y = "15",
             axis.text.x = "14",
             axis.title.x = "15",
-            error_layout = "halfeye",
+            error_layout = "none",
             sp_ymin = "auto",
             sp_ymax = "auto",
             sp_ybreaks = "auto",
@@ -139,6 +141,14 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..show_PI <- jmvcore::OptionBool$new(
                 "show_PI",
                 show_PI,
+                default=FALSE)
+            private$..show_mean_lines <- jmvcore::OptionBool$new(
+                "show_mean_lines",
+                show_mean_lines,
+                default=FALSE)
+            private$..plot_as_z <- jmvcore::OptionBool$new(
+                "plot_as_z",
+                plot_as_z,
                 default=FALSE)
             private$..predict_from_x <- jmvcore::OptionString$new(
                 "predict_from_x",
@@ -257,7 +267,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..error_layout <- jmvcore::OptionList$new(
                 "error_layout",
                 error_layout,
-                default="halfeye",
+                default="none",
                 options=list(
                     "halfeye",
                     "eye",
@@ -950,6 +960,8 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..show_line)
             self$.addOption(private$..show_residuals)
             self$.addOption(private$..show_PI)
+            self$.addOption(private$..show_mean_lines)
+            self$.addOption(private$..plot_as_z)
             self$.addOption(private$..predict_from_x)
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
@@ -1026,6 +1038,8 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         show_line = function() private$..show_line$value,
         show_residuals = function() private$..show_residuals$value,
         show_PI = function() private$..show_PI$value,
+        show_mean_lines = function() private$..show_mean_lines$value,
+        plot_as_z = function() private$..plot_as_z$value,
         predict_from_x = function() private$..predict_from_x$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
@@ -1101,6 +1115,8 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..show_line = NA,
         ..show_residuals = NA,
         ..show_PI = NA,
+        ..show_mean_lines = NA,
+        ..plot_as_z = NA,
         ..predict_from_x = NA,
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
@@ -1173,6 +1189,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_r = function() private$.items[["es_r"]],
+        regression = function() private$.items[["regression"]],
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
         scatter_plot_warnings = function() private$.items[["scatter_plot_warnings"]],
@@ -1324,6 +1341,30 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `type`="integer"))))
             self$add(jmvcore::Table$new(
                 options=options,
+                name="regression",
+                title="Regression",
+                rows=2,
+                visible="(show_line)",
+                columns=list(
+                    list(
+                        `name`="component", 
+                        `title`="Component", 
+                        `type`="text", 
+                        `combineBelow`=TRUE),
+                    list(
+                        `name`="values", 
+                        `type`="number", 
+                        `title`="Value"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"))))
+            self$add(jmvcore::Table$new(
+                options=options,
                 name="point_null",
                 title="Hypothesis Evaluation",
                 rows=1,
@@ -1465,6 +1506,8 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param show_line .
 #' @param show_residuals .
 #' @param show_PI .
+#' @param show_mean_lines .
+#' @param plot_as_z .
 #' @param predict_from_x .
 #' @param evaluate_hypotheses .
 #' @param null_value .
@@ -1533,6 +1576,7 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$regression} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
@@ -1562,6 +1606,8 @@ jamovicorrelation <- function(
     show_line = FALSE,
     show_residuals = FALSE,
     show_PI = FALSE,
+    show_mean_lines = FALSE,
+    plot_as_z = FALSE,
     predict_from_x = " ",
     evaluate_hypotheses = FALSE,
     null_value = "0",
@@ -1581,7 +1627,7 @@ jamovicorrelation <- function(
     axis.title.y = "15",
     axis.text.x = "14",
     axis.title.x = "15",
-    error_layout = "halfeye",
+    error_layout = "none",
     sp_ymin = "auto",
     sp_ymax = "auto",
     sp_ybreaks = "auto",
@@ -1650,6 +1696,8 @@ jamovicorrelation <- function(
         show_line = show_line,
         show_residuals = show_residuals,
         show_PI = show_PI,
+        show_mean_lines = show_mean_lines,
+        plot_as_z = plot_as_z,
         predict_from_x = predict_from_x,
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
