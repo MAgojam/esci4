@@ -134,6 +134,28 @@ estimate_mdiff_2x2_mixed <- function(
   }
 
 
+  # Check for NAs and too many levels
+  invalids <- NULL
+
+  vs_to_check <- c(outcome_variable_level1, outcome_variable_level2, grouping_variable)
+  for (myv in vs_to_check) {
+    if (sum(is.na(data[[myv]])) > 0) {
+      invalids <- c(
+        invalids,
+        glue::glue("{myv} had {sum(is.na(data[[myv]]))} NA elements; these have been dropped.")
+      )
+    }
+
+  }
+
+  if (length(levels(data[[grouping_variable]])) > 2) {
+    invalids <- c(
+      invalids,
+      glue::glue("Variable {grouping_variable} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable]])[-(1:2)], collapse = ', ')} were dropped.")
+    )
+  }
+
+
   # Data prep
   # ---------------------------
   keeps <- c(
@@ -144,6 +166,8 @@ estimate_mdiff_2x2_mixed <- function(
 
   data <- data[ , keeps]
   data <- data[complete.cases(data), ]
+
+  data <- data[data[[grouping_variable]] %in% levels(data[[grouping_variable]])[1:2], ]
 
   a1 <- levels(data[[grouping_variable]])[[1]]
   a2 <- levels(data[[grouping_variable]])[[2]]
@@ -157,14 +181,14 @@ estimate_mdiff_2x2_mixed <- function(
       grouping_variable = grouping_variable,
       conf_level = conf_level,
       assume_equal_variance = FALSE
-    ),
+    )[1:2, ],
     overview.data.frame(
       data = data,
       outcome_variable = outcome_variable_level2,
       grouping_variable = grouping_variable,
       conf_level = conf_level,
       assume_equal_variance = FALSE
-    )
+    )[1:2, ]
   )
 
   overview <- overview[c(1, 3, 2, 4), ]
@@ -251,6 +275,21 @@ estimate_mdiff_2x2_mixed <- function(
     ws_estimate$es_mean_difference[2, esci_copy_columns]
 
 
+  data$esci_ov <- (data[[outcome_variable_level1]] + data[[outcome_variable_level2]])/2
+  bs_estimate <- esci4::estimate_mdiff_two(
+    data = data,
+    outcome_variable = "esci_ov",
+    grouping_variable = grouping_variable,
+    conf_level = conf_level,
+    assume_equal_variance = FALSE,
+    save_raw_data = FALSE
+  )
+  estimate$main_effect_A$es_mean_difference[1, esci_copy_columns] <-
+    bs_estimate$es_mean_difference[1, esci_copy_columns]
+  estimate$main_effect_A$es_mean_difference[2, esci_copy_columns] <-
+    bs_estimate$es_mean_difference[2, esci_copy_columns]
+
+
   # Store raw data -----------------------------------------------
   if (save_raw_data) {
     myrows <- nrow(data)
@@ -328,6 +367,20 @@ estimate_mdiff_2x2_mixed <- function(
   estimate$properties$data_type <- "data.frame"
   estimate$properties$data_source <- deparse(substitute(data))
   estimate$overview <- overview
+
+  if (!is.null(invalids)) {
+    estimate$overview_properties$message <- paste0(
+      invalids,
+      collapse = "\n"
+    )
+
+    estimate$overview_properties$message_html <- gsub(
+      "\n",
+      "<BR>",
+      estimate$overview_properties$message
+    )
+  }
+
 
 
   return(estimate)

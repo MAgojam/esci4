@@ -909,13 +909,44 @@ estimate_mdiff_2x2_between.data.frame <- function(
     na.rm = TRUE
   )
 
+
+
   keeps <- c(
     grouping_variable_A,
     grouping_variable_B,
     outcome_variable
   )
   data <- data[ , keeps]
-  #all_rows <- nrow(data)
+
+  # Check for NAs and too many levels
+  invalids <- NULL
+
+  vs_to_check <- c(grouping_variable_B, grouping_variable_A, outcome_variable)
+  for (myv in vs_to_check) {
+    if (sum(is.na(data[[myv]])) > 0) {
+      invalids <- c(
+        invalids,
+        glue::glue("{myv} had {sum(is.na(data[[myv]]))} NA elements; these have been dropped.")
+      )
+    }
+
+  }
+
+  if (length(levels(data[[grouping_variable_A]])) > 2) {
+    invalids <- c(
+      invalids,
+      glue::glue("Variable {grouping_variable_A} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable_A]])[-(1:2)], collapse = ', ')} were dropped.")
+    )
+  }
+
+  if (length(levels(data[[grouping_variable_B]])) > 2) {
+    invalids <- c(
+      invalids,
+      glue::glue("Variable {grouping_variable_B} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable_B]])[-(1:2)], collapse = ', ')} were dropped.")
+    )
+  }
+
+
   data <- data[complete.cases(data), ]
 
   a1 <- levels(data[[grouping_variable_A]])[[1]]
@@ -925,6 +956,20 @@ estimate_mdiff_2x2_between.data.frame <- function(
 
   da1 <- data[data[[grouping_variable_A]] == a1, ]
   da2 <- data[data[[grouping_variable_A]] == a2, ]
+
+  esci_assert_column_has_valid_rows(
+    da1,
+    outcome_variable,
+    lower = 2,
+    na.rm = TRUE
+  )
+
+  esci_assert_column_has_valid_rows(
+    da2,
+    outcome_variable,
+    lower = 2,
+    na.rm = TRUE
+  )
 
   overview <- rbind(
     overview.data.frame(
@@ -1006,6 +1051,21 @@ estimate_mdiff_2x2_between.data.frame <- function(
   estimate$properties$data_type <- "data.frame"
   estimate$properties$data_source <- deparse(substitute(data))
   estimate$overview <- overview
+
+  if (!is.null(invalids)) {
+    estimate$overview_properties$message <- paste0(
+      invalids,
+      collapse = "\n"
+    )
+
+    estimate$overview_properties$message_html <- gsub(
+      "\n",
+      "<BR>",
+      estimate$overview_properties$message
+    )
+
+  }
+
 
   return(estimate)
 

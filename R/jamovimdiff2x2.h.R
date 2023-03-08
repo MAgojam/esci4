@@ -2255,7 +2255,7 @@ jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="missing", 
                         `type`="integer", 
                         `title`="Missing", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`=FALSE),
                     list(
                         `name`="df_i", 
                         `title`="<i>df</i>", 

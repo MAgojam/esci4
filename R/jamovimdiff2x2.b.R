@@ -31,31 +31,20 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         try(tbl_interval_null <- self$results$interval_null)
         try(effect_size <- self$options$effect_size)
 
-        if (effect_size == "mean_difference" & !mixed) {
+        # Prep output -------------------------------------------
+        # Set CI and MoE columns to reflect confidence level
+        conf_level <- jamovi_sanitize(
+          my_value = self$options$conf_level,
+          return_value = 95,
+          na_ok = FALSE,
+          convert_to_number = TRUE,
+          lower = 75,
+          lower_inclusive = FALSE,
+          upper = 100,
+          upper_inclusive = FALSE,
+          my_value_name = "Confidence level"
+        )
 
-          if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
-            if (assume_equal_variance) {
-              tbl_overview$setNote(
-                key = "overview_table",
-                note = "Variances are assumed equal, so <i>s</i><sub>p</sub> was used to calculate each CI.",
-                init = TRUE
-              )
-            } else {
-              tbl_overview$setNote(
-                key = "overview_table",
-                note = "Variances are not assumed equal, and so the CI was calculated separately for each mean.",
-                init = TRUE
-              )
-
-            }
-          }
-        } else {
-          tbl_overview$setNote(
-            key = "overview_table",
-            note = NULL,
-            init = TRUE
-          )
-        }
 
         if (!is.null(tbl_es_mean_difference) & !is.null(assume_equal_variance) & !mixed) {
           if (assume_equal_variance) {
@@ -80,19 +69,6 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
         }
 
-        # Prep output -------------------------------------------
-        # Set CI and MoE columns to reflect confidence level
-        conf_level <- jamovi_sanitize(
-          my_value = self$options$conf_level,
-          return_value = 95,
-          na_ok = FALSE,
-          convert_to_number = TRUE,
-          lower = 75,
-          lower_inclusive = FALSE,
-          upper = 100,
-          upper_inclusive = FALSE,
-          my_value_name = "Confidence level"
-        )
 
         jamovi_set_confidence(tbl_overview, conf_level)
         jamovi_set_confidence(tbl_es_mean_difference, conf_level)
@@ -141,6 +117,10 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
       .run = function() {
 
         from_raw <- (self$options$switch == "from_raw")
+        mixed <- (self$options$design == "mixed")
+        effect_size <- self$options$effect_size
+        assume_equal_variance <- self$options$assume_equal_variance
+        tbl_overview <- self$results$overview
 
         estimate <- jamovi_mdiff_2x2(
           self = self,
@@ -188,6 +168,28 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
 
         }
+
+
+
+        if (effect_size == "mean_difference" & !mixed) {
+          mysep <- if (is.null(estimate$overview_properties$message_html)) NULL else "<BR>"
+          if (!is.null(tbl_overview) & !is.null(assume_equal_variance)) {
+            if (assume_equal_variance) {
+              estimate$overview_properties$message_html <- paste(
+                estimate$overview_properties$message_html,
+                mysep,
+                "Variances are assumed equal, so <i>s</i><sub>p</sub> was used to calculate each CI."
+              )
+            } else {
+              estimate$overview_properties$message_html <- paste(
+                estimate$overview_properties$message_html,
+                mysep,
+                "Variances are not assumed equal, and so the CI was calculated separately for each mean."
+              )
+            }
+          }
+        }
+
 
 
         # Fill tables

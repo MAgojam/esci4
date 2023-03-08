@@ -120,7 +120,7 @@ items:
         - name: missing
           type: integer
           title: Missing
-          visible: (switch == 'from_raw')
+          visible: FALSE
         - name: df_i
           title: <i>df</i>
           type: integer

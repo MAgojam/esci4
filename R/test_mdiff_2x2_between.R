@@ -152,4 +152,143 @@ test_mdiff_2x2_between <- function() {
 
   myplot <- plot_mdiff(restimate$interaction)
 
+
+
+  sound <- c(
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Silence'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music'	,
+    'Music' ,
+    "zOther",
+    "zOther",
+    "zOther",
+    NA,
+    "zOther"
+  )
+
+  stress <- c(
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Calm'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed'	,
+    'Stressed',
+    "Calm",
+    "Stressed",
+    "Calm",
+    "Stressed",
+    NA
+
+  )
+
+  score <- c(
+    5	,
+    5	,
+    4	,
+    NA	,
+    2	,
+    5	,
+    6	,
+    5	,
+    10	,
+    10	,
+    8	,
+    9	,
+    11	,
+    9	,
+    10	,
+    8	,
+    8	,
+    11	,
+    10	,
+    9	,
+    8	,
+    9	,
+    10	,
+    9	,
+    15	,
+    15	,
+    NA	,
+    14	,
+    15	,
+    15	,
+    13	,
+    15,
+    12,
+    13,
+    12,
+    14,
+    15
+
+  )
+
+  mydf <- data.frame(
+    v1 = as.factor(sound),
+    v2 = as.factor(stress),
+    o = score
+  )
+
+  restimate <- estimate_mdiff_2x2_between(
+    mydf,
+    grouping_variable_A = v1,
+    grouping_variable_B = v2,
+    outcome_variable = o
+  )
+
+  myplot <- plot_mdiff(restimate$interaction)
+
 }
