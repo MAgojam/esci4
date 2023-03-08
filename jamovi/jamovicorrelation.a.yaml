@@ -77,6 +77,11 @@ options:
       type: Bool
       default: false
 
+    - name: show_r
+      title: Display <i>r</i> value on scatterplot
+      type: Bool
+      default: false
+
     - name: plot_as_z
       title: Plot <i>Z</i> scores rather than raw scores
       type: Bool

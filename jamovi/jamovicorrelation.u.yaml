@@ -260,6 +260,17 @@ children:
             cell:
               column: 1
               row: 9
+          - type: Label
+            label: 'Labels:'
+            cell:
+              column: 0
+              row: 10
+          - type: CheckBox
+            name: show_r
+            enable: '(switch:from_raw)'
+            cell:
+              column: 1
+              row: 10
           - type: CollapseBox
             label: Scatter plot aesthetics
             stretchFactor: 1

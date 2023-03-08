@@ -11,7 +11,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             # Get a handle for each table
             tbl_overview <- self$results$overview
             tbl_es_r <- self$results$es_r
-            tbl_regression <- self$restuls$regression
+            tbl_regression <- self$results$regression
 
             tbl_overview$setVisible(from_raw)
 
@@ -447,6 +447,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           args$show_residuals <- self$options$show_residuals
           args$show_mean_lines <- self$options$show_mean_lines
           args$plot_as_z <- self$options$plot_as_z
+          args$show_r <- self$options$show_r
 
           args <- jamovi_arg_builder(
             args = args,
@@ -472,6 +473,33 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           )
 
 
+
+          if (self$options$show_r) {
+            r_value <- estimate$es_r$effect_size[[1]]
+
+            font_size <- jamovi_sanitize(
+              my_value = self$options$sp_axis.title.x,
+              return_value = 15,
+              na_ok = FALSE,
+              convert_to_number = TRUE,
+              lower = 1,
+              lower_inclusive = TRUE,
+              upper = 97,
+              my_value_name = "Scatter Plot X axis: Label font size"
+            )
+
+            new_label <- paste(
+              "<span style='font-size:",
+              font_size,
+              "pt'>*r* = ",
+              format(r_value, digits = 2),
+              "</span>",
+              sep = ""
+            )
+            if (!is.null(myplot$layers$r_label)) {
+              myplot$layers$r_label$mapping$label<- new_label
+            }
+          }
 
 
           width <- jamovi_sanitize(
@@ -618,14 +646,14 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           # Axis labels
           xlab <- jamovi_sanitize(
-            my_value = self$options$sp_xlab,
+            my_value = myplot$esci_xlab,
             return_value = NULL,
             na_ok = FALSE,
             my_value_name = "Scatter Plot X axis: Title"
           )
 
           ylab <- jamovi_sanitize(
-            my_value = self$options$sp_ylab,
+            my_value = myplot$esci_ylab,
             return_value = NULL,
             na_ok = FALSE,
             my_value_name = "Scatter Plot Y axis: Title"

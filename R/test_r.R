@@ -64,7 +64,7 @@ test_r <- function() {
     lsat_post
   )
 
-  plot_scatter(estimate_r_raw, show_mean_lines = TRUE, plot_as_z = TRUE)
+  plot_scatter(estimate_r_raw, show_mean_lines = TRUE, plot_as_z = TRUE, show_r = TRUE)
 
   plot_scatter(estimate_r_raw, show_mean_lines = TRUE, plot_as_z = TRUE, predict_from_x = 0.5)
 

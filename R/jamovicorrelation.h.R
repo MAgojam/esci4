@@ -19,6 +19,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             show_residuals = FALSE,
             show_PI = FALSE,
             show_mean_lines = FALSE,
+            show_r = FALSE,
             plot_as_z = FALSE,
             predict_from_x = " ",
             evaluate_hypotheses = FALSE,
@@ -145,6 +146,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..show_mean_lines <- jmvcore::OptionBool$new(
                 "show_mean_lines",
                 show_mean_lines,
+                default=FALSE)
+            private$..show_r <- jmvcore::OptionBool$new(
+                "show_r",
+                show_r,
                 default=FALSE)
             private$..plot_as_z <- jmvcore::OptionBool$new(
                 "plot_as_z",
@@ -961,6 +966,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..show_residuals)
             self$.addOption(private$..show_PI)
             self$.addOption(private$..show_mean_lines)
+            self$.addOption(private$..show_r)
             self$.addOption(private$..plot_as_z)
             self$.addOption(private$..predict_from_x)
             self$.addOption(private$..evaluate_hypotheses)
@@ -1039,6 +1045,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         show_residuals = function() private$..show_residuals$value,
         show_PI = function() private$..show_PI$value,
         show_mean_lines = function() private$..show_mean_lines$value,
+        show_r = function() private$..show_r$value,
         plot_as_z = function() private$..plot_as_z$value,
         predict_from_x = function() private$..predict_from_x$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
@@ -1116,6 +1123,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..show_residuals = NA,
         ..show_PI = NA,
         ..show_mean_lines = NA,
+        ..show_r = NA,
         ..plot_as_z = NA,
         ..predict_from_x = NA,
         ..evaluate_hypotheses = NA,
@@ -1507,6 +1515,7 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param show_residuals .
 #' @param show_PI .
 #' @param show_mean_lines .
+#' @param show_r .
 #' @param plot_as_z .
 #' @param predict_from_x .
 #' @param evaluate_hypotheses .
@@ -1607,6 +1616,7 @@ jamovicorrelation <- function(
     show_residuals = FALSE,
     show_PI = FALSE,
     show_mean_lines = FALSE,
+    show_r = FALSE,
     plot_as_z = FALSE,
     predict_from_x = " ",
     evaluate_hypotheses = FALSE,
@@ -1697,6 +1707,7 @@ jamovicorrelation <- function(
         show_residuals = show_residuals,
         show_PI = show_PI,
         show_mean_lines = show_mean_lines,
+        show_r = show_r,
         plot_as_z = plot_as_z,
         predict_from_x = predict_from_x,
         evaluate_hypotheses = evaluate_hypotheses,

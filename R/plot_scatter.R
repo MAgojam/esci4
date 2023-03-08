@@ -6,6 +6,7 @@ plot_scatter <- function(
     show_PI = FALSE,
     show_residuals = FALSE,
     show_mean_lines = FALSE,
+    show_r = FALSE,
     predict_from_x = NULL,
     plot_as_z = FALSE,
     ggtheme = ggplot2::theme_classic()
@@ -294,7 +295,7 @@ plot_scatter <- function(
   if (!plotting_groups) {
     myplot <- myplot + theme(legend.position="none")
   } else {
-    myplot <- myplot + ggplot2::guides(group=ggplot2::guide_legend(title=estimate$es_r$grouping_variable_name[[1]]))
+    myplot <- myplot + theme(legend.position=c(0.1,1))
   }
   myplot <- myplot + theme(axis.line = element_line(size = 1, linetype = "solid"))
 
@@ -347,6 +348,27 @@ plot_scatter <- function(
     xlab <- paste(xlab, "\n<br>At ", zfix, "*X*", zpost, " =", predict_from_x, ": ", zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=3), ",", format(pi[1, "upr"], digits=3), "]", sep = "")
     myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
     myplot <- esci_plot_layers(myplot, "prediction_prediction_interval")
+
+    if (show_line) {
+      ci <- predict(estimate$properties$lm, interval = "confidence", newdata = data.frame(x = pi_input), level = estimate$properties$conf_level)
+      if (plot_as_z) {
+        ci[1, "lwr"] <- (ci[1, "lwr"] - y_mean) / y_sd
+        ci[1, "upr"] <- (ci[1, "upr"] - y_mean) / y_sd
+      }
+      xlab <- paste(
+        xlab,
+        ", ",
+        format(estimate$properties$conf_level*100, digits=0),
+        "% CI[", format(ci[1, "lwr"], digits=3),
+        ",", format(ci[1, "upr"], digits=3),
+        "]",
+        sep = ""
+      )
+      myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "blue", aes(x = predict_from_x, xend = predict_from_x, y=ci[1, "lwr"], yend = ci[1, "upr"]))
+      myplot <- esci_plot_layers(myplot, "prediction_confidence_interval")
+    }
+
+
     myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min, yend = ypr), size = 2)
     myplot <- esci_plot_layers(myplot, "prediction_vertical_line")
     myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min, xend = predict_from_x, y = ypr, yend = ypr), size = 2)
@@ -364,6 +386,22 @@ plot_scatter <- function(
   x_mean <- mean(rdata$x, na.rm = TRUE)
   y_s <- sd(rdata$y, na.rm = TRUE)
   x_s <- sd(rdata$x, na.rm = TRUE)
+
+
+  if (show_r) {
+    myplot <- myplot + ggtext::geom_richtext(
+      ggplot2::aes(
+        x = x_min + (0.1 * (x_max - x_min)),
+        y = y_max - (0.1 * (y_max - y_min)),
+        label = paste("*r* = ", format(myr, digits = 2))
+      ),
+      text.color = "black",
+      fill = NA,
+      label.color = NA,
+      size = 5
+    )
+    myplot <- esci_plot_layers(myplot, "r_label")
+  }
 
   mypadding <- 0.05
 
@@ -394,9 +432,6 @@ plot_scatter <- function(
     y_max <- (y_s * x_zmax) + y_mean
   }
 
-  # myplot <- myplot + ggplot2::ylim(c(y_min, y_max))
-  # myplot <- myplot + ggplot2::xlim(c(x_min, x_max))
-
   myplot <- myplot + ggplot2::scale_y_continuous(
     limits = c(y_min, y_max),
     expand = c(0, 0),
@@ -409,12 +444,17 @@ plot_scatter <- function(
     name = xlab
   )
 
+  myplot <- myplot + ggplot2::xlab(xlab)
+  myplot <- myplot + ggplot2::ylab(ylab)
+
+
   myplot$esci_ymin <- y_min
   myplot$esci_ymax <- y_max
   myplot$esci_xmin <- x_min
   myplot$esci_xmax <- x_max
 
-  #myplot <- myplot + ylab(ylab) + xlab(xlab)
+  myplot$esci_xlab <- xlab
+  myplot$esci_ylab <- ylab
 
 
   myplot <- myplot + ggplot2::theme(

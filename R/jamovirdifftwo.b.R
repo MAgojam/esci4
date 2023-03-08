@@ -546,12 +546,12 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           # Apply axis labels and scales
           myplot <- myplot + ggplot2::scale_x_continuous(
             limits = c(xmin, xmax),
-            n.breaks = xbreaks,
+            n.breaks = xbreaks
           )
 
           myplot <- myplot + ggplot2::scale_y_continuous(
             limits = c(ymin, ymax),
-            n.breaks = ybreaks,
+            n.breaks = ybreaks
           )
 
           # Axis font sizes
@@ -656,12 +656,13 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           )
 
           my_labels <- myplot$esci_scale_labels
+          scale_title <- estimate$es_r$grouping_variable_name[[1]]
 
-          myplot <- myplot + ggplot2::scale_color_manual(values = my_colour, labels = my_labels)
-          myplot <- myplot + ggplot2::scale_fill_manual(values = my_fills, labels = my_labels)
-          myplot <- myplot + ggplot2::scale_shape_manual(values = my_shapes, labels = my_labels)
-          myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels)
-          myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels)
+          myplot <- myplot + ggplot2::scale_color_manual(values = my_colour, labels = my_labels, name = scale_title)
+          myplot <- myplot + ggplot2::scale_fill_manual(values = my_fills, labels = my_labels, name = scale_title)
+          myplot <- myplot + ggplot2::scale_shape_manual(values = my_shapes, labels = my_labels, name = scale_title)
+          myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels, name = scale_title)
+          myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels, name = scale_title)
 
 
           myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
