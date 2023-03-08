@@ -62,7 +62,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
             width <- jamovi_sanitize(
               my_value = self$options$sp_plot_width,
-              return_value = 800,
+              return_value = 650,
               convert_to_number = TRUE,
               lower = 10,
               lower_inclusive = TRUE,
@@ -467,7 +467,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           width <- jamovi_sanitize(
             my_value = self$options$sp_plot_width,
-            return_value = 800,
+            return_value = 650,
             convert_to_number = TRUE,
             lower = 10,
             lower_inclusive = TRUE,

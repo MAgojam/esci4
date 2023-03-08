@@ -295,7 +295,7 @@ plot_scatter <- function(
   if (!plotting_groups) {
     myplot <- myplot + theme(legend.position="none")
   } else {
-    myplot <- myplot + theme(legend.position=c(0.1,1))
+    myplot <- myplot + theme(legend.position=c(0.15,1))
   }
   myplot <- myplot + theme(axis.line = element_line(size = 1, linetype = "solid"))
 

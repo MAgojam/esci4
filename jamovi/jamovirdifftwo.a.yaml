@@ -196,7 +196,7 @@ options:
     - name: sp_plot_width
       title: Width
       type: String
-      default: '800'
+      default: '650'
 
     - name: sp_plot_height
       title: Height

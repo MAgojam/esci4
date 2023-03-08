@@ -28,7 +28,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             null_color = "#A40122",
             es_plot_width = "600",
             es_plot_height = "400",
-            sp_plot_width = "800",
+            sp_plot_width = "650",
             sp_plot_height = "650",
             ymin = "auto",
             ymax = "auto",
@@ -235,7 +235,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_plot_width <- jmvcore::OptionString$new(
                 "sp_plot_width",
                 sp_plot_width,
-                default="800")
+                default="650")
             private$..sp_plot_height <- jmvcore::OptionString$new(
                 "sp_plot_height",
                 sp_plot_height,
@@ -1967,7 +1967,7 @@ jamovirdifftwo <- function(
     null_color = "#A40122",
     es_plot_width = "600",
     es_plot_height = "400",
-    sp_plot_width = "800",
+    sp_plot_width = "650",
     sp_plot_height = "650",
     ymin = "auto",
     ymax = "auto",
