@@ -497,14 +497,35 @@ estimate_rdiff_two.data.frame <- function(
   if (length(levels(data[[grouping_variable]])) > 2) {
     valid_message <- c(
       valid_message,
-      glue::glue("Variable {grouping_variable} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable]])[-(1:2)], collapse = ', ')} were dropped.")
+      glue::glue("Variable {grouping_variable} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable]])[-(1:2)], collapse = ', ')} were dropped.\n")
     )
   }
 
+  vs_to_check <- c(grouping_variable)
+  for (myv in vs_to_check) {
+    if (sum(is.na(data[[myv]])) > 0) {
+      valid_message <- c(
+        valid_message,
+        glue::glue("{myv} had {sum(is.na(data[[myv]]))} NA elements; these have been dropped.\n")
+      )
+    }
+  }
+
+  # for (mylevel in levels(data[[grouping_variable]])[1:2]) {
+  #   vs_to_check <- c(x, y)
+  #   for (myv in vs_to_check) {
+  #     if (sum(is.na(data[data[grouping_variable] == mylevel, myv])) > 0) {
+  #       valid_message <- c(
+  #         valid_message,
+  #         glue::glue("{grouping_variable}:{mylevel} had {sum(is.na(data[[myv]]))} rows with NA for {myv}; these have been dropped.\n")
+  #       )
+  #     }
+  #   }
+  #
+  # }
+
   # Data processing - reduce to complete cases of just key vars and only 2 levels of grouping variable
   data <- data[ , c(x, y, grouping_variable)]
-  data <- data[complete.cases(data), ]
-  data <- data[data[[grouping_variable]] %in% levels(data[[grouping_variable]])[1:2], ]
 
   estimate$overview <- rbind(
     overview(
@@ -526,6 +547,11 @@ estimate_rdiff_two.data.frame <- function(
   )
   # estimate$overview <- estimate$overview[c(1, 3, 2, 4), ]
 
+  data <- data[complete.cases(data), ]
+  data <- data[data[[grouping_variable]] %in% levels(data[[grouping_variable]])[1:2], ]
+
+
+
 
   level1 <- levels(data[[grouping_variable]])[[1]]
   level2 <- levels(data[[grouping_variable]])[[2]]
@@ -539,25 +565,18 @@ estimate_rdiff_two.data.frame <- function(
   comparison_n <- crossprod(!is.na(data2[ , c(x, y)]))[1, 2]
 
 
-  if (comparison_n != nrow(data2)) {
-    missing <- nrow(data2) - comparison_n
+  if (!is.null(valid_message)) {
     valid_message <- c(
       valid_message,
       glue::glue(
-        "For {level2}, there were {missing} rows with incomplete data.  All analysis are based only on the {comparison_n} rows of {level2} with complete data."
+        "N_pairs in {grouping_variable}:{level1} = {reference_n}.\n"
+      ),
+      glue::glue(
+        "N_pairs in {grouping_variable}:{level2} = {comparison_n}.\n"
       )
     )
   }
 
-  if (reference_n != nrow(data1)) {
-    missing <- nrow(data1) - reference_n
-    valid_message <- c(
-      valid_message,
-      glue::glue(
-        "For {level1}, there were {missing} rows with incomplete data.  All analysis are based only on the {reference_n} rows of {level1} with complete data."
-      )
-    )
-  }
 
   if (!is.null(valid_message)) {
     estimate$overview_properties$message <- paste0(
@@ -567,8 +586,14 @@ estimate_rdiff_two.data.frame <- function(
 
     estimate$overview_properties$message_html <- gsub(
       "\n",
-      "<BR>",
+      "</BR>",
       estimate$overview_properties$message
+    )
+
+    estimate$overview_properties$message_html <- gsub(
+      "N_pairs",
+      "<i>N</i><sub>pairs</sub>",
+      estimate$overview_properties$message_html
     )
   }
 

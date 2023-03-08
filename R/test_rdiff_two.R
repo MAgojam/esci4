@@ -45,6 +45,8 @@ test_r <- function() {
     thegroup = as.factor(sample(x = c("Men", "Women", "Other"), size = 150, replace = TRUE))
   )
 
+  myr2$thex[10:20] <- NA
+
   estimate_rdiff_raw <- estimate_rdiff_two(
     myr2,
     thex,
