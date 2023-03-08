@@ -31,7 +31,7 @@ items:
           title: UL
           type: number
         - name: median
-          title: Mdn
+          title: <i>Mdn</i>
           type: number
           visible: (switch == 'from_raw')
         - name: median_LL
@@ -64,7 +64,7 @@ items:
           superTitle: Percentile
           visible: (switch == 'from_raw')
         - name: n
-          title: <i>n</i>
+          title: <i>N</i>
           type: integer
         - name: missing
           type: integer
@@ -85,11 +85,11 @@ items:
       rows:  1
       columns:
         - name: x_variable_name
-          title: 'x variable'
+          title: '<i>X</i> variable'
           type: text
           combineBelow: true
         - name: y_variable_name
-          title: 'y variable'
+          title: '<i>Y</i> variable'
           type: text
           combineBelow: true
         - name: effect

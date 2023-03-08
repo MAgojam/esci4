@@ -20,12 +20,12 @@ options:
       type: Data
 
     - name: x
-      title: x Variable
+      title: <i>X</i> Variable
       type: Variable
       permitted: [numeric]
 
     - name: y
-      title: y variable
+      title: <i>Y</i> variable
       type: Variable
       permitted: [numeric]
 
@@ -40,12 +40,12 @@ options:
     - name: x_variable_name
       title: X-variable name
       type: String
-      default: x variable
+      default: X variable
 
     - name: y_variable_name
       title: Y-variable name
       type: String
-      default: y variable
+      default: Y variable
 
     - name: conf_level
       type: Number

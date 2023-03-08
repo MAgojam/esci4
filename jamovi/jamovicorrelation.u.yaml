@@ -28,7 +28,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: x variable
+            label: <i>X</i> variable
             children:
               - type: VariablesListBox
                 name: x
@@ -36,7 +36,7 @@ children:
                 isTarget: true
                 enable: '(switch:from_raw)'
           - type: TargetLayoutBox
-            label: y variable
+            label: <i>Y</i> variable
             children:
               - type: VariablesListBox
                 name: 'y'
@@ -125,7 +125,7 @@ children:
       - type: CheckBox
         name: show_details
   - type: CollapseBox
-    label: Scatter Plot Options
+    label: Scatter plot options
     stretchFactor: 1
     collapsed: true
     children:
@@ -251,12 +251,12 @@ children:
               column: 1
               row: 9
           - type: CollapseBox
-            label: Scatter Plot Aesthetics
+            label: Scatter plot aesthetics
             stretchFactor: 1
             collapsed: true
             children:
               - type: Label
-                label: Raw Data
+                label: Raw data
                 cell:
                   column: 0
                   row: 2
@@ -423,7 +423,7 @@ children:
                   column: 3
                   row: 12
               - type: Label
-                label: 'Prediction from X'
+                label: 'Prediction from <i>X</i>'
                 cell:
                   column: 0
                   row: 13
@@ -450,7 +450,7 @@ children:
                   column: 1
                   row: 15
   - type: CollapseBox
-    label: Estimation Figure Options
+    label: Estimation figure options
     stretchFactor: 1
     collapsed: true
     children:
@@ -552,7 +552,7 @@ children:
               column: 1
               row: 8
           - type: CollapseBox
-            label: Estimation Figure Aesthetics
+            label: Estimation figure aesthetics
             stretchFactor: 1
             collapsed: true
             children:

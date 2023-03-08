@@ -11,8 +11,8 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             y = NULL,
             r = " ",
             n = " ",
-            x_variable_name = "x variable",
-            y_variable_name = "y variable",
+            x_variable_name = "X variable",
+            y_variable_name = "Y variable",
             conf_level = 95,
             show_details = FALSE,
             show_line = FALSE,
@@ -115,11 +115,11 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..x_variable_name <- jmvcore::OptionString$new(
                 "x_variable_name",
                 x_variable_name,
-                default="x variable")
+                default="X variable")
             private$..y_variable_name <- jmvcore::OptionString$new(
                 "y_variable_name",
                 y_variable_name,
-                default="y variable")
+                default="Y variable")
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
                 conf_level,
@@ -1219,7 +1219,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `type`="number"),
                     list(
                         `name`="median", 
-                        `title`="Mdn", 
+                        `title`="<i>Mdn</i>", 
                         `type`="number", 
                         `visible`="(switch == 'from_raw')"),
                     list(
@@ -1260,7 +1260,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `visible`="(switch == 'from_raw')"),
                     list(
                         `name`="n", 
-                        `title`="<i>n</i>", 
+                        `title`="<i>N</i>", 
                         `type`="integer"),
                     list(
                         `name`="missing", 
@@ -1285,12 +1285,12 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 columns=list(
                     list(
                         `name`="x_variable_name", 
-                        `title`="x variable", 
+                        `title`="<i>X</i> variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
                         `name`="y_variable_name", 
-                        `title`="y variable", 
+                        `title`="<i>Y</i> variable", 
                         `type`="text", 
                         `combineBelow`=TRUE),
                     list(
@@ -1555,8 +1555,8 @@ jamovicorrelation <- function(
     y,
     r = " ",
     n = " ",
-    x_variable_name = "x variable",
-    y_variable_name = "y variable",
+    x_variable_name = "X variable",
+    y_variable_name = "Y variable",
     conf_level = 95,
     show_details = FALSE,
     show_line = FALSE,
