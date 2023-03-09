@@ -107,6 +107,12 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Means
+  - title: 'Meta-Analysis: Correlations'
+    name: jamovimetar
+    ns: esci4
+    menuGroup: esci4
+    menuSubgroup: Meta-Analysis
+    menuTitle: Correlations
   - title: 'Meta-Analysis: Proportions'
     name: jamovimetaproportion
     ns: esci4
@@ -119,12 +125,6 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Proportions
-  - title: Correlations
-    name: jamovimetar
-    ns: esci4
-    menuGroup: esci4
-    menuSubgroup: Meta-Analysis
-    menuTitle: 'Meta-Analysis: Correlations'
 usesNative: true
 minApp: 1.0.8
 

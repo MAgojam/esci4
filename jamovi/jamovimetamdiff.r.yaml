@@ -13,7 +13,7 @@ items:
       visible: false
 
     - name:  raw_data
-      title: Table of studies
+      title: Table of Studies
       type: Table
       rows:  1
       columns:
@@ -38,7 +38,7 @@ items:
           title: UL
           type: number
         - name: weight
-          title: weight
+          title: Weight
           type: number
           visible: (show_details)
         - name: SE
@@ -92,7 +92,7 @@ items:
           format: zto,pvalue
 
     - name:  es_meta
-      title: Meta-analytic effect sizes
+      title: Meta-Analytic Effect Sizes
       type: Table
       rows:  1
       columns:
@@ -144,11 +144,11 @@ items:
           format: zto,pvalue
         - name: FE_CI_width
           type: number
-          title: FE CI width
+          title: FE CI length
           visible: (random_effects == 'compare' | show_details)
         - name: RE_CI_width
           type: number
-          title: RE CI width
+          title: RE CI length
           visible: (random_effects == 'compare' | show_details)
         - name: diamond_ratio
           type: number
@@ -184,7 +184,7 @@ items:
           visible: (random_effects == 'compare')
 
     - name:  es_heterogeneity
-      title: Effect size heterogeneity
+      title: Effect Size Heterogeneity
       type: Table
       rows:  1
       columns:

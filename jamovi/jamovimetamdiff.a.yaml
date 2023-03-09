@@ -55,7 +55,7 @@ options:
       permitted: [numeric]
 
     - name: labels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: moderator
@@ -83,7 +83,7 @@ options:
       permitted: [numeric]
 
     - name: dlabels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: dmoderator
@@ -106,7 +106,7 @@ options:
       default: mean_difference
       options:
           - name: mean_difference
-            title: Original Units
+            title: Original units
           - name: smd_unbiased
             title: Standardized mean difference
 

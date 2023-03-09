@@ -51,12 +51,12 @@ options:
       default: ' '
 
     - name: x_variable_name
-      title: X-variable name
+      title: <i>X</i>-variable name
       type: String
       default: X variable
 
     - name: y_variable_name
-      title: Y-variable name
+      title: <i>Y</i>-variable name
       type: String
       default: Y variable
 

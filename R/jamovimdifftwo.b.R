@@ -210,7 +210,8 @@ jamovi_mdiff_two <- function(
   call <- esci4::estimate_mdiff_two
 
   args$save_raw_data <- save_raw_data
-  args$conf_level <- jamovi_sanitize(
+
+  conf_level <- jamovi_sanitize(
     my_value = self$options$conf_level,
     return_value = 95,
     na_ok = FALSE,
@@ -220,7 +221,10 @@ jamovi_mdiff_two <- function(
     upper = 100,
     upper_inclusive = FALSE,
     my_value_name = "Confidence level"
-  )/100
+  )
+  args$conf_level <- unname(conf_level)/100
+  notes <- c(notes, names(conf_level))
+
   args$assume_equal_variance <- self$options$assume_equal_variance
 
 
@@ -264,11 +268,13 @@ jamovi_mdiff_two <- function(
       comparison_level_name
     )
 
+
     for (element in args) {
       notes <- c(notes, names(element))
     }
 
   }
+
 
   # self$results$debug$setContent(args)
   # self$results$debug$setVisible(TRUE)

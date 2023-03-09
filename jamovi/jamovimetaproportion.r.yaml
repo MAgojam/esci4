@@ -13,12 +13,12 @@ items:
       visible: false
 
     - name:  raw_data
-      title: Overview
+      title: Table of Studies
       type: Table
       rows:  1
       columns:
         - name: label
-          title: 'label'
+          title: 'Study label'
           type: text
         - name: moderator
           title: 'Moderator level'
@@ -33,7 +33,7 @@ items:
           title: UL
           type: number
         - name: weight
-          title: weight
+          title: Weight
           type: number
           visible: (show_details)
         - name: SE
@@ -58,7 +58,7 @@ items:
           type: number
 
     - name:  es_meta
-      title: Meta-analysis
+      title: Meta-Analytic Effect Sizes
       type: Table
       rows:  1
       columns:
@@ -104,15 +104,15 @@ items:
           format: zto,pvalue
         - name: FE_CI_width
           type: number
-          title: FE CI width
+          title: FE CI length
           visible: (show_details)
         - name: RE_CI_width
           type: number
-          title: RE CI width
+          title: RE CI length
           visible: (show_details)
 
     - name:  es_heterogeneity
-      title: Effect size heterogeneity
+      title: Effect Size Heterogeneity
       type: Table
       rows:  1
       columns:

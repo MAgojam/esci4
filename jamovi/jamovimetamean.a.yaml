@@ -35,7 +35,7 @@ options:
       permitted: [numeric]
 
     - name: labels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: moderator
@@ -53,7 +53,7 @@ options:
       permitted: [numeric]
 
     - name: dlabels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: dmoderator

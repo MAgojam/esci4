@@ -848,7 +848,7 @@ jamovi_correlation <- function(self) {
     # Step 2: Get analysis properties-----------------------------
     call <- esci4::estimate_correlation
 
-    args$conf_level <- jamovi_sanitize(
+    conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,
       return_value = 95,
       na_ok = FALSE,
@@ -858,7 +858,9 @@ jamovi_correlation <- function(self) {
       upper = 100,
       upper_inclusive = FALSE,
       my_value_name = "Confidence level"
-    )/100
+    )
+    args$conf_level <- unname(conf_level)/100
+    notes <- c(notes, names(conf_level))
 
     if(from_raw) {
         args$data <- self$data

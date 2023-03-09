@@ -241,7 +241,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
   call <- esci4::estimate_mdiff_paired
 
   args$save_raw_data <- save_raw_data
-  args$conf_level <- jamovi_sanitize(
+  conf_level <- jamovi_sanitize(
     my_value = self$options$conf_level,
     return_value = 95,
     na_ok = FALSE,
@@ -251,7 +251,9 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
     upper = 100,
     upper_inclusive = FALSE,
     my_value_name = "Confidence level"
-  )/100
+  )
+  args$conf_level <- unname(conf_level)/100
+  notes <- c(notes, names(conf_level))
 
 
   if(from_raw) {

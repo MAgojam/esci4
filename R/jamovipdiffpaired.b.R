@@ -301,7 +301,7 @@ Instead, {self$options$comparison_measure} has {length(clevels)}
     # Step 2: Get analysis properties-----------------------------
     call <- esci4::estimate_pdiff_paired
 
-    args$conf_level <- jamovi_sanitize(
+    conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,
       return_value = 95,
       na_ok = FALSE,
@@ -311,8 +311,9 @@ Instead, {self$options$comparison_measure} has {length(clevels)}
       upper = 100,
       upper_inclusive = FALSE,
       my_value_name = "Confidence level"
-    )/100
-
+    )
+    args$conf_level <- unname(conf_level)/100
+    notes <- c(notes, names(conf_level))
 
     if(from_raw) {
         args$data <- self$data

@@ -11,27 +11,27 @@ options:
       type: Data
 
     - name: reference_cases
-      title: Case counts in Reference Group
+      title: Case counts in reference group
       type: Variable
       permitted: [numeric]
 
     - name: reference_ns
-      title: Sample sizes in Reference Group
+      title: Sample sizes in reference group
       type: Variable
       permitted: [numeric]
 
     - name: comparison_cases
-      title: Case counts in Comparison Group
+      title: Case counts in comparison group
       type: Variable
       permitted: [numeric]
 
     - name: comparison_ns
-      title: Sample sizes in Comparison Group
+      title: Sample sizes in comparison group
       type: Variable
       permitted: [numeric]
 
     - name: labels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: moderator
@@ -49,15 +49,15 @@ options:
       default: RD
       options:
           - name: RD
-            title: 'Risk Difference (<i>P</i><sub>diff</sub>)'
+            title: 'Risk difference (<i>P</i><sub>diff</sub>)'
           - name: RR
-            title: 'Log Risk Ratio (ln(<i>RR</i>))'
+            title: 'Log risk ratio (ln(<i>RR</i>))'
           - name: OR
-            title: 'Log Odds Ratio (ln(<i>OR</i>))'
+            title: 'Log ddds ratio (ln(<i>OR</i>))'
           - name: AS
-            title: "Arcsine-Square-Root-Transformed Risk Difference (1/2 * Cohen's H)"
+            title: "Arcsine-square-root-transformed risk difference (1/2 * Cohen's H)"
           - name: PETO
-            title: "Log Odds Ratio, Peto's Method (ln(<i>OR</i>)<sub>Peto</sub>)"
+            title: "Log odds ratio, Peto's method (ln(<i>OR</i>)<sub>Peto</sub>)"
 
     - name: conf_level
       type: Number

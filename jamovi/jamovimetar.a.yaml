@@ -1,7 +1,7 @@
 ---
 name:  jamovimetar
-title: "Correlations"
-menuTitle: "Meta-Analysis: Correlations"
+title: "Meta-Analysis: Correlations"
+menuTitle: "Correlations"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
@@ -21,7 +21,7 @@ options:
       permitted: [numeric]
 
     - name: labels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: moderator

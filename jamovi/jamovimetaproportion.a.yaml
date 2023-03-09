@@ -21,7 +21,7 @@ options:
       permitted: [numeric]
 
     - name: labels
-      title: Labels (optional)
+      title: Study labels (optional)
       type: Variable
 
     - name: moderator

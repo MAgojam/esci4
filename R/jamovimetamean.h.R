@@ -1535,12 +1535,12 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="raw_data",
-                title="Table of studies",
+                title="Table of Studies",
                 rows=1,
                 columns=list(
                     list(
                         `name`="label", 
-                        `title`="label", 
+                        `title`="Study label", 
                         `type`="text"),
                     list(
                         `name`="moderator", 
@@ -1566,7 +1566,7 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number"),
                     list(
                         `name`="weight", 
-                        `title`="weight", 
+                        `title`="Weight", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
@@ -1603,7 +1603,7 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
-                title="Meta-analytic effect sizes",
+                title="Meta-analytic Effect Sizes",
                 rows=1,
                 columns=list(
                     list(
@@ -1717,7 +1717,7 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_heterogeneity",
-                title="Effect size heterogeneity",
+                title="Effect Size Heterogeneity",
                 rows=1,
                 columns=list(
                     list(
