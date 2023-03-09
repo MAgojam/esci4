@@ -583,6 +583,8 @@ estimate_pdiff_ind_contrast.summary <- function(
 
   estimate$overview <- overview_table
 
+  estimate <- esci_build_chi_square(estimate)
+
   estimate$properties$data_type <- "summary"
   estimate$properties$data_source <- NULL
   estimate$warnings <- c(estimate$warnings, warnings)
@@ -803,6 +805,8 @@ Outcomes with missing grouping variables were **dropped* from the analysis
     }
   }
 
+  estimate <- esci_build_chi_square(estimate)
+
 
   return(estimate)
 }
@@ -898,5 +902,53 @@ estimate_pdiff_ind_contrast.jamovi <- function(
   class(res) <- "esci_estimate"
 
   return(res)
+
+}
+
+
+esci_build_chi_square <- function(estimate) {
+
+  o <- estimate$overview
+  ctable <- NULL
+
+  for (mylevel in rev(levels(as.factor(o$outcome_variable_level)))) {
+    ctable <- rbind(
+      ctable,
+      as.data.frame(t(o[o$outcome_variable_level == mylevel, "cases"]))
+    )
+  }
+  colnames(ctable) <-  t(o[o$outcome_variable_level == mylevel, "grouping_variable_level"])
+  rownames(ctable) <- rev(levels(as.factor(o$outcome_variable_level)))
+
+  estimate$properties$chi_square <- chisq.test(ctable, correct = FALSE)
+
+  if (all(dim(estimate$properties$chi_square$observed) == c(2,2))) {
+    res <- statpsych::ci.phi(
+      1 - estimate$properties$conf_level,
+      estimate$properties$chi_square$observed[2, 1],
+      estimate$properties$chi_square$observed[1, 1],
+      estimate$properties$chi_square$observed[2, 2],
+      estimate$properties$chi_square$observed[1, 2]
+    )
+    res <- as.data.frame(res)
+    res <- cbind(
+      data.frame(
+        grouping_variable_name = estimate$overview$grouping_variable_name[[1]],
+        outcome_variable_name = estimate$overview$outcome_variable_name[[1]],
+        effect = paste(
+          estimate$overview$grouping_variable_name[[1]],
+          " and ",
+          estimate$overview$outcome_variable_name[[1]],
+          sep = ""
+        ),
+        effect_size = res$Estimate[[1]]
+      ),
+      res
+    )
+    res$Estimate <- NULL
+    estimate$es_phi <- res
+  }
+
+  return(estimate)
 
 }

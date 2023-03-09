@@ -153,6 +153,29 @@ children:
         enable: '(switch:from_raw)'
       - type: CheckBox
         name: show_ratio
+      - type: CheckBox
+        name: show_phi
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: CheckBox
+            name: show_chi_square
+          - type: RadioButton
+            name: observed_button
+            optionName: chi_table_option
+            optionPart: observed
+            enable: (show_chi_square)
+          - type: RadioButton
+            name: expected_button
+            optionName: chi_table_option
+            optionPart: expected
+            enable: (show_chi_square)
+          - type: RadioButton
+            name: both_button
+            optionName: chi_table_option
+            optionPart: both
+            enable: (show_chi_square)
       - type: TextBox
         name: conf_level
         format: number

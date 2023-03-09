@@ -21,6 +21,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             grouping_variable_name = "Grouping variable",
             count_NA = FALSE,
             show_ratio = FALSE,
+            show_chi_square = FALSE,
+            chi_table_option = "both",
+            show_phi = FALSE,
             conf_level = 95,
             show_details = FALSE,
             evaluate_hypotheses = FALSE,
@@ -129,6 +132,22 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..show_ratio <- jmvcore::OptionBool$new(
                 "show_ratio",
                 show_ratio,
+                default=FALSE)
+            private$..show_chi_square <- jmvcore::OptionBool$new(
+                "show_chi_square",
+                show_chi_square,
+                default=FALSE)
+            private$..chi_table_option <- jmvcore::OptionList$new(
+                "chi_table_option",
+                chi_table_option,
+                options=list(
+                    "observed",
+                    "expected",
+                    "both"),
+                default="both")
+            private$..show_phi <- jmvcore::OptionBool$new(
+                "show_phi",
+                show_phi,
                 default=FALSE)
             private$..conf_level <- jmvcore::OptionNumber$new(
                 "conf_level",
@@ -634,6 +653,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..grouping_variable_name)
             self$.addOption(private$..count_NA)
             self$.addOption(private$..show_ratio)
+            self$.addOption(private$..show_chi_square)
+            self$.addOption(private$..chi_table_option)
+            self$.addOption(private$..show_phi)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
             self$.addOption(private$..evaluate_hypotheses)
@@ -688,6 +710,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         grouping_variable_name = function() private$..grouping_variable_name$value,
         count_NA = function() private$..count_NA$value,
         show_ratio = function() private$..show_ratio$value,
+        show_chi_square = function() private$..show_chi_square$value,
+        chi_table_option = function() private$..chi_table_option$value,
+        show_phi = function() private$..show_phi$value,
         conf_level = function() private$..conf_level$value,
         show_details = function() private$..show_details$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
@@ -741,6 +766,9 @@ jamovipdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..grouping_variable_name = NA,
         ..count_NA = NA,
         ..show_ratio = NA,
+        ..show_chi_square = NA,
+        ..chi_table_option = NA,
+        ..show_phi = NA,
         ..conf_level = NA,
         ..show_details = NA,
         ..evaluate_hypotheses = NA,
@@ -788,6 +816,8 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
         es_proportion_difference = function() private$.items[["es_proportion_difference"]],
+        contingency_table = function() private$.items[["contingency_table"]],
+        es_phi = function() private$.items[["es_phi"]],
         es_odds_ratio = function() private$.items[["es_odds_ratio"]],
         point_null = function() private$.items[["point_null"]],
         interval_null = function() private$.items[["interval_null"]],
@@ -910,6 +940,57 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="effect_size_adjusted", 
                         `title`="<i>P<sub>adjusted</sub></i>", 
+                        `type`="number", 
+                        `visible`="(show_details)"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="contingency_table",
+                title="Chi-square analysis",
+                rows=0,
+                visible="(show_chi_square)",
+                columns=list(
+                    list(
+                        `name`="outcome_variable_level", 
+                        `title`="Outcome variable level", 
+                        `type`="text"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="es_phi",
+                title="Correlation",
+                rows=1,
+                visible="(show_phi)",
+                columns=list(
+                    list(
+                        `name`="grouping_variable_name", 
+                        `title`="Grouping variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="outcome_variable_name", 
+                        `title`="Outcome variable", 
+                        `type`="text", 
+                        `combineBelow`=TRUE, 
+                        `visible`=FALSE),
+                    list(
+                        `name`="effect", 
+                        `title`="Effect", 
+                        `type`="text"),
+                    list(
+                        `name`="effect_size", 
+                        `type`="number", 
+                        `title`="<i>&#981;</i>"),
+                    list(
+                        `name`="LL", 
+                        `title`="LL", 
+                        `type`="number"),
+                    list(
+                        `name`="UL", 
+                        `title`="UL", 
+                        `type`="number"),
+                    list(
+                        `name`="SE", 
+                        `title`="<i>SE</i>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
@@ -1096,6 +1177,9 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param grouping_variable_name .
 #' @param count_NA .
 #' @param show_ratio .
+#' @param show_chi_square .
+#' @param chi_table_option .
+#' @param show_phi .
 #' @param conf_level .
 #' @param show_details .
 #' @param evaluate_hypotheses .
@@ -1139,6 +1223,8 @@ jamovipdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$contingency_table} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$es_phi} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$es_odds_ratio} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
@@ -1170,6 +1256,9 @@ jamovipdifftwo <- function(
     grouping_variable_name = "Grouping variable",
     count_NA = FALSE,
     show_ratio = FALSE,
+    show_chi_square = FALSE,
+    chi_table_option = "both",
+    show_phi = FALSE,
     conf_level = 95,
     show_details = FALSE,
     evaluate_hypotheses = FALSE,
@@ -1238,6 +1327,9 @@ jamovipdifftwo <- function(
         grouping_variable_name = grouping_variable_name,
         count_NA = count_NA,
         show_ratio = show_ratio,
+        show_chi_square = show_chi_square,
+        chi_table_option = chi_table_option,
+        show_phi = show_phi,
         conf_level = conf_level,
         show_details = show_details,
         evaluate_hypotheses = evaluate_hypotheses,

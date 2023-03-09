@@ -758,3 +758,157 @@ jamovi_heterogeneity_to_html <- function(measures) {
   return(measures)
 
 }
+
+jamovi_contingency_table <- function(self, estimate) {
+  # Create a contingency table for Chi Square
+
+  # Setup based on options for chi_table_option
+  print_observed <- switch(
+    self$options$chi_table_option,
+    "observed" = TRUE,
+    "expected" = FALSE,
+    "both" = TRUE
+  )
+
+  print_expected <- switch(
+    self$options$chi_table_option,
+    "observed" = FALSE,
+    "expected" = TRUE,
+    "both" = TRUE
+  )
+
+  buffer <- if (print_observed & print_expected) "<BR>" else NULL
+
+  observed_prefix <- if (print_observed) NULL else NULL
+  observed_suffix <- if (print_observed) NULL else NULL
+  expected_prefix <- if (print_expected) "(<i>" else NULL
+  expected_suffix <- if (print_expected) "</i>)" else NULL
+  total_prefix <- "<center><B>"
+  total_suffix <- "</B></center>"
+
+  # Handls on the table and the observed and expected tables
+  tbl <- self$results$contingency_table
+  observed <- estimate$properties$chi_square$observed
+  expected <- estimate$properties$chi_square$expected
+
+  cdims <- dim(observed)
+  crows <- cdims[[1]]
+  ccolumns <- cdims[[2]]
+
+
+  # First, create a column for each level of the grouping variable
+  for(x in 1:ccolumns) {
+      tbl$addColumn(
+        name = colnames(observed)[[x]],
+        title = colnames(observed)[[x]],
+        superTitle = estimate$properties$grouping_variable_name,
+        type = 'text',
+        visible = TRUE
+      )
+  }
+
+  # Add an extra column for totals
+  tbl$addColumn(
+    name = "esci_Totals",
+    title = "Total",
+    type = "text",
+    visible = TRUE
+  )
+
+  # Now set each row
+  for(x in 1:crows) {
+
+    observed_values <- if (print_observed) format(observed[x, ], digits = 0) else NULL
+    expected_values <- if (print_expected) format(expected[x, ], digits = 2) else NULL
+
+    cell_values <- paste(
+      "<center>",
+      observed_prefix,
+      observed_values,
+      observed_suffix,
+      buffer,
+      expected_prefix,
+      expected_values,
+      expected_suffix,
+      "</center>",
+      sep = ""
+    )
+
+    cell_values <- c(
+      row.names(observed)[[x]],
+      cell_values,
+      paste(
+        total_prefix,
+        sum(observed[x, ]),
+        total_suffix,
+        sep = ""
+      )
+    )
+
+    names(cell_values) <- c(
+      "outcome_variable_level",
+      colnames(observed),
+      "esci_Totals"
+    )
+
+    tbl$addRow(
+      rowKey = x,
+      values = cell_values
+    )
+  }
+
+  # Add begin and ending group formats for main cells to mark totals
+  tbl$addFormat(rowNo = 1, col = 1, jmvcore::Cell.BEGIN_GROUP)
+  tbl$addFormat(rowNo = x-1, col = 1, jmvcore::Cell.END_GROUP)
+  tbl$addFormat(rowNo = x, col = 1, jmvcore::Cell.BEGIN_GROUP)
+
+
+
+  # Add the totals row
+  total_values <- colSums(observed)
+  total_values <- c(
+    "Total",
+    paste(
+      total_prefix,
+      total_values,
+      total_suffix,
+      sep = ""
+    ),
+    paste(
+      total_prefix,
+      sum(observed),
+      total_suffix
+    )
+  )
+
+  names(total_values) <- c(
+    "outcome_variable_level",
+    colnames(observed),
+    "esci_Totals"
+  )
+
+
+  tbl$addRow(
+    rowKey = x+1,
+    values = total_values
+  )
+
+  # Set a note with the chi square results
+  mynote <- glue::glue(
+    "&#120536;<sup>2</sup>({format(estimate$properties$chi_square$parameter, digits = 0)}) = {format(estimate$properties$chi_square$statistic, digits = 2)}, <i>p</i> = {format(estimate$properties$chi_square$p.value, digits = 5)}, two-tailed.  Continuity correction has <b>not</b> been applied."
+  )
+
+  tbl$setNote(
+    key = 1,
+    note = mynote
+  )
+
+  # Finally, rename title for outcome variable
+  tbl$getColumn("outcome_variable_level")$setTitle(estimate$properties$outcome_variable_name)
+
+
+
+
+  return(TRUE)
+
+}

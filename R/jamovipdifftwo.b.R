@@ -14,8 +14,10 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             tbl_es_odds_ratio <- self$results$es_odds_ratio
             tbl_point_null <- NULL
             tbl_interval_null <- NULL
+            tbl_es_phi <- NULL
             try(tbl_point_null <- self$results$point_null)
             try(tbl_interval_null <- self$results$interval_null)
+            try(tbl_es_phi <- self$results$es_phi)
 
             # Prep output -------------------------------------------
             # Set CI and MoE columns to reflect confidence level
@@ -34,6 +36,7 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             jamovi_set_confidence(tbl_overview, conf_level)
             jamovi_set_confidence(tbl_es_proportion_difference, conf_level)
             jamovi_set_confidence(tbl_es_odds_ratio, conf_level)
+            jamovi_set_confidence(tbl_es_phi, conf_level)
 
 
             # Outcomes: 1 if from summary, length of outcome_variables if raw
@@ -150,6 +153,22 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             estimate$es_odds_ratio <- jamovi_peffect_html(
               estimate$es_odds_ratio
             )
+
+            if(is.null(estimate$es_phi)) {
+              self$results$es_phi$setVisible(FALSE)
+            } else {
+              self$results$es_phi$setVisible(self$options$show_phi)
+            }
+
+            if (is.null(estimate$properties$chi_square)) {
+              self$results$contingency_table$setVisible(FALSE)
+            } else {
+              self$results$contingency_table$setVisible(self$options$show_chi_square)
+              if (self$options$show_chi_square) {
+                jamovi_contingency_table(self, estimate)
+              }
+            }
+
 
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)

@@ -96,6 +96,49 @@ items:
           type: number
           visible: (show_details)
 
+    - name: contingency_table
+      title: Chi-square analysis
+      type: Table
+      rows: 0
+      visible: (show_chi_square)
+      columns:
+        - name: outcome_variable_level
+          title: 'Outcome variable level'
+          type: text
+
+    - name:  es_phi
+      title: Correlation
+      type: Table
+      rows:  1
+      visible: (show_phi)
+      columns:
+        - name: grouping_variable_name
+          title: 'Grouping variable'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: outcome_variable_name
+          title: 'Outcome variable'
+          type: text
+          combineBelow: true
+          visible: false
+        - name: effect
+          title: 'Effect'
+          type: text
+        - name: effect_size
+          type: number
+          title: <i>&#981;</i>
+        - name: LL
+          title: LL
+          type: number
+        - name: UL
+          title: UL
+          type: number
+        - name: SE
+          title: <i>SE</i>
+          type: number
+          visible: (show_details)
+
     - name:  es_odds_ratio
       title: Odds Ratio
       type: Table

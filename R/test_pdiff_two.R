@@ -22,6 +22,20 @@ test_pdiff_two <- function() {
     conf_level = 0.95
   )
 
+  # o <- pdiff_two$overview
+  # ctable <- NULL
+  #
+  # for (mylevel in levels(as.factor(o$grouping_variable_level))) {
+  #   ctable <- rbind(
+  #     ctable,
+  #     as.data.frame(t(o[o$grouping_variable_level == mylevel, "cases"]))
+  #   )
+  # }
+  # colnames(ctable) <-  t(o[o$grouping_variable_level == mylevel, "outcome_variable_level"])
+  # rownames(ctable) <- levels(as.factor(o$grouping_variable_level))
+  #
+  # X <- chisq.test(ctable)
+
   estimate_pdiff_two(
     comparison_cases = 10,
     comparison_n = 20,

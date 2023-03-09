@@ -79,6 +79,28 @@ options:
       type: Bool
       default: false
 
+    - name: show_chi_square
+      title: "Show &#120536;<sup>2</sub> analysis"
+      type: Bool
+      default: false
+
+    - name: chi_table_option
+      title: Contingency table options
+      type: List
+      options:
+        - name: observed
+          title: Observed counts
+        - name: expected
+          title: Expected counts
+        - name: both
+          title: Both
+      default: both
+
+    - name: show_phi
+      title: "Show correlation (<i>&#981;</i>)"
+      type: Bool
+      default: false
+
     - name: conf_level
       type: Number
       title: Confidence level
