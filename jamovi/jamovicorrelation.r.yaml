@@ -104,6 +104,10 @@ items:
         - name: UL
           title: UL
           type: number
+        - name: syx
+          title: <i>s<sub>Y.X</sub></i>
+          type: number
+          visible: (switch == 'from_raw')
         - name: SE
           title: <i>SE</i>
           type: number
@@ -159,9 +163,10 @@ items:
         - name: CI_compare
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
-        - name: p_result
+        - name: p
           title: "<i>p</i>, two-tailed"
-          type: text
+          type: number
+          format: zto,pvalue
         - name: null_decision
           title: "<i>H</i><sub>0</sub> decision"
         - name: conclusion

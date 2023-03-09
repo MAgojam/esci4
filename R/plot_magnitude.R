@@ -399,9 +399,16 @@ plot_correlation <- function(
   )
 
   #Labels
-  ylab <- glue::glue("Pearson's r and {conf_level*100}% Confidence Interval")
+  ylab <- glue::glue("Pearson's *r* and {conf_level*100}% Confidence Interval")
   xlab <- NULL
   myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
+
+  myplot <- myplot + ggplot2::theme(
+    axis.title.x = ggtext::element_markdown(),
+    axis.title.y = ggtext::element_markdown(),
+    axis.text.x = ggtext::element_markdown()
+  )
+
 
   # Limits
   myplot <- myplot + ylim(-1, 1)

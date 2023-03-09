@@ -86,6 +86,10 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
         .run = function() {
 
             estimate <- jamovi_correlation(self)
+            if (!is.null(estimate$properties$lm)) {
+              estimate$es_r$syx <- summary(estimate$properties$lm)$sigma
+
+            }
 
             # Print any notes that emerged from running the analysis
             jamovi_set_notes(self$results$help)
@@ -707,18 +711,41 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           if (!is.null(myplot$layers$prediction_y_label)) {
             myplot$layers$prediction_y_label$aes_params$size <- as.numeric(self$options$sp_prediction_label)
-            myplot$layers$prediction_y_label$aes_params$colour <- self$options$sp_prediction_color
+            myplot$layers$prediction_y_label$aes_params$text.colour <- self$options$sp_prediction_color
           }
 
           if (!is.null(myplot$layers$prediction_x_label)) {
             myplot$layers$prediction_x_label$aes_params$size <- as.numeric(self$options$sp_prediction_label)
-            myplot$layers$prediction_x_label$aes_params$colour <- self$options$sp_prediction_color
+            myplot$layers$prediction_x_label$aes_params$text.colour <- self$options$sp_prediction_color
           }
 
           if (!is.null(myplot$layers$prediction_prediction_interval)) {
-            myplot$layers$prediction_prediction_interval$aes_params$colour <- self$options$sp_prediction_color
+            myplot$layers$prediction_prediction_interval$aes_params$colour <- self$options$sp_color_PI
+            myplot$layers$prediction_prediction_interval$aes_params$alpha <- as.numeric(self$options$sp_alpha_PI)
+            myplot$layers$prediction_prediction_interval$aes_params$linetype <- self$options$sp_linetype_PI
+            myplot$layers$prediction_prediction_interval$aes_params$size <- as.numeric(self$options$sp_size_PI)/2
           }
 
+          if (!is.null(myplot$layers$prediction_confidence_interval)) {
+            myplot$layers$prediction_confidence_interval$aes_params$colour <- self$options$sp_color_CI
+            myplot$layers$prediction_confidence_interval$aes_params$alpha <- as.numeric(self$options$sp_alpha_CI)
+            myplot$layers$prediction_confidence_interval$aes_params$linetype <- self$options$sp_linetype_CI
+            myplot$layers$prediction_confidence_interval$aes_params$size <- as.numeric(self$options$sp_size_CI)/2
+          }
+
+          if (!is.null(myplot$layers$prediction_vertical_line)) {
+            myplot$layers$prediction_vertical_line$aes_params$colour <- self$options$sp_color_ref
+            myplot$layers$prediction_vertical_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_ref)
+            myplot$layers$prediction_vertical_line$aes_params$linetype <- self$options$sp_linetype_ref
+            myplot$layers$prediction_vertical_line$aes_params$size <- as.numeric(self$options$sp_size_ref)/2
+          }
+
+          if (!is.null(myplot$layers$prediction_horizontal_line)) {
+            myplot$layers$prediction_horizontal_line$aes_params$colour <- self$options$sp_color_ref
+            myplot$layers$prediction_horizontal_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_ref)
+            myplot$layers$prediction_horizontal_line$aes_params$linetype <- self$options$sp_linetype_ref
+            myplot$layers$prediction_horizontal_line$aes_params$size <- as.numeric(self$options$sp_size_ref)/2
+          }
 
 
           notes <- c(

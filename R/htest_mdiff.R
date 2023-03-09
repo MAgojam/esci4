@@ -169,10 +169,20 @@ test_diff_base <- function(
         p <- 2*pt(-abs(t), df=df)
       significant <- p < alpha
     } else {
-      df <- NA
-      t <- NA
-      p <- NA
-      significant <- (0 < es$LL | 0 > es$UL)
+      if (etable == "es_r") {
+        df <- es$df
+        myr <- es$effect_size
+        t <- myr / sqrt(1-myr^2) * sqrt(df)
+        p <- 2*pt(-abs(t), df=df)
+        significant <- p < alpha
+      } else {
+        df <- NA
+        t <- NA
+        p <- NA
+        significant <- (0 < es$LL | 0 > es$UL)
+
+      }
+
     }
 
     if (effect_size == "r") {

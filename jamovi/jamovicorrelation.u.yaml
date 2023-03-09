@@ -470,6 +470,113 @@ children:
                 cell:
                   column: 1
                   row: 15
+              - type: Label
+                label: Guideline
+                cell:
+                  column: 1
+                  row: 16
+              - type: Label
+                label: PI
+                cell:
+                  column: 2
+                  row: 16
+              - type: Label
+                label: CI
+                cell:
+                  column: 3
+                  row: 16
+              - type: Label
+                label: '<span style="font-weight:normal">Style</span>'
+                cell:
+                  column: 0
+                  row: 17
+              - type: Label
+                label: '<span style="font-weight:normal">Thickness</span>'
+                cell:
+                  column: 0
+                  row: 18
+              - type: Label
+                label: '<span style="font-weight:normal">Color</span>'
+                cell:
+                  column: 0
+                  row: 19
+              - type: Label
+                label: '<span style="font-weight:normal">Transparency</span>'
+                cell:
+                  column: 0
+                  row: 20
+              - type: ComboBox
+                name: sp_linetype_ref
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 1
+                  row: 17
+              - type: ComboBox
+                name: sp_linetype_PI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 2
+                  row: 17
+              - type: ComboBox
+                name: sp_linetype_CI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 3
+                  row: 17
+              - type: ComboBox
+                name: sp_size_ref
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 1
+                  row: 18
+              - type: ComboBox
+                name: sp_size_PI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 2
+                  row: 18
+              - type: ComboBox
+                name: sp_size_CI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 3
+                  row: 18
+              - type: ComboBox
+                name: sp_color_ref
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 1
+                  row: 19
+              - type: ComboBox
+                name: sp_color_PI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 2
+                  row: 19
+              - type: ComboBox
+                name: sp_color_CI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 3
+                  row: 19
+              - type: ComboBox
+                name: sp_alpha_ref
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 1
+                  row: 20
+              - type: ComboBox
+                name: sp_alpha_PI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 2
+                  row: 20
+              - type: ComboBox
+                name: sp_alpha_CI
+                enable: '(switch:from_raw)'
+                cell:
+                  column: 3
+                  row: 20
   - type: CollapseBox
     label: Estimation figure options
     stretchFactor: 1

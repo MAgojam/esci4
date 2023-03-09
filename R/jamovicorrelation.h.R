@@ -82,7 +82,19 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             sp_size_residual_reference = "1",
             sp_alpha_residual_reference = "1",
             sp_prediction_label = "5",
-            sp_prediction_color = "#E20134", ...) {
+            sp_prediction_color = "#E20134",
+            sp_linetype_CI = "solid",
+            sp_color_CI = "#008DF9",
+            sp_size_CI = "5",
+            sp_alpha_CI = "1",
+            sp_linetype_ref = "dotted",
+            sp_color_ref = "gray90",
+            sp_size_ref = "2",
+            sp_alpha_ref = "1",
+            sp_linetype_PI = "solid",
+            sp_color_PI = "#E20134",
+            sp_size_PI = "3",
+            sp_alpha_PI = "1", ...) {
 
             super$initialize(
                 package="esci4",
@@ -952,6 +964,225 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "gray90",
                     "gray95",
                     "gray100"))
+            private$..sp_linetype_CI <- jmvcore::OptionList$new(
+                "sp_linetype_CI",
+                sp_linetype_CI,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_color_CI <- jmvcore::OptionList$new(
+                "sp_color_CI",
+                sp_color_CI,
+                default="#008DF9",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_size_CI <- jmvcore::OptionList$new(
+                "sp_size_CI",
+                sp_size_CI,
+                default="5",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_alpha_CI <- jmvcore::OptionList$new(
+                "sp_alpha_CI",
+                sp_alpha_CI,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..sp_linetype_ref <- jmvcore::OptionList$new(
+                "sp_linetype_ref",
+                sp_linetype_ref,
+                default="dotted",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_color_ref <- jmvcore::OptionList$new(
+                "sp_color_ref",
+                sp_color_ref,
+                default="gray90",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_size_ref <- jmvcore::OptionList$new(
+                "sp_size_ref",
+                sp_size_ref,
+                default="2",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_alpha_ref <- jmvcore::OptionList$new(
+                "sp_alpha_ref",
+                sp_alpha_ref,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..sp_linetype_PI <- jmvcore::OptionList$new(
+                "sp_linetype_PI",
+                sp_linetype_PI,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
+            private$..sp_color_PI <- jmvcore::OptionList$new(
+                "sp_color_PI",
+                sp_color_PI,
+                default="#E20134",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..sp_size_PI <- jmvcore::OptionList$new(
+                "sp_size_PI",
+                sp_size_PI,
+                default="3",
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6"))
+            private$..sp_alpha_PI <- jmvcore::OptionList$new(
+                "sp_alpha_PI",
+                sp_alpha_PI,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
 
             self$.addOption(private$..switch)
             self$.addOption(private$..x)
@@ -1030,6 +1261,18 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..sp_alpha_residual_reference)
             self$.addOption(private$..sp_prediction_label)
             self$.addOption(private$..sp_prediction_color)
+            self$.addOption(private$..sp_linetype_CI)
+            self$.addOption(private$..sp_color_CI)
+            self$.addOption(private$..sp_size_CI)
+            self$.addOption(private$..sp_alpha_CI)
+            self$.addOption(private$..sp_linetype_ref)
+            self$.addOption(private$..sp_color_ref)
+            self$.addOption(private$..sp_size_ref)
+            self$.addOption(private$..sp_alpha_ref)
+            self$.addOption(private$..sp_linetype_PI)
+            self$.addOption(private$..sp_color_PI)
+            self$.addOption(private$..sp_size_PI)
+            self$.addOption(private$..sp_alpha_PI)
         }),
     active = list(
         switch = function() private$..switch$value,
@@ -1108,7 +1351,19 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         sp_size_residual_reference = function() private$..sp_size_residual_reference$value,
         sp_alpha_residual_reference = function() private$..sp_alpha_residual_reference$value,
         sp_prediction_label = function() private$..sp_prediction_label$value,
-        sp_prediction_color = function() private$..sp_prediction_color$value),
+        sp_prediction_color = function() private$..sp_prediction_color$value,
+        sp_linetype_CI = function() private$..sp_linetype_CI$value,
+        sp_color_CI = function() private$..sp_color_CI$value,
+        sp_size_CI = function() private$..sp_size_CI$value,
+        sp_alpha_CI = function() private$..sp_alpha_CI$value,
+        sp_linetype_ref = function() private$..sp_linetype_ref$value,
+        sp_color_ref = function() private$..sp_color_ref$value,
+        sp_size_ref = function() private$..sp_size_ref$value,
+        sp_alpha_ref = function() private$..sp_alpha_ref$value,
+        sp_linetype_PI = function() private$..sp_linetype_PI$value,
+        sp_color_PI = function() private$..sp_color_PI$value,
+        sp_size_PI = function() private$..sp_size_PI$value,
+        sp_alpha_PI = function() private$..sp_alpha_PI$value),
     private = list(
         ..switch = NA,
         ..x = NA,
@@ -1186,7 +1441,19 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..sp_size_residual_reference = NA,
         ..sp_alpha_residual_reference = NA,
         ..sp_prediction_label = NA,
-        ..sp_prediction_color = NA)
+        ..sp_prediction_color = NA,
+        ..sp_linetype_CI = NA,
+        ..sp_color_CI = NA,
+        ..sp_size_CI = NA,
+        ..sp_alpha_CI = NA,
+        ..sp_linetype_ref = NA,
+        ..sp_color_ref = NA,
+        ..sp_size_ref = NA,
+        ..sp_alpha_ref = NA,
+        ..sp_linetype_PI = NA,
+        ..sp_color_PI = NA,
+        ..sp_size_PI = NA,
+        ..sp_alpha_PI = NA)
 )
 
 jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -1335,6 +1602,11 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="syx", 
+                        `title`="<i>s<sub>Y.X</sub></i>", 
+                        `type`="number", 
+                        `visible`="(switch == 'from_raw')"),
+                    list(
                         `name`="SE", 
                         `title`="<i>SE</i>", 
                         `type`="number", 
@@ -1402,9 +1674,10 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
-                        `name`="p_result", 
+                        `name`="p", 
                         `title`="<i>p</i>, two-tailed", 
-                        `type`="text"),
+                        `type`="number", 
+                        `format`="zto,pvalue"),
                     list(
                         `name`="null_decision", 
                         `title`="<i>H</i><sub>0</sub> decision"),
@@ -1579,6 +1852,18 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param sp_alpha_residual_reference .
 #' @param sp_prediction_label .
 #' @param sp_prediction_color .
+#' @param sp_linetype_CI .
+#' @param sp_color_CI .
+#' @param sp_size_CI .
+#' @param sp_alpha_CI .
+#' @param sp_linetype_ref .
+#' @param sp_color_ref .
+#' @param sp_size_ref .
+#' @param sp_alpha_ref .
+#' @param sp_linetype_PI .
+#' @param sp_color_PI .
+#' @param sp_size_PI .
+#' @param sp_alpha_PI .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
@@ -1679,7 +1964,19 @@ jamovicorrelation <- function(
     sp_size_residual_reference = "1",
     sp_alpha_residual_reference = "1",
     sp_prediction_label = "5",
-    sp_prediction_color = "#E20134") {
+    sp_prediction_color = "#E20134",
+    sp_linetype_CI = "solid",
+    sp_color_CI = "#008DF9",
+    sp_size_CI = "5",
+    sp_alpha_CI = "1",
+    sp_linetype_ref = "dotted",
+    sp_color_ref = "gray90",
+    sp_size_ref = "2",
+    sp_alpha_ref = "1",
+    sp_linetype_PI = "solid",
+    sp_color_PI = "#E20134",
+    sp_size_PI = "3",
+    sp_alpha_PI = "1") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovicorrelation requires jmvcore to be installed (restart may be required)")
@@ -1770,7 +2067,19 @@ jamovicorrelation <- function(
         sp_size_residual_reference = sp_size_residual_reference,
         sp_alpha_residual_reference = sp_alpha_residual_reference,
         sp_prediction_label = sp_prediction_label,
-        sp_prediction_color = sp_prediction_color)
+        sp_prediction_color = sp_prediction_color,
+        sp_linetype_CI = sp_linetype_CI,
+        sp_color_CI = sp_color_CI,
+        sp_size_CI = sp_size_CI,
+        sp_alpha_CI = sp_alpha_CI,
+        sp_linetype_ref = sp_linetype_ref,
+        sp_color_ref = sp_color_ref,
+        sp_size_ref = sp_size_ref,
+        sp_alpha_ref = sp_alpha_ref,
+        sp_linetype_PI = sp_linetype_PI,
+        sp_color_PI = sp_color_PI,
+        sp_size_PI = sp_size_PI,
+        sp_alpha_PI = sp_alpha_PI)
 
     analysis <- jamovicorrelationClass$new(
         options = options,
