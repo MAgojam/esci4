@@ -67,10 +67,10 @@ jamovi_add_htest_pdiff <- function(self, estimate) {
       output_html = TRUE
     )
 
-    estimate$warnings <- c(
-      estimate$warnings,
-      names(rope_upper)
-    )
+    # estimate$warnings <- c(
+    #   estimate$warnings,
+    #   names(rope_upper)
+    # )
 
     estimate$point_null <- jamovi_peffect_html(test_results$point_null)
     estimate$interval_null <- jamovi_peffect_html(test_results$interval_null)

@@ -390,6 +390,32 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           }
 
 
+          rope_upper <- jamovi_sanitize(
+            self$options$null_boundary,
+            na_ok = FALSE,
+            return_value = 0,
+            lower = 0,
+            lower_inclusive = TRUE,
+            upper = 1,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+          )
+
+          null_value <- jamovi_sanitize(
+            self$options$null_value,
+            na_ok = FALSE,
+            return_value = 0,
+            lower = -1,
+            lower_inclusive = TRUE,
+            upper = 1,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+            my_value_name = "Hypothesis Evaluation: Null value"
+          )
+
+
+
           notes <- c(
             notes,
             names(axis.text.y),
@@ -398,7 +424,9 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
             names(axis.title.x),
             names(xlab),
             names(ylab),
-            names(breaks)
+            names(breaks),
+            names(rope_upper),
+            names(null_value)
           )
           self$results$magnitude_plot_warnings$setState(notes)
           jamovi_set_notes(self$results$magnitude_plot_warnings)
@@ -529,7 +557,7 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
     lower_inclusive = TRUE,
     upper = 1,
     upper_inclusive = TRUE,
-    my_value_name = "Hypothesis Evaluation: <i>H</i><sub>0</sub> value"
+    my_value_name = "Hypothesis Evaluation: Null value"
   )
   #notes <- c(notes, names(args$reference_p))
 

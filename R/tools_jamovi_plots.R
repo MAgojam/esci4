@@ -549,6 +549,7 @@ jamovi_plot_pdiff <- function(
       )
 
 
+
     args$rope <- c(
       0 - args$null_boundary,
       0 + args$null_boundary
@@ -558,10 +559,10 @@ jamovi_plot_pdiff <- function(
       interval_null <- TRUE
     }
 
-    # notes <- c(
-    #   notes,
-    #   names(args$null_boundary)
-    # )
+    notes <- c(
+      notes,
+      names(args$null_boundary)
+    )
     args$warnings <- NULL
     args$null_boundary <- NULL
   }
@@ -899,6 +900,21 @@ jamovi_plot_pdiff <- function(
     my_value_name = "Plot height"
   )
 
+  # Struggling to get htest warnings to show up... so copying this in
+  #  again?
+
+  rope_upper <- jamovi_sanitize(
+    self$options$null_boundary,
+    na_ok = FALSE,
+    return_value = 0,
+    lower = 0,
+    lower_inclusive = TRUE,
+    upper = 1,
+    upper_inclusive = TRUE,
+    convert_to_number = TRUE,
+    my_value_name = "Hypothesis Evaluation: Null range (+/-)"
+  )
+
 
   self$results$estimation_plot_warnings$setState(
     c(
@@ -910,7 +926,8 @@ jamovi_plot_pdiff <- function(
       names(axis.text.x),
       names(axis.title.x),
       names(width),
-      names(height)
+      names(height),
+      names(rope_upper)
     )
   )
   jamovi_set_notes(self$results$estimation_plot_warnings)

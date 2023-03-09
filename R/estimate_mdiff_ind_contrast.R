@@ -857,7 +857,7 @@ Invalid groups are those with n < 2.
     if (n_miss > 0 & n_rows > 0) {
       msg <-  glue::glue("
 There are {n_rows} rows missing the outcome variable and grouping variable and {n_miss} rows missing only the grouping variable ({grouping_variable_name}).
-Outcomes with missing grouping variables were **dropped* from the analysis
+Outcomes with missing grouping variables were **dropped** from the analysis
     ")
       estimate$warnings <- c(estimate$warnings, msg)
       warning(msg)
@@ -865,7 +865,7 @@ Outcomes with missing grouping variables were **dropped* from the analysis
     if (n_miss > 0 & n_rows == 0) {
       msg <-  glue::glue("
 There are {n_miss} missing values in grouping variable {grouping_variable_name}.
-Outcomes with missing grouping variables were **dropped* from the analysis
+Outcomes with missing grouping variables were **dropped** from the analysis
     ")
       estimate$warnings <- c(estimate$warnings, msg)
       warning(msg)
@@ -883,7 +883,7 @@ There are {n_rows} rows that were missing values for both the grouping variable 
     for (x in 1:length(invalid_groups)) {
       msg <-  glue::glue("
   The group {invalid_groups[[x]]} had an invalid sample size: {invalid_ns[[x]]}.
-  This group was **dropped* from the analysis.
+  This group was **dropped** from the analysis.
         ")
       estimate$warnings <- c(estimate$warnings, msg)
       warning(msg)
