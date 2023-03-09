@@ -349,7 +349,7 @@ plot_scatter <- function(
     myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
     myplot <- esci_plot_layers(myplot, "prediction_prediction_interval")
 
-    if (show_line) {
+    #if (show_line) {
       ci <- predict(estimate$properties$lm, interval = "confidence", newdata = data.frame(x = pi_input), level = estimate$properties$conf_level)
       if (plot_as_z) {
         ci[1, "lwr"] <- (ci[1, "lwr"] - y_mean) / y_sd
@@ -366,7 +366,7 @@ plot_scatter <- function(
       )
       myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "blue", aes(x = predict_from_x, xend = predict_from_x, y=ci[1, "lwr"], yend = ci[1, "upr"]))
       myplot <- esci_plot_layers(myplot, "prediction_confidence_interval")
-    }
+    #}
 
 
     myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min, yend = ypr), size = 2)

@@ -28,7 +28,7 @@ test_proportion <- function() {
     )
   )
 
-  estimate_proportion(outcome_variable = dep_status, count_NA = FALSE)
+  estimate <- estimate_proportion(outcome_variable = dep_status, count_NA = FALSE)
   estimate_proportion(
     outcome_variable = dep_status,
     outcome_variable_name = "Something",

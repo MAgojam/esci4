@@ -16,6 +16,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             count_NA = FALSE,
             conf_level = 95,
             show_details = FALSE,
+            plot_possible = FALSE,
             evaluate_hypotheses = FALSE,
             null_value = "0",
             null_boundary = "0",
@@ -85,6 +86,10 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
+                default=FALSE)
+            private$..plot_possible <- jmvcore::OptionBool$new(
+                "plot_possible",
+                plot_possible,
                 default=FALSE)
             private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
                 "evaluate_hypotheses",
@@ -321,6 +326,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
             self$.addOption(private$..count_NA)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..plot_possible)
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
@@ -354,6 +360,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         count_NA = function() private$..count_NA$value,
         conf_level = function() private$..conf_level$value,
         show_details = function() private$..show_details$value,
+        plot_possible = function() private$..plot_possible$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
@@ -386,6 +393,7 @@ jamoviproportionOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
         ..count_NA = NA,
         ..conf_level = NA,
         ..show_details = NA,
+        ..plot_possible = NA,
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
         ..null_boundary = NA,
@@ -602,6 +610,7 @@ jamoviproportionBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
 #' @param count_NA .
 #' @param conf_level .
 #' @param show_details .
+#' @param plot_possible .
 #' @param evaluate_hypotheses .
 #' @param null_value .
 #' @param null_boundary .
@@ -653,6 +662,7 @@ jamoviproportion <- function(
     count_NA = FALSE,
     conf_level = 95,
     show_details = FALSE,
+    plot_possible = FALSE,
     evaluate_hypotheses = FALSE,
     null_value = "0",
     null_boundary = "0",
@@ -696,6 +706,7 @@ jamoviproportion <- function(
         count_NA = count_NA,
         conf_level = conf_level,
         show_details = show_details,
+        plot_possible = plot_possible,
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
         null_boundary = null_boundary,

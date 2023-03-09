@@ -449,7 +449,7 @@ children:
                   column: 0
                   row: 13
               - type: Label
-                label: '<span style="font-weight:normal">Size</span>'
+                label: '<span style="font-weight:normal">Label size</span>'
                 cell:
                   column: 0
                   row: 14
@@ -460,7 +460,7 @@ children:
                   column: 1
                   row: 14
               - type: Label
-                label: '<span style="font-weight:normal">Color</span>'
+                label: '<span style="font-weight:normal">Label color</span>'
                 cell:
                   column: 0
                   row: 15

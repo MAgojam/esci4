@@ -101,6 +101,8 @@ children:
         format: number
       - type: CheckBox
         name: show_details
+      - type: CheckBox
+        name: plot_possible
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

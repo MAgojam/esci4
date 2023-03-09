@@ -428,6 +428,7 @@ plot_proportion <- function(
   error_scale = 0.3,
   error_normalize = c("groups", "all", "panels"),
   rope = c(NA, NA),
+  plot_possible = FALSE,
   ggtheme = NULL
 ) {
 
@@ -582,6 +583,22 @@ plot_proportion <- function(
   error_expression <- parse(text = glue::glue(error_glue))
   myplot <- try(eval(error_expression))
 
+
+  # Discrete lines
+
+  if (plot_possible) {
+    if (is.null(estimate$es_proportion)) {
+      tn <- estimate$overview$n[[1]]
+    } else {
+      tn <- estimate$es_proportion$n[[1]]
+    }
+
+    if (tn <= 200) {
+      mydf <- data.frame(possible = seq(from = 0, to = tn)/tn)
+      myplot <- myplot + ggplot2::geom_hline(data = mydf, ggplot2::aes(yintercept = possible), linetype = 'dotted', color = 'gray70')
+    }
+
+  }
 
   # Customize ----------------------------
   # Default look

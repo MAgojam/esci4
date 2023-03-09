@@ -148,6 +148,8 @@ jamoviproportionClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cl
           args <- list()
           args$estimate <- estimate
 
+          args$plot_possible <- self$options$plot_possible
+
           #Hyothesis evaluation
           interval_null <- FALSE
           if (self$options$evaluate_hypotheses) {
