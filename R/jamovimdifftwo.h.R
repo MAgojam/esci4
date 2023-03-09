@@ -2071,7 +2071,7 @@ jamovimdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="text"),
                     list(
                         `name`="t", 
-                        `title`="t", 
+                        `title`="<i>t</i>", 
                         `type`="number", 
                         `visible`="(effect_size == 'mean_difference')"),
                     list(

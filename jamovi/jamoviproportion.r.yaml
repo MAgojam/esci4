@@ -68,7 +68,7 @@ items:
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: t
-          title: 'z'
+          title: '<i>z</i>'
         - name: p
           title: "<i>p</i>, two tailed"
           type: number

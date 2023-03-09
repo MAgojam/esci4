@@ -302,15 +302,15 @@ items:
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: t
-          title: 't'
+          title: '<i>t</i>'
           type: number
           visible: (effect_size == 'mean_difference')
         - name: df
-          title: <i>df</i>
+          title: '<i>df</i>'
           type: number
           visible: (effect_size == 'mean_difference' & !assume_equal_variance)
         - name: df_i
-          title: <i>df</i>
+          title: '<i>df</i>'
           type: integer
           visible: (effect_size == 'mean_difference' & assume_equal_variance)
         - name: p

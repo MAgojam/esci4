@@ -514,7 +514,7 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                         `type`="text"),
                     list(
                         `name`="t", 
-                        `title`="z"),
+                        `title`="<i>z</i>"),
                     list(
                         `name`="p", 
                         `title`="<i>p</i>, two tailed", 

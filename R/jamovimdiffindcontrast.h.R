@@ -2320,7 +2320,7 @@ jamovimdiffindcontrastResults <- if (requireNamespace("jmvcore", quietly=TRUE)) 
                         `type`="text"),
                     list(
                         `name`="t", 
-                        `title`="t", 
+                        `title`="<i>t</i>", 
                         `type`="number", 
                         `visible`="(effect_size == 'mean_difference')"),
                     list(

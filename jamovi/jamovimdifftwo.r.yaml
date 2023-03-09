@@ -415,7 +415,7 @@ items:
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: t
-          title: 't'
+          title: '<i>t</i>'
           type: number
           visible: (effect_size == 'mean_difference')
         - name: df

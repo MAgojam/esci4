@@ -173,11 +173,11 @@ items:
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
         - name: t
-          title: 't'
+          title: '<i>t</i>'
           type: number
           visible: (effect_size == 'mean')
         - name: df
-          title: 'df'
+          title: '<i>df</i>'
           type: integer
           visible: (effect_size == 'mean')
         - name: p

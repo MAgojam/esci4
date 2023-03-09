@@ -966,12 +966,12 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="text"),
                     list(
                         `name`="t", 
-                        `title`="t", 
+                        `title`="<i>t</i>", 
                         `type`="number", 
                         `visible`="(effect_size == 'mean')"),
                     list(
                         `name`="df", 
-                        `title`="df", 
+                        `title`="<i>df</i>", 
                         `type`="integer", 
                         `visible`="(effect_size == 'mean')"),
                     list(
