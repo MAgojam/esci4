@@ -81,7 +81,8 @@ test_estimate_meta_sr <- function() {
     esci_single_r,
     rvalues,
     sample_size,
-    studies
+    studies,
+    random_effects = FALSE
   )
   estimate$raw_data
   estimate

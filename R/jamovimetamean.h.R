@@ -1603,7 +1603,7 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
-                title="Meta-analytic Effect Sizes",
+                title="Meta-Analytic Effect Sizes",
                 rows=1,
                 columns=list(
                     list(
@@ -1667,12 +1667,12 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="FE_CI_width", 
                         `type`="number", 
-                        `title`="FE CI width", 
+                        `title`="FE CI length", 
                         `visible`="(random_effects == 'compare' | show_details)"),
                     list(
                         `name`="RE_CI_width", 
                         `type`="number", 
-                        `title`="RE CI width", 
+                        `title`="RE CI length", 
                         `visible`="(random_effects == 'compare' | show_details)"),
                     list(
                         `name`="diamond_ratio", 

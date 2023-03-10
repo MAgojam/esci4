@@ -1514,7 +1514,7 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
-                title="Meta-analytic Effect Sizes",
+                title="Meta-Analytic Effect Sizes",
                 rows=1,
                 columns=list(
                     list(
@@ -1571,12 +1571,12 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                     list(
                         `name`="FE_CI_width", 
                         `type`="number", 
-                        `title`="FE CI width", 
+                        `title`="FE CI length", 
                         `visible`="(show_details)"),
                     list(
                         `name`="RE_CI_width", 
                         `type`="number", 
-                        `title`="RE CI width", 
+                        `title`="RE CI length", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,

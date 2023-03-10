@@ -212,6 +212,10 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     )
   )
 
+  eso <- metafor::escalc(ri = data$r, ni = data$N, measure = "ZCOR")
+  es_data$yi <- eso$yi
+  es_data$vi <- eso$vi
+
   res <- meta_any(
     data = cbind(data, es_data),
     yi = "yi",
@@ -226,6 +230,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     conf_level = conf_level
   )
 
+
   # Clean up -----------------------------
   clear_cols <- c(
     "label",
@@ -235,6 +240,18 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 
+  res$es_meta$effect_size <- esci_z_to_r(res$es_meta$effect_size)
+  res$es_meta$LL <- esci_z_to_r(res$es_meta$LL)
+  res$es_meta$UL <- esci_z_to_r(res$es_meta$UL)
+  res$es_meta$PI_LL <- esci_z_to_r(res$es_meta$PI_LL)
+  res$es_meta$PI_UL <- esci_z_to_r(res$es_meta$PI_UL)
+  res$es_meta$FE_effect_size <- esci_z_to_r(res$es_meta$FE_effect_size)
+  res$es_meta$RE_effect_size <- esci_z_to_r(res$es_meta$RE_effect_size)
+
+  res$raw_data$z <- res$raw_data$effect_size
+  res$raw_data$effect_size <- esci_z_to_r(res$raw_data$effect_size)
+
+
   # Effect size labels
   res$properties$effect_size_name <- "r"
   res$properties$effect_size_name_html <- "<i>r</i>"
@@ -243,4 +260,11 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   return(res)
 }
 
+
+esci_z_to_r <- function(z) {
+  if (is.null(z)) return(NULL)
+  return(
+    (exp(2*z) - 1) / (exp(2*z) + 1)
+  )
+}
 
