@@ -115,7 +115,7 @@ meta_mdiff_two <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     reference_means_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -130,7 +130,7 @@ meta_mdiff_two <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     comparison_means_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -153,7 +153,7 @@ These are rows {paste(which(data[[reference_sds_quoname]] <= 0), collapse = ', '
   row_report <- esci_assert_column_has_valid_rows(
     data,
     reference_sds_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -176,7 +176,7 @@ These are rows {paste(which(data[[comparison_sds_quoname]] <= 0), collapse = ', 
   row_report <- esci_assert_column_has_valid_rows(
     data,
     comparison_sds_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -207,7 +207,7 @@ These are rows {paste(which(!is.whole.number(data[[reference_ns_quoname]])), col
   row_report <- esci_assert_column_has_valid_rows(
     data,
     reference_ns_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -238,7 +238,7 @@ These are rows {paste(which(!is.whole.number(data[[comparison_ns_quoname]])), co
   row_report <- esci_assert_column_has_valid_rows(
     data,
     comparison_ns_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -293,7 +293,7 @@ The rows with r but mismatching n are:
   row_report <- esci_assert_column_has_valid_rows(
     data,
     labels_quoname,
-    lower = 2,
+    lower = 1,
   )
   if (row_report$missing > 0) {
     warnings <- c(warnings, row_report$warning)
@@ -308,7 +308,7 @@ The rows with r but mismatching n are:
     row_report <- esci_assert_column_has_valid_rows(
       data,
       moderator_quoname,
-      lower = 2,
+      lower = 1,
     )
     if (row_report$missing > 0) {
       warnings <- c(warnings, row_report$warning)

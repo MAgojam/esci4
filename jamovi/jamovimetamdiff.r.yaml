@@ -58,7 +58,7 @@ items:
           type: number
           visible: (show_details & switch == "from_raw")
         - name: reference_n
-          title: <i>N</i><sub>reference</sub>
+          title: <i>n</i><sub>reference</sub>
           type: integer
           visible: (show_details)
         - name: comparison_mean
@@ -70,7 +70,7 @@ items:
           type: number
           visible: (show_details & switch == "from_raw")
         - name: comparison_n
-          title: <i>N</i><sub>comparison</sub>
+          title: <i>n</i><sub>comparison</sub>
           type: integer
           visible: (show_details)
         - name: r

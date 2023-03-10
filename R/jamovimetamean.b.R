@@ -158,7 +158,7 @@ jamovi_meta_mean <- function(self) {
 
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))
-
+  if(is(estimate, "try-error")) stop(estimate[1])
 
   estimate$raw_data$label <- as.character(estimate$raw_data$label)
 

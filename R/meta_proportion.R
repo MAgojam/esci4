@@ -74,7 +74,7 @@ meta_proportion <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     cases_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -121,7 +121,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   row_report <- esci_assert_column_has_valid_rows(
     data,
     ns_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -151,7 +151,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   row_report <- esci_assert_column_has_valid_rows(
     data,
     labels_quoname,
-    lower = 2,
+    lower = 1,
   )
   if (row_report$missing > 0) {
     warnings <- c(warnings, row_report$warning)
@@ -166,7 +166,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     row_report <- esci_assert_column_has_valid_rows(
       data,
       moderator_quoname,
-      lower = 2,
+      lower = 1,
     )
     if (row_report$missing > 0) {
       warnings <- c(warnings, row_report$warning)

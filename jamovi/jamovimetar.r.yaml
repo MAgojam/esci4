@@ -37,11 +37,15 @@ items:
           type: number
           visible: (show_details)
         - name: sample_variance
-          title: v2
+          title: <i>SE</i><sup>2</sup><sub><i>Z</i></sub>
           type: number
           visible: (show_details)
+        - name: z
+          type: number
+          title: <i>Z</i><sub><i>r</i></sub>
+          visible: (show_details)
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE</i><sub><i>Z</i></sub>
           type: number
           visible: (show_details)
         - name: r
@@ -80,7 +84,7 @@ items:
           title: UL
           type: number
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE</i><sub><i>Z</i></sub>
           type: number
           visible: (show_details)
         - name: k
@@ -105,6 +109,10 @@ items:
         - name: RE_CI_width
           type: number
           title: RE CI length
+          visible: (show_details)
+        - name: z
+          type: number
+          title: <i>Z</i><sub><i>r</i></sub>
           visible: (show_details)
 
     - name:  es_heterogeneity
@@ -162,7 +170,7 @@ items:
           title: UL
           type: number
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE</i><sub><i>Z</i></sub>
           type: number
           visible: (show_details)
         - name: p
@@ -170,6 +178,10 @@ items:
           title: "<i>p</i>, two tailed"
           type: number
           format: zto,pvalue
+        - name: z
+          type: number
+          title: <i>Z</i><sub><i>r</i></sub>
+          visible: (show_details)
 
     - name: estimation_plot_warnings
       title: Forest Plot Warnings

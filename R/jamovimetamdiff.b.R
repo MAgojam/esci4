@@ -174,7 +174,7 @@ jamovi_meta_mdiff_two <- function(self) {
       if (length(estimate$warnings) > 0) {
         notes <- c(notes, estimate$warnings)
       }
-    }
+
 
     estimate$raw_data$label <- as.character(estimate$raw_data$label)
     estimate$raw_data$df_i <- estimate$raw_data$df
@@ -190,6 +190,7 @@ jamovi_meta_mdiff_two <- function(self) {
       }
     }
 
+    }
 
     self$results$help$setState(notes)
 

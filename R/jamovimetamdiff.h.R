@@ -1644,7 +1644,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(show_details & switch == \"from_raw\")"),
                     list(
                         `name`="reference_n", 
-                        `title`="<i>N</i><sub>reference</sub>", 
+                        `title`="<i>n</i><sub>reference</sub>", 
                         `type`="integer", 
                         `visible`="(show_details)"),
                     list(
@@ -1659,7 +1659,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(show_details & switch == \"from_raw\")"),
                     list(
                         `name`="comparison_n", 
-                        `title`="<i>N</i><sub>comparison</sub>", 
+                        `title`="<i>n</i><sub>comparison</sub>", 
                         `type`="integer", 
                         `visible`="(show_details)"),
                     list(

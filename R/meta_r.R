@@ -74,7 +74,7 @@ meta_r <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     rs_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -121,7 +121,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   row_report <- esci_assert_column_has_valid_rows(
     data,
     ns_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -140,7 +140,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   row_report <- esci_assert_column_has_valid_rows(
     data,
     labels_quoname,
-    lower = 2,
+    lower = 1,
   )
   if (row_report$missing > 0) {
     warnings <- c(warnings, row_report$warning)
@@ -155,7 +155,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     row_report <- esci_assert_column_has_valid_rows(
       data,
       moderator_quoname,
-      lower = 2,
+      lower = 1,
     )
     if (row_report$missing > 0) {
       warnings <- c(warnings, row_report$warning)
@@ -240,6 +240,7 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
   res$raw_data <- cbind(res$raw_data, es_data[ , c("LL", "UL")], data)
   res$warnings <- c(res$warnings, warnings)
 
+  res$es_meta$z <- res$es_meta$effect_size
   res$es_meta$effect_size <- esci_z_to_r(res$es_meta$effect_size)
   res$es_meta$LL <- esci_z_to_r(res$es_meta$LL)
   res$es_meta$UL <- esci_z_to_r(res$es_meta$UL)
@@ -250,6 +251,14 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
 
   res$raw_data$z <- res$raw_data$effect_size
   res$raw_data$effect_size <- esci_z_to_r(res$raw_data$effect_size)
+
+  if (!is.null(res$es_meta_difference)) {
+    res$es_meta_difference$z <- res$es_meta_difference$effect_size
+    res$es_meta_difference$effect_size <- esci_z_to_r(res$es_meta_difference$effect_size)
+    res$es_meta_difference$LL <- esci_z_to_r(res$es_meta_difference$LL)
+    res$es_meta_difference$UL <- esci_z_to_r(res$es_meta_difference$UL)
+
+  }
 
 
   # Effect size labels

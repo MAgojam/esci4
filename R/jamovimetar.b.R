@@ -119,6 +119,8 @@ jamovi_meta_r <- function(self) {
 
   # Do analysis, then post any notes that have emerged
   estimate <- try(do.call(what = call, args = args))
+  if(is(estimate, "try-error")) stop(estimate[1])
+
   estimate$raw_data$label <- as.character(estimate$raw_data$label)
   if (!is.null(self$options$moderator)) {
     estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)

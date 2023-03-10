@@ -1493,12 +1493,17 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `visible`="(show_details)"),
                     list(
                         `name`="sample_variance", 
-                        `title`="v2", 
+                        `title`="<i>SE</i><sup>2</sup><sub><i>Z</i></sub>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
+                        `name`="z", 
+                        `type`="number", 
+                        `title`="<i>Z</i><sub><i>r</i></sub>", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE</i><sub><i>Z</i></sub>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
@@ -1546,7 +1551,7 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `type`="number"),
                     list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE</i><sub><i>Z</i></sub>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
@@ -1577,6 +1582,11 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `name`="RE_CI_width", 
                         `type`="number", 
                         `title`="RE CI length", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="z", 
+                        `type`="number", 
+                        `title`="<i>Z</i><sub><i>r</i></sub>", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -1647,7 +1657,7 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `type`="number"),
                     list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE</i><sub><i>Z</i></sub>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
@@ -1655,7 +1665,12 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `visible`="(show_details)", 
                         `title`="<i>p</i>, two tailed", 
                         `type`="number", 
-                        `format`="zto,pvalue"))))
+                        `format`="zto,pvalue"),
+                    list(
+                        `name`="z", 
+                        `type`="number", 
+                        `title`="<i>Z</i><sub><i>r</i></sub>", 
+                        `visible`="(show_details)"))))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="estimation_plot_warnings",

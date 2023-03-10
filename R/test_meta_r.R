@@ -66,11 +66,11 @@ test_estimate_meta_sr <- function() {
         'Piano'	,
         'Piano'	,
         'Piano'	,
-        'Band'	,
         'Piano'	,
         'Piano'	,
-        'Band'	,
-        'Band'	,
+        'Piano'	,
+        'Strings'	,
+        'Strings'	,
         'Strings'	,
         'Strings'
       )
@@ -82,7 +82,7 @@ test_estimate_meta_sr <- function() {
     rvalues,
     sample_size,
     studies,
-    random_effects = FALSE
+    random_effects = TRUE
   )
   estimate$raw_data
   estimate

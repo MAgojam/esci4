@@ -88,7 +88,7 @@ meta_any <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     yi_quoname,
-    lower = 2,
+    lower = 1,
     na.rm = TRUE
   )
   if (row_report$missing > 0) {
@@ -102,7 +102,7 @@ meta_any <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     vi_quoname,
-    lower = 2,
+    lower = 1,
   )
   if (row_report$missing > 0) {
     warnings <- c(warnings, row_report$warning)
@@ -119,7 +119,7 @@ meta_any <- function(
   row_report <- esci_assert_column_has_valid_rows(
     data,
     labels_quoname,
-    lower = 2,
+    lower = 1,
   )
   if (row_report$missing > 0) {
     warnings <- c(warnings, row_report$warning)
@@ -134,7 +134,7 @@ meta_any <- function(
     row_report <- esci_assert_column_has_valid_rows(
       data,
       moderator_quoname,
-      lower = 2,
+      lower = 1,
     )
     if (row_report$missing > 0) {
       warnings <- c(warnings, row_report$warning)
@@ -382,6 +382,16 @@ After dropping any NA rows, current data has:
         conf_level = conf_level
       )
 
+      FEjustltbl <- meta_to_table(
+        FEjustl,
+        fixed_effects = TRUE,
+        dr_res = dr_res,
+        effect_label = effect_label,
+        moderator_variable_name = moderator_variable_name,
+        moderator_level = lev,
+        conf_level = conf_level
+      )
+
       es_heterogeneity <- rbind(
         es_heterogeneity,
         meta_to_heterogeneity(
@@ -408,6 +418,8 @@ After dropping any NA rows, current data has:
       FEgtable[x, "diamond_ratio"] <- dr_res$diamond_ratio
       FEgtable[x, "diamond_ratio_LL"] <- dr_res$LL
       FEgtable[x, "diamond_ratio_UL"] <- dr_res$UL
+      REgtable[x, "width"] <- REjustltbl$width
+      FEgtable[x, "width"] <- FEjustltbl$width
     }
     REgtable$moderator_variable_level <- replabels
     FEgtable$moderator_variable_level <- replabels
@@ -620,7 +632,8 @@ meta_to_table <- function(
     I2_UL = I2_UL,
     PI_LL = pi$pi.lb,
     PI_UL = pi$pi.ub,
-    p = meta$pval
+    p = meta$pval,
+    width = abs(unname(meta$ci.ub) - unname(meta$ci.lb))
   )
 
     return(result_table)
@@ -630,8 +643,8 @@ meta_to_table <- function(
 meta_FE_and_RE <- function(FEtable, REtable) {
   FEtable$FE_effect_size <- FEtable$effect_size
   FEtable$RE_effect_size <- REtable$effect_size
-  FEtable$FE_CI_width <- abs(FEtable$UL - FEtable$LL)
-  FEtable$RE_CI_width <- abs(REtable$UL - REtable$LL)
+  FEtable$FE_CI_width <- FEtable$width
+  FEtable$RE_CI_width <- REtable$width
 
   return(FEtable)
 
