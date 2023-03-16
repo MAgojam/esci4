@@ -190,6 +190,9 @@ plot_meta <- function(
       "dashed" = "Reference",
       "dotted" = "Comparison"
     )
+    gdata$yendv <- -Inf
+    gdata[gdata$type == "Comparison", "yendv"] <- -(rows_total + 2)
+
     for (x in 1:length(plot_levels)) {
       next_up <- plot_levels[x]
       dline <- gdata[gdata$type == next_up, ]
@@ -200,7 +203,7 @@ plot_meta <- function(
             x = effect_size,
             xend = effect_size,
             y = line,
-            yend = -Inf
+            yend = yendv
           ),
           colour = "black",
           linetype = names(plot_levels[x])
@@ -221,6 +224,7 @@ plot_meta <- function(
     next_up <- plot_levels[x]
     this_data <- gdata[gdata$type == next_up, ]
     if (nrow(this_data) > 0) {
+
       myplot <- myplot + geom_meta_diamond_h(
         data = this_data,
         ggplot2::aes(
@@ -276,25 +280,52 @@ plot_meta <- function(
     ddata$LL <- ddata$LL + reference
     ddata$UL <- ddata$UL + reference
 
-    rows_total <- rows_total + 1
+    rows_total <- rows_total + 2
     ddata$line <- -rows_total
 
     # Plot reference data
-    myplot <- myplot + geom_meta_diamond_h(
+
+
+    myplot <- myplot + ggplot2::geom_errorbarh(
       data = ddata,
       ggplot2::aes(
-        x = effect_size,
         xmin = LL,
         xmax = UL,
         y = line
       ),
-      height = meta_diamond_height,
-      colour = "Black",
-      fill = "White"
+      height = 0
     )
+    myplot <- esci_plot_layers(myplot, "group_Difference_line")
+
+    myplot <- myplot + ggplot2::geom_point(
+      data = ddata,
+      ggplot2::aes(
+        x = effect_size,
+        y = line,
+      ),
+      size = 6,
+      shape = 23,
+      colour = "black",
+      fill = "black"
+    )
+
+    #
+    #
+    # myplot <- myplot + geom_meta_diamond_h(
+    #   data = ddata,
+    #   ggplot2::aes(
+    #     x = effect_size,
+    #     xmin = LL,
+    #     xmax = UL,
+    #     y = line
+    #   ),
+    #   height = meta_diamond_height,
+    #   colour = "Black",
+    #   fill = "White"
+    # )
     myplot <- esci_plot_layers(myplot, "group_Difference_diamond")
 
-    dlabel <- ddata$moderator_level
+    dlabel <- c("", ddata$moderator_level)
   }
 
   # ----------------------------------------------
@@ -316,7 +347,7 @@ plot_meta <- function(
   if (!is.null(estimate$es_meta_difference)) {
     myplot <- esci_plot_difference_axis_x(
       myplot,
-      estimate$es_meta_difference
+      estimate$es_meta_difference, d_lab = "Difference axis"
     )
   }
 
@@ -396,8 +427,7 @@ plot_meta <- function(
     legend.position = "none",
     axis.line.y.right = element_blank(),
     axis.ticks.y.right = element_blank(),
-    axis.title.x.top = ggtext::element_markdown(),
-    axis.title.x.bottom = ggtext::element_markdown()
+    axis.title.x.top = ggtext::element_markdown()
   )
 
   return(myplot)
@@ -477,32 +507,58 @@ esci_plot_difference_axis_x <- function(
     sec.axis = my_sec_axis
   )
 
-
-  # Remove the difference axis border
-  myplot <- myplot + ggplot2::theme(
-    axis.line.x.bottom = element_blank()
+  # Just plot a truncated axis
+  myplot <- myplot + ggplot2::guides(
+    x.sec = ggh4x::guide_axis_truncated(
+      trunc_lower = new_lower + reference_value,
+      trunc_upper = new_upper + reference_value
+    )
   )
 
-  # Instead, draw line just from new lower to new upper
-  mydf <- data.frame(
-    x = new_lower + reference_value,
-    xend = new_upper + reference_value,
-    y = y_min -1,
-    yend = y_min -1
-  )
+  if (!is.null(d_lab)) {
+    nx_min <- min(ggplot2::layer_scales(myplot)$x$range$range)
+    nx_max <- max(ggplot2::layer_scales(myplot)$x$range$range)
 
-  myplot <- myplot + ggplot2::geom_segment(
-    data = mydf,
-    ggplot2::aes(
-      x = x,
-      xend = xend,
-      y = y,
-      yend = yend
-    ),
-    colour = "black",
-    linetype = "solid"
-  )
-  myplot <- esci_plot_layers(myplot, "ref_difference_axis")
+    x_range <- nx_max - nx_min
+    daxis_half_length <- (new_upper - new_lower)/2
+
+    daxis_middle <- ((new_upper - new_lower)/2 + reference_value) / x_range
+
+    myplot <- myplot + ggplot2::theme(
+      axis.title.x.bottom = element_text(hjust = daxis_middle)
+    )
+
+  }
+
+
+
+
+
+  # # Remove the difference axis border
+  # myplot <- myplot + ggplot2::theme(
+  #   axis.line.x.bottom = element_blank()
+  # )
+  #
+  # # Instead, draw line just from new lower to new upper
+  # mydf <- data.frame(
+  #   x = new_lower + reference_value,
+  #   xend = new_upper + reference_value,
+  #   y = y_min -2,
+  #   yend = y_min -2
+  # )
+  #
+  # myplot <- myplot + ggplot2::geom_segment(
+  #   data = mydf,
+  #   ggplot2::aes(
+  #     x = x,
+  #     xend = xend,
+  #     y = y,
+  #     yend = yend
+  #   ),
+  #   colour = "black",
+  #   linetype = "solid"
+  # )
+  # myplot <- esci_plot_layers(myplot, "ref_difference_axis")
 
   if (is.null(myplot$esci_sec_axis_CIs)) {
     myplot <- myplot + ggplot2::scale_y_continuous(
