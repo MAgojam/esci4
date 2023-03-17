@@ -487,6 +487,7 @@ esci_plot_difference_axis_x <- function(
   # Get initial distance between breaks, either for set number of based on SE
   if (is.null(d_n.breaks)) {
     bdist <- difference_table["Difference", "SE"]
+    d_n.breaks <- 4
   } else {
     bdist <- (upper - lower) / d_n.breaks
   }
@@ -496,7 +497,10 @@ esci_plot_difference_axis_x <- function(
   new_lower <- floor(lower/bdist) * bdist
 
   # Make difference axis breaks and labels
-  d_breaks <- seq(from = new_lower, to = new_upper, by = bdist)
+  d_breaks <- pretty(c(new_lower, new_upper), d_n.breaks)
+  new_upper <- d_breaks[[1]]
+  new_lower <- d_breaks[length(d_breaks)]
+#  d_breaks <- seq(from = new_lower, to = new_upper, by = bdist)
   d_labels <- format(d_breaks, digits = 2)
 
   # Assemble and apply difference axis

@@ -437,7 +437,7 @@ jamovi_meta_forest_plot <- function(
 
   dbreaks <- jamovi_sanitize(
     my_value = self$options$dbreaks,
-    return_value = 5,
+    return_value = 4,
     na_ok = FALSE,
     lower = 1,
     lower_inclusive = TRUE,
