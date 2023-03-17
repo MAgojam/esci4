@@ -167,7 +167,7 @@ options:
     - name: meta_diamond_height
       title: 'Diamond height'
       type: String
-      default: '.35'
+      default: '.25'
 
     - name: xlab
       title: Label

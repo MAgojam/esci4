@@ -293,7 +293,7 @@ children:
               column: 1
               row: 11
           - type: Label
-            label: 'Size scale:'
+            label: 'Sample-size scaling:'
             cell:
               column: 0
               row: 12

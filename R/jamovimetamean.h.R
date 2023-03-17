@@ -29,7 +29,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             size_multiplier = "3",
             axis.text.y = "14",
             report_CIs = FALSE,
-            meta_diamond_height = ".35",
+            meta_diamond_height = ".25",
             xlab = "auto",
             xmin = "auto",
             xmax = "auto",
@@ -219,7 +219,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..meta_diamond_height <- jmvcore::OptionString$new(
                 "meta_diamond_height",
                 meta_diamond_height,
-                default=".35")
+                default=".25")
             private$..xlab <- jmvcore::OptionString$new(
                 "xlab",
                 xlab,
@@ -1954,7 +1954,7 @@ jamovimetamean <- function(
     size_multiplier = "3",
     axis.text.y = "14",
     report_CIs = FALSE,
-    meta_diamond_height = ".35",
+    meta_diamond_height = ".25",
     xlab = "auto",
     xmin = "auto",
     xmax = "auto",

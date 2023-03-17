@@ -411,7 +411,7 @@ jamovi_meta_forest_plot <- function(
     my_value = self$options$xbreaks,
     return_value = 5,
     na_ok = FALSE,
-    lower = 1,
+    lower = 2,
     lower_inclusive = TRUE,
     upper = 50,
     upper_inclusive = TRUE,
@@ -444,7 +444,7 @@ jamovi_meta_forest_plot <- function(
     upper = 50,
     upper_inclusive = TRUE,
     convert_to_number = TRUE,
-    my_value_name = "X axis: Number of tick marks"
+    my_value_name = "Difference axis: Number of tick marks"
   )
 
 

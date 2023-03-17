@@ -464,6 +464,8 @@ esci_plot_difference_axis_x <- function(
   y_breaks <- ggplot2::ggplot_build(myplot)$layout$panel_params[[1]]$y$get_breaks()
   y_min <- min(ggplot2::layer_scales(myplot)$y$range$range)
   y_max <- max(ggplot2::layer_scales(myplot)$y$range$range)
+  xlim <- ggplot2::ggplot_build(myplot)$layout$panel_params[[1]]$x$limits
+  xbreaks <- ggplot2::ggplot_build(myplot)$layout$panel_params[[1]]$x$breaks
 
   # Get reference value and center LL, UL, and effect size on it
   reference_value <- difference_table["Reference", "effect_size"]
@@ -500,7 +502,7 @@ esci_plot_difference_axis_x <- function(
   d_breaks <- pretty(c(new_lower, new_upper), d_n.breaks)
   new_upper <- d_breaks[[1]]
   new_lower <- d_breaks[length(d_breaks)]
-#  d_breaks <- seq(from = new_lower, to = new_upper, by = bdist)
+  # d_breaks <- seq(from = new_lower, to = new_upper, by = bdist)
   d_labels <- format(d_breaks, digits = 2)
 
   # Assemble and apply difference axis
@@ -513,6 +515,8 @@ esci_plot_difference_axis_x <- function(
 
 
   myplot <- myplot + ggplot2::scale_x_continuous(
+    limits = xlim,
+    breaks = xbreaks,
     position = "top",
     name = myplot$esci_xlab,
     sec.axis = my_sec_axis
@@ -543,35 +547,6 @@ esci_plot_difference_axis_x <- function(
 
   }
 
-
-
-
-
-  # # Remove the difference axis border
-  # myplot <- myplot + ggplot2::theme(
-  #   axis.line.x.bottom = element_blank()
-  # )
-  #
-  # # Instead, draw line just from new lower to new upper
-  # mydf <- data.frame(
-  #   x = new_lower + reference_value,
-  #   xend = new_upper + reference_value,
-  #   y = y_min -2,
-  #   yend = y_min -2
-  # )
-  #
-  # myplot <- myplot + ggplot2::geom_segment(
-  #   data = mydf,
-  #   ggplot2::aes(
-  #     x = x,
-  #     xend = xend,
-  #     y = y,
-  #     yend = yend
-  #   ),
-  #   colour = "black",
-  #   linetype = "solid"
-  # )
-  # myplot <- esci_plot_layers(myplot, "ref_difference_axis")
 
   if (is.null(myplot$esci_sec_axis_CIs)) {
     myplot <- myplot + ggplot2::scale_y_continuous(
