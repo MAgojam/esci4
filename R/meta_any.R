@@ -543,7 +543,8 @@ After dropping any NA rows, current data has:
     contrast = contrast,
     effect_size_name = "effect_size",
     effect_size_name_html = "effect_size",
-    effect_size_name_ggplot = "effect_size"
+    effect_size_name_ggplot = "effect_size",
+    model = if (random_effects) "random_effects" else "fixed_effects"
   )
 
 

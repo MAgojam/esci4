@@ -36,6 +36,15 @@ jamovi_meta_initialize <- function(self, has_switch = TRUE) {
   tbl_es_meta$getColumn("moderator_variable_level")$setVisible(moderator)
   tbl_raw_data$getColumn("moderator")$setVisible(moderator)
 
+  # Tbl note
+  weight_title <- if(self$options$random_effects != "fixed_effects")
+    "RE Weight."
+  else
+    "FE Weight"
+
+  tbl_raw_data$getColumn("weight")$setTitle(weight_title)
+
+
 
   width <- jamovi_sanitize(
     my_value = self$options$es_plot_width,
@@ -318,22 +327,26 @@ jamovi_meta_forest_plot <- function(
 
   if (!is.null(myplot$layers$group_Overall_PI)) {
     myplot$layers$group_Overall_PI$aes_params$colour <- self$options$color_summary_overall
-    myplot$layers$group_Overall_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_overall)
+    #myplot$layers$group_Overall_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_overall)
+    myplot$layers$group_Overall_PI$aes_params$size <- as.numeric(self$options$size_interval_comparison) + 1
   }
 
   if (!is.null(myplot$layers$group_Comparison_PI)) {
     myplot$layers$group_Comparison_PI$aes_params$colour <- self$options$color_summary_comparison
-    myplot$layers$group_Comparison_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
+    #myplot$layers$group_Comparison_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_comparison)
+    myplot$layers$group_Comparison_PI$aes_params$size <- as.numeric(self$options$size_interval_comparison) + 1
   }
 
   if (!is.null(myplot$layers$group_Reference_PI)) {
     myplot$layers$group_Reference_PI$aes_params$colour <- self$options$color_summary_reference
-    myplot$layers$group_Reference_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_reference)
+    #myplot$layers$group_Reference_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_reference)
+    myplot$layers$group_Reference_PI$aes_params$size <- as.numeric(self$options$size_interval_reference) + 1
   }
 
   if (!is.null(myplot$layers$group_Unused_PI)) {
     myplot$layers$group_Unused_P$aes_params$colour <- self$options$color_summary_unused
-    myplot$layers$group_Unused_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
+    #myplot$layers$group_Unused_PI$aes_params$alpha <- as.numeric(self$options$alpha_summary_unused)
+    myplot$layers$group_Unused_PI$aes_params$size <- as.numeric(self$options$size_interval_unused) + 1
   }
 
 
@@ -452,7 +465,7 @@ jamovi_meta_forest_plot <- function(
 
   dlab <- jamovi_sanitize(
     my_value = self$options$dlab,
-    return_value = NULL,
+    return_value = "Difference axis",
     na_ok = TRUE,
     my_value_name = "Difference axis: Title"
   )

@@ -164,17 +164,17 @@ plot_meta <- function(
 
   if (explain_DR) {
     gdata$CI_label <- paste(
-      "Width: ",
+      "Length: ",
       format(gdata$UL - gdata$LL, digits = 2)
     )
   }
 
   gdata$PI_label <- paste(
-    "[",
+    "(",
     format(gdata$PI_LL, digits = 2),
     ", ",
     format(gdata$PI_UL, digits = 2),
-    "]",
+    ")",
     sep = ""
   )
 
@@ -248,7 +248,9 @@ plot_meta <- function(
             y = pline,
             yend = pline
           ),
-          color = names(plot_levels[x])
+          color = names(plot_levels[x]),
+          linewidth = 2,
+          alpha = 0.5
         )
         myplot <- esci_plot_layers(myplot, paste("group_", next_up, "_PI", sep = ""))
       }
@@ -274,6 +276,7 @@ plot_meta <- function(
       "]",
       sep = ""
     )
+    difference_CI_label <- c("", difference_CI_label)
 
     reference <- estimate$es_meta_difference["Reference", "effect_size"]
     ddata$effect_size <- ddata$effect_size + reference
@@ -304,7 +307,7 @@ plot_meta <- function(
         y = line,
       ),
       size = 6,
-      shape = 23,
+      shape = 24,
       colour = "black",
       fill = "black"
     )
@@ -353,6 +356,10 @@ plot_meta <- function(
 
   # Y axis labels and setup
   gdata_labels <- gdata[order(-gdata$line), ]$moderator_variable_level
+
+  gdata_labels[which(gdata_labels == "Overall")] <- if (estimate$properties$model == "fixed_effects") "FE overall" else "RE overall"
+
+
   if (include_PIs) {
     cils <- paste(
       gdata_labels,
@@ -408,16 +415,16 @@ plot_meta <- function(
       name = NULL,
       breaks = -seq(1:rows_total),
       labels = all_labels,
-      sec.axis = sec_axis_CIs,
-      expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(meta_diamond_height, 0))
+      sec.axis = sec_axis_CIs #,
+      #expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(meta_diamond_height, 0))
     )
 
   } else {
     myplot <- myplot + ggplot2::scale_y_continuous(
       name = NULL,
       breaks = -seq(1:rows_total),
-      labels = all_labels,
-      expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(meta_diamond_height, 0))
+      labels = all_labels #,
+      #expand = ggplot2::expansion(mult = c(expand_bottom, 0.05), add = c(meta_diamond_height, 0))
     )
   }
 
@@ -520,12 +527,14 @@ esci_plot_difference_axis_x <- function(
     nx_max <- max(ggplot2::layer_scales(myplot)$x$range$range)
 
     x_range <- nx_max - nx_min
-    daxis_half_length <- (new_upper - new_lower)/2
+    daxis_top <- (new_upper + reference_value) - nx_min
+    daxis_top_location <- daxis_top / x_range
 
-    daxis_middle <- ((new_upper - new_lower)/2 + reference_value) / x_range
+    daxis_half_length <- (new_upper - new_lower)/2
+    daxis_half_location <- daxis_half_length / x_range
 
     myplot <- myplot + ggplot2::theme(
-      axis.title.x.bottom = element_text(hjust = daxis_middle)
+      axis.title.x.bottom = element_text(hjust = daxis_top_location - daxis_half_location)
     )
 
   }
@@ -564,16 +573,16 @@ esci_plot_difference_axis_x <- function(
     myplot <- myplot + ggplot2::scale_y_continuous(
       name = NULL,
       breaks = y_breaks,
-      labels = y_labels,
-      expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
+      labels = y_labels #,
+      #expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
     )
   } else {
     myplot <- myplot + ggplot2::scale_y_continuous(
       name = NULL,
       breaks = y_breaks,
       labels = y_labels,
-      sec.axis = myplot$esci_sec_axis_CIs,
-      expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
+      sec.axis = myplot$esci_sec_axis_CIs #,
+      #expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))
     )
   }
 
