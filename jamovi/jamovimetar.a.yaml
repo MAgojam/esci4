@@ -166,7 +166,7 @@ options:
     - name: mark_zero
       title: Mark zero
       type: Bool
-      default: false
+      default: true
 
     - name: axis.text.x
       title: 'Tick font size'

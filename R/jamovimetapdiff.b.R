@@ -12,6 +12,22 @@ jamovimetapdiffClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Cla
             has_switch = FALSE
           )
 
+          tbl_raw_data <- self$results$raw_data
+          tbl_es_meta <- self$results$es_meta
+
+          mykey <- "<i>P</i><sub>diff</sub> is calculated as <i>P</i><sub>Comparison</sub> - <i>P</i><sub>Reference</sub>"
+
+          # tbl_es_meta$setNote(
+          #   key = "mykey",
+          #   note = mykey
+          # )
+
+          tbl_raw_data$setNote(
+            key = "mykey",
+            note = mykey
+          )
+
+
         },
         .run = function() {
 
@@ -134,6 +150,10 @@ jamovi_meta_pdiff_two <- function(self) {
   if (!is.null(self$options$moderator)) {
     estimate$raw_data$moderator <- as.character(estimate$raw_data$moderator)
   }
+
+  estimate$raw_data$reference_P <- estimate$raw_data$reference_cases / estimate$raw_data$reference_N
+  estimate$raw_data$comparison_P <- estimate$raw_data$comparison_cases / estimate$raw_data$comparison_N
+
 
   if (!is(estimate, "try-error")) {
     if (length(estimate$warnings) > 0) {

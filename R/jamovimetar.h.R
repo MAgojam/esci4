@@ -1487,13 +1487,12 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="N", 
+                        `title`="<i>N</i>", 
+                        `type`="integer"),
+                    list(
                         `name`="weight", 
                         `title`="Weight", 
-                        `type`="number", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="sample_variance", 
-                        `title`="<i>SE</i><sup>2</sup><sub><i>Z</i></sub>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
@@ -1507,15 +1506,31 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
+                        `name`="sample_variance", 
+                        `title`="<i>SE</i><sup>2</sup><sub><i>Z</i></sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="t", 
+                        `visible`="(show_details)", 
+                        `title`="<i>t</i>", 
+                        `type`="number"),
+                    list(
+                        `name`="df", 
+                        `visible`="(show_details)", 
+                        `title`="<i>df</i>", 
+                        `type`="integer"),
+                    list(
+                        `name`="p", 
+                        `visible`="(show_details)", 
+                        `title`="<i>p</i>, two tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
+                    list(
                         `name`="r", 
                         `title`="<i>r</i>", 
                         `type`="number", 
-                        `visible`=FALSE),
-                    list(
-                        `name`="N", 
-                        `title`="<i>N</i>", 
-                        `type`="integer", 
-                        `visible`="(show_details)"))))
+                        `visible`=FALSE))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
@@ -1556,6 +1571,7 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                         `visible`="(show_details)"),
                     list(
                         `name`="k", 
+                        `title`="<i>k</i>", 
                         `type`="integer"),
                     list(
                         `name`="PI_LL", 

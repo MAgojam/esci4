@@ -12,9 +12,9 @@ options:
       default: from_raw
       options:
           - name: from_raw
-            title: Enter raw scores
+            title: Analyze original units
           - name: from_d
-            title: Enter Cohen's d
+            title: "Analyze Cohen's <i>d</i>"
 
     - name: data
       type: Data
@@ -124,6 +124,8 @@ options:
             title: Random effects (RE)
           - name: fixed_effects
             title: Fixed effect (FE)
+          - name: compare
+            title: Compare fixed and random effects
 
     - name: include_PIs
       title: Report prediction intervals

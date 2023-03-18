@@ -44,6 +44,9 @@ items:
           title: <i>SE</i><sup>2</sup><sub>proportion<sub>
           type: number
           visible: (show_details)
+        - name: reference_P
+          title: P<sub>Reference</sub>
+          type: number
         - name: reference_cases
           title: Cases<sub>Reference</sub>
           type: integer
@@ -52,6 +55,9 @@ items:
           title: <i>N</i><sub>Reference</sub>
           type: integer
           visible: (show_details)
+        - name: comparison_P
+          title: P<sub>Comparison</sub>
+          type: number
         - name: comparison_cases
           title: Cases<sub>Comparison</sub>
           type: integer
@@ -60,11 +66,6 @@ items:
           title: <i>N</i><sub>Comparison</sub>
           type: integer
           visible: (show_details)
-        - name: p
-          visible: (show_details)
-          title: "<i>p</i>, two tailed"
-          type: number
-          format: zto,pvalue
 
     - name:  es_meta
       title: Meta-Analytic Effect Sizes
@@ -97,6 +98,7 @@ items:
           type: number
           visible: (show_details)
         - name: k
+          title: <i>k</i>
           type: integer
         - name: PI_LL
           title: LL

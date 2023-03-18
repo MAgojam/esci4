@@ -26,8 +26,8 @@ jamovimetapdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             report_CIs = FALSE,
             meta_diamond_height = ".25",
             xlab = "auto",
-            xmin = "0",
-            xmax = "1",
+            xmin = "auto",
+            xmax = "auto",
             xbreaks = "auto",
             mark_zero = FALSE,
             axis.text.x = "14",
@@ -202,11 +202,11 @@ jamovimetapdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..xmin <- jmvcore::OptionString$new(
                 "xmin",
                 xmin,
-                default="0")
+                default="auto")
             private$..xmax <- jmvcore::OptionString$new(
                 "xmax",
                 xmax,
-                default="1")
+                default="auto")
             private$..xbreaks <- jmvcore::OptionString$new(
                 "xbreaks",
                 xbreaks,
@@ -1534,6 +1534,10 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
+                        `name`="reference_P", 
+                        `title`="P<sub>Reference</sub>", 
+                        `type`="number"),
+                    list(
                         `name`="reference_cases", 
                         `title`="Cases<sub>Reference</sub>", 
                         `type`="integer", 
@@ -1544,6 +1548,10 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `type`="integer", 
                         `visible`="(show_details)"),
                     list(
+                        `name`="comparison_P", 
+                        `title`="P<sub>Comparison</sub>", 
+                        `type`="number"),
+                    list(
                         `name`="comparison_cases", 
                         `title`="Cases<sub>Comparison</sub>", 
                         `type`="integer", 
@@ -1552,13 +1560,7 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="comparison_N", 
                         `title`="<i>N</i><sub>Comparison</sub>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="p", 
-                        `visible`="(show_details)", 
-                        `title`="<i>p</i>, two tailed", 
-                        `type`="number", 
-                        `format`="zto,pvalue"))))
+                        `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="es_meta",
@@ -1599,6 +1601,7 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(show_details)"),
                     list(
                         `name`="k", 
+                        `title`="<i>k</i>", 
                         `type`="integer"),
                     list(
                         `name`="PI_LL", 
@@ -1852,8 +1855,8 @@ jamovimetapdiff <- function(
     report_CIs = FALSE,
     meta_diamond_height = ".25",
     xlab = "auto",
-    xmin = "0",
-    xmax = "1",
+    xmin = "auto",
+    xmax = "auto",
     xbreaks = "auto",
     mark_zero = FALSE,
     axis.text.x = "14",

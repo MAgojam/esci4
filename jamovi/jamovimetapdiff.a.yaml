@@ -177,12 +177,12 @@ options:
     - name: xmin
       title: Min
       type: String
-      default: '0'
+      default: 'auto'
 
     - name: xmax
       title: Max
       type: String
-      default: '1'
+      default: 'auto'
 
     - name: xbreaks
       title: 'Num. tick marks'

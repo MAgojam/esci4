@@ -32,12 +32,11 @@ items:
         - name: UL
           title: UL
           type: number
+        - name: N
+          title: <i>N</i>
+          type: integer
         - name: weight
           title: Weight
-          type: number
-          visible: (show_details)
-        - name: sample_variance
-          title: <i>SE</i><sup>2</sup><sub><i>Z</i></sub>
           type: number
           visible: (show_details)
         - name: z
@@ -48,14 +47,29 @@ items:
           title: <i>SE</i><sub><i>Z</i></sub>
           type: number
           visible: (show_details)
+        - name: sample_variance
+          title: <i>SE</i><sup>2</sup><sub><i>Z</i></sub>
+          type: number
+          visible: (show_details)
+        - name: t
+          visible: (show_details)
+          title: "<i>t</i>"
+          type: number
+        - name: df
+          visible: (show_details)
+          title: "<i>df</i>"
+          type: integer
+        - name: p
+          visible: (show_details)
+          title: "<i>p</i>, two tailed"
+          type: number
+          format: zto,pvalue
+
         - name: r
           title: <i>r</i>
           type: number
           visible: false
-        - name: N
-          title: <i>N</i>
-          type: integer
-          visible: (show_details)
+
 
     - name:  es_meta
       title: Meta-Analytic Effect Sizes
@@ -88,6 +102,7 @@ items:
           type: number
           visible: (show_details)
         - name: k
+          title: <i>k</i>
           type: integer
         - name: PI_LL
           title: LL

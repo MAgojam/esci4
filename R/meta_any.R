@@ -439,8 +439,8 @@ After dropping any NA rows, current data has:
     # Check contrast
     if (is.null(contrast)) {
       contrast = rep(x = 0, times = length(FEgroups$b))
-      contrast[1] = 1
-      contrast[2] = -1
+      contrast[1] = -1
+      contrast[2] = 1
     }
 
     if (is.null(names(contrast)) & (length(contrast) == length(replabels))) {

@@ -17,7 +17,7 @@ children:
         optionName: switch
         optionPart: from_d
   - type: CollapseBox
-    label: Work with full data
+    label: Work with original units
     name: rpanel
     collapsed: false
     children:
@@ -63,7 +63,7 @@ children:
                 maxItemCount: 1
                 isTarget: true
   - type: CollapseBox
-    label: Enter Cohen's d
+    label: "Work with Cohen's <i>d</i>"
     name: dpanel
     collapsed: true
     children:

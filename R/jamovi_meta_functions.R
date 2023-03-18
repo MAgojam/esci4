@@ -162,7 +162,7 @@ jamovi_meta_run <- function(
 
 
       correction_note <- paste(
-        "This analysis expected the inputted Cohen's d values to already be corrected for bias (",
+        "This analysis expected the inputted Cohen's <i>d</i> values to already be corrected for bias (",
         estimate$properties$effect_size_name_html,
         ").  ",
         correction_warning,

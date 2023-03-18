@@ -192,7 +192,8 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 default="random_effects",
                 options=list(
                     "random_effects",
-                    "fixed_effects"))
+                    "fixed_effects",
+                    "compare"))
             private$..include_PIs <- jmvcore::OptionBool$new(
                 "include_PIs",
                 include_PIs,
@@ -1603,7 +1604,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i><sub>diff</sub>", 
-                        `visible`="(reported_effect_size == \"mean_difference\" & switch != \"from_d\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
@@ -1708,7 +1709,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i>", 
-                        `visible`="(reported_effect_size == \"mean_difference\" & switch != \"from_d\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
@@ -1856,7 +1857,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i>", 
-                        `visible`="(reported_effect_size == \"mean_difference\" & switch != \"from_d\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 

@@ -1550,12 +1550,12 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i>", 
-                        `visible`="(reported_effect_size == \"mean_difference\" | switch == \"from_d\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
                         `title`="<i>d</i><sub>1</sub>", 
-                        `visible`="(reported_effect_size == \"smd_unbiased\" & switch == \"from_raw\")"),
+                        `visible`="(reported_effect_size == \"smd_unbiased\" | switch == \"from_d\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -1583,7 +1583,7 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="mean", 
                         `title`="<i>M</i>", 
                         `type`="number", 
-                        `visible`="(show_details & reported_effect_size != \"mean_difference\")"),
+                        `visible`="(show_details & reported_effect_size != \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="sd", 
                         `title`="<i>s</i>", 
@@ -1625,12 +1625,12 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i>", 
-                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
                         `title`="<i>d</i><sub>1</sub>", 
-                        `visible`="(reported_effect_size == \"smd_unbiased\")"),
+                        `visible`="(reported_effect_size == \"smd_unbiased\" | switch == \"from_d\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 
@@ -1773,12 +1773,12 @@ jamovimetameanResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="effect_size", 
                         `type`="number", 
                         `title`="<i>M</i>", 
-                        `visible`="(reported_effect_size == \"mean_difference\")"),
+                        `visible`="(reported_effect_size == \"mean_difference\" & switch == \"from_raw\")"),
                     list(
                         `name`="effect_size_smd", 
                         `type`="number", 
                         `title`="<i>d</i><sub>1</sub>", 
-                        `visible`="(reported_effect_size == \"smd_unbiased\")"),
+                        `visible`="(reported_effect_size == \"smd_unbiased\" | switch == \"from_d\")"),
                     list(
                         `name`="LL", 
                         `title`="LL", 

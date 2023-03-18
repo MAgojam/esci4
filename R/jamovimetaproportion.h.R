@@ -1556,6 +1556,7 @@ jamovimetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6
                         `visible`="(show_details)"),
                     list(
                         `name`="k", 
+                        `title`="<i>k</i>", 
                         `type`="integer"),
                     list(
                         `name`="PI_LL", 

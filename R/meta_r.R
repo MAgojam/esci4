@@ -251,6 +251,9 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
 
   res$raw_data$z <- res$raw_data$effect_size
   res$raw_data$effect_size <- esci_z_to_r(res$raw_data$effect_size)
+  res$raw_data$df <- res$raw_data$N - 2
+  res$raw_data$t <- (res$raw_data$r) / sqrt( (1 - res$raw_data$r^2) / (res$raw_data$df) )
+  res$raw_data$p <- 2*pt(q=res$raw_data$t, df=22, lower.tail=FALSE)
 
   if (!is.null(res$es_meta_difference)) {
     res$es_meta_difference$z <- res$es_meta_difference$effect_size

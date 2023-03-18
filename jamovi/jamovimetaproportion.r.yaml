@@ -88,6 +88,7 @@ items:
           type: number
           visible: (show_details)
         - name: k
+          title: <i>k</i>
           type: integer
         - name: PI_LL
           title: LL

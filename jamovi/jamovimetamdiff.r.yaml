@@ -26,7 +26,7 @@ items:
         - name: effect_size
           type: number
           title: <i>M</i><sub>diff</sub>
-          visible: (reported_effect_size == "mean_difference" & switch != "from_d")
+          visible: (reported_effect_size == "mean_difference" & switch == "from_raw")
         - name: effect_size_smd
           type: number
           title: <i>d</i><sub>avg</sub>
@@ -111,7 +111,7 @@ items:
         - name: effect_size
           type: number
           title: <i>M</i>
-          visible: (reported_effect_size == "mean_difference" & switch != "from_d")
+          visible: (reported_effect_size == "mean_difference" & switch == "from_raw")
         - name: effect_size_smd
           type: number
           title: <i>d</i><sub>1</sub>
@@ -231,7 +231,7 @@ items:
         - name: effect_size
           type: number
           title: <i>M</i>
-          visible: (reported_effect_size == "mean_difference" & switch != "from_d")
+          visible: (reported_effect_size == "mean_difference" & switch == "from_raw")
         - name: effect_size_smd
           type: number
           title: <i>d</i><sub>1</sub>
