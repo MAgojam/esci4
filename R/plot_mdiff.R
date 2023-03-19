@@ -788,7 +788,7 @@ plot_mdiff_base <- function(
         linetype = type,
       ),
       size = 1,
-      linewidth = 2
+      linewidth = 3
     )
     myplot <- esci_plot_layers(myplot, "simple_effect_lines")
 

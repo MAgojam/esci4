@@ -281,10 +281,10 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           if (!is.null(myplot$layers["simple_effect_points"])) {
             try(myplot$layers[["simple_effect_points"]]$aes_params$fill <- "white")
             try(myplot$layers[["simple_effect_points"]]$aes_params$shape <- 23)
-            try(myplot$layers[["simple_effect_points"]]$aes_params$size <- as.numeric(self$options$size_summary_reference))+1
+            try(myplot$layers[["simple_effect_points"]]$aes_params$size <- as.numeric(self$options$size_summary_reference) +1 )
           }
-          if (!is.null(myplot$layers["simple_effect_lines"])) {
-            try(myplot$layers[["simple_effect_lines"]]$aes_params$linewidth <- as.numeric(self$options$size_summary_reference))-2
+          if (!is.null(myplot$layers$simple_effect_lines)) {
+            try(myplot$layers$simple_effect_lines$aes_params$size <- as.numeric(self$options$size_interval_reference))
           }
         }
 

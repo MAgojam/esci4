@@ -417,6 +417,7 @@ children:
               row: 7
           - type: CheckBox
             name: simple_contrast_labels
+            enable: '(switch: never)'
             cell:
               column: 1
               row: 8
