@@ -314,9 +314,17 @@ jamovi_meta_forest_plot <- function(
   }
 
   if (!is.null(myplot$layers$group_Difference_diamond)) {
+    myplot$layers$group_Difference_diamond$aes_params$shape <- self$options$shape_summary_difference
     myplot$layers$group_Difference_diamond$aes_params$colour <- self$options$color_summary_difference
     myplot$layers$group_Difference_diamond$aes_params$fill <- self$options$fill_summary_difference
     myplot$layers$group_Difference_diamond$aes_params$alpha <- as.numeric(self$options$alpha_summary_difference)
+  }
+
+  if (!is.null(myplot$layers$group_Difference_line)) {
+    myplot$layers$group_Difference_line$aes_params$colour <- self$options$color_interval_difference
+    myplot$layers$group_Difference_line$aes_params$size <-  as.numeric(self$options$size_interval_difference)
+    myplot$layers$group_Difference_line$aes_params$alpha <- as.numeric(self$options$alpha_interval_difference)
+    myplot$layers$group_Difference_line$aes_params$linetype <- self$options$linetype_summary_difference
   }
 
   if (!is.null(myplot$layers$group_Unused_diamond)) {

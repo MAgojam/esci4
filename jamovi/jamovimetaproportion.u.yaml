@@ -202,22 +202,27 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: '<b>Reference</b>'
+                label: <b>Reference</b>
                 cell:
                   column: 1
                   row: 3
               - type: Label
-                label: '<b>Comparison</b>'
+                label: <b>Comparison</b>
                 cell:
                   column: 2
                   row: 3
               - type: Label
-                label: '<b>Unused</b>'
+                label: <b>Difference</b>
                 cell:
                   column: 3
                   row: 3
               - type: Label
-                label: '<b>Study effect sizes:</b>'
+                label: <b>Unused</b>
+                cell:
+                  column: 4
+                  row: 3
+              - type: Label
+                label: '<b>Point estimate markers:</b>'
                 cell:
                   column: 0
                   row: 4
@@ -237,9 +242,14 @@ children:
                   column: 2
                   row: 5
               - type: ComboBox
-                name: shape_raw_unused
+                name: shape_summary_difference
                 cell:
                   column: 3
+                  row: 5
+              - type: ComboBox
+                name: shape_raw_unused
+                cell:
+                  column: 4
                   row: 5
               - type: Label
                 label: '<span style="font-weight:normal">Outline</span>'
@@ -257,9 +267,14 @@ children:
                   column: 2
                   row: 6
               - type: ComboBox
-                name: color_raw_unused
+                name: color_summary_difference
                 cell:
                   column: 3
+                  row: 6
+              - type: ComboBox
+                name: color_raw_unused
+                cell:
+                  column: 4
                   row: 6
               - type: Label
                 label: '<span style="font-weight:normal">Fill</span>'
@@ -277,9 +292,14 @@ children:
                   column: 2
                   row: 7
               - type: ComboBox
-                name: fill_raw_unused
+                name: fill_summary_difference
                 cell:
                   column: 3
+                  row: 7
+              - type: ComboBox
+                name: fill_raw_unused
+                cell:
+                  column: 4
                   row: 7
               - type: Label
                 label: '<span style="font-weight:normal">Transparency</span>'
@@ -297,12 +317,17 @@ children:
                   column: 2
                   row: 8
               - type: ComboBox
-                name: alpha_raw_unused
+                name: alpha_summary_difference
                 cell:
                   column: 3
                   row: 8
+              - type: ComboBox
+                name: alpha_raw_unused
+                cell:
+                  column: 4
+                  row: 8
               - type: Label
-                label: '<b>Study CIs:</b>'
+                label: '<b>CIs:</b>'
                 cell:
                   column: 0
                   row: 9
@@ -322,9 +347,14 @@ children:
                   column: 2
                   row: 10
               - type: ComboBox
-                name: linetype_raw_unused
+                name: linetype_summary_difference
                 cell:
                   column: 3
+                  row: 10
+              - type: ComboBox
+                name: linetype_raw_unused
+                cell:
+                  column: 4
                   row: 10
               - type: Label
                 label: '<span style="font-weight:normal">Thickness</span>'
@@ -342,9 +372,14 @@ children:
                   column: 2
                   row: 11
               - type: ComboBox
-                name: size_interval_unused
+                name: size_interval_difference
                 cell:
                   column: 3
+                  row: 11
+              - type: ComboBox
+                name: size_interval_unused
+                cell:
+                  column: 4
                   row: 11
               - type: Label
                 label: '<span style="font-weight:normal">Color</span>'
@@ -362,9 +397,14 @@ children:
                   column: 2
                   row: 12
               - type: ComboBox
-                name: color_interval_unused
+                name: color_interval_difference
                 cell:
                   column: 3
+                  row: 12
+              - type: ComboBox
+                name: color_interval_unused
+                cell:
+                  column: 4
                   row: 12
               - type: Label
                 label: '<span style="font-weight:normal">Transparency</span>'
@@ -382,9 +422,14 @@ children:
                   column: 2
                   row: 13
               - type: ComboBox
-                name: alpha_interval_unused
+                name: alpha_interval_difference
                 cell:
                   column: 3
+                  row: 13
+              - type: ComboBox
+                name: alpha_interval_unused
+                cell:
+                  column: 4
                   row: 13
               - type: Label
                 label: ' '
@@ -472,42 +517,22 @@ children:
                   column: 3
                   row: 19
               - type: Label
-                label: '<span style="font-weight:normal">Difference</span>'
-                cell:
-                  column: 0
-                  row: 20
-              - type: ComboBox
-                name: color_summary_difference
-                cell:
-                  column: 1
-                  row: 20
-              - type: ComboBox
-                name: fill_summary_difference
-                cell:
-                  column: 2
-                  row: 20
-              - type: ComboBox
-                name: alpha_summary_difference
-                cell:
-                  column: 3
-                  row: 20
-              - type: Label
                 label: '<span style="font-weight:normal">Unused</span>'
                 cell:
                   column: 0
-                  row: 21
+                  row: 20
               - type: ComboBox
                 name: color_summary_unused
                 cell:
                   column: 1
-                  row: 21
+                  row: 20
               - type: ComboBox
                 name: fill_summary_unused
                 cell:
                   column: 2
-                  row: 21
+                  row: 20
               - type: ComboBox
                 name: alpha_summary_unused
                 cell:
                   column: 3
-                  row: 21
+                  row: 20

@@ -43,6 +43,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             dbreaks = "auto",
             shape_raw_reference = "square filled",
             shape_raw_comparison = "square filled",
+            shape_summary_difference = "triangle filled",
             shape_raw_unused = "square filled",
             color_raw_reference = "#008DF9",
             color_raw_comparison = "#009F81",
@@ -70,15 +71,19 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             alpha_summary_overall = "1",
             linetype_raw_reference = "solid",
             linetype_raw_comparison = "solid",
+            linetype_summary_difference = "solid",
             linetype_raw_unused = "solid",
             color_interval_reference = "black",
             color_interval_comparison = "black",
+            color_interval_difference = "black",
             color_interval_unused = "black",
             size_interval_reference = ".50",
             size_interval_comparison = ".50",
+            size_interval_difference = ".50",
             size_interval_unused = ".50",
             alpha_interval_reference = "1",
             alpha_interval_comparison = "1",
+            alpha_interval_difference = "1",
             alpha_interval_unused = "1", ...) {
 
             super$initialize(
@@ -280,7 +285,16 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=list(
                     "circle filled",
                     "square filled",
+                    "triangle filled",
+                    "diamond filled"))
+            private$..shape_summary_difference <- jmvcore::OptionList$new(
+                "shape_summary_difference",
+                shape_summary_difference,
+                default="triangle filled",
+                options=list(
+                    "circle filled",
                     "square filled",
+                    "triangle filled",
                     "diamond filled"))
             private$..shape_raw_unused <- jmvcore::OptionList$new(
                 "shape_raw_unused",
@@ -289,7 +303,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=list(
                     "circle filled",
                     "square filled",
-                    "square filled",
+                    "triangle filled",
                     "diamond filled"))
             private$..color_raw_reference <- jmvcore::OptionList$new(
                 "color_raw_reference",
@@ -1063,6 +1077,16 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "dotdash",
                     "dashed",
                     "blank"))
+            private$..linetype_summary_difference <- jmvcore::OptionList$new(
+                "linetype_summary_difference",
+                linetype_summary_difference,
+                default="solid",
+                options=list(
+                    "solid",
+                    "dotted",
+                    "dotdash",
+                    "dashed",
+                    "blank"))
             private$..linetype_raw_unused <- jmvcore::OptionList$new(
                 "linetype_raw_unused",
                 linetype_raw_unused,
@@ -1118,6 +1142,48 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..color_interval_comparison <- jmvcore::OptionList$new(
                 "color_interval_comparison",
                 color_interval_comparison,
+                default="black",
+                options=list(
+                    "black",
+                    "#00C2F9",
+                    "#008DF9",
+                    "#009F81",
+                    "#FF5AAF",
+                    "#9F0162",
+                    "#A40122",
+                    "#00FCCF",
+                    "#FF6E3A",
+                    "#FFB2FD",
+                    "#8400CD",
+                    "#E20134",
+                    "#FFC33B",
+                    "white",
+                    "NA",
+                    "NA",
+                    "gray0",
+                    "gray5",
+                    "gray10",
+                    "gray15",
+                    "gray20",
+                    "gray25",
+                    "gray30",
+                    "gray35",
+                    "gray40",
+                    "gray45",
+                    "gray50",
+                    "gray55",
+                    "gray60",
+                    "gray65",
+                    "gray70",
+                    "gray75",
+                    "gray80",
+                    "gray85",
+                    "gray90",
+                    "gray95",
+                    "gray100"))
+            private$..color_interval_difference <- jmvcore::OptionList$new(
+                "color_interval_difference",
+                color_interval_difference,
                 default="black",
                 options=list(
                     "black",
@@ -1231,6 +1297,22 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "6",
                     "7",
                     "8"))
+            private$..size_interval_difference <- jmvcore::OptionList$new(
+                "size_interval_difference",
+                size_interval_difference,
+                default=".50",
+                options=list(
+                    ".25",
+                    ".50",
+                    ".75",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8"))
             private$..size_interval_unused <- jmvcore::OptionList$new(
                 "size_interval_unused",
                 size_interval_unused,
@@ -1260,6 +1342,16 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..alpha_interval_comparison <- jmvcore::OptionList$new(
                 "alpha_interval_comparison",
                 alpha_interval_comparison,
+                default="1",
+                options=list(
+                    "1",
+                    ".75",
+                    ".5",
+                    ".25",
+                    "0"))
+            private$..alpha_interval_difference <- jmvcore::OptionList$new(
+                "alpha_interval_difference",
+                alpha_interval_difference,
                 default="1",
                 options=list(
                     "1",
@@ -1315,6 +1407,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..dbreaks)
             self$.addOption(private$..shape_raw_reference)
             self$.addOption(private$..shape_raw_comparison)
+            self$.addOption(private$..shape_summary_difference)
             self$.addOption(private$..shape_raw_unused)
             self$.addOption(private$..color_raw_reference)
             self$.addOption(private$..color_raw_comparison)
@@ -1342,15 +1435,19 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..alpha_summary_overall)
             self$.addOption(private$..linetype_raw_reference)
             self$.addOption(private$..linetype_raw_comparison)
+            self$.addOption(private$..linetype_summary_difference)
             self$.addOption(private$..linetype_raw_unused)
             self$.addOption(private$..color_interval_reference)
             self$.addOption(private$..color_interval_comparison)
+            self$.addOption(private$..color_interval_difference)
             self$.addOption(private$..color_interval_unused)
             self$.addOption(private$..size_interval_reference)
             self$.addOption(private$..size_interval_comparison)
+            self$.addOption(private$..size_interval_difference)
             self$.addOption(private$..size_interval_unused)
             self$.addOption(private$..alpha_interval_reference)
             self$.addOption(private$..alpha_interval_comparison)
+            self$.addOption(private$..alpha_interval_difference)
             self$.addOption(private$..alpha_interval_unused)
         }),
     active = list(
@@ -1391,6 +1488,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         dbreaks = function() private$..dbreaks$value,
         shape_raw_reference = function() private$..shape_raw_reference$value,
         shape_raw_comparison = function() private$..shape_raw_comparison$value,
+        shape_summary_difference = function() private$..shape_summary_difference$value,
         shape_raw_unused = function() private$..shape_raw_unused$value,
         color_raw_reference = function() private$..color_raw_reference$value,
         color_raw_comparison = function() private$..color_raw_comparison$value,
@@ -1418,15 +1516,19 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         alpha_summary_overall = function() private$..alpha_summary_overall$value,
         linetype_raw_reference = function() private$..linetype_raw_reference$value,
         linetype_raw_comparison = function() private$..linetype_raw_comparison$value,
+        linetype_summary_difference = function() private$..linetype_summary_difference$value,
         linetype_raw_unused = function() private$..linetype_raw_unused$value,
         color_interval_reference = function() private$..color_interval_reference$value,
         color_interval_comparison = function() private$..color_interval_comparison$value,
+        color_interval_difference = function() private$..color_interval_difference$value,
         color_interval_unused = function() private$..color_interval_unused$value,
         size_interval_reference = function() private$..size_interval_reference$value,
         size_interval_comparison = function() private$..size_interval_comparison$value,
+        size_interval_difference = function() private$..size_interval_difference$value,
         size_interval_unused = function() private$..size_interval_unused$value,
         alpha_interval_reference = function() private$..alpha_interval_reference$value,
         alpha_interval_comparison = function() private$..alpha_interval_comparison$value,
+        alpha_interval_difference = function() private$..alpha_interval_difference$value,
         alpha_interval_unused = function() private$..alpha_interval_unused$value),
     private = list(
         ..switch = NA,
@@ -1466,6 +1568,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..dbreaks = NA,
         ..shape_raw_reference = NA,
         ..shape_raw_comparison = NA,
+        ..shape_summary_difference = NA,
         ..shape_raw_unused = NA,
         ..color_raw_reference = NA,
         ..color_raw_comparison = NA,
@@ -1493,15 +1596,19 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..alpha_summary_overall = NA,
         ..linetype_raw_reference = NA,
         ..linetype_raw_comparison = NA,
+        ..linetype_summary_difference = NA,
         ..linetype_raw_unused = NA,
         ..color_interval_reference = NA,
         ..color_interval_comparison = NA,
+        ..color_interval_difference = NA,
         ..color_interval_unused = NA,
         ..size_interval_reference = NA,
         ..size_interval_comparison = NA,
+        ..size_interval_difference = NA,
         ..size_interval_unused = NA,
         ..alpha_interval_reference = NA,
         ..alpha_interval_comparison = NA,
+        ..alpha_interval_difference = NA,
         ..alpha_interval_unused = NA)
 )
 
@@ -1873,6 +1980,7 @@ jamovimetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param dbreaks .
 #' @param shape_raw_reference .
 #' @param shape_raw_comparison .
+#' @param shape_summary_difference .
 #' @param shape_raw_unused .
 #' @param color_raw_reference .
 #' @param color_raw_comparison .
@@ -1900,15 +2008,19 @@ jamovimetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param alpha_summary_overall .
 #' @param linetype_raw_reference .
 #' @param linetype_raw_comparison .
+#' @param linetype_summary_difference .
 #' @param linetype_raw_unused .
 #' @param color_interval_reference .
 #' @param color_interval_comparison .
+#' @param color_interval_difference .
 #' @param color_interval_unused .
 #' @param size_interval_reference .
 #' @param size_interval_comparison .
+#' @param size_interval_difference .
 #' @param size_interval_unused .
 #' @param alpha_interval_reference .
 #' @param alpha_interval_comparison .
+#' @param alpha_interval_difference .
 #' @param alpha_interval_unused .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -1968,6 +2080,7 @@ jamovimetamean <- function(
     dbreaks = "auto",
     shape_raw_reference = "square filled",
     shape_raw_comparison = "square filled",
+    shape_summary_difference = "triangle filled",
     shape_raw_unused = "square filled",
     color_raw_reference = "#008DF9",
     color_raw_comparison = "#009F81",
@@ -1995,15 +2108,19 @@ jamovimetamean <- function(
     alpha_summary_overall = "1",
     linetype_raw_reference = "solid",
     linetype_raw_comparison = "solid",
+    linetype_summary_difference = "solid",
     linetype_raw_unused = "solid",
     color_interval_reference = "black",
     color_interval_comparison = "black",
+    color_interval_difference = "black",
     color_interval_unused = "black",
     size_interval_reference = ".50",
     size_interval_comparison = ".50",
+    size_interval_difference = ".50",
     size_interval_unused = ".50",
     alpha_interval_reference = "1",
     alpha_interval_comparison = "1",
+    alpha_interval_difference = "1",
     alpha_interval_unused = "1") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -2070,6 +2187,7 @@ jamovimetamean <- function(
         dbreaks = dbreaks,
         shape_raw_reference = shape_raw_reference,
         shape_raw_comparison = shape_raw_comparison,
+        shape_summary_difference = shape_summary_difference,
         shape_raw_unused = shape_raw_unused,
         color_raw_reference = color_raw_reference,
         color_raw_comparison = color_raw_comparison,
@@ -2097,15 +2215,19 @@ jamovimetamean <- function(
         alpha_summary_overall = alpha_summary_overall,
         linetype_raw_reference = linetype_raw_reference,
         linetype_raw_comparison = linetype_raw_comparison,
+        linetype_summary_difference = linetype_summary_difference,
         linetype_raw_unused = linetype_raw_unused,
         color_interval_reference = color_interval_reference,
         color_interval_comparison = color_interval_comparison,
+        color_interval_difference = color_interval_difference,
         color_interval_unused = color_interval_unused,
         size_interval_reference = size_interval_reference,
         size_interval_comparison = size_interval_comparison,
+        size_interval_difference = size_interval_difference,
         size_interval_unused = size_interval_unused,
         alpha_interval_reference = alpha_interval_reference,
         alpha_interval_comparison = alpha_interval_comparison,
+        alpha_interval_difference = alpha_interval_difference,
         alpha_interval_unused = alpha_interval_unused)
 
     analysis <- jamovimetameanClass$new(

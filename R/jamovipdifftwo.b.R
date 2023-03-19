@@ -134,9 +134,20 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         .run = function() {
             from_raw <- (self$options$switch == "from_raw")
 
+
             estimate <- jamovi_pdiff_two(self)
 
             # Print any notes that emerged from running the analysis
+            if (self$options$show_phi & is.null(estimate$es_phi)) {
+              notes <- self$results$help$state
+              notes <- c(
+                notes,
+                glue::glue("Correlation (<i>&#981;</i>) table not shown because analysis did not produce a 2x2 contingency table.  Instead there were {dim(estimate$properties$chi_square$observe)[[1]]} grouping variable levels and {dim(estimate$properties$chi_square$observe)[[2]]} outcome variable levels, so <i>&#981;</i> could not be calculated.")
+              )
+              self$results$help$setState(notes)
+            }
+
+
             jamovi_set_notes(self$results$help)
 
             # Check to see if the analysis ran
@@ -159,6 +170,7 @@ jamovipdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             } else {
               self$results$es_phi$setVisible(self$options$show_phi)
             }
+
 
             if (is.null(estimate$properties$chi_square)) {
               self$results$contingency_table$setVisible(FALSE)

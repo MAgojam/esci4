@@ -593,9 +593,9 @@ plot_proportion <- function(
       tn <- estimate$es_proportion$n[[1]]
     }
 
-    if (tn <= 200) {
+    if (tn <= 1000) {
       mydf <- data.frame(possible = seq(from = 0, to = tn)/tn)
-      myplot <- myplot + ggplot2::geom_hline(data = mydf, ggplot2::aes(yintercept = possible), linetype = 'dotted', color = 'gray70')
+      myplot <- myplot + ggplot2::geom_hline(data = mydf, ggplot2::aes(yintercept = possible), linetype = 'solid', color = 'gray70', size = 0.25)
     }
 
   }

@@ -89,9 +89,9 @@ options:
       type: List
       options:
         - name: observed
-          title: Observed counts
+          title: Observed frequencies
         - name: expected
-          title: Expected counts
+          title: Expected frequencies
         - name: both
           title: Both
       default: both
