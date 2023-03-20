@@ -592,7 +592,7 @@ estimate_rdiff_two.data.frame <- function(
 
     estimate$overview_properties$message_html <- gsub(
       "N_pairs",
-      "<i>N</i><sub>pairs</sub>",
+      "<i>n</i><sub>pairs</sub>",
       estimate$overview_properties$message_html
     )
   }

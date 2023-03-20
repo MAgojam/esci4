@@ -261,7 +261,7 @@ children:
               column: 1
               row: 9
           - type: Label
-            label: 'Labels:'
+            label: 'Label:'
             cell:
               column: 0
               row: 10

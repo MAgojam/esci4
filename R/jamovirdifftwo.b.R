@@ -726,6 +726,22 @@ jamovi_rdiff_two <- function(self) {
         ) return(NULL)
 
     } else {
+        args$reference_r <- jamovi_required_numeric(
+          self$options$reference_r,
+          lower = -1,
+          lower_inclusive = TRUE,
+          upper = 1,
+          upper_inclusive = TRUE,
+          my_value_name = "Reference <i>r</i>"
+        )
+        args$reference_n <- jamovi_required_numeric(
+          self$options$reference_n,
+          integer_required = TRUE,
+          lower = 0,
+          lower_inclusive = FALSE,
+          my_value_name = "Reference <i>n</i>"
+        )
+
         args$comparison_r <- jamovi_required_numeric(
             self$options$comparison_r,
             lower = -1,
@@ -741,21 +757,7 @@ jamovi_rdiff_two <- function(self) {
             lower_inclusive = FALSE,
             my_value_name = "Comparison <i>n</i>"
         )
-        args$reference_r <- jamovi_required_numeric(
-            self$options$reference_r,
-            lower = -1,
-            lower_inclusive = TRUE,
-            upper = 1,
-            upper_inclusive = TRUE,
-            my_value_name = "Reference <i>r</i>"
-        )
-        args$reference_n <- jamovi_required_numeric(
-            self$options$reference_n,
-            integer_required = TRUE,
-            lower = 0,
-            lower_inclusive = FALSE,
-            my_value_name = "Reference <i>n</i>"
-        )
+
 
         unfilled <- NULL
         for (element in args[which(is.na(args))]) {

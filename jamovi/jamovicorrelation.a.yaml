@@ -73,7 +73,7 @@ options:
       default: false
 
     - name: show_mean_lines
-      title: Show means for <i>X</i> and <i>Y</i>
+      title: 'Show cross through means of <i>X</i> and <i>Y</i>'
       type: Bool
       default: false
 
@@ -88,7 +88,7 @@ options:
       default: false
 
     - name: predict_from_x
-      title: "Give <i>X</i> value to generate prediction (<i>&#374;</i>)"
+      title: "Enter <i>X</i> value to generate prediction (<i>&#374;</i>)"
       type: String
       default: ' '
 

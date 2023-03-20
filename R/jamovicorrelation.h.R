@@ -1510,6 +1510,16 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `title`="UL", 
                         `type`="number"),
                     list(
+                        `name`="moe", 
+                        `type`="number", 
+                        `title`="<i>MoE</i>", 
+                        `visible`="(show_details)"),
+                    list(
+                        `name`="mean_SE", 
+                        `title`="<i>SE</i><sub>Mean</sub>", 
+                        `type`="number", 
+                        `visible`="(show_details)"),
+                    list(
                         `name`="median", 
                         `title`="<i>Mdn</i>", 
                         `type`="number", 
@@ -1518,12 +1528,17 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `name`="median_LL", 
                         `title`="LL", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="median_UL", 
                         `title`="UL", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
+                    list(
+                        `name`="median_SE", 
+                        `type`="number", 
+                        `title`="<i>SE</i><sub>Median</sub>", 
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="sd", 
                         `type`="number", 
@@ -1532,24 +1547,24 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `name`="min", 
                         `title`="Minimum", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="max", 
                         `title`="Maximum", 
                         `type`="number", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="q1", 
                         `title`="25th", 
                         `type`="number", 
                         `superTitle`="Percentile", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="q3", 
                         `title`="75th", 
                         `type`="number", 
                         `superTitle`="Percentile", 
-                        `visible`="(switch == 'from_raw')"),
+                        `visible`="(show_details & switch == 'from_raw')"),
                     list(
                         `name`="n", 
                         `title`="<i>N</i>", 
@@ -1563,11 +1578,6 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `name`="df", 
                         `title`="<i>df</i>", 
                         `type`="integer", 
-                        `visible`="(show_details)"),
-                    list(
-                        `name`="mean_SE", 
-                        `title`="<i>SEM</i>", 
-                        `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
@@ -1608,7 +1618,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                         `visible`="(switch == 'from_raw')"),
                     list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE<sub>r</sub></i>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(

@@ -6,7 +6,7 @@ test_r <- function() {
   #  difference .12 95% CI [-.191, .418]
   estimate_rdiff_summary <- estimate_rdiff_two(
     comparison_r = .53,
-    comparison_n = 45,
+    comparison_n = 47,
     reference_r = .41,
     reference_n = 59
   )

@@ -30,6 +30,14 @@ items:
         - name: mean_UL
           title: UL
           type: number
+        - name: moe
+          type: number
+          title: <i>MoE</i>
+          visible: (show_details)
+        - name: mean_SE
+          title: <i>SE</i><sub>Mean</sub>
+          type: number
+          visible: (show_details)
         - name: median
           title: <i>Mdn</i>
           type: number
@@ -37,32 +45,36 @@ items:
         - name: median_LL
           title: LL
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: median_UL
           title: UL
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
+        - name: median_SE
+          type: number
+          title: <i>SE</i><sub>Median</sub>
+          visible: (show_details & switch == 'from_raw')
         - name: sd
           type: number
           title: <i>s</i>
         - name: min
           title: Minimum
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: max
           title: Maximum
           type: number
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: q1
           title: 25th
           type: number
           superTitle: Percentile
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: q3
           title: 75th
           type: number
           superTitle: Percentile
-          visible: (switch == 'from_raw')
+          visible: (show_details & switch == 'from_raw')
         - name: n
           title: <i>N</i>
           type: integer
@@ -73,10 +85,6 @@ items:
         - name: df
           title: <i>df</i>
           type: integer
-          visible: (show_details)
-        - name: mean_SE
-          title: <i>SEM</i>
-          type: number
           visible: (show_details)
 
     - name:  es_r
@@ -109,7 +117,7 @@ items:
           type: number
           visible: (switch == 'from_raw')
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE<sub>r</sub></i>
           type: number
           visible: (show_details)
         - name: n

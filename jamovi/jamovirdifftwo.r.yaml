@@ -131,11 +131,11 @@ items:
           title: UL
           type: number
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE<sub>r</sub></i>
           type: number
           visible: (show_details)
         - name: n
-          title: <i>N</i><sub>pairs</sub>
+          title: <i>n</i><sub>pairs</sub>
           type: integer
         - name: df
           title: <i>df</i>
@@ -177,14 +177,14 @@ items:
           title: UL
           type: number
         - name: n
-          title: <i>N</i><sub>pairs</sub>
+          title: <i>n</i><sub>pairs</sub>
           type: integer
         - name: df
           title: <i>df</i>
           type: integer
           visible: true
         - name: SE
-          title: <i>SE</i>
+          title: <i>SE<sub>r</sub></i>
           type: number
           visible: false
 
@@ -213,9 +213,14 @@ items:
         - name: CI_compare
           title: "Compare CI with <i>H</i><sub>0</sub>"
           type: text
+        - name: p
+          title: "<i>p</i>, two-tailed"
+          type: number
+          format: zto,pvalue
         - name: p_result
           title: "<i>p</i>, two-tailed"
           type: text
+          visible: false
         - name: null_decision
           title: "<i>H</i><sub>0</sub> decision"
         - name: conclusion

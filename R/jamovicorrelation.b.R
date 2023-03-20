@@ -103,6 +103,19 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             # Fill in MoE
             estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
 
+            # switch regression table to html
+            estimate$regression$component <- gsub(
+              "(a)",
+              "<i>a</i>",
+              estimate$regression$component
+            )
+            estimate$regression$component <- gsub(
+              "(b)",
+              "<i>b</i>",
+              estimate$regression$component
+            )
+
+
             # Fill tables
             jamovi_estimate_filler(self, estimate, TRUE)
 

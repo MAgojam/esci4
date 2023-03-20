@@ -1634,12 +1634,12 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number"),
                     list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE<sub>r</sub></i>", 
                         `type`="number", 
                         `visible`="(show_details)"),
                     list(
                         `name`="n", 
-                        `title`="<i>N</i><sub>pairs</sub>", 
+                        `title`="<i>n</i><sub>pairs</sub>", 
                         `type`="integer"),
                     list(
                         `name`="df", 
@@ -1691,7 +1691,7 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `type`="number"),
                     list(
                         `name`="n", 
-                        `title`="<i>N</i><sub>pairs</sub>", 
+                        `title`="<i>n</i><sub>pairs</sub>", 
                         `type`="integer"),
                     list(
                         `name`="df", 
@@ -1700,7 +1700,7 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`=TRUE),
                     list(
                         `name`="SE", 
-                        `title`="<i>SE</i>", 
+                        `title`="<i>SE<sub>r</sub></i>", 
                         `type`="number", 
                         `visible`=FALSE))))
             self$add(jmvcore::Table$new(
@@ -1734,9 +1734,15 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `title`="Compare CI with <i>H</i><sub>0</sub>", 
                         `type`="text"),
                     list(
+                        `name`="p", 
+                        `title`="<i>p</i>, two-tailed", 
+                        `type`="number", 
+                        `format`="zto,pvalue"),
+                    list(
                         `name`="p_result", 
                         `title`="<i>p</i>, two-tailed", 
-                        `type`="text"),
+                        `type`="text", 
+                        `visible`=FALSE),
                     list(
                         `name`="null_decision", 
                         `title`="<i>H</i><sub>0</sub> decision"),

@@ -560,6 +560,10 @@ wrapper_ci.cor2 <- function(
     )
   )
 
+
+
+
+
   colnames(res_difference)[1] <- "effect_size"
   res_difference$SE <- NA
   res_difference$n <- NA
@@ -596,6 +600,16 @@ wrapper_ci.cor2 <- function(
     grouping_variable_level = res$effect,
     res
   )
+
+  res$rz <- esci_trans_r_to_z(res$effect_size)
+  res$rz[3] <- abs(res$rz[1] - res$rz[2])
+  res$sem <- 0
+  res$sem[1] <-  1 / sqrt(comparison_n - 3)
+  res$sem[2] <-  1 / sqrt(reference_n - 3)
+  res$sem[3] <- sqrt ( (1/(comparison_n -3)) + (1/(reference_n-3)) )
+
+  res$z <- res$rz / res$sem
+  res$p <- 2 * pnorm(q=res$z, lower.tail=FALSE)
 
   return(res)
 

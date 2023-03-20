@@ -177,9 +177,9 @@ test_diff_base <- function(
         significant <- p < alpha
       } else {
         df <- NA
-        t <- NA
-        p <- NA
-        significant <- (0 < es$LL | 0 > es$UL)
+        t <- es$z
+        p <- es$p
+        significant <- p < alpha
 
       }
 
