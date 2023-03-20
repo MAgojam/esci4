@@ -159,9 +159,27 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
               my_value_name = "Hypothesis Evaluation: Null range (+/-)"
             )
 
+            args <- jamovi_arg_builder(
+              args,
+              "point_null",
+              my_value = self$options$null_value,
+              return_value = 0,
+              lower = -1,
+              lower_inclusive = TRUE,
+              upper = 1,
+              upper_inclusive = TRUE,
+              convert_to_number = TRUE,
+              my_value_name = "Hypothesis Evaluation: Null value"
+            )
+
+            multiplier <- 1
+            # if (self$options$rope_units == "sd") {
+            #   multiplier <- estimate$es_smd[[1, "denominator"]]
+            # }
+
             args$rope <- c(
-              0 - args$null_boundary,
-              0 + args$null_boundary
+              args$point_null - (args$null_boundary * multiplier),
+              args$point_null + (args$null_boundary * multiplier)
             )
 
             if (args$rope[[1]] != args$rope[[2]]) {
@@ -170,9 +188,11 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
             notes <- c(
               notes,
+              names(args$point_null),
               names(args$null_boundary),
               args$warnings
             )
+            args$point_null <- NULL
             args$null_boundary <- NULL
             args$warnings <- NULL
           }
@@ -904,18 +924,31 @@ jamovi_correlation <- function(self) {
         evaluate_h <- self$options$evaluate_hypotheses
 
         if(evaluate_h) {
+          point_null <- jamovi_sanitize(
+            self$options$null_value,
+            na_ok = FALSE,
+            return_value = 0,
+            lower = -1,
+            lower_inclusive = TRUE,
+            upper = 1,
+            upper_inclusive = TRUE,
+            convert_to_number = TRUE,
+          )
+
           rope_upper <- jamovi_sanitize(
             self$options$null_boundary,
             na_ok = FALSE,
             return_value = 0,
             lower = 0,
+            upper = 1,
+            upper_inclusive = TRUE,
             lower_inclusive = TRUE,
             convert_to_number = TRUE
           )
 
           test_results <- test_correlation(
             estimate,
-            rope = c(rope_upper * -1, rope_upper),
+            rope = c(point_null - rope_upper, point_null + rope_upper),
             output_html = TRUE
           )
 

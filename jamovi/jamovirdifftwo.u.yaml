@@ -776,6 +776,7 @@ children:
           - type: TextBox
             name: alpha
             format: number
+            enable: '(switch:never)'
       - type: LayoutBox
         margin: large
         style: inline

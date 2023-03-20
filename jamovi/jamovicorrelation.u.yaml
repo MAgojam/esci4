@@ -772,7 +772,7 @@ children:
           - type: TextBox
             name: null_value
             format: string
-            enable: '(switch:never)'
+            enable: (evaluate_hypotheses)
           - type: TextBox
             name: null_boundary
             format: string
@@ -780,6 +780,7 @@ children:
           - type: TextBox
             name: alpha
             format: number
+            enable: (switch:never)
       - type: LayoutBox
         margin: large
         style: inline

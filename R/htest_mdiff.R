@@ -23,16 +23,16 @@ test_diff_base <- function(
   if (length(rope) < 1) rope[[2]] <- rope[[1]]
   rope_lower <- rope[[1]]
   rope_upper <- rope[[2]]
-  esci_assert_range(
-    var = rope_lower,
-    upper = 0,
-    upper_inclusive = TRUE
-  )
-  esci_assert_range(
-    var = rope_upper,
-    lower = 0,
-    lower_inclusive = TRUE
-  )
+  # esci_assert_range(
+  #   var = rope_lower,
+  #   upper = 0,
+  #   upper_inclusive = TRUE
+  # )
+  # esci_assert_range(
+  #   var = rope_upper,
+  #   lower = 0,
+  #   lower_inclusive = TRUE
+  # )
 
   rope_units <- match.arg(rope_units)
 
@@ -172,8 +172,16 @@ test_diff_base <- function(
       if (etable == "es_r") {
         df <- es$df
         myr <- es$effect_size
-        t <- myr / sqrt(1-myr^2) * sqrt(df)
-        p <- 2*pt(-abs(t), df=df)
+        null_value <- this_rope_lower + ((this_rope_upper - this_rope_lower)/2)
+        rz <- esci_trans_r_to_z(myr)
+        rnull <- esci_trans_r_to_z(null_value)
+        rsem <- 1 / sqrt(df - 1)
+
+        t <- abs(rz-rnull)/rsem
+
+        # t <- myr / sqrt(1-myr^2) * sqrt(df)
+        #p <- 2*pt(-abs(t), df=df)
+        p <- 2 * pnorm(q=t, lower.tail=FALSE)
         significant <- p < alpha
       } else {
         df <- NA
@@ -190,9 +198,13 @@ test_diff_base <- function(
     }
 
     # null_words <- glue::glue("{parameter} is exactly 0")
-    null_words <- glue::glue("{format(reference_value, nsmall=2)}")
+    null_words <- glue::glue("{if (etable == 'es_r') format(null_value, nsmall=2) else format(reference_value, nsmall=2)}")
 
     rope_words <- glue::glue("({format(reference_value, nsmall=2)}, {format(reference_value, nsmall=2)})")
+    if (etable == 'es_r') {
+      rope_words <- glue::glue("({format(null_value, nsmall=2)}, {format(null_value, nsmall=2)})")
+
+    }
 
     CI <- glue::glue("{confidence}% CI [{format(es$LL+reference_value, nsmall = 2)}, {format(es$UL+reference_value, nsmall = 2)}]")
 
@@ -217,9 +229,9 @@ test_diff_base <- function(
       glue::glue("{p_symbol} \U002265 {alpha}")
 
     conclusion <- if (significant)
-      glue::glue("At \U03B1 = {alpha}, {format(reference_value, nsmall=2)} is not a plausible value of {parameter}")
+      glue::glue("At \U03B1 = {alpha}, {if (etable == 'es_r') format(null_value, nsmall=2) else format(reference_value, nsmall=2)} is not a plausible value of {parameter}")
     else
-      glue::glue("At \U03B1 = {alpha}, {format(reference_value, nsmall=2)} remains a plausible value of {parameter}")
+      glue::glue("At \U03B1 = {alpha}, {if (etable == 'es_r') format(null_value, nsmall=2) else format(reference_value, nsmall=2)} remains a plausible value of {parameter}")
 
     case_label_use <- "-99101"
     if (!is.null(es$case_label)) case_label_use <- es$case_label
@@ -531,12 +543,12 @@ test_correlation <- function(
   rope_upper <- rope[[2]]
   esci_assert_range(
     var = rope_lower,
-    upper = 0,
+    upper = 1,
     upper_inclusive = TRUE
   )
   esci_assert_range(
     var = rope_upper,
-    lower = 0,
+    lower = rope_lower,
     lower_inclusive = TRUE
   )
 

@@ -27,6 +27,11 @@
         },
 
 
+        conf_level_changed: function(ui, event) {
+            ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
+        },
+
+
         correlation_changed: function(ui, event) {
           if (ui.enter_r_or_sdiff.getValue() == "enter_r")  {
             this.set_sdiff(ui, event);
@@ -95,6 +100,7 @@
               ui.spanel.collapse();
               ui.rpanel.expand();
             }
+             ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
 
         }
 

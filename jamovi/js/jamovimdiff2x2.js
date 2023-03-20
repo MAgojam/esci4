@@ -29,6 +29,10 @@
             this.setPanels(ui, event);
         },
 
+        conf_level_changed: function(ui, event) {
+            ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
+        },
+
 
         effect_size_changed: function(ui, event) {
             if (ui.effect_size.getValue() == "median_difference") {
@@ -65,7 +69,7 @@
               ui.fully_between_panel.collapse();
               ui.mixed_panel.expand();
             }
-
+             ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
         }
 
 

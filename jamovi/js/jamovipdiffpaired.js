@@ -21,10 +21,10 @@
             this.setPanels(ui, event);
         },
 
-
         conf_level_changed: function(ui, event) {
             ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
         },
+
 
         case_label_changed: function(ui, event) {
             ui.case_label_repeat.setValue(ui.case_label.value());
@@ -50,6 +50,8 @@
               ui.spanel.collapse();
               ui.rpanel.expand();
             }
+            ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
+
 
         }
 
