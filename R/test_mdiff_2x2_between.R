@@ -151,7 +151,7 @@ test_mdiff_2x2_between <- function() {
   )
 
   myplot <- plot_mdiff(restimate$interaction)
-
+  plot_interaction(restimate)
 
 
   sound <- c(

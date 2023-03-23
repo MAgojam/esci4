@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdifftwo.h.R
 \name{jamovimdifftwo}
 \alias{jamovimdifftwo}
-\title{Two Groups}
+\title{Means and Medians: Two Groups}
 \usage{
 jamovimdifftwo(
   switch = "from_raw",
@@ -299,5 +299,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Two Groups
+Means and Medians: Two Groups
 }

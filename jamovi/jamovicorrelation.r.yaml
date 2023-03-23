@@ -131,7 +131,7 @@ items:
       title: Regression
       type: Table
       rows:  2
-      visible: (show_line)
+      visible: (do_regression)
       columns:
         - name: component
           title: 'Component'

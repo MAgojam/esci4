@@ -47,24 +47,49 @@ children:
         label: Regression
         children:
           - type: CheckBox
-            name: show_line
+            name: do_regression
             enable: '(switch:from_raw)'
-          - type: CheckBox
-            name: show_residuals
-            enable: '(switch:from_raw)'
-          - type: CheckBox
-            name: show_PI
-            enable: '(switch:from_raw)'
-          - type: CheckBox
-            name: show_mean_lines
-            enable: '(switch:from_raw)'
-          - type: CheckBox
-            name: plot_as_z
-            enable: '(switch:from_raw)'
-          - type: TextBox
-            name: predict_from_x
-            format: string
-            enable: '(switch:from_raw)'
+          - type: LayoutBox
+            margin: small
+            style: inline
+            children:
+              - type: CheckBox
+                name: show_line
+                enable: '(switch:from_raw && do_regression)'
+              - type: CheckBox
+                name: show_line_CI
+                enable: '(switch:from_raw && do_regression)'
+          - type: LayoutBox
+            margin: small
+            style: inline
+            children:
+              - type: CheckBox
+                name: show_residuals
+                enable: '(switch:from_raw && do_regression)'
+              - type: CheckBox
+                name: show_PI
+                enable: '(switch:from_raw && do_regression)'
+          - type: LayoutBox
+            margin: small
+            style: inline
+            children:
+              - type: TextBox
+                name: predict_from_x
+                format: string
+                enable: '(switch:from_raw && do_regression)'
+      - type: Label
+        label: Other options
+        children:
+          - type: LayoutBox
+            margin: small
+            style: inline
+            children:
+              - type: CheckBox
+                name: show_mean_lines
+                enable: '(switch:from_raw)'
+              - type: CheckBox
+                name: plot_as_z
+                enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Work with summary data
     name: spanel
@@ -409,7 +434,7 @@ children:
                   row: 10
               - type: ComboBox
                 name: sp_color_summary_reference
-                enable: '(switch:from_raw && show_line)'
+                enable: '(switch:from_raw && (show_line || show_line_CI))'
                 cell:
                   column: 1
                   row: 11
@@ -427,7 +452,7 @@ children:
                   row: 11
               - type: ComboBox
                 name: sp_alpha_summary_reference
-                enable: '(switch:from_raw && show_line)'
+                enable: '(switch:from_raw && show_line_CI)'
                 cell:
                   column: 1
                   row: 12
@@ -513,13 +538,13 @@ children:
                   row: 17
               - type: ComboBox
                 name: sp_linetype_PI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_PI)'
                 cell:
                   column: 2
                   row: 17
               - type: ComboBox
                 name: sp_linetype_CI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_line_CI)'
                 cell:
                   column: 3
                   row: 17
@@ -531,13 +556,13 @@ children:
                   row: 18
               - type: ComboBox
                 name: sp_size_PI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_PI)'
                 cell:
                   column: 2
                   row: 18
               - type: ComboBox
                 name: sp_size_CI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_line_CI)'
                 cell:
                   column: 3
                   row: 18
@@ -549,13 +574,13 @@ children:
                   row: 19
               - type: ComboBox
                 name: sp_color_PI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_PI)'
                 cell:
                   column: 2
                   row: 19
               - type: ComboBox
                 name: sp_color_CI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_line_CI)'
                 cell:
                   column: 3
                   row: 19
@@ -567,13 +592,13 @@ children:
                   row: 20
               - type: ComboBox
                 name: sp_alpha_PI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_PI)'
                 cell:
                   column: 2
                   row: 20
               - type: ComboBox
                 name: sp_alpha_CI
-                enable: '(switch:from_raw)'
+                enable: '(switch:from_raw && show_line_CI)'
                 cell:
                   column: 3
                   row: 20

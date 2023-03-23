@@ -3,6 +3,7 @@
 plot_scatter <- function(
     estimate,
     show_line = FALSE,
+    show_line_CI = FALSE,
     show_PI = FALSE,
     show_residuals = FALSE,
     show_mean_lines = FALSE,
@@ -188,17 +189,35 @@ plot_scatter <- function(
       this_data <- rdata[rdata$type == next_up, ]
       if (nrow(this_data) > 0) {
 
-        myplot <- myplot + ggplot2::geom_smooth(
+        if (show_line_CI) {
+          myplot <- myplot + ggplot2::geom_smooth(
+            data = this_data,
+            formula = y ~ x,
+            method='lm',
+            se = TRUE,
+            level = estimate$properties$conf_level,
+            color = NA,
+            fill = names(plot_levels[x]),
+            alpha = 0.25
+          )
+          myplot <- esci_plot_layers(myplot, paste("summary_", next_up, "_line_CI", sep = ""))
+
+        }
+
+        if (show_line) {        myplot <- myplot + ggplot2::geom_smooth(
           data = this_data,
           formula = y ~ x,
           method='lm',
           se = TRUE,
           level = estimate$properties$conf_level,
           color = names(plot_levels[x]),
-          fill = names(plot_levels[x]),
-          alpha = 0.25
+          fill = NA
         )
         myplot <- esci_plot_layers(myplot, paste("summary_", next_up, "_line", sep = ""))
+
+
+        }
+
       }
     }
 
@@ -228,6 +247,21 @@ plot_scatter <- function(
       )
     }
 
+    # Regression line CI
+    if (show_line_CI) {
+      myplot <- myplot + ggplot2::geom_smooth(
+        data = rdata,
+        formula = y ~ x,
+        method='lm',
+        se = TRUE,
+        level = estimate$properties$conf_level,
+        color = NA,
+        fill = "blue",
+        alpha = 0.25
+      )
+      myplot <- esci_plot_layers(myplot, "summary_Reference_line_CI")
+    }
+
     # Regression line
     if (show_line) {
       myplot <- myplot + ggplot2::geom_smooth(
@@ -237,8 +271,7 @@ plot_scatter <- function(
         se = TRUE,
         level = estimate$properties$conf_level,
         color = "black",
-        fill = "blue",
-        alpha = 0.25
+        fill = NA
       )
       myplot <- esci_plot_layers(myplot, "summary_Reference_line")
     }
@@ -312,21 +345,29 @@ plot_scatter <- function(
     } else {
       ypr <- (predict_from_x * myslope) + myintercept
     }
+
+
+
+    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min - (0.20* (ny_max - ny_min)), yend = ypr), size = 2)
+    myplot <- esci_plot_layers(myplot, "prediction_vertical_line")
+    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min - 0.20*nxrange, xend = predict_from_x, y = ypr, yend = ypr), size = 2)
+    myplot <- esci_plot_layers(myplot, "prediction_horizontal_line")
+
     yplabel <- paste(zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), sep = "")
     myplot <- myplot + ggtext::geom_richtext(
       ggplot2::aes(
-        x = nx_min - 0.2*nxrange,
+        x = nx_min - 0.20*nxrange,
         y = ypr,
         label = yplabel
       ),
       text.color = "red",
-      fill = NA,
+      fill = "white",
       label.color = NA
     )
     myplot <- esci_plot_layers(myplot, "prediction_y_label")
 
     xlabel <- paste(zfix, "*X*", zpost, " =", predict_from_x, sep = "")
-    y_half <- ny_min - (0.2* (ny_max - ny_min))
+    y_half <- ny_min - (0.20* (ny_max - ny_min))
     myplot <- myplot + ggtext::geom_richtext(
       ggplot2::aes(
         x = predict_from_x,
@@ -334,22 +375,25 @@ plot_scatter <- function(
         label = xlabel
       ),
     text.color = "red",
-    fill = NA,
+    fill = "white",
     label.color = NA
     )
     myplot <- esci_plot_layers(myplot, "prediction_x_label")
 
     pi_input <- if (plot_as_z) (predict_from_x * x_sd) + x_mean else predict_from_x
-    pi <- predict(estimate$properties$lm, interval = "prediction", newdata = data.frame(x = pi_input), level = estimate$properties$conf_level)
-    if (plot_as_z) {
-      pi[1, "lwr"] <- (pi[1, "lwr"] - y_mean) / y_sd
-      pi[1, "upr"] <- (pi[1, "upr"] - y_mean) / y_sd
-    }
-    xlab <- paste(xlab, "\n<br>At ", zfix, "*X*", zpost, " =", predict_from_x, ": ", zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=3), ",", format(pi[1, "upr"], digits=3), "]", sep = "")
-    myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
-    myplot <- esci_plot_layers(myplot, "prediction_prediction_interval")
 
-    #if (show_line) {
+    if (show_PI) {
+      pi <- predict(estimate$properties$lm, interval = "prediction", newdata = data.frame(x = pi_input), level = estimate$properties$conf_level)
+      if (plot_as_z) {
+        pi[1, "lwr"] <- (pi[1, "lwr"] - y_mean) / y_sd
+        pi[1, "upr"] <- (pi[1, "upr"] - y_mean) / y_sd
+      }
+      xlab <- paste(xlab, "\n<br>At ", zfix, "*X*", zpost, " =", predict_from_x, ": ", zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), ", ", format(estimate$properties$conf_level*100, digits=0), "% PI[", format(pi[1, "lwr"], digits=3), ",", format(pi[1, "upr"], digits=3), "]", sep = "")
+      myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "red", aes(x = predict_from_x, xend = predict_from_x, y=pi[1, "lwr"], yend = pi[1, "upr"]))
+      myplot <- esci_plot_layers(myplot, "prediction_prediction_interval")
+    }
+
+    if (show_line_CI) {
       ci <- predict(estimate$properties$lm, interval = "confidence", newdata = data.frame(x = pi_input), level = estimate$properties$conf_level)
       if (plot_as_z) {
         ci[1, "lwr"] <- (ci[1, "lwr"] - y_mean) / y_sd
@@ -366,15 +410,12 @@ plot_scatter <- function(
       )
       myplot <- myplot + geom_segment(alpha = 0.1, size = 2, color = "blue", aes(x = predict_from_x, xend = predict_from_x, y=ci[1, "lwr"], yend = ci[1, "upr"]))
       myplot <- esci_plot_layers(myplot, "prediction_confidence_interval")
-    #}
+    }
 
 
-    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min, yend = ypr), size = 2)
-    myplot <- esci_plot_layers(myplot, "prediction_vertical_line")
-    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min, xend = predict_from_x, y = ypr, yend = ypr), size = 2)
-    myplot <- esci_plot_layers(myplot, "prediction_horizontal_line")
     myplot <- myplot + annotate("point", x = predict_from_x, y = ypr, colour = "red", shape = 23, size=4, fill="white")
     myplot <- esci_plot_layers(myplot, "prediction_point")
+
   }
 
   # Default scale will be same z range for x and y

@@ -182,6 +182,16 @@ children:
         format: number
       - type: CheckBox
         name: show_details
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: CheckBox
+            name: show_line
+            enable: '(switch:from_raw)'
+          - type: CheckBox
+            name: show_line_CI
+            enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Scatter plot options
     stretchFactor: 1

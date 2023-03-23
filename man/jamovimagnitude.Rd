@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimagnitude.h.R
 \name{jamovimagnitude}
 \alias{jamovimagnitude}
-\title{Single Group}
+\title{Means and Medians: Single Group}
 \usage{
 jamovimagnitude(
   switch = "from_raw",
@@ -172,5 +172,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Single Group
+Means and Medians: Single Group
 }

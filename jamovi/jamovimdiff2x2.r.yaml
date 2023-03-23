@@ -449,4 +449,13 @@ items:
       height: 400
       renderFun: .estimation_plot
 
+    - name: interaction_plot
+      title: Plot Emphasizing Interaction
+      type: Image
+      visible: (show_interaction_plot)
+      requiresData: true
+      width:  700
+      height: 400
+      renderFun: .interaction_plot
+
 ...

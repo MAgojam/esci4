@@ -462,6 +462,8 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
           myplot <- plot_scatter(
             estimate,
+            show_line = self$options$show_line,
+            show_line_CI = self$options$show_line_CI,
             ggtheme = ggtheme[[1]]
           )
 
@@ -664,17 +666,42 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           myplot <- myplot + ggplot2::scale_alpha_manual(values = my_alphas, labels = my_labels, name = scale_title)
           myplot <- myplot + ggplot2::scale_size_manual(values = my_sizes, labels = my_labels, name = scale_title)
 
+          if (!is.null(myplot$layers$summary_Reference_line)) {
+            myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+            #myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
+            #myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+            myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
+            myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+          }
 
-          myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
-          myplot$layers$summary_Comparison_line$aes_params$colour <- self$options$sp_color_summary_comparison
-          myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
-          myplot$layers$summary_Comparison_line$aes_params$fill <- self$options$sp_color_summary_comparison
-          myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
-          myplot$layers$summary_Comparison_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_comparison)
-          myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
-          myplot$layers$summary_Comparison_line$aes_params$linetype <- self$options$sp_linetype_summary_comparison
-          myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
-          myplot$layers$summary_Comparison_line$aes_params$size <- as.numeric(self$options$sp_size_summary_comparison)/2
+          if (!is.null(myplot$layers$summary_Comparison_line)) {
+            myplot$layers$summary_Comparison_line$aes_params$colour <- self$options$sp_color_summary_comparison
+            #myplot$layers$summary_Comparison_line$aes_params$fill <- self$options$sp_color_summary_comparison
+            #myplot$layers$summary_Comparison_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_comparison)
+            myplot$layers$summary_Comparison_line$aes_params$linetype <- self$options$sp_linetype_summary_comparison
+            myplot$layers$summary_Comparison_line$aes_params$size <- as.numeric(self$options$sp_size_summary_comparison)/2
+
+          }
+
+
+          if (!is.null(myplot$layers$summary_Reference_line_CI)) {
+            #myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+            myplot$layers$summary_Reference_line_CI$aes_params$fill <- self$options$sp_color_summary_reference
+            myplot$layers$summary_Reference_line_CI$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+           # myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
+            #myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+          }
+
+          if (!is.null(myplot$layers$summary_Comparison_line_CI)) {
+            #myplot$layers$summary_Comparison_line$aes_params$colour <- self$options$sp_color_summary_comparison
+            myplot$layers$summary_Comparison_line_CI$aes_params$fill <- self$options$sp_color_summary_comparison
+            myplot$layers$summary_Comparison_line_CI$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_comparison)
+            #myplot$layers$summary_Comparison_line$aes_params$linetype <- self$options$sp_linetype_summary_comparison
+            #myplot$layers$summary_Comparison_line$aes_params$size <- as.numeric(self$options$sp_size_summary_comparison)/2
+
+          }
+
+
 
 
           notes <- c(

@@ -480,6 +480,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           args$estimate <- estimate
           args$ggtheme <- ggtheme[[1]]
           args$show_line <- self$options$show_line
+          args$show_line_CI <- self$options$show_line_CI
           args$show_PI <- self$options$show_PI
           args$show_residuals <- self$options$show_residuals
           args$show_mean_lines <- self$options$show_mean_lines
@@ -711,15 +712,23 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
           myplot$layers$raw_Reference_point$aes_params$shape <- self$options$sp_shape_raw_reference
           #
 
-          if (!is.null(myplot$layers$summary_Reference_line)) {
+          if (!is.null(myplot$layers$summary_Reference_line) & self$options$show_line) {
             myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
-            myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
-            myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+            #myplot$layers$summary_Reference_line$aes_params$fill <- self$options$sp_color_summary_reference
+            #myplot$layers$summary_Reference_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
             myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
             myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
 
           }
 
+
+          if (!is.null(myplot$layers$summary_Reference_line_CI) & self$options$show_line_CI) {
+            #myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+            myplot$layers$summary_Reference_line_CI$aes_params$fill <- self$options$sp_color_summary_reference
+            myplot$layers$summary_Reference_line_CI$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+            #myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
+            #myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
+          }
 
           if (!is.null(myplot$layers$residuals)) {
             myplot$layers$residuals$aes_params$colour <- self$options$sp_color_residual_reference

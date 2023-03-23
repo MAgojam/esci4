@@ -83,6 +83,16 @@ options:
       type: Bool
       default: false
 
+    - name: show_line
+      title: Line
+      type: Bool
+      default: true
+
+    - name: show_line_CI
+      title: CI on line
+      type: Bool
+      default: true
+
     - name: evaluate_hypotheses
       title: 'Evaluate a hypothesis?'
       type: Bool

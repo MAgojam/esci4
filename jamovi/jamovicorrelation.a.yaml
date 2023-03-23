@@ -57,8 +57,18 @@ options:
       type: Bool
       default: false
 
+    - name: do_regression
+      title: Regression analysis
+      type: Bool
+      default: false
+
     - name: show_line
-      title: Show regression
+      title: Line
+      type: Bool
+      default: false
+
+    - name: show_line_CI
+      title: CI on line
       type: Bool
       default: false
 

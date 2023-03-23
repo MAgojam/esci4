@@ -21,6 +21,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             grouping_variable_name = "Grouping variable",
             conf_level = 95,
             show_details = FALSE,
+            show_line = TRUE,
+            show_line_CI = TRUE,
             evaluate_hypotheses = FALSE,
             null_value = "0",
             null_boundary = "0",
@@ -166,6 +168,14 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..show_line <- jmvcore::OptionBool$new(
+                "show_line",
+                show_line,
+                default=TRUE)
+            private$..show_line_CI <- jmvcore::OptionBool$new(
+                "show_line_CI",
+                show_line_CI,
+                default=TRUE)
             private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
                 "evaluate_hypotheses",
                 evaluate_hypotheses,
@@ -1204,6 +1214,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..grouping_variable_name)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..show_line)
+            self$.addOption(private$..show_line_CI)
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
@@ -1293,6 +1305,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         grouping_variable_name = function() private$..grouping_variable_name$value,
         conf_level = function() private$..conf_level$value,
         show_details = function() private$..show_details$value,
+        show_line = function() private$..show_line$value,
+        show_line_CI = function() private$..show_line_CI$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
@@ -1381,6 +1395,8 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..grouping_variable_name = NA,
         ..conf_level = NA,
         ..show_details = NA,
+        ..show_line = NA,
+        ..show_line_CI = NA,
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
         ..null_boundary = NA,
@@ -1855,6 +1871,8 @@ jamovirdifftwoBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param grouping_variable_name .
 #' @param conf_level .
 #' @param show_details .
+#' @param show_line .
+#' @param show_line_CI .
 #' @param evaluate_hypotheses .
 #' @param null_value .
 #' @param null_boundary .
@@ -1966,6 +1984,8 @@ jamovirdifftwo <- function(
     grouping_variable_name = "Grouping variable",
     conf_level = 95,
     show_details = FALSE,
+    show_line = TRUE,
+    show_line_CI = TRUE,
     evaluate_hypotheses = FALSE,
     null_value = "0",
     null_boundary = "0",
@@ -2070,6 +2090,8 @@ jamovirdifftwo <- function(
         grouping_variable_name = grouping_variable_name,
         conf_level = conf_level,
         show_details = show_details,
+        show_line = show_line,
+        show_line_CI = show_line_CI,
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
         null_boundary = null_boundary,

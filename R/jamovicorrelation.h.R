@@ -15,7 +15,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             y_variable_name = "Y variable",
             conf_level = 95,
             show_details = FALSE,
+            do_regression = FALSE,
             show_line = FALSE,
+            show_line_CI = FALSE,
             show_residuals = FALSE,
             show_PI = FALSE,
             show_mean_lines = FALSE,
@@ -143,9 +145,17 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 "show_details",
                 show_details,
                 default=FALSE)
+            private$..do_regression <- jmvcore::OptionBool$new(
+                "do_regression",
+                do_regression,
+                default=FALSE)
             private$..show_line <- jmvcore::OptionBool$new(
                 "show_line",
                 show_line,
+                default=FALSE)
+            private$..show_line_CI <- jmvcore::OptionBool$new(
+                "show_line_CI",
+                show_line_CI,
                 default=FALSE)
             private$..show_residuals <- jmvcore::OptionBool$new(
                 "show_residuals",
@@ -1193,7 +1203,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..y_variable_name)
             self$.addOption(private$..conf_level)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..do_regression)
             self$.addOption(private$..show_line)
+            self$.addOption(private$..show_line_CI)
             self$.addOption(private$..show_residuals)
             self$.addOption(private$..show_PI)
             self$.addOption(private$..show_mean_lines)
@@ -1284,7 +1296,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         y_variable_name = function() private$..y_variable_name$value,
         conf_level = function() private$..conf_level$value,
         show_details = function() private$..show_details$value,
+        do_regression = function() private$..do_regression$value,
         show_line = function() private$..show_line$value,
+        show_line_CI = function() private$..show_line_CI$value,
         show_residuals = function() private$..show_residuals$value,
         show_PI = function() private$..show_PI$value,
         show_mean_lines = function() private$..show_mean_lines$value,
@@ -1374,7 +1388,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..y_variable_name = NA,
         ..conf_level = NA,
         ..show_details = NA,
+        ..do_regression = NA,
         ..show_line = NA,
+        ..show_line_CI = NA,
         ..show_residuals = NA,
         ..show_PI = NA,
         ..show_mean_lines = NA,
@@ -1634,7 +1650,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 name="regression",
                 title="Regression",
                 rows=2,
-                visible="(show_line)",
+                visible="(do_regression)",
                 columns=list(
                     list(
                         `name`="component", 
@@ -1794,7 +1810,9 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param y_variable_name .
 #' @param conf_level .
 #' @param show_details .
+#' @param do_regression .
 #' @param show_line .
+#' @param show_line_CI .
 #' @param show_residuals .
 #' @param show_PI .
 #' @param show_mean_lines .
@@ -1907,7 +1925,9 @@ jamovicorrelation <- function(
     y_variable_name = "Y variable",
     conf_level = 95,
     show_details = FALSE,
+    do_regression = FALSE,
     show_line = FALSE,
+    show_line_CI = FALSE,
     show_residuals = FALSE,
     show_PI = FALSE,
     show_mean_lines = FALSE,
@@ -2010,7 +2030,9 @@ jamovicorrelation <- function(
         y_variable_name = y_variable_name,
         conf_level = conf_level,
         show_details = show_details,
+        do_regression = do_regression,
         show_line = show_line,
+        show_line_CI = show_line_CI,
         show_residuals = show_residuals,
         show_PI = show_PI,
         show_mean_lines = show_mean_lines,

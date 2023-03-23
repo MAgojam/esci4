@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovipdifftwo.h.R
 \name{jamovipdifftwo}
 \alias{jamovipdifftwo}
-\title{Two groups}
+\title{Proportions: Two Groups}
 \usage{
 jamovipdifftwo(
   switch = "from_raw",
@@ -21,6 +21,9 @@ jamovipdifftwo(
   grouping_variable_name = "Grouping variable",
   count_NA = FALSE,
   show_ratio = FALSE,
+  show_chi_square = FALSE,
+  chi_table_option = "both",
+  show_phi = FALSE,
   conf_level = 95,
   show_details = FALSE,
   evaluate_hypotheses = FALSE,
@@ -92,6 +95,12 @@ jamovipdifftwo(
 \item{count_NA}{.}
 
 \item{show_ratio}{.}
+
+\item{show_chi_square}{.}
+
+\item{chi_table_option}{.}
+
+\item{show_phi}{.}
 
 \item{conf_level}{.}
 
@@ -174,6 +183,8 @@ A results object containing:
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_proportion_difference} \tab \tab \tab \tab \tab a table \cr
+\code{results$contingency_table} \tab \tab \tab \tab \tab a table \cr
+\code{results$es_phi} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_odds_ratio} \tab \tab \tab \tab \tab a table \cr
 \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
@@ -188,5 +199,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Two groups
+Proportions: Two Groups
 }

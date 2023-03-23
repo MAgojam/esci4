@@ -113,6 +113,9 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         image$setState("Interaction")
         image$setSize(width, height)
 
+        image <- self$results$interaction_plot
+        image$setSize(width, height)
+
       },
       .run = function() {
 
@@ -295,6 +298,188 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
         print(myplot)
         TRUE
+
+      },
+      .interaction_plot = function(image, ggtheme, theme, ...) {
+
+        if (!self$options$show_interaction_plot) return(TRUE)
+
+        # Redo analysis
+        estimate <- jamovi_mdiff_2x2(
+          self = self,
+          save_raw_data = TRUE
+        )
+
+        if (is.null(estimate)) return(TRUE)
+
+        if(!is(estimate, "esci_estimate"))
+          return(TRUE)
+
+        myplot <- plot_interaction(estimate)
+
+        ymin <- jamovi_sanitize(
+          my_value = self$options$ymin,
+          return_value = myplot$esci_ymin,
+          na_ok = TRUE,
+          convert_to_number = TRUE,
+          my_value_name = "Y axis: Minimum"
+        )
+
+        ymax <- jamovi_sanitize(
+          my_value = self$options$ymax,
+          return_value = myplot$esci_ymax,
+          na_ok = TRUE,
+          convert_to_number = TRUE,
+          my_value_name = "Y axis: Maximum"
+        )
+
+        ybreaks <- jamovi_sanitize(
+          my_value = self$options$ybreaks,
+          return_value = 5,
+          na_ok = FALSE,
+          lower = 1,
+          lower_inclusive = TRUE,
+          upper = 50,
+          upper_inclusive = TRUE,
+          convert_to_number = TRUE,
+          my_value_name = "Y axis: Number of tick marks"
+        )
+
+        myplot <- myplot + ggplot2::scale_y_continuous(
+          limits = c(ymin, ymax),
+          n.breaks = ybreaks
+        )
+
+
+        # Axis font sizes
+        axis.text.y <- jamovi_sanitize(
+          my_value = self$options$axis.text.y,
+          return_value = 14,
+          na_ok = FALSE,
+          convert_to_number = TRUE,
+          lower = 1,
+          lower_inclusive = TRUE,
+          upper = 97,
+          my_value_name = "Interaction Plot Y axis: Tick font size"
+        )
+        axis.title.y <- jamovi_sanitize(
+          my_value = self$options$axis.title.y,
+          return_value = 15,
+          na_ok = FALSE,
+          convert_to_number = TRUE,
+          lower = 1,
+          lower_inclusive = TRUE,
+          upper = 97,
+          my_value_name = "Interaction Plot Y axis: Label font size"
+        )
+        axis.text.x <- jamovi_sanitize(
+          my_value = self$options$axis.text.x,
+          return_value = 14,
+          na_ok = FALSE,
+          convert_to_number = TRUE,
+          lower = 1,
+          lower_inclusive = TRUE,
+          upper = 97,
+          my_value_name = "Interaction Plot X axis: Tick font size"
+        )
+        axis.title.x <- jamovi_sanitize(
+          my_value = self$options$axis.title.x,
+          return_value = 15,
+          na_ok = FALSE,
+          convert_to_number = TRUE,
+          lower = 1,
+          lower_inclusive = TRUE,
+          upper = 97,
+          my_value_name = "Interaction Plot X axis: Label font size"
+        )
+
+        myplot <- myplot + ggplot2::theme(
+          axis.text.y = ggtext::element_markdown(size = axis.text.y),
+          axis.title.y = ggtext::element_markdown(size = axis.title.y),
+          axis.text.x = ggtext::element_markdown(size = axis.text.x),
+          axis.title.x = ggtext::element_markdown(size = axis.title.x),
+          legend.title = ggtext::element_markdown(size = axis.title.x),
+          legend.text = ggtext::element_markdown(size = axis.text.x)
+        )
+
+
+        # Aesthetics
+        myplot <- myplot + ggplot2::scale_shape_manual(
+          values = c(
+            self$options$shape_summary_comparison,
+            self$options$shape_summary_reference
+          )
+        )
+
+        myplot <- myplot + ggplot2::scale_color_manual(
+          values = c(
+            self$options$color_summary_comparison,
+            self$options$color_summary_reference
+          )
+        )
+
+        myplot <- myplot + ggplot2::scale_fill_manual(
+          values = c(
+            self$options$fill_summary_comparison,
+            self$options$fill_summary_reference
+          )
+        )
+
+        myplot <- myplot + ggplot2::scale_size_manual(
+         values = c(
+            as.integer(self$options$size_summary_comparison),
+            as.integer(self$options$size_summary_reference)
+          )
+        )
+
+        myplot <- myplot + ggplot2::scale_alpha_manual(
+          values = c(
+            as.numeric(self$options$alpha_summary_comparison),
+            as.numeric(self$options$alpha_summary_reference)
+          )
+        )
+
+        myplot <- myplot + ggplot2::scale_linetype_manual(
+          values = c(
+            self$options$linetype_summary_comparison,
+            self$options$linetype_summary_reference
+          )
+        )
+
+        # Axis labels
+        xlab <- jamovi_sanitize(
+          my_value = self$options$xlab,
+          return_value = NULL,
+          na_ok = FALSE,
+          my_value_name = "X axis: Title"
+        )
+
+        ylab <- jamovi_sanitize(
+          my_value = self$options$ylab,
+          return_value = NULL,
+          na_ok = FALSE,
+          my_value_name = "Y axis: Title"
+        )
+
+        if (!(self$options$xlab %in% c("auto", "Auto", "AUTO"))) {
+          myplot <- myplot + ggplot2::xlab(xlab)
+        }
+        if (!(self$options$ylab %in% c("auto", "Auto", "AUTO"))) {
+          myplot <- myplot + ggplot2::ylab(ylab)
+        }
+
+
+        # myplot <- myplot + ggplot2::scale_linewidth_manual(
+        #   values = c(
+        #     self$options$size_interval_comparison,
+        #     self$options$size_interval_reference
+        #   )
+        # )
+
+
+        print(myplot)
+
+        return(TRUE)
 
       })
 )

@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiffpaired.h.R
 \name{jamovimdiffpaired}
 \alias{jamovimdiffpaired}
-\title{Paired}
+\title{Means and Medians: Paired}
 \usage{
 jamovimdiffpaired(
   switch = "from_raw",
@@ -309,5 +309,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Paired
+Means and Medians: Paired
 }

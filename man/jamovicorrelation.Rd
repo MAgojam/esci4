@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovicorrelation.h.R
 \name{jamovicorrelation}
 \alias{jamovicorrelation}
-\title{Correlation}
+\title{Correlation: Single Group}
 \usage{
 jamovicorrelation(
   switch = "from_raw",
@@ -11,13 +11,18 @@ jamovicorrelation(
   y,
   r = " ",
   n = " ",
-  x_variable_name = "x variable",
-  y_variable_name = "y variable",
+  x_variable_name = "X variable",
+  y_variable_name = "Y variable",
   conf_level = 95,
   show_details = FALSE,
+  do_regression = FALSE,
   show_line = FALSE,
+  show_line_CI = FALSE,
   show_residuals = FALSE,
   show_PI = FALSE,
+  show_mean_lines = FALSE,
+  show_r = FALSE,
+  plot_as_z = FALSE,
   predict_from_x = " ",
   evaluate_hypotheses = FALSE,
   null_value = "0",
@@ -37,7 +42,7 @@ jamovicorrelation(
   axis.title.y = "15",
   axis.text.x = "14",
   axis.title.x = "15",
-  error_layout = "halfeye",
+  error_layout = "none",
   sp_ymin = "auto",
   sp_ymax = "auto",
   sp_ybreaks = "auto",
@@ -79,7 +84,19 @@ jamovicorrelation(
   sp_size_residual_reference = "1",
   sp_alpha_residual_reference = "1",
   sp_prediction_label = "5",
-  sp_prediction_color = "#E20134"
+  sp_prediction_color = "#E20134",
+  sp_linetype_CI = "solid",
+  sp_color_CI = "#008DF9",
+  sp_size_CI = "5",
+  sp_alpha_CI = "1",
+  sp_linetype_ref = "dotted",
+  sp_color_ref = "gray90",
+  sp_size_ref = "2",
+  sp_alpha_ref = "1",
+  sp_linetype_PI = "solid",
+  sp_color_PI = "#E20134",
+  sp_size_PI = "3",
+  sp_alpha_PI = "1"
 )
 }
 \arguments{
@@ -103,11 +120,21 @@ jamovicorrelation(
 
 \item{show_details}{.}
 
+\item{do_regression}{.}
+
 \item{show_line}{.}
+
+\item{show_line_CI}{.}
 
 \item{show_residuals}{.}
 
 \item{show_PI}{.}
+
+\item{show_mean_lines}{.}
+
+\item{show_r}{.}
+
+\item{plot_as_z}{.}
 
 \item{predict_from_x}{.}
 
@@ -232,6 +259,30 @@ jamovicorrelation(
 \item{sp_prediction_label}{.}
 
 \item{sp_prediction_color}{.}
+
+\item{sp_linetype_CI}{.}
+
+\item{sp_color_CI}{.}
+
+\item{sp_size_CI}{.}
+
+\item{sp_alpha_CI}{.}
+
+\item{sp_linetype_ref}{.}
+
+\item{sp_color_ref}{.}
+
+\item{sp_size_ref}{.}
+
+\item{sp_alpha_ref}{.}
+
+\item{sp_linetype_PI}{.}
+
+\item{sp_color_PI}{.}
+
+\item{sp_size_PI}{.}
+
+\item{sp_alpha_PI}{.}
 }
 \value{
 A results object containing:
@@ -240,6 +291,7 @@ A results object containing:
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
 \code{results$es_r} \tab \tab \tab \tab \tab a table \cr
+\code{results$regression} \tab \tab \tab \tab \tab a table \cr
 \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
@@ -255,5 +307,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Correlation
+Correlation: Single Group
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiffindcontrast.h.R
 \name{jamovimdiffindcontrast}
 \alias{jamovimdiffindcontrast}
-\title{Independent Groups Contrast}
+\title{Means and Medians: Independent Groups Contrast}
 \usage{
 jamovimdiffindcontrast(
   switch = "from_raw",
@@ -330,5 +330,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Independent Groups Contrast
+Means and Medians: Independent Groups Contrast
 }

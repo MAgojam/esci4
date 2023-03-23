@@ -182,6 +182,11 @@ options:
       type: Bool
       default: false
 
+    - name: show_interaction_plot
+      title: Plot to emphasize interaction
+      type: Bool
+      default: false
+
     - name: evaluate_hypotheses
       title: 'Evaluate a hypothesis?'
       type: Bool

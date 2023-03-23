@@ -20,6 +20,18 @@
             ui.alpha.setValue((1 - Number(ui.conf_level.value())/100).toPrecision(1));
         },
 
+        do_regression_changed: function(ui, event) {
+          if (ui.do_regression.value()) {
+
+          } else {
+            ui.predict_from_x.setValue("");
+            ui.show_line.setValue(false);
+            ui.show_line_CI.setValue(false);
+            ui.show_residuals.setValue(false);
+            ui.show_PI.setValue(false);
+          }
+        },
+
 
         raw_button_changed: function(ui, event) {
             this.setPanels(ui, event);

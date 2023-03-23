@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamoviproportion.h.R
 \name{jamoviproportion}
 \alias{jamoviproportion}
-\title{Single Group}
+\title{Proportions: Single Group}
 \usage{
 jamoviproportion(
   switch = "from_raw",
@@ -16,6 +16,7 @@ jamoviproportion(
   count_NA = FALSE,
   conf_level = 95,
   show_details = FALSE,
+  plot_possible = FALSE,
   evaluate_hypotheses = FALSE,
   null_value = "0",
   null_boundary = "0",
@@ -61,6 +62,8 @@ jamoviproportion(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{plot_possible}{.}
 
 \item{evaluate_hypotheses}{.}
 
@@ -123,5 +126,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Single Group
+Proportions: Single Group
 }

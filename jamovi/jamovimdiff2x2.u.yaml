@@ -323,6 +323,8 @@ children:
         suffix: '%'
       - type: CheckBox
         name: show_details
+      - type: CheckBox
+        name: show_interaction_plot
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1

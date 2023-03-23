@@ -39,6 +39,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             effect_size = "mean_difference",
             assume_equal_variance = TRUE,
             show_details = FALSE,
+            show_interaction_plot = FALSE,
             evaluate_hypotheses = FALSE,
             null_value = "0",
             null_boundary = "0",
@@ -276,6 +277,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..show_details <- jmvcore::OptionBool$new(
                 "show_details",
                 show_details,
+                default=FALSE)
+            private$..show_interaction_plot <- jmvcore::OptionBool$new(
+                "show_interaction_plot",
+                show_interaction_plot,
                 default=FALSE)
             private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
                 "evaluate_hypotheses",
@@ -1769,6 +1774,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..effect_size)
             self$.addOption(private$..assume_equal_variance)
             self$.addOption(private$..show_details)
+            self$.addOption(private$..show_interaction_plot)
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
@@ -1888,6 +1894,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         effect_size = function() private$..effect_size$value,
         assume_equal_variance = function() private$..assume_equal_variance$value,
         show_details = function() private$..show_details$value,
+        show_interaction_plot = function() private$..show_interaction_plot$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
@@ -2006,6 +2013,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..effect_size = NA,
         ..assume_equal_variance = NA,
         ..show_details = NA,
+        ..show_interaction_plot = NA,
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
         ..null_boundary = NA,
@@ -2107,7 +2115,8 @@ jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         estimation_plot_warnings = function() private$.items[["estimation_plot_warnings"]],
         main_effect_A = function() private$.items[["main_effect_A"]],
         main_effect_B = function() private$.items[["main_effect_B"]],
-        interaction = function() private$.items[["interaction"]]),
+        interaction = function() private$.items[["interaction"]],
+        interaction_plot = function() private$.items[["interaction_plot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -2643,7 +2652,16 @@ jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresData=TRUE,
                 width=700,
                 height=400,
-                renderFun=".estimation_plot"))}))
+                renderFun=".estimation_plot"))
+            self$add(jmvcore::Image$new(
+                options=options,
+                name="interaction_plot",
+                title="Plot Emphasizing Interaction",
+                visible="(show_interaction_plot)",
+                requiresData=TRUE,
+                width=700,
+                height=400,
+                renderFun=".interaction_plot"))}))
 
 jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiff2x2Base",
@@ -2702,6 +2720,7 @@ jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param effect_size .
 #' @param assume_equal_variance .
 #' @param show_details .
+#' @param show_interaction_plot .
 #' @param evaluate_hypotheses .
 #' @param null_value .
 #' @param null_boundary .
@@ -2800,6 +2819,7 @@ jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$main_effect_A} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$main_effect_B} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$interaction} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$interaction_plot} \tab \tab \tab \tab \tab an image \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -2844,6 +2864,7 @@ jamovimdiff2x2 <- function(
     effect_size = "mean_difference",
     assume_equal_variance = TRUE,
     show_details = FALSE,
+    show_interaction_plot = FALSE,
     evaluate_hypotheses = FALSE,
     null_value = "0",
     null_boundary = "0",
@@ -2986,6 +3007,7 @@ jamovimdiff2x2 <- function(
         effect_size = effect_size,
         assume_equal_variance = assume_equal_variance,
         show_details = show_details,
+        show_interaction_plot = show_interaction_plot,
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
         null_boundary = null_boundary,

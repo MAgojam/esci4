@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimdiff2x2.h.R
 \name{jamovimdiff2x2}
 \alias{jamovimdiff2x2}
-\title{2x2 Factorial}
+\title{Means and Medians: 2x2 Factorial}
 \usage{
 jamovimdiff2x2(
   design = "fully_between",
@@ -386,5 +386,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-2x2 Factorial
+Means and Medians: 2x2 Factorial
 }

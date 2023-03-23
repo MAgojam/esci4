@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovimetar.h.R
 \name{jamovimetar}
 \alias{jamovimetar}
-\title{Correlations}
+\title{Meta-Analysis: Correlations}
 \usage{
 jamovimetar(
   data,
@@ -21,12 +21,12 @@ jamovimetar(
   size_multiplier = "3",
   axis.text.y = "14",
   report_CIs = FALSE,
-  meta_diamond_height = ".35",
+  meta_diamond_height = ".25",
   xlab = "auto",
   xmin = "-1",
   xmax = "1",
   xbreaks = "auto",
-  mark_zero = FALSE,
+  mark_zero = TRUE,
   axis.text.x = "14",
   axis.title.x = "15",
   dlab = "auto",
@@ -35,6 +35,7 @@ jamovimetar(
   dbreaks = "auto",
   shape_raw_reference = "square filled",
   shape_raw_comparison = "square filled",
+  shape_summary_difference = "triangle filled",
   shape_raw_unused = "square filled",
   color_raw_reference = "#008DF9",
   color_raw_comparison = "#009F81",
@@ -62,15 +63,19 @@ jamovimetar(
   alpha_summary_overall = "1",
   linetype_raw_reference = "solid",
   linetype_raw_comparison = "solid",
+  linetype_summary_difference = "solid",
   linetype_raw_unused = "solid",
   color_interval_reference = "black",
   color_interval_comparison = "black",
+  color_interval_difference = "black",
   color_interval_unused = "black",
   size_interval_reference = ".50",
   size_interval_comparison = ".50",
+  size_interval_difference = ".50",
   size_interval_unused = ".50",
   alpha_interval_reference = "1",
   alpha_interval_comparison = "1",
+  alpha_interval_difference = "1",
   alpha_interval_unused = "1"
 )
 }
@@ -135,6 +140,8 @@ jamovimetar(
 
 \item{shape_raw_comparison}{.}
 
+\item{shape_summary_difference}{.}
+
 \item{shape_raw_unused}{.}
 
 \item{color_raw_reference}{.}
@@ -189,11 +196,15 @@ jamovimetar(
 
 \item{linetype_raw_comparison}{.}
 
+\item{linetype_summary_difference}{.}
+
 \item{linetype_raw_unused}{.}
 
 \item{color_interval_reference}{.}
 
 \item{color_interval_comparison}{.}
+
+\item{color_interval_difference}{.}
 
 \item{color_interval_unused}{.}
 
@@ -201,11 +212,15 @@ jamovimetar(
 
 \item{size_interval_comparison}{.}
 
+\item{size_interval_difference}{.}
+
 \item{size_interval_unused}{.}
 
 \item{alpha_interval_reference}{.}
 
 \item{alpha_interval_comparison}{.}
+
+\item{alpha_interval_difference}{.}
 
 \item{alpha_interval_unused}{.}
 }
@@ -229,5 +244,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$raw_data)}
 }
 \description{
-Correlations
+Meta-Analysis: Correlations
 }

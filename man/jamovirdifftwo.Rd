@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovirdifftwo.h.R
 \name{jamovirdifftwo}
 \alias{jamovirdifftwo}
-\title{Two Groups}
+\title{Correlations: Two Groups}
 \usage{
 jamovirdifftwo(
   switch = "from_raw",
@@ -21,6 +21,8 @@ jamovirdifftwo(
   grouping_variable_name = "Grouping variable",
   conf_level = 95,
   show_details = FALSE,
+  show_line = TRUE,
+  show_line_CI = TRUE,
   evaluate_hypotheses = FALSE,
   null_value = "0",
   null_boundary = "0",
@@ -28,7 +30,7 @@ jamovirdifftwo(
   null_color = "#A40122",
   es_plot_width = "600",
   es_plot_height = "400",
-  sp_plot_width = "800",
+  sp_plot_width = "650",
   sp_plot_height = "650",
   ymin = "auto",
   ymax = "auto",
@@ -127,6 +129,10 @@ jamovirdifftwo(
 \item{conf_level}{.}
 
 \item{show_details}{.}
+
+\item{show_line}{.}
+
+\item{show_line_CI}{.}
 
 \item{evaluate_hypotheses}{.}
 
@@ -282,10 +288,10 @@ A results object containing:
 \code{results$es_r_difference} \tab \tab \tab \tab \tab a table \cr
 \code{results$point_null} \tab \tab \tab \tab \tab a table \cr
 \code{results$interval_null} \tab \tab \tab \tab \tab a table \cr
-\code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
-\code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 \code{results$scatter_plot_warnings} \tab \tab \tab \tab \tab a html \cr
 \code{results$scatter_plots} \tab \tab \tab \tab \tab an image \cr
+\code{results$estimation_plot_warnings} \tab \tab \tab \tab \tab a html \cr
+\code{results$estimation_plots} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -295,5 +301,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Two Groups
+Correlations: Two Groups
 }
