@@ -1604,6 +1604,18 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 name="raw_data",
                 title="Table of Studies",
                 rows=1,
+                clearWith=list(
+                    "reference_cases",
+                    "reference_ns",
+                    "comparison_cases",
+                    "comparison_ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "reported_effect_size",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="label", 
@@ -1673,6 +1685,18 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 name="es_meta",
                 title="Meta-Analytic Effect Sizes",
                 rows=1,
+                clearWith=list(
+                    "reference_cases",
+                    "reference_ns",
+                    "comparison_cases",
+                    "comparison_ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "reported_effect_size",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_label", 
@@ -1741,6 +1765,18 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 name="es_heterogeneity",
                 title="Effect Size Heterogeneity",
                 rows=1,
+                clearWith=list(
+                    "reference_cases",
+                    "reference_ns",
+                    "comparison_cases",
+                    "comparison_ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "reported_effect_size",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="measure", 
@@ -1775,6 +1811,18 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 name="es_meta_difference",
                 title="Moderator Analysis",
                 rows=3,
+                clearWith=list(
+                    "reference_cases",
+                    "reference_ns",
+                    "comparison_cases",
+                    "comparison_ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "reported_effect_size",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_label", 

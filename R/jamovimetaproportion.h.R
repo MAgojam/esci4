@@ -1572,6 +1572,15 @@ jamovimetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6
                 name="raw_data",
                 title="Table of Studies",
                 rows=1,
+                clearWith=list(
+                    "cases",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="label", 
@@ -1628,6 +1637,15 @@ jamovimetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6
                 name="es_meta",
                 title="Meta-Analytic Effect Sizes",
                 rows=1,
+                clearWith=list(
+                    "cases",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_label", 
@@ -1696,6 +1714,15 @@ jamovimetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6
                 name="es_heterogeneity",
                 title="Effect Size Heterogeneity",
                 rows=1,
+                clearWith=list(
+                    "cases",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="measure", 
@@ -1730,6 +1757,15 @@ jamovimetaproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6
                 name="es_meta_difference",
                 title="Moderator Analysis",
                 rows=3,
+                clearWith=list(
+                    "cases",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_label", 

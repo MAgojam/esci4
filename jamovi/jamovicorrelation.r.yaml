@@ -16,6 +16,16 @@ items:
       title: Overview
       type: Table
       rows:  2
+      clearWith:
+        - switch
+        - x
+        - y
+        - r
+        - n
+        - x_variable_name
+        - y_variable_name
+        - conf_level
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -91,6 +101,16 @@ items:
       title: Linear Correlation
       type: Table
       rows:  1
+      clearWith:
+        - switch
+        - x
+        - y
+        - r
+        - n
+        - x_variable_name
+        - y_variable_name
+        - conf_level
+        - show_details
       columns:
         - name: x_variable_name
           title: '<i>X</i> variable'
@@ -132,6 +152,16 @@ items:
       type: Table
       rows:  2
       visible: (do_regression)
+      clearWith:
+        - switch
+        - x
+        - y
+        - r
+        - n
+        - x_variable_name
+        - y_variable_name
+        - conf_level
+        - show_details
       columns:
         - name: component
           title: 'Component'
@@ -152,6 +182,17 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - switch
+        - x
+        - y
+        - r
+        - n
+        - x_variable_name
+        - y_variable_name
+        - conf_level
+        - null_value
+        - null_boundary
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -186,6 +227,17 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
+      clearWith:
+        - switch
+        - x
+        - y
+        - r
+        - n
+        - x_variable_name
+        - y_variable_name
+        - conf_level
+        - null_value
+        - null_boundary
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -225,6 +277,64 @@ items:
       requiresData: true
       renderFun: .scatter_plots
       visible: (switch == 'from_raw')
+      clearWith:
+        - x
+        - y
+        - conf_level
+        - show_line
+        - show_line_CI
+        - show_residuals
+        - show_PI
+        - show_mean_lines
+        - show_r
+        - plot_as_z
+        - predict_from_x
+        - sp_plot_width
+        - sp_plot_height
+        - sp_ymin
+        - sp_ymax
+        - sp_ybreaks
+        - sp_xmin
+        - sp_xmax
+        - sp_xbreaks
+        - sp_ylab
+        - sp_xlab
+        - sp_axis.text.y
+        - sp_axis.title.y
+        - sp_axis.text.x
+        - sp_axis.title.x
+        - sp_shape_raw_reference
+        - sp_color_raw_reference
+        - sp_fill_raw_reference
+        - sp_size_raw_reference
+        - sp_alpha_raw_reference
+        - sp_linetype_summary_reference
+        - sp_color_summary_reference
+        - sp_size_summary_reference
+        - sp_alpha_summary_reference
+        - sp_linetype_PI_reference
+        - sp_color_PI_reference
+        - sp_size_PI_reference
+        - sp_alpha_PI_reference
+        - sp_linetype_residual_reference
+        - sp_color_residual_reference
+        - sp_size_residual_reference
+        - sp_alpha_residual_reference
+        - sp_prediction_label
+        - sp_prediction_color
+        - sp_linetype_CI
+        - sp_color_CI
+        - sp_size_CI
+        - sp_alpha_CI
+        - sp_linetype_ref
+        - sp_color_ref
+        - sp_size_ref
+        - sp_alpha_ref
+        - sp_linetype_PI
+        - sp_color_PI
+        - sp_size_PI
+        - sp_alpha_PI
+
 
     - name: estimation_plot_warnings
       title: Estimation Figure Warnings

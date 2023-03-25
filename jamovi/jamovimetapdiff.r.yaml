@@ -16,6 +16,18 @@ items:
       title: Table of Studies
       type: Table
       rows:  1
+      clearWith:
+        - reference_cases
+        - reference_ns
+        - comparison_cases
+        - comparison_ns
+        - labels
+        - moderator
+        - effect_label
+        - reported_effect_size
+        - conf_level
+        - random_effects
+        - show_details
       columns:
         - name: label
           title: 'Study label'
@@ -71,6 +83,18 @@ items:
       title: Meta-Analytic Effect Sizes
       type: Table
       rows:  1
+      clearWith:
+        - reference_cases
+        - reference_ns
+        - comparison_cases
+        - comparison_ns
+        - labels
+        - moderator
+        - effect_label
+        - reported_effect_size
+        - conf_level
+        - random_effects
+        - show_details
       columns:
         - name: effect_label
           title: 'Effect'
@@ -126,6 +150,18 @@ items:
       title: Effect Size Heterogeneity
       type: Table
       rows:  1
+      clearWith:
+        - reference_cases
+        - reference_ns
+        - comparison_cases
+        - comparison_ns
+        - labels
+        - moderator
+        - effect_label
+        - reported_effect_size
+        - conf_level
+        - random_effects
+        - show_details
       columns:
         - name: measure
           title: 'Measure'
@@ -154,6 +190,18 @@ items:
       title: Moderator Analysis
       type: Table
       rows:  3
+      clearWith:
+        - reference_cases
+        - reference_ns
+        - comparison_cases
+        - comparison_ns
+        - labels
+        - moderator
+        - effect_label
+        - reported_effect_size
+        - conf_level
+        - random_effects
+        - show_details
       columns:
         - name: effect_label
           title: 'Effect'

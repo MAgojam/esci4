@@ -18,16 +18,37 @@ items:
       rows:  4
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable_A
         - grouping_variable_B
+        - outcome_variable_level1
+        - outcome_variable_level2
+        - outcome_variable_name_bs
+        - grouping_variable
+        - repeated_measures_name
+        - outcome_variable_name
+        - A1_label
+        - A2_label
+        - B1_label
+        - B2_label
+        - A_label
+        - B_label
+        - A1B1_mean
+        - A1B1_sd
+        - A1B1_n
+        - A1B2_mean
+        - A1B2_sd
+        - A1B2_n
+        - A2B1_mean
+        - A2B1_sd
+        - A2B1_n
+        - A2B2_mean
+        - A2B2_sd
+        - A2B2_n
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -135,18 +156,20 @@ items:
       type: Table
       visible: (effect_size == 'median_difference' & design == 'fully_between')
       rows:  15
-      clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable_A
         - grouping_variable_B
+        - outcome_variable_level1
+        - outcome_variable_level2
+        - outcome_variable_name_bs
+        - grouping_variable
+        - repeated_measures_name
+        - outcome_variable_name
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -189,16 +212,37 @@ items:
       visible: (effect_size == 'mean_difference')
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable_A
         - grouping_variable_B
+        - outcome_variable_level1
+        - outcome_variable_level2
+        - outcome_variable_name_bs
+        - grouping_variable
+        - repeated_measures_name
+        - outcome_variable_name
+        - A1_label
+        - A2_label
+        - B1_label
+        - B2_label
+        - A_label
+        - B_label
+        - A1B1_mean
+        - A1B1_sd
+        - A1B1_n
+        - A1B2_mean
+        - A1B2_sd
+        - A1B2_n
+        - A2B1_mean
+        - A2B1_sd
+        - A2B1_n
+        - A2B2_mean
+        - A2B2_sd
+        - A2B2_n
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -257,16 +301,37 @@ items:
       visible: (effect_size == 'mean_difference' & design == 'fully_between')
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable_A
         - grouping_variable_B
+        - outcome_variable_level1
+        - outcome_variable_level2
+        - outcome_variable_name_bs
+        - grouping_variable
+        - repeated_measures_name
+        - outcome_variable_name
+        - A1_label
+        - A2_label
+        - B1_label
+        - B2_label
+        - A_label
+        - B_label
+        - A1B1_mean
+        - A1B1_sd
+        - A1B1_n
+        - A1B2_mean
+        - A1B2_sd
+        - A1B2_n
+        - A2B1_mean
+        - A2B1_sd
+        - A2B1_n
+        - A2B2_mean
+        - A2B2_sd
+        - A2B2_n
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -327,6 +392,41 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - switch
+        - outcome_variable
+        - grouping_variable_A
+        - grouping_variable_B
+        - outcome_variable_level1
+        - outcome_variable_level2
+        - outcome_variable_name_bs
+        - grouping_variable
+        - repeated_measures_name
+        - outcome_variable_name
+        - A1_label
+        - A2_label
+        - B1_label
+        - B2_label
+        - A_label
+        - B_label
+        - A1B1_mean
+        - A1B1_sd
+        - A1B1_n
+        - A1B2_mean
+        - A1B2_sd
+        - A1B2_n
+        - A2B1_mean
+        - A2B1_sd
+        - A2B1_n
+        - A2B2_mean
+        - A2B2_sd
+        - A2B2_n
+        - conf_level
+        - effect_size
+        - assume_equal_variance
+        - show_details
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'

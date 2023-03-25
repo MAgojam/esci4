@@ -18,17 +18,20 @@ items:
       rows:  1
       clearWith:
         - switch
-        - grouping_variable_levels
+        - outcome_variable
+        - grouping_variable
         - means
         - sds
         - ns
+        - grouping_variable_levels
         - outcome_variable_name
-        - outcome_variable
-        - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - grouping_variable_name
+        - comparison_labels
+        - reference_labels
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -117,17 +120,20 @@ items:
       rows:  3
       clearWith:
         - switch
-        - grouping_variable_levels
+        - outcome_variable
+        - grouping_variable
         - means
         - sds
         - ns
+        - grouping_variable_levels
         - outcome_variable_name
-        - outcome_variable
-        - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - grouping_variable_name
+        - comparison_labels
+        - reference_labels
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -162,17 +168,20 @@ items:
       visible: (effect_size == 'mean_difference')
       clearWith:
         - switch
-        - grouping_variable_levels
+        - outcome_variable
+        - grouping_variable
         - means
         - sds
         - ns
+        - grouping_variable_levels
         - outcome_variable_name
-        - outcome_variable
-        - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - grouping_variable_name
+        - comparison_labels
+        - reference_labels
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -219,17 +228,20 @@ items:
       visible: (effect_size == 'mean_difference')
       clearWith:
         - switch
-        - grouping_variable_levels
+        - outcome_variable
+        - grouping_variable
         - means
         - sds
         - ns
+        - grouping_variable_levels
         - outcome_variable_name
-        - outcome_variable
-        - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - grouping_variable_name
+        - comparison_labels
+        - reference_labels
         - conf_level
+        - effect_size
         - assume_equal_variance
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -282,6 +294,25 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - switch
+        - outcome_variable
+        - grouping_variable
+        - means
+        - sds
+        - ns
+        - grouping_variable_levels
+        - outcome_variable_name
+        - grouping_variable_name
+        - comparison_labels
+        - reference_labels
+        - conf_level
+        - effect_size
+        - assume_equal_variance
+        - show_details
+        - null_value
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -333,6 +364,25 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
+      clearWith:
+        - switch
+        - outcome_variable
+        - grouping_variable
+        - means
+        - sds
+        - ns
+        - grouping_variable_levels
+        - outcome_variable_name
+        - grouping_variable_name
+        - comparison_labels
+        - reference_labels
+        - conf_level
+        - effect_size
+        - assume_equal_variance
+        - show_details
+        - null_value
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'

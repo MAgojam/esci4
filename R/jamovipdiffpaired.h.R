@@ -792,6 +792,19 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 name="overview",
                 title="Overview",
                 rows=4,
+                clearWith=list(
+                    "reference_measure",
+                    "comparison_measure",
+                    "cases_consistent",
+                    "cases_inconsistent",
+                    "not_cases_consistent",
+                    "not_cases_inconsistent",
+                    "case_label",
+                    "not_case_label",
+                    "comparison_measure_name",
+                    "reference_measure_name",
+                    "conf_level",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -838,6 +851,19 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 name="es_proportion_difference",
                 title="Proportion Difference",
                 rows=3,
+                clearWith=list(
+                    "reference_measure",
+                    "comparison_measure",
+                    "cases_consistent",
+                    "cases_inconsistent",
+                    "not_cases_consistent",
+                    "not_cases_inconsistent",
+                    "case_label",
+                    "not_case_label",
+                    "comparison_measure_name",
+                    "reference_measure_name",
+                    "conf_level",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_plus", 
@@ -871,6 +897,21 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary == 0)",
+                clearWith=list(
+                    "reference_measure",
+                    "comparison_measure",
+                    "cases_consistent",
+                    "cases_inconsistent",
+                    "not_cases_consistent",
+                    "not_cases_inconsistent",
+                    "case_label",
+                    "not_case_label",
+                    "comparison_measure_name",
+                    "reference_measure_name",
+                    "conf_level",
+                    "show_details",
+                    "null_value",
+                    "null_boundary"),
                 columns=list(
                     list(
                         `name`="effect_plus", 
@@ -911,6 +952,21 @@ jamovipdiffpairedResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary != 0)",
+                clearWith=list(
+                    "reference_measure",
+                    "comparison_measure",
+                    "cases_consistent",
+                    "cases_inconsistent",
+                    "not_cases_consistent",
+                    "not_cases_inconsistent",
+                    "case_label",
+                    "not_case_label",
+                    "comparison_measure_name",
+                    "reference_measure_name",
+                    "conf_level",
+                    "show_details",
+                    "null_value",
+                    "null_boundary"),
                 columns=list(
                     list(
                         `name`="effect_plus", 

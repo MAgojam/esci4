@@ -387,6 +387,9 @@ jamovidescribeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 name="overview",
                 title="Overview",
                 rows="(outcome_variable)",
+                clearWith=list(
+                    "outcome_variable",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 

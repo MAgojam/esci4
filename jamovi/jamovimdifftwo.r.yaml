@@ -18,17 +18,24 @@ items:
       rows:  2
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
         - conf_level
         - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -121,17 +128,24 @@ items:
       visible: (effect_size == 'mean_difference')
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
         - conf_level
         - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -193,17 +207,24 @@ items:
       visible: (effect_size == 'mean_difference')
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
         - conf_level
         - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -257,17 +278,24 @@ items:
       rows:  (outcome_variable)
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
         - conf_level
         - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -304,17 +332,24 @@ items:
       rows:  3
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
         - conf_level
         - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -350,17 +385,24 @@ items:
       rows:  (outcome_variable)
       clearWith:
         - switch
-        - grouping_variable_levels
-        - means
-        - sds
-        - ns
-        - outcome_variable_name
         - outcome_variable
         - grouping_variable
-        - reference_levels
-        - comparison_levels
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
         - conf_level
         - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -395,6 +437,29 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - switch
+        - outcome_variable
+        - grouping_variable
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
+        - conf_level
+        - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
+        - null_value
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -446,6 +511,29 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
+      clearWith:
+        - switch
+        - outcome_variable
+        - grouping_variable
+        - reference_level_name
+        - reference_mean
+        - reference_sd
+        - reference_n
+        - comparison_level_name
+        - comparison_mean
+        - comparison_sd
+        - comparison_n
+        - outcome_variable_name
+        - grouping_variable_name
+        - conf_level
+        - assume_equal_variance
+        - effect_size
+        - show_details
+        - switch_comparison_order
+        - show_calculations
+        - null_value
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'

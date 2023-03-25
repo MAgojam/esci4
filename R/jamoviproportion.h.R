@@ -448,6 +448,16 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 name="overview",
                 title="Overview",
                 rows=1,
+                clearWith=list(
+                    "outcome_variable",
+                    "cases",
+                    "not_cases",
+                    "case_label",
+                    "not_case_label",
+                    "outcome_variable_name",
+                    "count_NA",
+                    "conf_level",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -494,6 +504,18 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary == 0)",
+                clearWith=list(
+                    "outcome_variable",
+                    "cases",
+                    "not_cases",
+                    "case_label",
+                    "not_case_label",
+                    "outcome_variable_name",
+                    "count_NA",
+                    "conf_level",
+                    "show_details",
+                    "null_value",
+                    "null_boundary"),
                 columns=list(
                     list(
                         `name`="effect_plus", 
@@ -533,6 +555,18 @@ jamoviproportionResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6
                 title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary != 0)",
+                clearWith=list(
+                    "outcome_variable",
+                    "cases",
+                    "not_cases",
+                    "case_label",
+                    "not_case_label",
+                    "outcome_variable_name",
+                    "count_NA",
+                    "conf_level",
+                    "show_details",
+                    "null_value",
+                    "null_boundary"),
                 columns=list(
                     list(
                         `name`="effect_plus", 

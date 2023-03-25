@@ -16,6 +16,9 @@ items:
       title: Overview
       type: Table
       rows:  (outcome_variable)
+      clearWith:
+        - outcome_variable
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'

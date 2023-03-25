@@ -771,6 +771,16 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 name="overview",
                 title="Overview",
                 rows="(outcome_variable)",
+                clearWith=list(
+                    "outcome_variable",
+                    "mean",
+                    "sd",
+                    "n",
+                    "outcome_variable_name",
+                    "conf_level",
+                    "effect_size",
+                    "show_details",
+                    "show_calculations"),
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -885,6 +895,16 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 title="Standardized Mean Difference",
                 rows="(outcome_variable)",
                 visible="(effect_size == 'mean' & evaluate_hypotheses)",
+                clearWith=list(
+                    "outcome_variable",
+                    "mean",
+                    "sd",
+                    "n",
+                    "outcome_variable_name",
+                    "conf_level",
+                    "effect_size",
+                    "show_details",
+                    "show_calculations"),
                 columns=list(
                     list(
                         `name`="outcome_variable_name", 
@@ -946,6 +966,18 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary == 0)",
+                clearWith=list(
+                    "outcome_variable",
+                    "mean",
+                    "sd",
+                    "n",
+                    "outcome_variable_name",
+                    "conf_level",
+                    "effect_size",
+                    "show_details",
+                    "show_calculations",
+                    "null_value",
+                    "null_boundary"),
                 columns=list(
                     list(
                         `name`="effect", 
@@ -998,6 +1030,18 @@ jamovimagnitudeResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 title="Hypothesis Evaluation",
                 rows=1,
                 visible="(evaluate_hypotheses & null_boundary != 0)",
+                clearWith=list(
+                    "outcome_variable",
+                    "mean",
+                    "sd",
+                    "n",
+                    "outcome_variable_name",
+                    "conf_level",
+                    "effect_size",
+                    "show_details",
+                    "show_calculations",
+                    "null_value",
+                    "null_boundary"),
                 columns=list(
                     list(
                         `name`="effect", 

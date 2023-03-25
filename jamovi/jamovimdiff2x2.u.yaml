@@ -47,6 +47,13 @@ children:
             stretchFactor: 1
             children:
               - type: TargetLayoutBox
+                label: Outcome variable
+                children:
+                  - type: VariablesListBox
+                    name: outcome_variable
+                    maxItemCount: 1
+                    isTarget: true
+              - type: TargetLayoutBox
                 label: Grouping variable A
                 children:
                   - type: VariablesListBox
@@ -60,13 +67,6 @@ children:
                   - type: VariablesListBox
                     name: grouping_variable_B
                     enable: '(switch:from_raw)'
-                    maxItemCount: 1
-                    isTarget: true
-              - type: TargetLayoutBox
-                label: Outcome variable
-                children:
-                  - type: VariablesListBox
-                    name: outcome_variable
                     maxItemCount: 1
                     isTarget: true
       - type: CollapseBox

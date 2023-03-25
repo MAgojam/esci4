@@ -16,6 +16,22 @@ items:
       title: Overview
       type: Table
       rows:  1
+      clearWith:
+        - outcome_variable
+        - grouping_variable
+        - comparison_cases
+        - comparison_not_cases
+        - reference_cases
+        - reference_not_cases
+        - case_label
+        - not_case_label
+        - grouping_variable_level1
+        - grouping_variable_level2
+        - outcome_variable_name
+        - grouping_variable_name
+        - count_NA
+        - conf_level
+        - show_details
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable'
@@ -61,6 +77,22 @@ items:
       title: Proportion Difference
       type: Table
       rows:  3
+      clearWith:
+        - outcome_variable
+        - grouping_variable
+        - comparison_cases
+        - comparison_not_cases
+        - reference_cases
+        - reference_not_cases
+        - case_label
+        - not_case_label
+        - grouping_variable_level1
+        - grouping_variable_level2
+        - outcome_variable_name
+        - grouping_variable_name
+        - count_NA
+        - conf_level
+        - show_details
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable'
@@ -101,6 +133,22 @@ items:
       type: Table
       rows: 0
       visible: (show_chi_square)
+      clearWith:
+        - outcome_variable
+        - grouping_variable
+        - comparison_cases
+        - comparison_not_cases
+        - reference_cases
+        - reference_not_cases
+        - case_label
+        - not_case_label
+        - grouping_variable_level1
+        - grouping_variable_level2
+        - outcome_variable_name
+        - grouping_variable_name
+        - count_NA
+        - conf_level
+        - show_details
       columns:
         - name: outcome_variable_level
           title: 'Outcome variable level'
@@ -111,6 +159,22 @@ items:
       type: Table
       rows:  1
       visible: (show_phi)
+      clearWith:
+        - outcome_variable
+        - grouping_variable
+        - comparison_cases
+        - comparison_not_cases
+        - reference_cases
+        - reference_not_cases
+        - case_label
+        - not_case_label
+        - grouping_variable_level1
+        - grouping_variable_level2
+        - outcome_variable_name
+        - grouping_variable_name
+        - count_NA
+        - conf_level
+        - show_details
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable'
@@ -144,6 +208,22 @@ items:
       type: Table
       rows:  1
       visible: true
+      clearWith:
+        - outcome_variable
+        - grouping_variable
+        - comparison_cases
+        - comparison_not_cases
+        - reference_cases
+        - reference_not_cases
+        - case_label
+        - not_case_label
+        - grouping_variable_level1
+        - grouping_variable_level2
+        - outcome_variable_name
+        - grouping_variable_name
+        - count_NA
+        - conf_level
+        - show_details
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable'
@@ -175,6 +255,24 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - outcome_variable
+        - grouping_variable
+        - comparison_cases
+        - comparison_not_cases
+        - reference_cases
+        - reference_not_cases
+        - case_label
+        - not_case_label
+        - grouping_variable_level1
+        - grouping_variable_level2
+        - outcome_variable_name
+        - grouping_variable_name
+        - count_NA
+        - conf_level
+        - show_details
+        - null_value
+        - null_boundary
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'

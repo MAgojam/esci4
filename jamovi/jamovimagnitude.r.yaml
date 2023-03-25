@@ -16,6 +16,16 @@ items:
       title: Overview
       type: Table
       rows:  (outcome_variable)
+      clearWith:
+        - outcome_variable
+        - mean
+        - sd
+        - n
+        - outcome_variable_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -109,6 +119,16 @@ items:
       type: Table
       rows:  (outcome_variable)
       visible: (effect_size == 'mean' & evaluate_hypotheses)
+      clearWith:
+        - outcome_variable
+        - mean
+        - sd
+        - n
+        - outcome_variable_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -158,6 +178,18 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - outcome_variable
+        - mean
+        - sd
+        - n
+        - outcome_variable_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
+        - null_value
+        - null_boundary
       columns:
         - name: effect
           title: 'Effect'
@@ -201,6 +233,18 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
+      clearWith:
+        - outcome_variable
+        - mean
+        - sd
+        - n
+        - outcome_variable_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
+        - null_value
+        - null_boundary
       columns:
         - name: effect
           title: 'Effect'

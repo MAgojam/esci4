@@ -1572,6 +1572,15 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 name="raw_data",
                 title="Table of Studies",
                 rows=1,
+                clearWith=list(
+                    "rs",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="label", 
@@ -1643,6 +1652,15 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 name="es_meta",
                 title="Meta-Analytic Effect Sizes",
                 rows=1,
+                clearWith=list(
+                    "rs",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_label", 
@@ -1716,6 +1734,15 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 name="es_heterogeneity",
                 title="Effect Size Heterogeneity",
                 rows=1,
+                clearWith=list(
+                    "rs",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="measure", 
@@ -1750,6 +1777,15 @@ jamovimetarResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
                 name="es_meta_difference",
                 title="Moderator Analysis",
                 rows=3,
+                clearWith=list(
+                    "rs",
+                    "ns",
+                    "labels",
+                    "moderator",
+                    "effect_label",
+                    "conf_level",
+                    "random_effects",
+                    "show_details"),
                 columns=list(
                     list(
                         `name`="effect_label", 

@@ -16,6 +16,23 @@ items:
       title: Overview
       type: Table
       rows:  2
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -94,6 +111,23 @@ items:
       title: Correlation Between Paired Measures
       type: Table
       rows:  1
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: y_variable_name
           title: 'Reference measure name'
@@ -133,6 +167,23 @@ items:
       type: Table
       rows:  3
       visible: (effect_size == 'mean_difference')
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -190,6 +241,23 @@ items:
       type: Table
       rows:  1
       visible: (effect_size == 'mean_difference')
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -238,6 +306,23 @@ items:
       type: Table
       visible: (show_ratio & effect_size == 'mean_difference')
       rows:  1
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -273,6 +358,23 @@ items:
       type: Table
       visible: (effect_size == 'median_difference')
       rows:  3
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -307,6 +409,23 @@ items:
       type: Table
       visible: (show_ratio & effect_size == 'median_difference')
       rows:  1
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
       columns:
         - name: comparison_measure_name
           title: 'Outcome measure name'
@@ -342,6 +461,26 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
+        - null_value
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -389,6 +528,26 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
+      clearWith:
+        - reference_measure
+        - comparison_measure
+        - comparison_mean
+        - comparison_sd
+        - reference_measure
+        - reference_sd
+        - n
+        - enter_r_or_sdiff
+        - correlation
+        - sdiff
+        - comparison_measure_name
+        - reference_measure_name
+        - conf_level
+        - effect_size
+        - show_details
+        - show_calculations
+        - null_value
+        - null_boundary
+        - rope_units
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'

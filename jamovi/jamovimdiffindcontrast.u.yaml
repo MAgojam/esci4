@@ -28,19 +28,19 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
+            label: Outcome variable(s)
+            children:
+              - type: VariablesListBox
+                name: outcome_variable
+                enable: '(switch:from_raw)'
+                isTarget: true
+          - type: TargetLayoutBox
             label: Grouping variable
             children:
               - type: VariablesListBox
                 name: grouping_variable
                 enable: '(switch:from_raw)'
                 maxItemCount: 1
-                isTarget: true
-          - type: TargetLayoutBox
-            label: Outcome variable(s)
-            children:
-              - type: VariablesListBox
-                name: outcome_variable
-                enable: '(switch:from_raw)'
                 isTarget: true
   - type: CollapseBox
     label: Work with summary data

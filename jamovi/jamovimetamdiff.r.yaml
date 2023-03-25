@@ -16,6 +16,29 @@ items:
       title: Table of Studies
       type: Table
       rows:  1
+      clearWith:
+        - switch
+        - comparison_means
+        - comparison_sds
+        - comparison_ns
+        - reference_means
+        - reference_sds
+        - reference_ns
+        - r
+        - labels
+        - moderator
+        - d
+        - dcomparison_ns
+        - dreference_ns
+        - dr
+        - dlabels
+        - dmoderator
+        - conf_level
+        - effect_label
+        - reported_effect_size
+        - assume_equal_variance
+        - random_effects
+        - show_details
       columns:
         - name: label
           title: 'label'
@@ -95,6 +118,29 @@ items:
       title: Meta-Analytic Effect Sizes
       type: Table
       rows:  1
+      clearWith:
+        - switch
+        - comparison_means
+        - comparison_sds
+        - comparison_ns
+        - reference_means
+        - reference_sds
+        - reference_ns
+        - r
+        - labels
+        - moderator
+        - d
+        - dcomparison_ns
+        - dreference_ns
+        - dr
+        - dlabels
+        - dmoderator
+        - conf_level
+        - effect_label
+        - reported_effect_size
+        - assume_equal_variance
+        - random_effects
+        - show_details
       columns:
         - name: effect_label
           title: 'Effect'
@@ -187,6 +233,29 @@ items:
       title: Effect Size Heterogeneity
       type: Table
       rows:  1
+      clearWith:
+        - switch
+        - comparison_means
+        - comparison_sds
+        - comparison_ns
+        - reference_means
+        - reference_sds
+        - reference_ns
+        - r
+        - labels
+        - moderator
+        - d
+        - dcomparison_ns
+        - dreference_ns
+        - dr
+        - dlabels
+        - dmoderator
+        - conf_level
+        - effect_label
+        - reported_effect_size
+        - assume_equal_variance
+        - random_effects
+        - show_details
       columns:
         - name: measure
           title: 'Measure'
@@ -215,6 +284,29 @@ items:
       title: Moderator Analysis
       type: Table
       rows:  3
+      clearWith:
+        - switch
+        - comparison_means
+        - comparison_sds
+        - comparison_ns
+        - reference_means
+        - reference_sds
+        - reference_ns
+        - r
+        - labels
+        - moderator
+        - d
+        - dcomparison_ns
+        - dreference_ns
+        - dr
+        - dlabels
+        - dmoderator
+        - conf_level
+        - effect_label
+        - reported_effect_size
+        - assume_equal_variance
+        - random_effects
+        - show_details
       columns:
         - name: effect_label
           title: 'Effect'

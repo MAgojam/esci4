@@ -16,6 +16,21 @@ items:
       title: Overview
       type: Table
       rows:  4
+      clearWith:
+        - x
+        - y
+        - grouping_variable
+        - comparison_r
+        - comparison_n
+        - reference_r
+        - reference_n
+        - x_variable_name
+        - y_variable_name
+        - comparison_level_name
+        - reference_level_name
+        - grouping_variable_name
+        - conf_level
+        - show_details
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -99,6 +114,21 @@ items:
       title: Correlation Between Paired Measures
       type: Table
       rows:  2
+      clearWith:
+        - x
+        - y
+        - grouping_variable
+        - comparison_r
+        - comparison_n
+        - reference_r
+        - reference_n
+        - x_variable_name
+        - y_variable_name
+        - comparison_level_name
+        - reference_level_name
+        - grouping_variable_name
+        - conf_level
+        - show_details
       columns:
         - name: grouping_variable_name
           title: 'Grouping variable name'
@@ -145,6 +175,21 @@ items:
       title: Difference in Correlation
       type: Table
       rows:  3
+      clearWith:
+        - x
+        - y
+        - grouping_variable
+        - comparison_r
+        - comparison_n
+        - reference_r
+        - reference_n
+        - x_variable_name
+        - y_variable_name
+        - comparison_level_name
+        - reference_level_name
+        - grouping_variable_name
+        - conf_level
+        - show_details
       columns:
         - name: grouping_variable
           title: 'Grouping variable name'
@@ -194,6 +239,23 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary == 0)
+      clearWith:
+        - x
+        - y
+        - grouping_variable
+        - comparison_r
+        - comparison_n
+        - reference_r
+        - reference_n
+        - x_variable_name
+        - y_variable_name
+        - comparison_level_name
+        - reference_level_name
+        - grouping_variable_name
+        - conf_level
+        - show_details
+        - null_value
+        - null_boundary
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
@@ -232,6 +294,23 @@ items:
       type: Table
       rows:  1
       visible: (evaluate_hypotheses & null_boundary != 0)
+      clearWith:
+        - x
+        - y
+        - grouping_variable
+        - comparison_r
+        - comparison_n
+        - reference_r
+        - reference_n
+        - x_variable_name
+        - y_variable_name
+        - comparison_level_name
+        - reference_level_name
+        - grouping_variable_name
+        - conf_level
+        - show_details
+        - null_value
+        - null_boundary
       columns:
         - name: outcome_variable_name
           title: 'Outcome variable'
