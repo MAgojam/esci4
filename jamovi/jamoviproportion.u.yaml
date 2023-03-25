@@ -90,15 +90,19 @@ children:
           column: 1
           row: 3
   - type: Label
-    label: <hr>Analysis options
+    label: Analysis options
     stretchFactor: 1
     children:
-      - type: CheckBox
-        name: count_NA
-        enable: '(switch:from_raw)'
       - type: TextBox
         name: conf_level
         format: number
+      - type: CheckBox
+        name: count_NA
+        enable: '(switch:from_raw)'
+  - type: Label
+    label: Results options
+    stretchFactor: 1
+    children:
       - type: CheckBox
         name: show_details
       - type: CheckBox
@@ -113,7 +117,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             cell:
               column: 0
               row: 1
@@ -130,7 +134,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis: '
+            label: '<i>Y</i> axis'
             cell:
               column: 0
               row: 2
@@ -160,7 +164,7 @@ children:
               column: 1
               row: 4
           - type: Label
-            label: '<i>X</i> axis: '
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 5
@@ -184,7 +188,7 @@ children:
               column: 2
               row: 6
           - type: Label
-            label: 'Distributions:'
+            label: 'Distributions'
             cell:
               column: 0
               row: 7
@@ -200,7 +204,7 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: 'Summary:'
+                label: 'Summary'
                 cell:
                   column: 0
                   row: 1
@@ -230,7 +234,7 @@ children:
                   column: 0
                   row: 4
               - type: Label
-                label: 'CI:'
+                label: 'CI'
                 cell:
                   column: 0
                   row: 5

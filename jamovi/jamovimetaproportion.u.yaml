@@ -37,7 +37,7 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: Label
-    label: <hr>Analysis options
+    label: Analysis options
     stretchFactor: 3
     children:
       - type: TextBox
@@ -49,11 +49,15 @@ children:
         stretchFactor: 3
       - type: ComboBox
         name: random_effects
+  - type: Label
+    label: Results options
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: show_details
       - type: CheckBox
         name: include_PIs
         enable: '(random_effects:random_effects)'
-      - type: CheckBox
-        name: show_details
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1
@@ -64,7 +68,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             cell:
               column: 0
               row: 1
@@ -81,7 +85,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             cell:
               column: 0
               row: 2
@@ -103,7 +107,7 @@ children:
               column: 1
               row: 3
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 4
@@ -150,7 +154,7 @@ children:
               column: 2
               row: 7
           - type: Label
-            label: 'Difference axis: '
+            label: 'Difference axis'
             cell:
               column: 0
               row: 8
@@ -180,7 +184,7 @@ children:
               column: 1
               row: 11
           - type: Label
-            label: 'Sample-size scaling:'
+            label: 'Sample-size scaling'
             cell:
               column: 0
               row: 12
@@ -222,7 +226,7 @@ children:
                   column: 4
                   row: 3
               - type: Label
-                label: '<b>Point estimate markers:</b>'
+                label: '<b>Point estimate markers</b>'
                 cell:
                   column: 0
                   row: 4
@@ -327,7 +331,7 @@ children:
                   column: 4
                   row: 8
               - type: Label
-                label: '<b>CIs:</b>'
+                label: '<b>CIs</b>'
                 cell:
                   column: 0
                   row: 9
@@ -437,7 +441,7 @@ children:
                   column: 0
                   row: 14
               - type: Label
-                label: '<b>Diamonds:</b>'
+                label: '<b>Diamonds</b>'
                 cell:
                   column: 0
                   row: 15

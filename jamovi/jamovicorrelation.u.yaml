@@ -43,53 +43,6 @@ children:
                 maxItemCount: 1
                 isTarget: true
                 enable: '(switch:from_raw)'
-      - type: Label
-        label: Regression
-        children:
-          - type: CheckBox
-            name: do_regression
-            enable: '(switch:from_raw)'
-          - type: LayoutBox
-            margin: small
-            style: inline
-            children:
-              - type: CheckBox
-                name: show_line
-                enable: '(switch:from_raw && do_regression)'
-              - type: CheckBox
-                name: show_line_CI
-                enable: '(switch:from_raw && do_regression)'
-          - type: LayoutBox
-            margin: small
-            style: inline
-            children:
-              - type: CheckBox
-                name: show_residuals
-                enable: '(switch:from_raw && do_regression)'
-              - type: CheckBox
-                name: show_PI
-                enable: '(switch:from_raw && do_regression)'
-          - type: LayoutBox
-            margin: small
-            style: inline
-            children:
-              - type: TextBox
-                name: predict_from_x
-                format: string
-                enable: '(switch:from_raw && do_regression)'
-      - type: Label
-        label: Other options
-        children:
-          - type: LayoutBox
-            margin: small
-            style: inline
-            children:
-              - type: CheckBox
-                name: show_mean_lines
-                enable: '(switch:from_raw)'
-              - type: CheckBox
-                name: plot_as_z
-                enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Work with summary data
     name: spanel
@@ -157,8 +110,48 @@ children:
       - type: TextBox
         name: conf_level
         format: number
+  - type: Label
+    label: Results options
+    stretchFactor: 1
+    children:
       - type: CheckBox
         name: show_details
+  - type: Label
+    label: Regression
+    children:
+      - type: CheckBox
+        name: do_regression
+        enable: '(switch:from_raw)'
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: CheckBox
+            name: show_line
+            enable: '(switch:from_raw && do_regression)'
+          - type: CheckBox
+            name: show_line_CI
+            enable: '(switch:from_raw && do_regression)'
+          - type: CheckBox
+            name: show_residuals
+            enable: '(switch:from_raw && do_regression)'
+      - type: LayoutBox
+        margin: small
+        style: inline
+        children:
+          - type: CheckBox
+            name: show_mean_lines
+            enable: '(switch:from_raw && do_regression)'
+          - type: CheckBox
+            name: plot_as_z
+            enable: '(switch:from_raw && do_regression)'
+      - type: CheckBox
+        name: show_PI
+        enable: '(switch:from_raw && do_regression)'
+      - type: TextBox
+        name: predict_from_x
+        format: string
+        enable: '(switch:from_raw && do_regression)'
   - type: CollapseBox
     label: Scatter plot options
     stretchFactor: 1
@@ -169,7 +162,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             enable: '(switch:from_raw)'
             cell:
               column: 0
@@ -189,7 +182,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             enable: '(switch:from_raw)'
             cell:
               column: 0
@@ -238,7 +231,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 6
@@ -286,7 +279,7 @@ children:
               column: 1
               row: 9
           - type: Label
-            label: 'Label:'
+            label: 'Label'
             cell:
               column: 0
               row: 10
@@ -302,7 +295,7 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: 'Raw data:'
+                label: 'Raw data'
                 cell:
                   column: 0
                   row: 2
@@ -469,7 +462,7 @@ children:
                   column: 3
                   row: 12
               - type: Label
-                label: 'Prediction from <i>X</i>:'
+                label: 'Prediction from <i>X</i>'
                 cell:
                   column: 0
                   row: 13
@@ -612,7 +605,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             cell:
               column: 0
               row: 1
@@ -629,7 +622,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             cell:
               column: 0
               row: 2
@@ -671,7 +664,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 6
@@ -695,7 +688,7 @@ children:
               column: 2
               row: 7
           - type: Label
-            label: 'Distributions:'
+            label: 'Distributions'
             cell:
               column: 0
               row: 8
@@ -711,7 +704,7 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: 'Summary:'
+                label: 'Summary'
                 cell:
                   column: 0
                   row: 1
@@ -741,7 +734,7 @@ children:
                   column: 0
                   row: 4
               - type: Label
-                label: 'CI:'
+                label: 'CI'
                 cell:
                   column: 0
                   row: 5
@@ -766,7 +759,7 @@ children:
                   column: 1
                   row: 7
               - type: Label
-                label: 'Error distribution:'
+                label: 'Error distribution'
                 cell:
                   column: 0
                   row: 8

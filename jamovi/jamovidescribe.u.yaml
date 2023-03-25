@@ -16,17 +16,17 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: Label
-    label: '<hr>Analysis options'
+    label: 'Results options'
     stretchFactor: 1
     children:
       - type: CheckBox
         name: show_details
   - type: Label
-    label: '<hr>Explore:'
+    label: 'Explore'
     stretchFactor: 1
     children:
       - type: Label
-        label: 'Location:'
+        label: 'Location'
         cell:
           column: 1
           row: 1
@@ -41,7 +41,7 @@ children:
           column: 3
           row: 1
       - type: Label
-        label: 'Spread:'
+        label: 'Spread'
         cell:
           column: 1
           row: 2
@@ -56,7 +56,7 @@ children:
           column: 3
           row: 2
       - type: Label
-        label: 'z scores:'
+        label: 'z scores'
         cell:
           column: 1
           row: 3
@@ -66,7 +66,7 @@ children:
           column: 2
           row: 3
       - type: Label
-        label: 'Percentiles:'
+        label: 'Percentiles'
         cell:
           column: 1
           row: 4
@@ -87,7 +87,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             cell:
               column: 0
               row: 1
@@ -104,7 +104,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: 'Histogram:'
+            label: 'Histogram'
             cell:
               column: 0
               row: 2
@@ -115,7 +115,7 @@ children:
               column: 1
               row: 2
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             cell:
               column: 0
               row: 3
@@ -157,7 +157,7 @@ children:
               column: 1
               row: 6
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 7
@@ -204,7 +204,7 @@ children:
             collapsed: true
             children:
               - type: Label
-                label: 'Bars and dots:'
+                label: 'Bars and dots'
                 cell:
                   column: 0
                   row: 1
@@ -214,7 +214,7 @@ children:
                   column: 1
                   row: 2
               - type: Label
-                label: 'Not-highlighted:'
+                label: 'Not-highlighted'
                 cell:
                   column: 0
                   row: 3
@@ -224,7 +224,7 @@ children:
                   column: 1
                   row: 4
               - type: Label
-                label: 'Highlighted:'
+                label: 'Highlighted'
                 cell:
                   column: 0
                   row: 5
@@ -234,7 +234,7 @@ children:
                   column: 1
                   row: 6
               - type: Label
-                label: 'Markers:'
+                label: 'Markers'
                 cell:
                   column: 0
                   row: 7

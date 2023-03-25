@@ -53,7 +53,7 @@ options:
       default: 95
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 
@@ -73,27 +73,27 @@ options:
       default: false
 
     - name: show_residuals
-      title: Show residuals
+      title: Residuals
       type: Bool
       default: false
 
     - name: show_PI
-      title: Show prediction intervals
+      title: Prediction intervals
       type: Bool
       default: false
 
     - name: show_mean_lines
-      title: 'Show cross through means of <i>X</i> and <i>Y</i>'
+      title: 'Cross through means of <i>X</i> and <i>Y</i>'
       type: Bool
       default: false
 
     - name: show_r
-      title: Display <i>r</i> value on scatterplot
+      title: <i>r</i> value on scatterplot
       type: Bool
       default: false
 
     - name: plot_as_z
-      title: Plot <i>Z</i> scores rather than raw scores
+      title: <i>Z</i> scores rather than raw scores
       type: Bool
       default: false
 
@@ -103,7 +103,7 @@ options:
       default: ' '
 
     - name: evaluate_hypotheses
-      title: 'Evaluate a hypothesis?'
+      title: 'Hypothesis test'
       type: Bool
       default: false
 

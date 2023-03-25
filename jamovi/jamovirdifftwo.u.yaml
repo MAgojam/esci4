@@ -174,14 +174,21 @@ children:
             stretchFactor: 2
             enable: '(switch:from_summary)'
   - type: Label
-    label: <hr>Analysis options
+    label: Analysis options
     stretchFactor: 1
     children:
       - type: TextBox
         name: conf_level
         format: number
+  - type: Label
+    label: Results options
+    stretchFactor: 1
+    children:
       - type: CheckBox
         name: show_details
+  - type: Label
+    label: Regression
+    children:
       - type: LayoutBox
         margin: small
         style: inline
@@ -202,7 +209,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             enable: '(switch:from_raw)'
             cell:
               column: 0
@@ -222,7 +229,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             enable: '(switch:from_raw)'
             cell:
               column: 0
@@ -271,7 +278,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 6
@@ -339,12 +346,12 @@ children:
                   column: 3
                   row: 1
               - type: Label
-                label: 'Raw data:'
+                label: 'Raw data'
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: 'Regression lines:'
+                label: 'Regression lines'
                 cell:
                   column: 0
                   row: 8
@@ -518,7 +525,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             cell:
               column: 0
               row: 1
@@ -535,7 +542,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             cell:
               column: 0
               row: 2
@@ -577,7 +584,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 6
@@ -601,7 +608,7 @@ children:
               column: 2
               row: 7
           - type: Label
-            label: 'Difference axis: '
+            label: 'Difference axis'
             cell:
               column: 0
               row: 8
@@ -632,12 +639,12 @@ children:
                   column: 3
                   row: 1
               - type: Label
-                label: 'Summary:'
+                label: 'Summary'
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: 'CI:'
+                label: 'CI'
                 cell:
                   column: 0
                   row: 8

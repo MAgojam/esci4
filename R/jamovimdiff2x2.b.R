@@ -315,7 +315,7 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         if(!is(estimate, "esci_estimate"))
           return(TRUE)
 
-        myplot <- plot_interaction(estimate)
+        myplot <- plot_interaction(estimate, show_CI = self$options$show_CI)
 
         ymin <- jamovi_sanitize(
           my_value = self$options$ymin,

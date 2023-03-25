@@ -92,7 +92,7 @@ options:
             title: Median difference
 
     - name: show_ratio
-      title: Show ratios
+      title: Ratio between groups
       type: Bool
       default: false
 
@@ -102,17 +102,17 @@ options:
       default: false
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 
     - name: show_calculations
-      title: Show calculation components
+      title: Calculation components
       type: Bool
       default: false
 
     - name: evaluate_hypotheses
-      title: 'Evaluate a hypothesis?'
+      title: 'Hypothesis test'
       type: Bool
       default: false
 

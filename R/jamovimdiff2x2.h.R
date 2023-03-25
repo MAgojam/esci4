@@ -40,6 +40,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             assume_equal_variance = TRUE,
             show_details = FALSE,
             show_interaction_plot = FALSE,
+            show_CI = FALSE,
             evaluate_hypotheses = FALSE,
             null_value = "0",
             null_boundary = "0",
@@ -281,6 +282,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..show_interaction_plot <- jmvcore::OptionBool$new(
                 "show_interaction_plot",
                 show_interaction_plot,
+                default=FALSE)
+            private$..show_CI <- jmvcore::OptionBool$new(
+                "show_CI",
+                show_CI,
                 default=FALSE)
             private$..evaluate_hypotheses <- jmvcore::OptionBool$new(
                 "evaluate_hypotheses",
@@ -1775,6 +1780,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..assume_equal_variance)
             self$.addOption(private$..show_details)
             self$.addOption(private$..show_interaction_plot)
+            self$.addOption(private$..show_CI)
             self$.addOption(private$..evaluate_hypotheses)
             self$.addOption(private$..null_value)
             self$.addOption(private$..null_boundary)
@@ -1895,6 +1901,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         assume_equal_variance = function() private$..assume_equal_variance$value,
         show_details = function() private$..show_details$value,
         show_interaction_plot = function() private$..show_interaction_plot$value,
+        show_CI = function() private$..show_CI$value,
         evaluate_hypotheses = function() private$..evaluate_hypotheses$value,
         null_value = function() private$..null_value$value,
         null_boundary = function() private$..null_boundary$value,
@@ -2014,6 +2021,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..assume_equal_variance = NA,
         ..show_details = NA,
         ..show_interaction_plot = NA,
+        ..show_CI = NA,
         ..evaluate_hypotheses = NA,
         ..null_value = NA,
         ..null_boundary = NA,
@@ -2721,6 +2729,7 @@ jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param assume_equal_variance .
 #' @param show_details .
 #' @param show_interaction_plot .
+#' @param show_CI .
 #' @param evaluate_hypotheses .
 #' @param null_value .
 #' @param null_boundary .
@@ -2865,6 +2874,7 @@ jamovimdiff2x2 <- function(
     assume_equal_variance = TRUE,
     show_details = FALSE,
     show_interaction_plot = FALSE,
+    show_CI = FALSE,
     evaluate_hypotheses = FALSE,
     null_value = "0",
     null_boundary = "0",
@@ -3008,6 +3018,7 @@ jamovimdiff2x2 <- function(
         assume_equal_variance = assume_equal_variance,
         show_details = show_details,
         show_interaction_plot = show_interaction_plot,
+        show_CI = show_CI,
         evaluate_hypotheses = evaluate_hypotheses,
         null_value = null_value,
         null_boundary = null_boundary,

@@ -70,17 +70,17 @@ options:
       default: Grouping variable
 
     - name: count_NA
-      title: Count missing cases?
+      title: Missing cases are counted
       type: Bool
       default: false
 
     - name: show_ratio
-      title: Show odds ratio
+      title: Odds ratio
       type: Bool
       default: false
 
     - name: show_chi_square
-      title: "Show &#120536;<sup>2</sub> analysis"
+      title: "&#120536;<sup>2</sub> analysis"
       type: Bool
       default: false
 
@@ -97,7 +97,7 @@ options:
       default: both
 
     - name: show_phi
-      title: "Show correlation (<i>&#981;</i>)"
+      title: "Correlation (<i>&#981;</i>)"
       type: Bool
       default: false
 
@@ -107,12 +107,12 @@ options:
       default: 95
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 
     - name: evaluate_hypotheses
-      title: 'Evaluate a hypothesis?'
+      title: 'Hypothesis test'
       type: Bool
       default: false
 

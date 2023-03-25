@@ -79,7 +79,7 @@ options:
       default: 95
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 
@@ -94,7 +94,7 @@ options:
       default: true
 
     - name: evaluate_hypotheses
-      title: 'Evaluate a hypothesis?'
+      title: 'Hypothesis test'
       type: Bool
       default: false
 

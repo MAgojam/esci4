@@ -49,7 +49,7 @@ options:
       default: My outcome variable
 
     - name: count_NA
-      title: Count missing cases?
+      title: Missing cases are counted
       type: Bool
       default: false
 
@@ -59,17 +59,17 @@ options:
       default: 95
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 
     - name: plot_possible
-      title: Show lines at proportion intervals
+      title: Lines at proportion intervals
       type: Bool
       default: false
 
     - name: evaluate_hypotheses
-      title: 'Evaluate a hypothesis?'
+      title: 'Hypothesis test'
       type: Bool
       default: false
 

@@ -75,12 +75,12 @@ options:
             title: Fixed effect (FE)
 
     - name: include_PIs
-      title: Report prediction intervals
+      title: Prediction intervals
       type: Bool
       default: false
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 

@@ -15,7 +15,7 @@ options:
       permitted: [numeric]
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 

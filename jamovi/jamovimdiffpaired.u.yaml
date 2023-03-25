@@ -183,7 +183,7 @@ children:
             format: string
             enable: '(switch:from_summary && enter_r_or_sdiff:enter_sdiff)'
   - type: Label
-    label: '<hr>Analysis options'
+    label: 'Analysis options'
     stretchFactor: 1
     children:
       - type: TextBox
@@ -193,14 +193,18 @@ children:
       - type: ComboBox
         name: effect_size
         enable: '(switch:from_raw)'
-      - type: CheckBox
-        name: show_ratio
-        enable: '(switch:from_raw)'
+  - type: Label
+    label: Results options
+    stretchFactor: 1
+    children:
       - type: CheckBox
         name: show_details
       - type: CheckBox
         name: show_calculations
         enable: '(effect_size:mean_difference)'
+      - type: CheckBox
+        name: show_ratio
+        enable: '(switch:from_raw)'
   - type: CollapseBox
     label: Figure options
     stretchFactor: 1
@@ -211,7 +215,7 @@ children:
         margin: none
         children:
           - type: Label
-            label: 'Dimensions:'
+            label: 'Dimensions'
             cell:
               column: 0
               row: 1
@@ -228,7 +232,7 @@ children:
               column: 2
               row: 1
           - type: Label
-            label: '<i>Y</i> axis:'
+            label: '<i>Y</i> axis'
             cell:
               column: 0
               row: 2
@@ -270,7 +274,7 @@ children:
               column: 1
               row: 5
           - type: Label
-            label: '<i>X</i> axis:'
+            label: '<i>X</i> axis'
             cell:
               column: 0
               row: 6
@@ -299,7 +303,7 @@ children:
               column: 1
               row: 8
           - type: Label
-            label: 'Difference axis: '
+            label: 'Difference axis'
             cell:
               column: 0
               row: 9
@@ -315,7 +319,7 @@ children:
               column: 1
               row: 10
           - type: Label
-            label: 'Distributions:'
+            label: 'Distributions'
             cell:
               column: 0
               row: 11
@@ -340,7 +344,7 @@ children:
               column: 1
               row: 12
           - type: Label
-            label: 'Data:'
+            label: 'Data'
             cell:
               column: 0
               row: 13
@@ -378,22 +382,22 @@ children:
                   column: 3
                   row: 1
               - type: Label
-                label: 'Summary:'
+                label: 'Summary'
                 cell:
                   column: 0
                   row: 2
               - type: Label
-                label: 'CI:'
+                label: 'CI'
                 cell:
                   column: 0
                   row: 8
               - type: Label
-                label: 'Error distribution:'
+                label: 'Error distribution'
                 cell:
                   column: 0
                   row: 13
               - type: Label
-                label: 'Raw data:'
+                label: 'Raw data'
                 cell:
                   column: 0
                   row: 16

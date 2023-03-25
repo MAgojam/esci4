@@ -178,7 +178,7 @@ options:
       default: true
 
     - name: show_details
-      title: Show details
+      title: Extra details
       type: Bool
       default: false
 
@@ -187,8 +187,13 @@ options:
       type: Bool
       default: false
 
+    - name: show_CI
+      title: CI for each simple effect
+      type: Bool
+      default: false
+
     - name: evaluate_hypotheses
-      title: 'Evaluate a hypothesis?'
+      title: 'Hypothesis test'
       type: Bool
       default: false
 
