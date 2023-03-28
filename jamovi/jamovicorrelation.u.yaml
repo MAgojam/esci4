@@ -135,16 +135,6 @@ children:
           - type: CheckBox
             name: show_residuals
             enable: '(switch:from_raw && do_regression)'
-      - type: LayoutBox
-        margin: small
-        style: inline
-        children:
-          - type: CheckBox
-            name: show_mean_lines
-            enable: '(switch:from_raw && do_regression)'
-          - type: CheckBox
-            name: plot_as_z
-            enable: '(switch:from_raw && do_regression)'
       - type: CheckBox
         name: show_PI
         enable: '(switch:from_raw && do_regression)'
@@ -279,16 +269,28 @@ children:
               column: 1
               row: 9
           - type: Label
-            label: 'Label'
+            label: 'Other options'
             cell:
               column: 0
+              row: 10
+          - type: CheckBox
+            name: show_mean_lines
+            enable: '(switch:from_raw)'
+            cell:
+              column: 1
+              row: 10
+          - type: CheckBox
+            name: plot_as_z
+            enable: '(switch:from_raw)'
+            cell:
+              column: 2
               row: 10
           - type: CheckBox
             name: show_r
             enable: '(switch:from_raw)'
             cell:
               column: 1
-              row: 10
+              row: 11
           - type: CollapseBox
             label: Scatter plot aesthetics
             stretchFactor: 1
@@ -489,7 +491,7 @@ children:
                   column: 1
                   row: 15
               - type: Label
-                label: Guideline
+                label: Guidelines
                 cell:
                   column: 1
                   row: 16
@@ -765,11 +767,13 @@ children:
                   row: 8
               - type: ComboBox
                 name: fill_error
+                enable: '(switch:never)'
                 cell:
                   column: 0
                   row: 9
               - type: ComboBox
                 name: alpha_error
+                enable: '(switch:never)'
                 cell:
                   column: 1
                   row: 9

@@ -95,7 +95,10 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             #  If null, return
             #  If error, return the error
             if(is.null(estimate)) return(TRUE)
-            if(is(estimate, "try-error")) stop(estimate[1])
+            if(is(estimate, "try-error")) {
+              stop(estimate[1])
+              return(TRUE)
+            }
 
             # Fill in MoE
             estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2

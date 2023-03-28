@@ -95,7 +95,7 @@ options:
       default: false
 
     - name: evaluate_hypotheses
-      title: 'Hypothesis test'
+      title: 'Hypothesis evaluation'
       type: Bool
       default: false
 

@@ -511,6 +511,24 @@ estimate_rdiff_two.data.frame <- function(
     }
   }
 
+  # Validate each variable name
+  esci_assert_valid_column_name(data, x)
+  esci_assert_column_type(data, x, "is.numeric")
+  esci_assert_valid_column_name(data, y)
+  esci_assert_column_type(data, y, "is.numeric")
+
+  # Valid rows for each of first two levels
+  for (mylevel in levels(data[[grouping_variable]][1:2])) {
+    jdata <- data[data[[grouping_variable]] == mylevel, c(grouping_variable, x, y)]
+
+    if (sum((complete.cases(jdata))) < 3) {
+      stop(
+        glue::glue("There were less than 3 complete cases of {x} and {y} for the level {mylevel} of {grouping_variable}.  This analysis requires 3 or more complete cases per level of the grouping variable")
+      )
+    }
+
+  }
+
   # for (mylevel in levels(data[[grouping_variable]])[1:2]) {
   #   vs_to_check <- c(x, y)
   #   for (myv in vs_to_check) {

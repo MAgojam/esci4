@@ -86,10 +86,6 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
         .run = function() {
 
             estimate <- jamovi_correlation(self)
-            if (!is.null(estimate$properties$lm)) {
-              estimate$es_r$syx <- summary(estimate$properties$lm)$sigma
-
-            }
 
             # Print any notes that emerged from running the analysis
             jamovi_set_notes(self$results$help)
@@ -98,8 +94,15 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             #  If null, return
             #  If error, return the error
             if(is.null(estimate)) return(TRUE)
-            if(is(estimate, "try-error")) stop(estimate[1])
+            if(is(estimate, "try-error")) {
+              stop(estimate[1])
+              return(TRUE)
+            }
 
+            if (!is.null(estimate$properties$lm)) {
+              estimate$es_r$syx <- summary(estimate$properties$lm)$sigma
+            }
+            #
             # Fill in MoE
             estimate$overview$moe <- (estimate$overview$mean_UL - estimate$overview$mean_LL)/2
 
@@ -125,6 +128,8 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           # Redo analysis
           estimate <- jamovi_correlation(self)
+
+          if(is(estimate, "try-error")) return(TRUE)
 
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
@@ -467,6 +472,8 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           # Redo analysis
           estimate <- jamovi_correlation(self)
+
+          if(is(estimate, "try-error")) return(TRUE)
 
           if(!is(estimate, "esci_estimate"))
             return(TRUE)
@@ -850,8 +857,8 @@ jamovi_correlation <- function(self) {
         args$n <- jamovi_required_numeric(
             self$options$n,
             integer_required = TRUE,
-            lower = 0,
-            lower_inclusive = FALSE,
+            lower = 4,
+            lower_inclusive = TRUE,
             my_value_name = "<i>N</i>"
         )
 

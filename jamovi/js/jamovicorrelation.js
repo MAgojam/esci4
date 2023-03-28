@@ -29,6 +29,8 @@
             ui.show_line_CI.setValue(false);
             ui.show_residuals.setValue(false);
             ui.show_PI.setValue(false);
+            ui.show_mean_lines.setValue(false);
+            ui.plot_as_z.setValue(false);
           }
         },
 

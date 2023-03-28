@@ -66,7 +66,7 @@ test_r <- function() {
 
   myplot <- plot_scatter(estimate_r_raw, show_mean_lines = TRUE, plot_as_z = TRUE, show_r = TRUE)
 
-  plot_scatter(estimate_r_raw, predict_from_x = 10, show_line = TRUE, show_line_CI = TRUE)
+  plot_scatter(estimate_r_raw)
 
 
   estimate <- estimate_correlation(

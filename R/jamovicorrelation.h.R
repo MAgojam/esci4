@@ -67,9 +67,9 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             alpha_error = "1",
             fill_error = "gray75",
             sp_shape_raw_reference = "circle filled",
-            sp_color_raw_reference = "#008DF9",
+            sp_color_raw_reference = "black",
             sp_fill_raw_reference = "#008DF9",
-            sp_size_raw_reference = "4",
+            sp_size_raw_reference = "3",
             sp_alpha_raw_reference = ".25",
             sp_linetype_summary_reference = "solid",
             sp_color_summary_reference = "#008DF9",
@@ -87,15 +87,15 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             sp_prediction_color = "#E20134",
             sp_linetype_CI = "solid",
             sp_color_CI = "#008DF9",
-            sp_size_CI = "5",
+            sp_size_CI = "4",
             sp_alpha_CI = "1",
             sp_linetype_ref = "dotted",
-            sp_color_ref = "gray90",
-            sp_size_ref = "2",
+            sp_color_ref = "gray60",
+            sp_size_ref = "1",
             sp_alpha_ref = "1",
             sp_linetype_PI = "solid",
             sp_color_PI = "#E20134",
-            sp_size_PI = "3",
+            sp_size_PI = "2",
             sp_alpha_PI = "1", ...) {
 
             super$initialize(
@@ -600,7 +600,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_color_raw_reference <- jmvcore::OptionList$new(
                 "sp_color_raw_reference",
                 sp_color_raw_reference,
-                default="#008DF9",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -684,7 +684,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_size_raw_reference <- jmvcore::OptionList$new(
                 "sp_size_raw_reference",
                 sp_size_raw_reference,
-                default="4",
+                default="3",
                 options=list(
                     "1",
                     "2",
@@ -774,6 +774,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_linetype_PI_reference <- jmvcore::OptionList$new(
                 "sp_linetype_PI_reference",
@@ -847,6 +851,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_linetype_residual_reference <- jmvcore::OptionList$new(
                 "sp_linetype_residual_reference",
@@ -920,6 +928,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_prediction_label <- jmvcore::OptionList$new(
                 "sp_prediction_label",
@@ -1029,7 +1041,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_size_CI <- jmvcore::OptionList$new(
                 "sp_size_CI",
                 sp_size_CI,
-                default="5",
+                default="4",
                 options=list(
                     "1",
                     "2",
@@ -1046,6 +1058,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_linetype_ref <- jmvcore::OptionList$new(
                 "sp_linetype_ref",
@@ -1060,7 +1076,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_color_ref <- jmvcore::OptionList$new(
                 "sp_color_ref",
                 sp_color_ref,
-                default="gray90",
+                default="gray60",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -1102,7 +1118,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_size_ref <- jmvcore::OptionList$new(
                 "sp_size_ref",
                 sp_size_ref,
-                default="2",
+                default="1",
                 options=list(
                     "1",
                     "2",
@@ -1119,6 +1135,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_linetype_PI <- jmvcore::OptionList$new(
                 "sp_linetype_PI",
@@ -1175,7 +1195,7 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..sp_size_PI <- jmvcore::OptionList$new(
                 "sp_size_PI",
                 sp_size_PI,
-                default="3",
+                default="2",
                 options=list(
                     "1",
                     "2",
@@ -2086,9 +2106,9 @@ jamovicorrelation <- function(
     alpha_error = "1",
     fill_error = "gray75",
     sp_shape_raw_reference = "circle filled",
-    sp_color_raw_reference = "#008DF9",
+    sp_color_raw_reference = "black",
     sp_fill_raw_reference = "#008DF9",
-    sp_size_raw_reference = "4",
+    sp_size_raw_reference = "3",
     sp_alpha_raw_reference = ".25",
     sp_linetype_summary_reference = "solid",
     sp_color_summary_reference = "#008DF9",
@@ -2106,15 +2126,15 @@ jamovicorrelation <- function(
     sp_prediction_color = "#E20134",
     sp_linetype_CI = "solid",
     sp_color_CI = "#008DF9",
-    sp_size_CI = "5",
+    sp_size_CI = "4",
     sp_alpha_CI = "1",
     sp_linetype_ref = "dotted",
-    sp_color_ref = "gray90",
-    sp_size_ref = "2",
+    sp_color_ref = "gray60",
+    sp_size_ref = "1",
     sp_alpha_ref = "1",
     sp_linetype_PI = "solid",
     sp_color_PI = "#E20134",
-    sp_size_PI = "3",
+    sp_size_PI = "2",
     sp_alpha_PI = "1") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

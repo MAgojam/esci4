@@ -944,10 +944,12 @@ estimate_mdiff_2x2_between.data.frame <- function(
       invalids,
       glue::glue("Variable {grouping_variable_B} has more than 2 levels; only the first two levels were processed; the levels {paste0(levels(data[[grouping_variable_B]])[-(1:2)], collapse = ', ')} were dropped.")
     )
+    data <- data[data[[grouping_variable_B]] %in% levels(data[[grouping_variable_B]])[1:2], ]
+
   }
 
-
   data <- data[complete.cases(data), ]
+  data <- droplevels(data)
 
   a1 <- levels(data[[grouping_variable_A]])[[1]]
   a2 <- levels(data[[grouping_variable_A]])[[2]]
