@@ -1018,7 +1018,7 @@ options:
 
     - name: sp_color_raw_reference
       type: List
-      default: '#008DF9'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'
@@ -1097,7 +1097,7 @@ options:
 
     - name: sp_color_raw_comparison
       type: List
-      default: '#009F81'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'
@@ -1176,7 +1176,7 @@ options:
 
     - name: sp_color_raw_unused
       type: List
-      default: 'gray75'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'
@@ -1492,7 +1492,7 @@ options:
 
     - name: sp_size_raw_reference
       type: List
-      default: '4'
+      default: '3'
       options:
         - name: '1'
           title: '1'
@@ -1509,7 +1509,7 @@ options:
 
     - name: sp_size_raw_comparison
       type: List
-      default: '4'
+      default: '3'
       options:
         - name: '1'
           title: '1'
@@ -1543,7 +1543,7 @@ options:
 
     - name: sp_alpha_raw_reference
       type: List
-      default: '.25'
+      default: '.90'
       options:
         - name: '1'
           title: '0'
@@ -1553,12 +1553,14 @@ options:
           title: '.5'
         - name: '.25'
           title: '.75'
+        - name: '.90'
+          title: '.10'
         - name: '0'
           title: '1'
 
     - name: sp_alpha_raw_comparison
       type: List
-      default: '.25'
+      default: '.90'
       options:
         - name: '1'
           title: '0'
@@ -1568,12 +1570,14 @@ options:
           title: '.5'
         - name: '.25'
           title: '.75'
+        - name: '.90'
+          title: '.10'
         - name: '0'
           title: '1'
 
     - name: sp_alpha_raw_unused
       type: List
-      default: '.25'
+      default: '.90'
       options:
         - name: '1'
           title: '0'
@@ -1583,6 +1587,8 @@ options:
           title: '.5'
         - name: '.25'
           title: '.75'
+        - name: '.90'
+          title: '.10'
         - name: '0'
           title: '1'
 

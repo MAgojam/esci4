@@ -402,116 +402,139 @@ children:
                   row: 12
               - type: ComboBox
                 name: sp_shape_raw_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 3
               - type: ComboBox
                 name: sp_shape_raw_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 3
               - type: ComboBox
                 name: sp_shape_raw_unused
+                enable: '(switch:from_raw)'
                 cell:
                   column: 3
                   row: 3
               - type: ComboBox
                 name: sp_color_raw_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 5
               - type: ComboBox
                 name: sp_color_raw_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 5
               - type: ComboBox
                 name: sp_color_raw_unused
+                enable: '(switch:from_raw)'
                 cell:
                   column: 3
                   row: 5
               - type: ComboBox
                 name: sp_fill_raw_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 6
               - type: ComboBox
                 name: sp_fill_raw_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 6
               - type: ComboBox
                 name: sp_fill_raw_unused
+                enable: '(switch:from_raw)'
                 cell:
                   column: 3
                   row: 6
               - type: ComboBox
                 name: sp_size_raw_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 4
               - type: ComboBox
                 name: sp_size_raw_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 4
               - type: ComboBox
                 name: sp_size_raw_unused
+                enable: '(switch:from_raw)'
                 cell:
                   column: 3
                   row: 4
               - type: ComboBox
                 name: sp_alpha_raw_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 7
               - type: ComboBox
                 name: sp_alpha_raw_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 7
               - type: ComboBox
                 name: sp_alpha_raw_unused
+                enable: '(switch:from_raw)'
                 cell:
                   column: 3
                   row: 7
               - type: ComboBox
                 name: sp_linetype_summary_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 9
               - type: ComboBox
                 name: sp_linetype_summary_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 9
               - type: ComboBox
                 name: sp_size_summary_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 10
               - type: ComboBox
                 name: sp_size_summary_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 10
               - type: ComboBox
                 name: sp_color_summary_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 11
               - type: ComboBox
                 name: sp_color_summary_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 11
               - type: ComboBox
                 name: sp_alpha_summary_reference
+                enable: '(switch:from_raw)'
                 cell:
                   column: 1
                   row: 12
               - type: ComboBox
                 name: sp_alpha_summary_comparison
+                enable: '(switch:from_raw)'
                 cell:
                   column: 2
                   row: 12

@@ -75,18 +75,18 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             sp_shape_raw_reference = "circle filled",
             sp_shape_raw_comparison = "circle filled",
             sp_shape_raw_unused = "circle filled",
-            sp_color_raw_reference = "#008DF9",
-            sp_color_raw_comparison = "#009F81",
-            sp_color_raw_unused = "gray75",
+            sp_color_raw_reference = "black",
+            sp_color_raw_comparison = "black",
+            sp_color_raw_unused = "black",
             sp_fill_raw_reference = "#008DF9",
             sp_fill_raw_comparison = "#009F81",
             sp_fill_raw_unused = "NA",
-            sp_size_raw_reference = "4",
-            sp_size_raw_comparison = "4",
+            sp_size_raw_reference = "3",
+            sp_size_raw_comparison = "3",
             sp_size_raw_unused = "2",
-            sp_alpha_raw_reference = ".25",
-            sp_alpha_raw_comparison = ".25",
-            sp_alpha_raw_unused = ".25",
+            sp_alpha_raw_reference = ".90",
+            sp_alpha_raw_comparison = ".90",
+            sp_alpha_raw_unused = ".90",
             sp_linetype_summary_reference = "solid",
             sp_linetype_summary_comparison = "solid",
             sp_color_summary_reference = "#008DF9",
@@ -740,7 +740,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_color_raw_reference <- jmvcore::OptionList$new(
                 "sp_color_raw_reference",
                 sp_color_raw_reference,
-                default="#008DF9",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -782,7 +782,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_color_raw_comparison <- jmvcore::OptionList$new(
                 "sp_color_raw_comparison",
                 sp_color_raw_comparison,
-                default="#009F81",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -824,7 +824,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_color_raw_unused <- jmvcore::OptionList$new(
                 "sp_color_raw_unused",
                 sp_color_raw_unused,
-                default="gray75",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -992,7 +992,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_reference <- jmvcore::OptionList$new(
                 "sp_size_raw_reference",
                 sp_size_raw_reference,
-                default="4",
+                default="3",
                 options=list(
                     "1",
                     "2",
@@ -1003,7 +1003,7 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_size_raw_comparison <- jmvcore::OptionList$new(
                 "sp_size_raw_comparison",
                 sp_size_raw_comparison,
-                default="4",
+                default="3",
                 options=list(
                     "1",
                     "2",
@@ -1025,32 +1025,35 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..sp_alpha_raw_reference <- jmvcore::OptionList$new(
                 "sp_alpha_raw_reference",
                 sp_alpha_raw_reference,
-                default=".25",
+                default=".90",
                 options=list(
                     "1",
                     ".75",
                     ".5",
                     ".25",
+                    ".90",
                     "0"))
             private$..sp_alpha_raw_comparison <- jmvcore::OptionList$new(
                 "sp_alpha_raw_comparison",
                 sp_alpha_raw_comparison,
-                default=".25",
+                default=".90",
                 options=list(
                     "1",
                     ".75",
                     ".5",
                     ".25",
+                    ".90",
                     "0"))
             private$..sp_alpha_raw_unused <- jmvcore::OptionList$new(
                 "sp_alpha_raw_unused",
                 sp_alpha_raw_unused,
-                default=".25",
+                default=".90",
                 options=list(
                     "1",
                     ".75",
                     ".5",
                     ".25",
+                    ".90",
                     "0"))
             private$..sp_linetype_summary_reference <- jmvcore::OptionList$new(
                 "sp_linetype_summary_reference",
@@ -2117,18 +2120,18 @@ jamovirdifftwo <- function(
     sp_shape_raw_reference = "circle filled",
     sp_shape_raw_comparison = "circle filled",
     sp_shape_raw_unused = "circle filled",
-    sp_color_raw_reference = "#008DF9",
-    sp_color_raw_comparison = "#009F81",
-    sp_color_raw_unused = "gray75",
+    sp_color_raw_reference = "black",
+    sp_color_raw_comparison = "black",
+    sp_color_raw_unused = "black",
     sp_fill_raw_reference = "#008DF9",
     sp_fill_raw_comparison = "#009F81",
     sp_fill_raw_unused = "NA",
-    sp_size_raw_reference = "4",
-    sp_size_raw_comparison = "4",
+    sp_size_raw_reference = "3",
+    sp_size_raw_comparison = "3",
     sp_size_raw_unused = "2",
-    sp_alpha_raw_reference = ".25",
-    sp_alpha_raw_comparison = ".25",
-    sp_alpha_raw_unused = ".25",
+    sp_alpha_raw_reference = ".90",
+    sp_alpha_raw_comparison = ".90",
+    sp_alpha_raw_unused = ".90",
     sp_linetype_summary_reference = "solid",
     sp_linetype_summary_comparison = "solid",
     sp_color_summary_reference = "#008DF9",

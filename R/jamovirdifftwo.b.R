@@ -688,9 +688,14 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
 
           if (!is.null(myplot$layers$summary_Reference_line_CI)) {
-            #myplot$layers$summary_Reference_line$aes_params$colour <- self$options$sp_color_summary_reference
+            #
             myplot$layers$summary_Reference_line_CI$aes_params$fill <- self$options$sp_color_summary_reference
             myplot$layers$summary_Reference_line_CI$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_reference)
+
+            if (!self$options$show_line) {
+              myplot$layers$summary_Reference_line$aes_params$colour <- NA
+            }
+
            # myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference
             #myplot$layers$summary_Reference_line$aes_params$size <- as.numeric(self$options$sp_size_summary_reference)/2
           }
@@ -699,6 +704,11 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             #myplot$layers$summary_Comparison_line$aes_params$colour <- self$options$sp_color_summary_comparison
             myplot$layers$summary_Comparison_line_CI$aes_params$fill <- self$options$sp_color_summary_comparison
             myplot$layers$summary_Comparison_line_CI$aes_params$alpha <- as.numeric(self$options$sp_alpha_summary_comparison)
+
+            if (!self$options$show_line) {
+              myplot$layers$summary_Comparison_line$aes_params$colou <- NA
+            }
+
             #myplot$layers$summary_Comparison_line$aes_params$linetype <- self$options$sp_linetype_summary_comparison
             #myplot$layers$summary_Comparison_line$aes_params$size <- as.numeric(self$options$sp_size_summary_comparison)/2
 

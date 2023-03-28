@@ -348,7 +348,7 @@ estimate_correlation.data.frame <- function(
   esci_assert_column_has_valid_rows(
     data,
     x,
-    lower = 2,
+    lower = 3,
     na.rm = TRUE
   )
 
@@ -357,7 +357,7 @@ estimate_correlation.data.frame <- function(
   esci_assert_column_has_valid_rows(
     data,
     y,
-    lower = 2,
+    lower = 3,
     na.rm = TRUE
   )
 
