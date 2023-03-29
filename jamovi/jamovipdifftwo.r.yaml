@@ -1,6 +1,6 @@
 ---
 name:  jamovipdifftwo
-title: "Proprtions: Two groups"
+title: "Proportions: Two groups"
 jrs:   '1.1'
 
 items:
@@ -124,12 +124,12 @@ items:
           type: number
           visible: (show_details)
         - name: effect_size_adjusted
-          title: <i>P<sub>adjusted</sub></i>
+          title: <i>P</i><sub>adjusted</sub>
           type: number
           visible: (show_details)
 
     - name: contingency_table
-      title: Chi-square analysis
+      title: Chi-Square Analysis
       type: Table
       rows: 0
       visible: (show_chi_square)

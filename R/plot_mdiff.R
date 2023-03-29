@@ -1119,23 +1119,29 @@ plot_pdiff <- function(
 
   # Labels -----------------------------
   clevel <- paste(
-    gsub("P_", "P[", clevel),
-    "]",
+    gsub("P_", "*P*<sub>", clevel),
+    "</sub>",
     sep = ""
   )
 
   if (plot_paired) {
     vname <- " "
     xlab <- NULL
-    ylab <- glue::glue("{gsub(' ', '~', clevel)}~' and {conf_level*100}% Confidence Interval'")
-    myplot <- myplot + ggplot2::ylab(parse(text = ylab)) + ggplot2::xlab(NULL)
+    ylab <- glue::glue("{clevel} and {conf_level*100}% Confidence Interval'")
+    myplot <- myplot + ggplot2::ylab(ylab) + ggplot2::xlab(NULL)
   } else {
     vname <- outcome_var
     xlab <- estimate$es_proportion_difference$grouping_variable_name[[1]]
-    ylab <- glue::glue("'{vname}:'~{gsub(' ', '~', clevel)}~'and {conf_level*100}% Confidence Interval'")
+    ylab <- glue::glue("{vname}: {clevel} and {conf_level*100}% Confidence Interval'")
 
-    myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(parse(text = ylab))
+    myplot <- myplot + ggplot2::xlab(xlab) + ggplot2::ylab(ylab)
   }
+
+
+  myplot <- myplot + ggplot2::theme(
+    axis.title.y = ggtext::element_markdown(),
+    axis.title.x = ggtext::element_markdown(),
+  )
 
 
   # Attach warnings and return    -------------------

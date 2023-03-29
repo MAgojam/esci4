@@ -76,6 +76,8 @@ test_pdiff_two <- function() {
     grouping_variable = treatment
   )
 
+  plot_pdiff(pdiff_two)
+
   estimate_pdiff_two(
     outcome_variable = psych_status,
     grouping_variable = treatment,

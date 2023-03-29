@@ -80,7 +80,7 @@ options:
       default: false
 
     - name: show_chi_square
-      title: "&#120536;<sup>2</sub> analysis"
+      title: "<i>&#120536;</i><sup>2</sup> analysis"
       type: Bool
       default: false
 

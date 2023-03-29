@@ -895,7 +895,7 @@ jamovi_contingency_table <- function(self, estimate) {
 
   # Set a note with the chi square results
   mynote <- glue::glue(
-    "&#120536;<sup>2</sup>({format(estimate$properties$chi_square$parameter, digits = 0)}) = {format(estimate$properties$chi_square$statistic, digits = 2)}, <i>p</i> = {format(estimate$properties$chi_square$p.value, digits = 5)}, two-tailed.  Continuity correction has <b>not</b> been applied."
+    "<i>&#120536;</i><sup>2</sup>({format(estimate$properties$chi_square$parameter, digits = 0)}) = {format(estimate$properties$chi_square$statistic, digits = 2)}, <i>p</i> = {esci_pvalr(estimate$properties$chi_square$p.value)}.  Continuity correction has not been applied."
   )
 
   tbl$setNote(
@@ -911,4 +911,26 @@ jamovi_contingency_table <- function(self, estimate) {
 
   return(TRUE)
 
+}
+
+
+
+esci_pvalr <- function(pvals, sig.limit = .001, digits = 3, html = FALSE) {
+
+  roundr <- function(x, digits = 1) {
+    res <- sprintf(paste0('%.', digits, 'f'), x)
+    zzz <- paste0('0.', paste(rep('0', digits), collapse = ''))
+    res[res == paste0('-', zzz)] <- zzz
+    res
+  }
+
+  sapply(pvals, function(x, sig.limit) {
+    if (x < sig.limit)
+      if (html)
+        return(sprintf('&lt; %s', format(sig.limit))) else
+          return(sprintf('< %s', format(sig.limit)))
+    if (x > .1)
+      return(roundr(x, digits = 2)) else
+        return(roundr(x, digits = digits))
+  }, sig.limit = sig.limit)
 }

@@ -829,7 +829,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Proprtions: Two groups")
+                title="Proportions: Two groups")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -971,13 +971,13 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `visible`="(show_details)"),
                     list(
                         `name`="effect_size_adjusted", 
-                        `title`="<i>P<sub>adjusted</sub></i>", 
+                        `title`="<i>P</i><sub>adjusted</sub>", 
                         `type`="number", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="contingency_table",
-                title="Chi-square analysis",
+                title="Chi-Square Analysis",
                 rows=0,
                 visible="(show_chi_square)",
                 clearWith=list(
