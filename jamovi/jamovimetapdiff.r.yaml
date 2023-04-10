@@ -1,6 +1,6 @@
 ---
 name:  jamovimetapdiff
-title: "Meta-Analysis: Difference in proportions"
+title: "Meta-Analysis: Difference in Proportions"
 jrs:   '1.1'
 
 items:
@@ -57,25 +57,25 @@ items:
           type: number
           visible: (show_details)
         - name: reference_P
-          title: P<sub>Reference</sub>
+          title: <i>P</i><sub>reference</sub>
           type: number
         - name: reference_cases
-          title: Cases<sub>Reference</sub>
+          title: Cases<sub>reference</sub>
           type: integer
           visible: (show_details)
         - name: reference_N
-          title: <i>N</i><sub>Reference</sub>
+          title: <i>N</i><sub>reference</sub>
           type: integer
           visible: (show_details)
         - name: comparison_P
-          title: P<sub>Comparison</sub>
+          title: <i>P</i><sub>comparison</sub>
           type: number
         - name: comparison_cases
-          title: Cases<sub>Comparison</sub>
+          title: Cases<sub>comparison</sub>
           type: integer
           visible: (show_details)
         - name: comparison_N
-          title: <i>N</i><sub>Comparison</sub>
+          title: <i>N</i><sub>comparison</sub>
           type: integer
           visible: (show_details)
 

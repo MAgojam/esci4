@@ -260,6 +260,16 @@ These are rows {paste(which(!is.whole.number(data[[ns_quoname]])), collapse = ',
     res$es_meta_difference$effect_size <- esci_z_to_r(res$es_meta_difference$effect_size)
     res$es_meta_difference$LL <- esci_z_to_r(res$es_meta_difference$LL)
     res$es_meta_difference$UL <- esci_z_to_r(res$es_meta_difference$UL)
+    cor1 <- res$es_meta_difference$effect_size[1]
+    cor2 <- res$es_meta_difference$effect_size[2]
+    ll1 <- res$es_meta_difference$LL[1]
+    ll2 <- res$es_meta_difference$LL[2]
+    ul1 <- res$es_meta_difference$UL[1]
+    ul2 <- res$es_meta_difference$UL[2]
+    diff <- cor1 - cor2
+    res$es_meta_difference$effect_size[3] <- diff
+    res$es_meta_difference$LL[3] <- diff - sqrt((cor1 - ll1)^2 + (ul2 - cor2)^2)
+    res$es_meta_difference$UL[3] <- diff + sqrt((ul1 - cor1)^2 + (cor2 - ll2)^2)
 
   }
 

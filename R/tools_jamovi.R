@@ -746,8 +746,8 @@ jamovi_heterogeneity_to_html <- function(measures) {
   for (x in 1:length(measures)) {
     measures[[x]] <- switch(
       measures[[x]],
-      'tau^2' = "<i>&tau;</i><sup>2</sup>",
-      'tau' = "<i>&tau;</i>",
+      'tau^2' = "<i>&Tau;</i><sup>2</sup>",
+      'tau' = "<i>&Tau;</i>",
       'I^2(%)'  = "<i>I</i><sup>2</sup>(%)",
       'H^2' = "<i>H</i><sup>2</sup>",
       "Diamond Ratio" = "Diamond Ratio",

@@ -1590,7 +1590,7 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Meta-Analysis: Difference in proportions")
+                title="Meta-Analysis: Difference in Proportions")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
@@ -1654,30 +1654,30 @@ jamovimetapdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                         `visible`="(show_details)"),
                     list(
                         `name`="reference_P", 
-                        `title`="P<sub>Reference</sub>", 
+                        `title`="<i>P</i><sub>reference</sub>", 
                         `type`="number"),
                     list(
                         `name`="reference_cases", 
-                        `title`="Cases<sub>Reference</sub>", 
+                        `title`="Cases<sub>reference</sub>", 
                         `type`="integer", 
                         `visible`="(show_details)"),
                     list(
                         `name`="reference_N", 
-                        `title`="<i>N</i><sub>Reference</sub>", 
+                        `title`="<i>N</i><sub>reference</sub>", 
                         `type`="integer", 
                         `visible`="(show_details)"),
                     list(
                         `name`="comparison_P", 
-                        `title`="P<sub>Comparison</sub>", 
+                        `title`="<i>P</i><sub>comparison</sub>", 
                         `type`="number"),
                     list(
                         `name`="comparison_cases", 
-                        `title`="Cases<sub>Comparison</sub>", 
+                        `title`="Cases<sub>comparison</sub>", 
                         `type`="integer", 
                         `visible`="(show_details)"),
                     list(
                         `name`="comparison_N", 
-                        `title`="<i>N</i><sub>Comparison</sub>", 
+                        `title`="<i>N</i><sub>comparison</sub>", 
                         `type`="integer", 
                         `visible`="(show_details)"))))
             self$add(jmvcore::Table$new(

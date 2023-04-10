@@ -38,9 +38,9 @@ jamovi_meta_initialize <- function(self, has_switch = TRUE) {
 
   # Tbl note
   weight_title <- if(self$options$random_effects != "fixed_effects")
-    "RE Weight."
+    "RE weight"
   else
-    "FE Weight"
+    "FE weight"
 
   tbl_raw_data$getColumn("weight")$setTitle(weight_title)
 
@@ -91,6 +91,7 @@ jamovi_meta_run <- function(
   estimate$es_heterogeneity$measure_html <- jamovi_heterogeneity_to_html(
     estimate$es_heterogeneity$measure
   )
+  estimate$es_heterogeneity[estimate$es_heterogeneity$moderator_level != "Overall" & estimate$es_heterogeneity$measure == "Diamond Ratio", c("LL", "UL")] <- NA
   jamovi_estimate_filler(self, estimate, TRUE)
 
 

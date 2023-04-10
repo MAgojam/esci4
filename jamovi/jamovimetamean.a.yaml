@@ -81,7 +81,7 @@ options:
       default: mean_difference
       options:
           - name: mean_difference
-            title: Original Units
+            title: Original units
           - name: smd_unbiased
             title: Standardized mean difference
 

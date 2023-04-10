@@ -366,12 +366,20 @@ After dropping any NA rows, current data has:
       data[data$moderator == lev, ]$weight <-
         metafor::weights.rma.uni(if (random_effects) REjustl else FEjustl)
 
+      REback <- REjustl
+      FEback <- FEjustl
+      REback$ci.ub <- REgtable[x, "UL"]
+      FEback$ci.ub <- FEgtable[x, "UL"]
+      REback$ci.lb <- REgtable[x, "LL"]
+      FEback$ci.lb <- FEgtable[x, "LL"]
+
       dr_res <- CI_diamond_ratio(
-        REjustl,
-        FEjustl,
+        REback,
+        FEback,
         data[data$moderator == lev, ]$vi,
         conf_level = conf_level
       )
+
       REjustltbl <- meta_to_table(
         REjustl,
         fixed_effects = FALSE,
@@ -395,8 +403,8 @@ After dropping any NA rows, current data has:
       es_heterogeneity <- rbind(
         es_heterogeneity,
         meta_to_heterogeneity(
-          RE = REjustl,
-          FE = FEjustl,
+          RE = REback,
+          FE = FEback,
           effect_label = effect_label,
           moderator_variable_name = moderator_variable_name,
           moderator_level = lev,
@@ -508,6 +516,8 @@ After dropping any NA rows, current data has:
     }
     row.names(FE_contrast) <- names(contrasts)
     row.names(RE_contrast) <- names(contrasts)
+
+    #data$weight <- metafor::weights.rma.uni(if (random_effects)  REgroups  else  FEgroups )
 
   } else {
     FEtbl[ , c("moderator_variable_name", "moderator_variable_level")] <- NULL
@@ -644,8 +654,12 @@ meta_to_table <- function(
 meta_FE_and_RE <- function(FEtable, REtable) {
   FEtable$FE_effect_size <- FEtable$effect_size
   FEtable$RE_effect_size <- REtable$effect_size
-  FEtable$FE_CI_width <- FEtable$width
-  FEtable$RE_CI_width <- REtable$width
+
+  FEtable$FE_CI_width <- abs(FEtable$UL - FEtable$LL)
+  FEtable$RE_CI_width <- abs(REtable$UL - REtable$LL)
+
+  # FEtable$FE_CI_width <- FEtable$width
+  # FEtable$RE_CI_width <- REtable$width
 
   return(FEtable)
 
