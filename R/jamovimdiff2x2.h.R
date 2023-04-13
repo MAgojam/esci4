@@ -124,7 +124,9 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             fill_error_reference = "gray75",
             fill_error_comparison = "gray75",
             fill_error_unused = "gray75",
-            fill_error_difference = "gray75", ...) {
+            fill_error_difference = "gray75",
+            line_count = 200,
+            line_alpha = 0.02, ...) {
 
             super$initialize(
                 package="esci4",
@@ -1745,6 +1747,14 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
+            private$..line_count <- jmvcore::OptionNumber$new(
+                "line_count",
+                line_count,
+                default=200)
+            private$..line_alpha <- jmvcore::OptionNumber$new(
+                "line_alpha",
+                line_alpha,
+                default=0.02)
 
             self$.addOption(private$..design)
             self$.addOption(private$..switch)
@@ -1865,6 +1875,8 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..fill_error_comparison)
             self$.addOption(private$..fill_error_unused)
             self$.addOption(private$..fill_error_difference)
+            self$.addOption(private$..line_count)
+            self$.addOption(private$..line_alpha)
         }),
     active = list(
         design = function() private$..design$value,
@@ -1985,7 +1997,9 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         fill_error_reference = function() private$..fill_error_reference$value,
         fill_error_comparison = function() private$..fill_error_comparison$value,
         fill_error_unused = function() private$..fill_error_unused$value,
-        fill_error_difference = function() private$..fill_error_difference$value),
+        fill_error_difference = function() private$..fill_error_difference$value,
+        line_count = function() private$..line_count$value,
+        line_alpha = function() private$..line_alpha$value),
     private = list(
         ..design = NA,
         ..switch = NA,
@@ -2105,13 +2119,16 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..fill_error_reference = NA,
         ..fill_error_comparison = NA,
         ..fill_error_unused = NA,
-        ..fill_error_difference = NA)
+        ..fill_error_difference = NA,
+        ..line_count = NA,
+        ..line_alpha = NA)
 )
 
 jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "jamovimdiff2x2Results",
     inherit = jmvcore::Group,
     active = list(
+        analysis_type = function() private$.items[["analysis_type"]],
         debug = function() private$.items[["debug"]],
         help = function() private$.items[["help"]],
         overview = function() private$.items[["overview"]],
@@ -2132,6 +2149,10 @@ jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="",
                 title="Means and Medians: 2x2 Factorial")
+            self$add(jmvcore::Html$new(
+                options=options,
+                name="analysis_type",
+                visible=TRUE))
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -2750,7 +2771,7 @@ jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Image$new(
                 options=options,
                 name="interaction_plot",
-                title="Plot Emphasizing Interaction",
+                title="Figure Emphasizing Interaction",
                 visible="(show_interaction_plot)",
                 requiresData=TRUE,
                 width=700,
@@ -2900,8 +2921,11 @@ jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param fill_error_comparison .
 #' @param fill_error_unused .
 #' @param fill_error_difference .
+#' @param line_count .
+#' @param line_alpha .
 #' @return A results object containing:
 #' \tabular{llllll}{
+#'   \code{results$analysis_type} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$help} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$overview} \tab \tab \tab \tab \tab a table \cr
@@ -3044,7 +3068,9 @@ jamovimdiff2x2 <- function(
     fill_error_reference = "gray75",
     fill_error_comparison = "gray75",
     fill_error_unused = "gray75",
-    fill_error_difference = "gray75") {
+    fill_error_difference = "gray75",
+    line_count = 200,
+    line_alpha = 0.02) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimdiff2x2 requires jmvcore to be installed (restart may be required)")
@@ -3188,7 +3214,9 @@ jamovimdiff2x2 <- function(
         fill_error_reference = fill_error_reference,
         fill_error_comparison = fill_error_comparison,
         fill_error_unused = fill_error_unused,
-        fill_error_difference = fill_error_difference)
+        fill_error_difference = fill_error_difference,
+        line_count = line_count,
+        line_alpha = line_alpha)
 
     analysis <- jamovimdiff2x2Class$new(
         options = options,

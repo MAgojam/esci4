@@ -184,10 +184,19 @@ test_diff_base <- function(
         p <- 2 * pnorm(q=t, lower.tail=FALSE)
         significant <- p < alpha
       } else {
-        df <- NA
-        t <- es$z
-        p <- es$p
-        significant <- p < alpha
+
+        if (effect_size == "median") {
+          df <- NA
+          t <- NA
+          p <- NA
+          significant <- (0 < es$LL | 0 > es$UL)
+        } else {
+          df <- NA
+          t <- es$z
+          p <- es$p
+          significant <- p < alpha
+
+        }
 
       }
 

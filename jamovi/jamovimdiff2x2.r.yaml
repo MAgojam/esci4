@@ -4,6 +4,10 @@ title: 'Means and Medians: 2x2 Factorial'
 jrs:   '1.1'
 
 items:
+    - name: analysis_type
+      type: Html
+      visible: true
+
     - name: debug
       type: Preformatted
       visible: false
@@ -550,7 +554,7 @@ items:
       renderFun: .estimation_plot
 
     - name: interaction_plot
-      title: Plot Emphasizing Interaction
+      title: Figure Emphasizing Interaction
       type: Image
       visible: (show_interaction_plot)
       requiresData: true

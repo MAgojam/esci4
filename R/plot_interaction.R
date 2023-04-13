@@ -4,7 +4,9 @@ plot_interaction <- function(
     estimate,
     effect_size = c("mean", "median"),
     show_CI = FALSE,
-    ggtheme = NULL
+    ggtheme = NULL,
+    line_count = 200,
+    line_alpha = 0.02
 ) {
 
   # Input checks
@@ -35,10 +37,10 @@ plot_interaction <- function(
       mytbl <- "es_median_difference"
     }
 
-    moe <- (estimate$simple_effect_B_at_A1[[mytbl]]$UL[[3]] - estimate$simple_effect_B_at_A1[[mytbl]]$LL[[3]])/2
+    moe <- (estimate$simple_effect_B_at_A1[[mytbl]]$UL[[3]] - estimate$simple_effect_B_at_A1[[mytbl]]$LL[[3]])/4
 
     se_lines <- data.frame(
-      to_add = seq(from = moe, to = -moe, length.out = 200)
+      to_add = seq(from = moe, to = -moe, length.out = line_count)
     )
 
     se_lines$y = ov$y[[1]] + se_lines$to_add
@@ -48,9 +50,9 @@ plot_interaction <- function(
     se_lines$xend <- ov$grouping_variable_B_level[[2]]
     se_lines$grouping_variable_A_level <- ov$grouping_variable_A_level[[1]]
 
-    moe2 <- (estimate$simple_effect_B_at_A2[[mytbl]]$UL[[3]] - estimate$simple_effect_B_at_A2[[mytbl]]$LL[[3]])/2
+    moe2 <- (estimate$simple_effect_B_at_A2[[mytbl]]$UL[[3]] - estimate$simple_effect_B_at_A2[[mytbl]]$LL[[3]])/4
     se_lines2 <- data.frame(
-      to_add = seq(from = moe2, to = -moe2, length.out = 200)
+      to_add = seq(from = moe2, to = -moe2, length.out = line_count)
     )
 
     se_lines2$y = ov$y[[3]] + se_lines$to_add
@@ -71,7 +73,7 @@ plot_interaction <- function(
         xend = xend,
         colour = grouping_variable_A_level
       ),
-      alpha = 0.02,
+      alpha = line_alpha,
       linewidth = 3
     )
 

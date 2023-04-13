@@ -110,7 +110,7 @@ options:
     - name: A1B1_n
       type: String
       default: ' '
-      title: "  <i>N</i>"
+      title: "  <i>n</i>"
 
     - name: A1B2_mean
       type: String
@@ -125,7 +125,7 @@ options:
     - name: A1B2_n
       type: String
       default: ' '
-      title: "  <i>N</i>"
+      title: "  <i>n</i>"
 
     - name: A2B1_mean
       type: String
@@ -183,7 +183,7 @@ options:
       default: false
 
     - name: show_interaction_plot
-      title: Plot to emphasize interaction
+      title: Figure to emphasize interaction
       type: Bool
       default: false
 
@@ -2732,4 +2732,16 @@ options:
            title: 'Gray95'
          - name: 'gray100'
            title: 'Gray100'
+
+    - name: line_count
+      type: Number
+      title: Number of CI lines
+      default: 200
+
+    - name: line_alpha
+      type: Number
+      title: Alpha of CI lines
+      default: 0.02
+
+
 ...

@@ -116,6 +116,34 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         image <- self$results$interaction_plot
         image$setSize(width, height)
 
+        if (mixed) {
+          self$results$setTitle(
+            "Means and Medians: Mixed 2x2 Factorial (RCT)"
+          )
+          self$results$analysis_type$setContent(
+            '
+            <div class="jmv-editable-header had-focus" level="1">
+            <h2 contenteditable="" spellcheck="false">
+            Mixed Factorial (RCT)
+            </h2>
+            </div>
+            '
+          )
+        } else {
+          self$results$setTitle(
+            'Means and Medians: Between-Subjects 2x2 Factorial'
+          )
+          self$results$analysis_type$setContent(
+            '
+            <div class="jmv-editable-header had-focus" level="1">
+            <h2 contenteditable="" spellcheck="false">
+            Fully Between-Subjects
+            </h2>
+            </div>
+            '
+          )
+        }
+
       },
       .run = function() {
 
@@ -315,7 +343,13 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
         if(!is(estimate, "esci_estimate"))
           return(TRUE)
 
-        myplot <- plot_interaction(estimate, show_CI = self$options$show_CI)
+        myplot <- plot_interaction(
+          estimate,
+          effect_size = if (self$options$effect_size == "median_difference") "median" else "mean",
+          show_CI = self$options$show_CI,
+          line_count = self$options$line_count,
+          line_alpha = self$options$line_alpha
+        )
 
         ymin <- jamovi_sanitize(
           my_value = self$options$ymin,
