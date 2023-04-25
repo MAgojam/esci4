@@ -517,7 +517,7 @@ After dropping any NA rows, current data has:
     row.names(FE_contrast) <- names(contrasts)
     row.names(RE_contrast) <- names(contrasts)
 
-    #data$weight <- metafor::weights.rma.uni(if (random_effects)  REgroups  else  FEgroups )
+    data$weight <- metafor::weights.rma.uni(if (random_effects)  REgroups  else  FEgroups )
 
   } else {
     FEtbl[ , c("moderator_variable_name", "moderator_variable_level")] <- NULL
