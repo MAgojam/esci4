@@ -69,6 +69,7 @@ test_diff_base <- function(
   } else if (is.na(estimate[[etable]][2, "LL"])) {
     reference_value <- estimate[[etable]][2, "effect_size"]
     effect_is_difference <- FALSE
+    null_value <- reference_value
   }
 
 
@@ -320,14 +321,31 @@ test_diff_base <- function(
         glue::glue("{p_symbol} \U002265 {alpha}")
 
 
+      # conclusion <- if (me_significant)
+      #   glue::glue("At \U03B1 = {alpha}, conclude {parameter} is substantive")
+      # else
+      #   glue::glue("At \U03B1 = {alpha}, not clear if {parameter} is substantive or negligible")
+      #
+      # if (eq_significant) {
+      #   conclusion <- glue::glue("At \U03B1 = {alpha}, conclude {parameter} is negligible")
+      # }
+
+      preport <- parameter
+      if (!effect_is_difference) {
+        if (null_value != 0) {
+            preport <- paste("(", parameter, " \U2212 ", null_value, ")", sep = "")
+        }
+      }
+
       conclusion <- if (me_significant)
-        glue::glue("At \U03B1 = {alpha}, conclude {parameter} is substantive")
+        glue::glue("At \U03B1 = {alpha}, conclude {preport} is substantive")
       else
-        glue::glue("At \U03B1 = {alpha}, not clear if {parameter} is substantive or negligible")
+        glue::glue("At \U03B1 = {alpha}, not clear if {preport} is substantive or negligible")
 
       if (eq_significant) {
-        conclusion <- glue::glue("At \U03B1 = {alpha}, conclude {parameter} is negligible")
+        conclusion <- glue::glue("At \U03B1 = {alpha}, conclude {preport} is negligible")
       }
+
 
       interval_result <- list(
         test_type = "Practical significance test",

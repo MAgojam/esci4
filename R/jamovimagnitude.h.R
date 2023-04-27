@@ -454,6 +454,10 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary <- jmvcore::OptionList$new(
                 "alpha_summary",
@@ -464,6 +468,10 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..linetype_summary <- jmvcore::OptionList$new(
                 "linetype_summary",
@@ -539,6 +547,10 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_error <- jmvcore::OptionList$new(
                 "alpha_error",
@@ -549,6 +561,10 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..fill_error <- jmvcore::OptionList$new(
                 "fill_error",

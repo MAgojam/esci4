@@ -1022,6 +1022,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_raw_comparison <- jmvcore::OptionList$new(
                 "alpha_raw_comparison",
@@ -1032,6 +1036,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_raw_unused <- jmvcore::OptionList$new(
                 "alpha_raw_unused",
@@ -1042,6 +1050,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_reference <- jmvcore::OptionList$new(
                 "alpha_summary_reference",
@@ -1052,6 +1064,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_comparison <- jmvcore::OptionList$new(
                 "alpha_summary_comparison",
@@ -1062,6 +1078,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_unused <- jmvcore::OptionList$new(
                 "alpha_summary_unused",
@@ -1072,6 +1092,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_difference <- jmvcore::OptionList$new(
                 "alpha_summary_difference",
@@ -1082,6 +1106,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_overall <- jmvcore::OptionList$new(
                 "alpha_summary_overall",
@@ -1092,6 +1120,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..linetype_raw_reference <- jmvcore::OptionList$new(
                 "linetype_raw_reference",
@@ -1374,6 +1406,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_interval_comparison <- jmvcore::OptionList$new(
                 "alpha_interval_comparison",
@@ -1384,6 +1420,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_interval_difference <- jmvcore::OptionList$new(
                 "alpha_interval_difference",
@@ -1394,6 +1434,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_interval_unused <- jmvcore::OptionList$new(
                 "alpha_interval_unused",
@@ -1404,6 +1448,10 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
 
             self$.addOption(private$..switch)

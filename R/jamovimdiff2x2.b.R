@@ -347,8 +347,8 @@ jamovimdiff2x2Class <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           estimate,
           effect_size = if (self$options$effect_size == "median_difference") "median" else "mean",
           show_CI = self$options$show_CI,
-          line_count = self$options$line_count,
-          line_alpha = self$options$line_alpha
+          line_count = 30,
+          line_alpha = 0.3
         )
 
         ymin <- jamovi_sanitize(

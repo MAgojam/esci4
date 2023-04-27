@@ -124,9 +124,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             fill_error_reference = "gray75",
             fill_error_comparison = "gray75",
             fill_error_unused = "gray75",
-            fill_error_difference = "gray75",
-            line_count = 200,
-            line_alpha = 0.02, ...) {
+            fill_error_difference = "gray75", ...) {
 
             super$initialize(
                 package="esci4",
@@ -1178,6 +1176,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_raw_comparison <- jmvcore::OptionList$new(
                 "alpha_raw_comparison",
@@ -1188,6 +1190,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_raw_unused <- jmvcore::OptionList$new(
                 "alpha_raw_unused",
@@ -1198,6 +1204,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_reference <- jmvcore::OptionList$new(
                 "alpha_summary_reference",
@@ -1208,6 +1218,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_comparison <- jmvcore::OptionList$new(
                 "alpha_summary_comparison",
@@ -1218,6 +1232,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_unused <- jmvcore::OptionList$new(
                 "alpha_summary_unused",
@@ -1228,6 +1246,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_difference <- jmvcore::OptionList$new(
                 "alpha_summary_difference",
@@ -1238,6 +1260,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..linetype_summary_reference <- jmvcore::OptionList$new(
                 "linetype_summary_reference",
@@ -1508,6 +1534,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_interval_comparison <- jmvcore::OptionList$new(
                 "alpha_interval_comparison",
@@ -1518,6 +1548,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_interval_unused <- jmvcore::OptionList$new(
                 "alpha_interval_unused",
@@ -1528,6 +1562,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_interval_difference <- jmvcore::OptionList$new(
                 "alpha_interval_difference",
@@ -1538,6 +1576,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_error_reference <- jmvcore::OptionList$new(
                 "alpha_error_reference",
@@ -1548,6 +1590,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_error_comparison <- jmvcore::OptionList$new(
                 "alpha_error_comparison",
@@ -1558,6 +1604,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_error_unused <- jmvcore::OptionList$new(
                 "alpha_error_unused",
@@ -1568,6 +1618,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_error_difference <- jmvcore::OptionList$new(
                 "alpha_error_difference",
@@ -1578,6 +1632,10 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..fill_error_reference <- jmvcore::OptionList$new(
                 "fill_error_reference",
@@ -1747,14 +1805,6 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "gray90",
                     "gray95",
                     "gray100"))
-            private$..line_count <- jmvcore::OptionNumber$new(
-                "line_count",
-                line_count,
-                default=200)
-            private$..line_alpha <- jmvcore::OptionNumber$new(
-                "line_alpha",
-                line_alpha,
-                default=0.02)
 
             self$.addOption(private$..design)
             self$.addOption(private$..switch)
@@ -1875,8 +1925,6 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..fill_error_comparison)
             self$.addOption(private$..fill_error_unused)
             self$.addOption(private$..fill_error_difference)
-            self$.addOption(private$..line_count)
-            self$.addOption(private$..line_alpha)
         }),
     active = list(
         design = function() private$..design$value,
@@ -1997,9 +2045,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         fill_error_reference = function() private$..fill_error_reference$value,
         fill_error_comparison = function() private$..fill_error_comparison$value,
         fill_error_unused = function() private$..fill_error_unused$value,
-        fill_error_difference = function() private$..fill_error_difference$value,
-        line_count = function() private$..line_count$value,
-        line_alpha = function() private$..line_alpha$value),
+        fill_error_difference = function() private$..fill_error_difference$value),
     private = list(
         ..design = NA,
         ..switch = NA,
@@ -2119,9 +2165,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..fill_error_reference = NA,
         ..fill_error_comparison = NA,
         ..fill_error_unused = NA,
-        ..fill_error_difference = NA,
-        ..line_count = NA,
-        ..line_alpha = NA)
+        ..fill_error_difference = NA)
 )
 
 jamovimdiff2x2Results <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -2921,8 +2965,6 @@ jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param fill_error_comparison .
 #' @param fill_error_unused .
 #' @param fill_error_difference .
-#' @param line_count .
-#' @param line_alpha .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$analysis_type} \tab \tab \tab \tab \tab a html \cr
@@ -3068,9 +3110,7 @@ jamovimdiff2x2 <- function(
     fill_error_reference = "gray75",
     fill_error_comparison = "gray75",
     fill_error_unused = "gray75",
-    fill_error_difference = "gray75",
-    line_count = 200,
-    line_alpha = 0.02) {
+    fill_error_difference = "gray75") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("jamovimdiff2x2 requires jmvcore to be installed (restart may be required)")
@@ -3214,9 +3254,7 @@ jamovimdiff2x2 <- function(
         fill_error_reference = fill_error_reference,
         fill_error_comparison = fill_error_comparison,
         fill_error_unused = fill_error_unused,
-        fill_error_difference = fill_error_difference,
-        line_count = line_count,
-        line_alpha = line_alpha)
+        fill_error_difference = fill_error_difference)
 
     analysis <- jamovimdiff2x2Class$new(
         options = options,

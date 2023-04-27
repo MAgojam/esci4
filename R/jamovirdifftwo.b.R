@@ -694,6 +694,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
             if (!self$options$show_line) {
               myplot$layers$summary_Reference_line$aes_params$colour <- NA
+              myplot$layers$summary_Comparison_line$aes_params$colour <- NA
             }
 
            # myplot$layers$summary_Reference_line$aes_params$linetype <- self$options$sp_linetype_summary_reference

@@ -984,13 +984,3 @@ children:
           - type: ComboBox
             name: null_color
             enable: (evaluate_hypotheses)
-  - type: Label
-    label: To play around with for now
-    stretchFactor: 1
-    children:
-      - type: TextBox
-        name: line_count
-        format: number
-      - type: TextBox
-        name: line_alpha
-        format: number
