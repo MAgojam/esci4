@@ -659,6 +659,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_comparison <- jmvcore::OptionList$new(
                 "alpha_summary_comparison",
@@ -669,6 +673,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_summary_difference <- jmvcore::OptionList$new(
                 "alpha_summary_difference",
@@ -679,6 +687,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..linetype_summary_reference <- jmvcore::OptionList$new(
                 "linetype_summary_reference",
@@ -1031,7 +1043,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
-                    ".90",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_alpha_raw_comparison <- jmvcore::OptionList$new(
                 "sp_alpha_raw_comparison",
@@ -1042,7 +1057,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
-                    ".90",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_alpha_raw_unused <- jmvcore::OptionList$new(
                 "sp_alpha_raw_unused",
@@ -1053,7 +1071,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
-                    ".90",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_linetype_summary_reference <- jmvcore::OptionList$new(
                 "sp_linetype_summary_reference",
@@ -1190,6 +1211,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_alpha_summary_comparison <- jmvcore::OptionList$new(
                 "sp_alpha_summary_comparison",
@@ -1200,6 +1225,10 @@ jamovirdifftwoOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
 
             self$.addOption(private$..switch)
@@ -1889,12 +1918,12 @@ jamovirdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$add(jmvcore::Html$new(
                 options=options,
                 name="scatter_plot_warnings",
-                title="Scatter Plot Warnings",
+                title="Scatterplot Warnings",
                 visible="(switch == 'from_raw')"))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="scatter_plots",
-                title="Scatter Plot",
+                title="Scatterplot",
                 width=800,
                 height=650,
                 requiresData=TRUE,

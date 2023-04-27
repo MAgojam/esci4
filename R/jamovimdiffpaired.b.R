@@ -90,6 +90,15 @@ jamovimdiffpairedClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
          estimate$es_mean_difference$s_component <- estimate$es_mean_difference$moe / estimate$es_mean_difference$t_multiplier / estimate$es_mean_difference$n_component
 
 
+         self$results$es_mean_difference$setNote(
+           key = "sdiff",
+           note = paste(
+             "<i>s</i><sub>diff</sub> = ",
+             format(estimate$es_mean_difference$s_component[[3]], 2),
+             sep = ""
+           )
+         )
+
           # Fill tables
          jamovi_estimate_filler(self, estimate, TRUE)
 

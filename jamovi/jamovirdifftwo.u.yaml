@@ -200,7 +200,7 @@ children:
             name: show_line_CI
             enable: '(switch:from_raw)'
   - type: CollapseBox
-    label: Scatter plot options
+    label: Scatterplot options
     stretchFactor: 1
     collapsed: true
     children:
@@ -326,7 +326,7 @@ children:
               column: 1
               row: 9
           - type: CollapseBox
-            label: Scatter plot aesthetics
+            label: Scatterplot aesthetics
             stretchFactor: 1
             collapsed: true
             children:

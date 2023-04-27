@@ -318,7 +318,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Minimum"
+            my_value_name = "Scatterplot Y axis: Minimum"
           )
 
           ymax <- jamovi_sanitize(
@@ -326,7 +326,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Maximum"
+            my_value_name = "Scatterplot Y axis: Maximum"
           )
 
           ybreaks <- jamovi_sanitize(
@@ -338,7 +338,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             upper = 50,
             upper_inclusive = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Number of tick marks"
+            my_value_name = "Scatterplot Y axis: Number of tick marks"
           )
 
           # Slab
@@ -530,7 +530,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
               lower = 1,
               lower_inclusive = TRUE,
               upper = 97,
-              my_value_name = "Scatter Plot X axis: Label font size"
+              my_value_name = "Scatterplot X axis: Label font size"
             )
 
             new_label <- paste(
@@ -555,7 +555,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             lower_inclusive = TRUE,
             upper = 3000,
             upper_inclusive = TRUE,
-            my_value_name = "Scatter plot width"
+            my_value_name = "Scatterplot width"
           )
           height <- jamovi_sanitize(
             my_value = self$options$sp_plot_height,
@@ -565,7 +565,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             lower_inclusive = TRUE,
             upper = 4000,
             upper_inclusive = TRUE,
-            my_value_name = "Scatter plot height"
+            my_value_name = "Scatterplot height"
           )
 
           # X and y limits
@@ -574,7 +574,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             return_value = myplot$esci_xmin,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot X axis: Minimum"
+            my_value_name = "Scatterplot X axis: Minimum"
           )
 
           xmax <- jamovi_sanitize(
@@ -582,7 +582,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             return_value = myplot$esci_xmax,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot X axis: Maximum"
+            my_value_name = "Scatterplot X axis: Maximum"
           )
 
           xbreaks <- jamovi_sanitize(
@@ -594,7 +594,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             upper = 50,
             upper_inclusive = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot X axis: Number of tick marks"
+            my_value_name = "Scatterplot X axis: Number of tick marks"
           )
 
           ymin <- jamovi_sanitize(
@@ -602,7 +602,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             return_value = myplot$esci_ymin,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Minimum"
+            my_value_name = "Scatterplot Y axis: Minimum"
           )
 
           ymax <- jamovi_sanitize(
@@ -610,7 +610,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             return_value = myplot$esci_ymax,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Maximum"
+            my_value_name = "Scatterplot Y axis: Maximum"
           )
 
           ybreaks <- jamovi_sanitize(
@@ -622,7 +622,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             upper = 50,
             upper_inclusive = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Number of tick marks"
+            my_value_name = "Scatterplot Y axis: Number of tick marks"
           )
 
           # Apply axis labels and scales
@@ -647,7 +647,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot Y axis: Tick font size"
+            my_value_name = "Scatterplot Y axis: Tick font size"
           )
           axis.title.y <- jamovi_sanitize(
             my_value = self$options$sp_axis.title.y,
@@ -657,7 +657,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot Y axis: Label font size"
+            my_value_name = "Scatterplot Y axis: Label font size"
           )
           axis.text.x <- jamovi_sanitize(
             my_value = self$options$sp_axis.text.x,
@@ -667,7 +667,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot X axis: Tick font size"
+            my_value_name = "Scatterplot X axis: Tick font size"
           )
           axis.title.x <- jamovi_sanitize(
             my_value = self$options$sp_axis.title.x,
@@ -677,7 +677,7 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot X axis: Label font size"
+            my_value_name = "Scatterplot X axis: Label font size"
           )
 
           myplot <- myplot + ggplot2::theme(
@@ -694,14 +694,14 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
             my_value = myplot$esci_xlab,
             return_value = NULL,
             na_ok = FALSE,
-            my_value_name = "Scatter Plot X axis: Title"
+            my_value_name = "Scatterplot X axis: Title"
           )
 
           ylab <- jamovi_sanitize(
             my_value = myplot$esci_ylab,
             return_value = NULL,
             na_ok = FALSE,
-            my_value_name = "Scatter Plot Y axis: Title"
+            my_value_name = "Scatterplot Y axis: Title"
           )
 
           if (!(self$options$sp_xlab %in% c("auto", "Auto", "AUTO"))) {
@@ -770,28 +770,28 @@ jamovicorrelationClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6C
 
           if (!is.null(myplot$layers$prediction_prediction_interval)) {
             myplot$layers$prediction_prediction_interval$aes_params$colour <- self$options$sp_color_PI
-            myplot$layers$prediction_prediction_interval$aes_params$alpha <- as.numeric(self$options$sp_alpha_PI)
+            myplot$layers$prediction_prediction_interval$aes_params$alpha <- as.numeric(self$options$sp_alpha_PI)/15
             myplot$layers$prediction_prediction_interval$aes_params$linetype <- self$options$sp_linetype_PI
             myplot$layers$prediction_prediction_interval$aes_params$size <- as.numeric(self$options$sp_size_PI)/2
           }
 
           if (!is.null(myplot$layers$prediction_confidence_interval)) {
             myplot$layers$prediction_confidence_interval$aes_params$colour <- self$options$sp_color_CI
-            myplot$layers$prediction_confidence_interval$aes_params$alpha <- as.numeric(self$options$sp_alpha_CI)
+            myplot$layers$prediction_confidence_interval$aes_params$alpha <- as.numeric(self$options$sp_alpha_CI)/15
             myplot$layers$prediction_confidence_interval$aes_params$linetype <- self$options$sp_linetype_CI
             myplot$layers$prediction_confidence_interval$aes_params$size <- as.numeric(self$options$sp_size_CI)/2
           }
 
           if (!is.null(myplot$layers$prediction_vertical_line)) {
             myplot$layers$prediction_vertical_line$aes_params$colour <- self$options$sp_color_ref
-            myplot$layers$prediction_vertical_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_ref)
+            myplot$layers$prediction_vertical_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_ref)/15
             myplot$layers$prediction_vertical_line$aes_params$linetype <- self$options$sp_linetype_ref
             myplot$layers$prediction_vertical_line$aes_params$size <- as.numeric(self$options$sp_size_ref)/2
           }
 
           if (!is.null(myplot$layers$prediction_horizontal_line)) {
             myplot$layers$prediction_horizontal_line$aes_params$colour <- self$options$sp_color_ref
-            myplot$layers$prediction_horizontal_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_ref)
+            myplot$layers$prediction_horizontal_line$aes_params$alpha <- as.numeric(self$options$sp_alpha_ref)/15
             myplot$layers$prediction_horizontal_line$aes_params$linetype <- self$options$sp_linetype_ref
             myplot$layers$prediction_horizontal_line$aes_params$size <- as.numeric(self$options$sp_size_ref)/2
           }

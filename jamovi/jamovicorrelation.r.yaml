@@ -265,12 +265,12 @@ items:
           type: text
 
     - name: scatter_plot_warnings
-      title: Scatter Plot Warnings
+      title: Scatterplot Warnings
       type: Html
       visible: (switch == 'from_raw')
 
     - name: scatter_plots
-      title: Scatter Plot
+      title: Scatterplot
       type: Image
       width:  650
       height: 650

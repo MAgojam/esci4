@@ -359,15 +359,16 @@ plot_meta <- function(
 
   gdata_labels[which(gdata_labels == "Overall")] <- if (estimate$properties$model == "fixed_effects") "FE overall" else "RE overall"
 
+  cils <- paste(
+    gdata_labels,
+    " ",
+    estimate$properties$conf_level * 100,
+    "% CI",
+    sep = ""
+  )
 
   if (include_PIs) {
-    cils <- paste(
-      gdata_labels,
-      " ",
-      estimate$properties$conf_level * 100,
-      "% CI",
-      sep = ""
-    )
+
     pils <- paste(
       gdata_labels,
       " ",
@@ -376,6 +377,8 @@ plot_meta <- function(
       sep = ""
     )
     gdata_labels <- c(rbind(cils, pils))
+  } else {
+    gdata_labels <- cils
   }
 
   all_labels <- c(

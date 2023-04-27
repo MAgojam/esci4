@@ -478,7 +478,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             lower_inclusive = TRUE,
             upper = 3000,
             upper_inclusive = TRUE,
-            my_value_name = "Scatter plot width"
+            my_value_name = "Scatterplot width"
           )
           height <- jamovi_sanitize(
             my_value = self$options$sp_plot_height,
@@ -488,7 +488,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             lower_inclusive = TRUE,
             upper = 4000,
             upper_inclusive = TRUE,
-            my_value_name = "Scatter plot height"
+            my_value_name = "Scatterplot height"
           )
 
           # X and y limits
@@ -497,7 +497,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot X axis: Minimum"
+            my_value_name = "Scatterplot X axis: Minimum"
           )
 
           xmax <- jamovi_sanitize(
@@ -505,7 +505,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot X axis: Maximum"
+            my_value_name = "Scatterplot X axis: Maximum"
           )
 
           xbreaks <- jamovi_sanitize(
@@ -517,7 +517,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             upper = 50,
             upper_inclusive = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot X axis: Number of tick marks"
+            my_value_name = "Scatterplot X axis: Number of tick marks"
           )
 
           ymin <- jamovi_sanitize(
@@ -525,7 +525,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Minimum"
+            my_value_name = "Scatterplot Y axis: Minimum"
           )
 
           ymax <- jamovi_sanitize(
@@ -533,7 +533,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             return_value = NA,
             na_ok = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Maximum"
+            my_value_name = "Scatterplot Y axis: Maximum"
           )
 
           ybreaks <- jamovi_sanitize(
@@ -545,7 +545,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             upper = 50,
             upper_inclusive = TRUE,
             convert_to_number = TRUE,
-            my_value_name = "Scatter Plot Y axis: Number of tick marks"
+            my_value_name = "Scatterplot Y axis: Number of tick marks"
           )
 
           # Apply axis labels and scales
@@ -568,7 +568,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot Y axis: Tick font size"
+            my_value_name = "Scatterplot Y axis: Tick font size"
           )
           axis.title.y <- jamovi_sanitize(
             my_value = self$options$sp_axis.title.y,
@@ -578,7 +578,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot Y axis: Label font size"
+            my_value_name = "Scatterplot Y axis: Label font size"
           )
           axis.text.x <- jamovi_sanitize(
             my_value = self$options$sp_axis.text.x,
@@ -588,7 +588,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot X axis: Tick font size"
+            my_value_name = "Scatterplot X axis: Tick font size"
           )
           axis.title.x <- jamovi_sanitize(
             my_value = self$options$sp_axis.title.x,
@@ -598,7 +598,7 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             lower = 1,
             lower_inclusive = TRUE,
             upper = 97,
-            my_value_name = "Scatter Plot X axis: Label font size"
+            my_value_name = "Scatterplot X axis: Label font size"
           )
 
           myplot <- myplot + ggplot2::theme(
@@ -615,14 +615,14 @@ jamovirdifftwoClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             my_value = self$options$sp_xlab,
             return_value = NULL,
             na_ok = FALSE,
-            my_value_name = "Scatter Plot X axis: Title"
+            my_value_name = "Scatterplot X axis: Title"
           )
 
           ylab <- jamovi_sanitize(
             my_value = self$options$sp_ylab,
             return_value = NULL,
             na_ok = FALSE,
-            my_value_name = "Scatter Plot Y axis: Title"
+            my_value_name = "Scatterplot Y axis: Title"
           )
 
           if (!(self$options$sp_xlab %in% c("auto", "Auto", "AUTO"))) {

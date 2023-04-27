@@ -348,9 +348,9 @@ plot_scatter <- function(
 
 
 
-    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min - (0.20* (ny_max - ny_min)), yend = ypr), size = 2)
+    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = predict_from_x, xend = predict_from_x, y = ny_min - (0.20* (ny_max - ny_min)), yend = ypr), alpha = 0.5, size = 2)
     myplot <- esci_plot_layers(myplot, "prediction_vertical_line")
-    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min - 0.20*nxrange, xend = predict_from_x, y = ypr, yend = ypr), size = 2)
+    myplot <- myplot + geom_segment(linetype = "dotted", aes(x = nx_min - 0.20*nxrange, xend = predict_from_x, y = ypr, yend = ypr), alpha = 1, size = 2)
     myplot <- esci_plot_layers(myplot, "prediction_horizontal_line")
 
     yplabel <- paste(zfix, "*\U0176*", zpost, " = ", format(ypr, digits = 4), sep = "")

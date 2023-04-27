@@ -143,7 +143,7 @@ children:
         format: string
         enable: '(switch:from_raw && do_regression)'
   - type: CollapseBox
-    label: Scatter plot options
+    label: Scatterplot options
     stretchFactor: 1
     collapsed: true
     children:
@@ -292,7 +292,7 @@ children:
               column: 1
               row: 11
           - type: CollapseBox
-            label: Scatter plot aesthetics
+            label: Scatterplot aesthetics
             stretchFactor: 1
             collapsed: true
             children:

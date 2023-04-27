@@ -460,6 +460,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..linetype_summary <- jmvcore::OptionList$new(
                 "linetype_summary",
@@ -535,6 +539,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..alpha_error <- jmvcore::OptionList$new(
                 "alpha_error",
@@ -545,6 +553,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..fill_error <- jmvcore::OptionList$new(
                 "fill_error",
@@ -701,6 +713,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
             private$..sp_linetype_summary_reference <- jmvcore::OptionList$new(
                 "sp_linetype_summary_reference",
@@ -1212,6 +1228,10 @@ jamovicorrelationOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     ".75",
                     ".5",
                     ".25",
+                    ".20",
+                    ".15",
+                    ".10",
+                    ".05",
                     "0"))
 
             self$.addOption(private$..switch)
@@ -1824,12 +1844,12 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$add(jmvcore::Html$new(
                 options=options,
                 name="scatter_plot_warnings",
-                title="Scatter Plot Warnings",
+                title="Scatterplot Warnings",
                 visible="(switch == 'from_raw')"))
             self$add(jmvcore::Image$new(
                 options=options,
                 name="scatter_plots",
-                title="Scatter Plot",
+                title="Scatterplot",
                 width=650,
                 height=650,
                 requiresData=TRUE,
