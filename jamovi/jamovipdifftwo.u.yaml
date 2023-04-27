@@ -1,4 +1,4 @@
-title: "Proportions: Two groups"
+title: "Proportions: Two Groups"
 name: jamovipdifftwo
 jus: '3.0'
 stage: 0
@@ -293,7 +293,7 @@ children:
               column: 1
               row: 9
           - type: CollapseBox
-            label: Esimtation Figure Aesthetics
+            label: Aesthetics
             stretchFactor: 1
             collapsed: true
             children:

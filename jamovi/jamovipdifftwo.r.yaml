@@ -1,6 +1,6 @@
 ---
 name:  jamovipdifftwo
-title: "Proportions: Two groups"
+title: "Proportions: Two Groups"
 jrs:   '1.1'
 
 items:
@@ -191,7 +191,7 @@ items:
           type: text
         - name: effect_size
           type: number
-          title: <i>&#981;</i>
+          title: '&#981;'
         - name: LL
           title: LL
           type: number

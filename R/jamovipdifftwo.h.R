@@ -829,7 +829,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             super$initialize(
                 options=options,
                 name="",
-                title="Proportions: Two groups")
+                title="Proportions: Two Groups")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -1043,7 +1043,7 @@ jamovipdifftwoResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     list(
                         `name`="effect_size", 
                         `type`="number", 
-                        `title`="<i>&#981;</i>"),
+                        `title`="&#981;"),
                     list(
                         `name`="LL", 
                         `title`="LL", 

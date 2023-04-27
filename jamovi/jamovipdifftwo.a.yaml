@@ -1,7 +1,7 @@
 ---
 name:  jamovipdifftwo
 title: "Proportions: Two Groups"
-menuTitle: "Two groups"
+menuTitle: "Two Groups"
 menuGroup: esci4
 version: '1.0.0'
 jas: '1.2'
@@ -80,7 +80,7 @@ options:
       default: false
 
     - name: show_chi_square
-      title: "<i>&#120536;</i><sup>2</sup> analysis"
+      title: "&#120536;<sup>2</sup> analysis"
       type: Bool
       default: false
 
@@ -97,7 +97,7 @@ options:
       default: both
 
     - name: show_phi
-      title: "Correlation (<i>&#981;</i>)"
+      title: "Correlation (&#981;)"
       type: Bool
       default: false
 

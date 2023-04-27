@@ -920,7 +920,7 @@ esci_build_chi_square <- function(estimate) {
   colnames(ctable) <-  t(o[o$outcome_variable_level == mylevel, "grouping_variable_level"])
   rownames(ctable) <- rev(levels(as.factor(o$outcome_variable_level)))
 
-  estimate$properties$chi_square <- chisq.test(ctable, correct = FALSE)
+  estimate$properties$chi_square <- chisq.test(ctable, correct = TRUE)
 
   if (all(dim(estimate$properties$chi_square$observed) == c(2,2))) {
     res <- statpsych::ci.phi(

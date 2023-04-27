@@ -88,7 +88,7 @@ analyses:
     ns: esci4
     menuGroup: esci4
     menuSubgroup: Proportions
-    menuTitle: Two groups
+    menuTitle: Two Groups
   - title: 'Proportions: Paired'
     name: jamovipdiffpaired
     ns: esci4
