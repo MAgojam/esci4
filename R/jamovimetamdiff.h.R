@@ -66,7 +66,7 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             fill_summary_comparison = "#009F81",
             fill_summary_unused = "gray75",
             fill_summary_difference = "black",
-            fill_summary_overall = "white",
+            fill_summary_overall = "black",
             alpha_raw_reference = "1",
             alpha_raw_comparison = "1",
             alpha_raw_unused = "1",
@@ -974,7 +974,7 @@ jamovimetamdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..fill_summary_overall <- jmvcore::OptionList$new(
                 "fill_summary_overall",
                 fill_summary_overall,
-                default="white",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -1732,7 +1732,7 @@ jamovimetamdiffResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             super$initialize(
                 options=options,
                 name="",
-                title="Meta-Analysis: Difference in means")
+                title="Meta-Analysis: Difference in Means")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="debug",
@@ -2333,7 +2333,7 @@ jamovimetamdiff <- function(
     fill_summary_comparison = "#009F81",
     fill_summary_unused = "gray75",
     fill_summary_difference = "black",
-    fill_summary_overall = "white",
+    fill_summary_overall = "black",
     alpha_raw_reference = "1",
     alpha_raw_comparison = "1",
     alpha_raw_unused = "1",

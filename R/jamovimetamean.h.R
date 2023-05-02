@@ -60,7 +60,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             fill_summary_comparison = "#009F81",
             fill_summary_unused = "gray75",
             fill_summary_difference = "black",
-            fill_summary_overall = "white",
+            fill_summary_overall = "black",
             alpha_raw_reference = "1",
             alpha_raw_comparison = "1",
             alpha_raw_unused = "1",
@@ -938,7 +938,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..fill_summary_overall <- jmvcore::OptionList$new(
                 "fill_summary_overall",
                 fill_summary_overall,
-                default="white",
+                default="black",
                 options=list(
                     "black",
                     "#00C2F9",
@@ -2209,7 +2209,7 @@ jamovimetamean <- function(
     fill_summary_comparison = "#009F81",
     fill_summary_unused = "gray75",
     fill_summary_difference = "black",
-    fill_summary_overall = "white",
+    fill_summary_overall = "black",
     alpha_raw_reference = "1",
     alpha_raw_comparison = "1",
     alpha_raw_unused = "1",

@@ -1486,7 +1486,7 @@ options:
 
     - name: fill_summary_overall
       type: List
-      default: 'white'
+      default: 'black'
       options:
          - name: 'black'
            title: 'Black'

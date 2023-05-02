@@ -279,14 +279,6 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Grouping variable
-            children:
-              - type: VariablesListBox
-                name: grouping_variable
-                enable: '(design:mixed)'
-                maxItemCount: 1
-                isTarget: true
-          - type: TargetLayoutBox
             label: First repeated measure
             children:
               - type: VariablesListBox
@@ -299,6 +291,14 @@ children:
             children:
               - type: VariablesListBox
                 name: outcome_variable_level2
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
+            label: Grouping variable
+            children:
+              - type: VariablesListBox
+                name: grouping_variable
+                enable: '(design:mixed)'
                 maxItemCount: 1
                 isTarget: true
       - type: LayoutBox
