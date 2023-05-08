@@ -207,7 +207,7 @@ jamovi_mdiff_two <- function(
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::estimate_mdiff_two
+  call <- esci::estimate_mdiff_two
 
   args$save_raw_data <- save_raw_data
 

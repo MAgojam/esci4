@@ -87,7 +87,7 @@ jamovimetameanOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             alpha_interval_unused = "1", ...) {
 
             super$initialize(
-                package="esci4",
+                package="esci",
                 name="jamovimetamean",
                 requiresData=TRUE,
                 ...)
@@ -2037,7 +2037,7 @@ jamovimetameanBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "esci4",
+                package = "esci",
                 name = "jamovimetamean",
                 version = c(1,0,0),
                 options = options,

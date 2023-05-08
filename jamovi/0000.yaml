@@ -1,6 +1,6 @@
 ---
 title: Effect Sizes and Confidence Intervals for R and Jamovi
-name: esci4
+name: esci
 version: 1.0.0
 jms: '1.0'
 authors:
@@ -19,8 +19,18 @@ description: >-
 
   All analyses are frequentist, returning confidence intervals.</br></br>
 
+  Source code is on GitHub <a href = "https://github.com/rcalinjageman/esci"
+  target = "_blank">here</a>.</br></br>
+
   This is a complete rewrite from the previous release, breaking previous
-  analyses.
+  analyses (soory).  If you need the previous version, download and sideload
+  from these links: <ul> <li> <a href =
+  "https://library.jamovi.org/win64/R4.1.2/esci-0.9.4.jmo" target =
+  "_blank">Windows</a> </li> <li> <a href =
+  "https://library.jamovi.org/macos/R4.1.2/esci-0.9.4.jmo" target =
+  "_blank">Mac</a> </li> <li> <a href =
+  "https://library.jamovi.org/linux/R4.1.2/esci-4879ae2db461b365cb61ab251f6ad39b874355d9.jmo"
+  target = "_blank">Linux</a> </li> </ul>
 
   Please submit feedback, bug reports, and feature requests via the links
   provided <a href = "https://thenewstatistics.com/itns/esci/jesci/"
@@ -32,97 +42,97 @@ description: >-
 analyses:
   - title: Describe
     name: jamovidescribe
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuTitle: Describe
   - title: 'Means and Medians: Single Group'
     name: jamovimagnitude
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Means and Medians
     menuTitle: Single Group
   - title: 'Means and Medians: Two Groups'
     name: jamovimdifftwo
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Means and Medians
     menuTitle: Two Groups
   - title: 'Means and Medians: Paired'
     name: jamovimdiffpaired
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Means and Medians
     menuTitle: Paired
   - title: 'Means and Medians: Independent Groups Contrast'
     name: jamovimdiffindcontrast
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Means and Medians
     menuTitle: Independent Groups Contrast
   - title: 'Means and Medians: 2x2 Factorial'
     name: jamovimdiff2x2
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Means and Medians
     menuTitle: 2x2 Factorial
   - title: 'Correlations: Single Group'
     name: jamovicorrelation
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Correlations
     menuTitle: Single Group
   - title: 'Correlations: Two Groups'
     name: jamovirdifftwo
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Correlations
     menuTitle: Two Groups
   - title: 'Proportions: Single Group'
     name: jamoviproportion
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Proportions
     menuTitle: Single Group
   - title: 'Proportions: Two Groups'
     name: jamovipdifftwo
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Proportions
     menuTitle: Two Groups
   - title: 'Proportions: Paired'
     name: jamovipdiffpaired
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Proportions
     menuTitle: Paired
   - title: 'Meta-Analysis: Means'
     name: jamovimetamean
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Meta-Analysis
     menuTitle: Means
   - title: 'Meta-Analysis: Difference in Means'
     name: jamovimetamdiff
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Means
   - title: 'Meta-Analysis: Correlations'
     name: jamovimetar
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Meta-Analysis
     menuTitle: Correlations
   - title: 'Meta-Analysis: Proportions'
     name: jamovimetaproportion
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Meta-Analysis
     menuTitle: Proportions
   - title: 'Meta-Analysis: Difference in Proportions'
     name: jamovimetapdiff
-    ns: esci4
-    menuGroup: esci4
+    ns: esci
+    menuGroup: esci
     menuSubgroup: Meta-Analysis
     menuTitle: Difference in Proportions
 usesNative: true

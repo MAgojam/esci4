@@ -833,7 +833,7 @@ jamovi_rdiff_two <- function(self) {
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::estimate_rdiff_two
+    call <- esci::estimate_rdiff_two
 
     conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,

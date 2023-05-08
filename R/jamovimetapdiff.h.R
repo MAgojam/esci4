@@ -82,7 +82,7 @@ jamovimetapdiffOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             alpha_interval_unused = "1", ...) {
 
             super$initialize(
-                package="esci4",
+                package="esci",
                 name="jamovimetapdiff",
                 requiresData=TRUE,
                 ...)
@@ -1930,7 +1930,7 @@ jamovimetapdiffBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "esci4",
+                package = "esci",
                 name = "jamovimetapdiff",
                 version = c(1,0,0),
                 options = options,

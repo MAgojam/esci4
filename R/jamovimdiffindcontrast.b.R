@@ -243,7 +243,7 @@ jamovi_mdiff_contrastindependent <- function(
     for (x in 1:length(args$outcome_variable)) {
       args$data[[args$outcome_variable[[x]]]] <- as.numeric(args$data[[args$outcome_variable[[x]]]])
     }
-    call <- esci4::estimate_mdiff_ind_contrast
+    call <- esci::estimate_mdiff_ind_contrast
   } else {
     # Analysis from summary data
     group_labels <- self$data[, self$options$grouping_variable_levels]
@@ -264,7 +264,7 @@ in {self$options$grouping_variable_levels}.  Rows with empty group labels have b
     args$grouping_variable_levels <- as.character(group_labels[valid_rows])
     args$outcome_variable_name <- outcome_variable_name
     args$grouping_variable_name <- grouping_variable_name
-    call <- esci4::estimate_mdiff_ind_contrast
+    call <- esci::estimate_mdiff_ind_contrast
   }
 
 

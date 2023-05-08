@@ -1,4 +1,4 @@
 library(testthat)
-library(esci4)
+library(esci)
 
-test_check("esci4")
+test_check("esci")

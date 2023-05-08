@@ -2,7 +2,7 @@
 name:  jamovimetaproportion
 menuTitle: "Proportions"
 title: "Meta-Analysis: Proportions"
-menuGroup: esci4
+menuGroup: esci
 version: '1.0.0'
 jas: '1.2'
 

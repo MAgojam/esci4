@@ -95,7 +95,7 @@ jamovi_meta_pdiff_two <- function(self) {
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::meta_pdiff_two
+  call <- esci::meta_pdiff_two
 
   args$effect_label <- jamovi_sanitize(
     self$options$effect_label,

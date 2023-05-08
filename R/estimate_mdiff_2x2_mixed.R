@@ -260,7 +260,7 @@ estimate_mdiff_2x2_mixed <- function(
     sp[5, statpsych_names]
 
 
-  ws_estimate <- esci4::estimate_mdiff_paired(
+  ws_estimate <- esci::estimate_mdiff_paired(
     data = data,
     comparison_measure = outcome_variable_level2,
     reference_measure = outcome_variable_level1,
@@ -276,7 +276,7 @@ estimate_mdiff_2x2_mixed <- function(
 
 
   data$esci_ov <- (data[[outcome_variable_level1]] + data[[outcome_variable_level2]])/2
-  bs_estimate <- esci4::estimate_mdiff_two(
+  bs_estimate <- esci::estimate_mdiff_two(
     data = data,
     outcome_variable = "esci_ov",
     grouping_variable = grouping_variable,

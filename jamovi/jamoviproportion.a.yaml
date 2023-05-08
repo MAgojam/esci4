@@ -2,7 +2,7 @@
 name:  jamoviproportion
 title: "Proportions: Single Group"
 menuTitle: 'Single Group'
-menuGroup: esci4
+menuGroup: esci
 version: '1.0.0'
 jas: '1.2'
 

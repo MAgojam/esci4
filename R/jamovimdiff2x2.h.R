@@ -127,7 +127,7 @@ jamovimdiff2x2Options <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             fill_error_difference = "gray75", ...) {
 
             super$initialize(
-                package="esci4",
+                package="esci",
                 name="jamovimdiff2x2",
                 requiresData=TRUE,
                 ...)
@@ -2828,7 +2828,7 @@ jamovimdiff2x2Base <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "esci4",
+                package = "esci",
                 name = "jamovimdiff2x2",
                 version = c(1,0,0),
                 options = options,

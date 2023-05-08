@@ -75,7 +75,7 @@ jamovi_meta_r <- function(self) {
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::meta_r
+  call <- esci::meta_r
 
   args$effect_label <- jamovi_sanitize(
     self$options$effect_label,

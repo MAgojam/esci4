@@ -2,7 +2,7 @@
 name:  jamovimdiffindcontrast
 menuTitle: 'Independent Groups Contrast'
 title: "Means and Medians: Independent Groups Contrast"
-menuGroup: esci4
+menuGroup: esci
 version: '1.0.0'
 jas: '1.2'
 

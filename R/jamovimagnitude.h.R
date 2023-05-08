@@ -55,7 +55,7 @@ jamovimagnitudeOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             fill_error = "gray75", ...) {
 
             super$initialize(
-                package="esci4",
+                package="esci",
                 name="jamovimagnitude",
                 requiresData=TRUE,
                 ...)
@@ -1104,7 +1104,7 @@ jamovimagnitudeBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "esci4",
+                package = "esci",
                 name = "jamovimagnitude",
                 version = c(1,0,0),
                 options = options,

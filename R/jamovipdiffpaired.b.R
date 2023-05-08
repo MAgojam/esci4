@@ -299,7 +299,7 @@ Instead, {self$options$comparison_measure} has {length(clevels)}
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::estimate_pdiff_paired
+    call <- esci::estimate_pdiff_paired
 
     conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,

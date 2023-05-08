@@ -46,7 +46,7 @@ jamovidescribeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
 
             args$data[[args$outcome_variable]] <- as.numeric(args$data[[args$outcome_variable]])
 
-            call <- esci4::estimate_magnitude
+            call <- esci::estimate_magnitude
 
             estimate <- try(do.call(what = call, args = args))
 
@@ -77,7 +77,7 @@ jamovidescribeClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           args$data <- self$data
           args$outcome_variable <- self$options$outcome_variable
           args$data[[args$outcome_variable]] <- as.numeric(args$data[[args$outcome_variable]])
-          call <- esci4::estimate_magnitude
+          call <- esci::estimate_magnitude
 
           estimate <- try(do.call(what = call, args = args))
 

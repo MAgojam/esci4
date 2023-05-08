@@ -75,13 +75,13 @@ jamovi_meta_mean <- function(self) {
       is.null(self$options$sds) |
       is.null(self$options$ns)
     ) return(NULL)
-    call <- esci4::meta_mean
+    call <- esci::meta_mean
   } else {
     if (
       is.null(self$options$ds) |
       is.null(self$options$dns)
     ) return(NULL)
-    call <- esci4::meta_d1
+    call <- esci::meta_d1
   }
 
 

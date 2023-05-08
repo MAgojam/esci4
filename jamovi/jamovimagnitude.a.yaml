@@ -2,7 +2,7 @@
 name:  jamovimagnitude
 menuTitle: 'Single Group'
 title: "Means and Medians: Single Group"
-menuGroup: esci4
+menuGroup: esci
 version: '1.0.0'
 jas: '1.2'
 

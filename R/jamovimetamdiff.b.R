@@ -79,14 +79,14 @@ jamovi_meta_mdiff_two <- function(self) {
         is.null(self$options$comparison_sds) |
         is.null(self$options$comparison_ns)
       ) return(NULL)
-      call <- esci4::meta_mdiff_two
+      call <- esci::meta_mdiff_two
     } else {
       if (
         is.null(self$options$d) |
         is.null(self$options$dreference_ns) |
         is.null(self$options$dcomparison_ns)
       ) return(NULL)
-      call <- esci4::meta_d2
+      call <- esci::meta_d2
     }
 
 

@@ -429,7 +429,7 @@ jamovi_pdiff_two <- function(self, outcome_variable = NULL) {
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::estimate_pdiff_two
+    call <- esci::estimate_pdiff_two
 
     args$count_NA <- self$options$count_NA
     conf_level <- jamovi_sanitize(

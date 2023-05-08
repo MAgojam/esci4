@@ -547,7 +547,7 @@ jamovi_magnitude <- function(self, save_raw_data = FALSE) {
 
 
     # Step 2: Get analysis properties-----------------------------
-    call <- esci4::estimate_mdiff_one
+    call <- esci::estimate_mdiff_one
 
     args$reference_mean <- jamovi_sanitize(
       my_value = self$options$null_value,

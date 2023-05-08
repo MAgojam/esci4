@@ -247,7 +247,7 @@ jamovi_mdiff_paired <- function(self, save_raw_data = FALSE) {
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::estimate_mdiff_paired
+  call <- esci::estimate_mdiff_paired
 
   args$save_raw_data <- save_raw_data
   conf_level <- jamovi_sanitize(

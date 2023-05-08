@@ -107,7 +107,7 @@ jamovimdiffindcontrastOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) 
             fill_error_difference = "gray75", ...) {
 
             super$initialize(
-                package="esci4",
+                package="esci",
                 name="jamovimdiffindcontrast",
                 requiresData=TRUE,
                 ...)
@@ -2522,7 +2522,7 @@ jamovimdiffindcontrastBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6:
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "esci4",
+                package = "esci",
                 name = "jamovimdiffindcontrast",
                 version = c(1,0,0),
                 options = options,

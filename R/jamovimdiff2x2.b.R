@@ -814,7 +814,7 @@ jamovi_mdiff_2x2 <- function(
 
     }
 
-    call <- esci4::estimate_mdiff_2x2_between
+    call <- esci::estimate_mdiff_2x2_between
     conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,
       return_value = 95,
@@ -916,7 +916,7 @@ jamovi_mdiff_2x2 <- function(
       is.null(self$options$outcome_variable_level2)
     ) return(NULL)
 
-    call <- esci4::estimate_mdiff_2x2_mixed
+    call <- esci::estimate_mdiff_2x2_mixed
     args <- list()
     conf_level <- jamovi_sanitize(
       my_value = self$options$conf_level,

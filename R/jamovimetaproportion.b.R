@@ -76,7 +76,7 @@ jamovi_meta_proportion <- function(self) {
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::meta_proportion
+  call <- esci::meta_proportion
 
   args$effect_label <- jamovi_sanitize(
     self$options$effect_label,

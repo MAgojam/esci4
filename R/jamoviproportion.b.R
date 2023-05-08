@@ -547,7 +547,7 @@ jamovi_proportion <- function(self, outcome_variable = NULL) {
 
 
   # Step 2: Get analysis properties-----------------------------
-  call <- esci4::estimate_pdiff_one
+  call <- esci::estimate_pdiff_one
 
   args$reference_p <- jamovi_sanitize(
     my_value = self$options$null_value,
