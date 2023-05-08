@@ -2,7 +2,7 @@
 % Please edit documentation in R/jamovicorrelation.h.R
 \name{jamovicorrelation}
 \alias{jamovicorrelation}
-\title{Correlation: Single Group}
+\title{Correlations: Single Group}
 \usage{
 jamovicorrelation(
   switch = "from_raw",
@@ -67,9 +67,9 @@ jamovicorrelation(
   alpha_error = "1",
   fill_error = "gray75",
   sp_shape_raw_reference = "circle filled",
-  sp_color_raw_reference = "#008DF9",
+  sp_color_raw_reference = "black",
   sp_fill_raw_reference = "#008DF9",
-  sp_size_raw_reference = "4",
+  sp_size_raw_reference = "3",
   sp_alpha_raw_reference = ".25",
   sp_linetype_summary_reference = "solid",
   sp_color_summary_reference = "#008DF9",
@@ -87,15 +87,15 @@ jamovicorrelation(
   sp_prediction_color = "#E20134",
   sp_linetype_CI = "solid",
   sp_color_CI = "#008DF9",
-  sp_size_CI = "5",
+  sp_size_CI = "4",
   sp_alpha_CI = "1",
   sp_linetype_ref = "dotted",
-  sp_color_ref = "gray90",
-  sp_size_ref = "2",
+  sp_color_ref = "gray60",
+  sp_size_ref = "1",
   sp_alpha_ref = "1",
   sp_linetype_PI = "solid",
   sp_color_PI = "#E20134",
-  sp_size_PI = "3",
+  sp_size_PI = "2",
   sp_alpha_PI = "1"
 )
 }
@@ -307,5 +307,5 @@ Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.f
 \code{as.data.frame(results$overview)}
 }
 \description{
-Correlation: Single Group
+Correlations: Single Group
 }

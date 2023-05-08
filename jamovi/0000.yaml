@@ -65,7 +65,7 @@ analyses:
     menuGroup: esci4
     menuSubgroup: Means and Medians
     menuTitle: 2x2 Factorial
-  - title: 'Correlation: Single Group'
+  - title: 'Correlations: Single Group'
     name: jamovicorrelation
     ns: esci4
     menuGroup: esci4

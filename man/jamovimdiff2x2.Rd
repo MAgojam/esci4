@@ -39,6 +39,8 @@ jamovimdiff2x2(
   effect_size = "mean_difference",
   assume_equal_variance = TRUE,
   show_details = FALSE,
+  show_interaction_plot = FALSE,
+  show_CI = FALSE,
   evaluate_hypotheses = FALSE,
   null_value = "0",
   null_boundary = "0",
@@ -193,6 +195,10 @@ jamovimdiff2x2(
 \item{assume_equal_variance}{.}
 
 \item{show_details}{.}
+
+\item{show_interaction_plot}{.}
+
+\item{show_CI}{.}
 
 \item{evaluate_hypotheses}{.}
 
@@ -365,6 +371,7 @@ jamovimdiff2x2(
 \value{
 A results object containing:
 \tabular{llllll}{
+\code{results$analysis_type} \tab \tab \tab \tab \tab a html \cr
 \code{results$debug} \tab \tab \tab \tab \tab a preformatted \cr
 \code{results$help} \tab \tab \tab \tab \tab a html \cr
 \code{results$overview} \tab \tab \tab \tab \tab a table \cr
@@ -377,6 +384,7 @@ A results object containing:
 \code{results$main_effect_A} \tab \tab \tab \tab \tab an image \cr
 \code{results$main_effect_B} \tab \tab \tab \tab \tab an image \cr
 \code{results$interaction} \tab \tab \tab \tab \tab an image \cr
+\code{results$interaction_plot} \tab \tab \tab \tab \tab an image \cr
 }
 
 Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

@@ -1533,7 +1533,7 @@ jamovicorrelationResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             super$initialize(
                 options=options,
                 name="",
-                title="Correlation: Single Group")
+                title="Correlations: Single Group")
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="debug",
@@ -1946,7 +1946,7 @@ jamovicorrelationBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 requiresMissings = FALSE)
         }))
 
-#' Correlation: Single Group
+#' Correlations: Single Group
 #'
 #' 
 #' @param switch .

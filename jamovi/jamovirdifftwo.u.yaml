@@ -114,14 +114,14 @@ children:
           column: 0
           row: 3
       - type: TextBox
-        name: comparison_r
+        name: reference_r
         format: string
         enable: '(switch:from_summary)'
         cell:
           column: 1
           row: 3
       - type: TextBox
-        name: reference_r
+        name: comparison_r
         format: string
         enable: '(switch:from_summary)'
         cell:
