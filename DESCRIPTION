@@ -1,13 +1,13 @@
 Package: esci
 Type: Package
 Title: Effect Sizes and Confidence Intervals
-Version: 0.0.0
+Version: 0.9.0
 Author: Robert J Calin-Jageman
 Maintainer: Robert J Calin-Jageman <rcalinjageman@dom.edu>
 Description: An r package and jamovi module for the estimation approach 
     to inferential statistics, the approach which emphasizes effect sizes, 
     interval estimates, and meta-analysis. Post issues,
-    bugs, and feature requests to: <https://github.com/rcalinjageman/esci2>.
+    bugs, and feature requests to: <https://github.com/rcalinjageman/esci>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
